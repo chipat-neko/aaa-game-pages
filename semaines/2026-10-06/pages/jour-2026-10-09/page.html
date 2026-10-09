@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · vendredi 9 octobre 2026 · semaine du 6 au 12 octobre</div>
   <h1>Jour <em>4</em></h1>
   <p class="lecture">Quatrième journée de la semaine. Les pages du projet déménagent sur un site GitHub Pages à adresse fixe, pour que tout le monde puisse les ouvrir.</p>
-  <p class="ticket">Mise à jour : 09/10/2026 à 10:08</p>
+  <p class="ticket">Mise à jour : 09/10/2026 à 10:58</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,13 +104,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-valide">1 validé</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-en-cours">3 en cours</span><span class="etat e-valide">1 validé</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 37 % de la semaine utilisés au début de la journée (relevé /usage de 08:25) ; 12 % disponibles par jour jusqu&#x27;au 12 octobre (<span class="insec">D-254</span>).</li>
     <li><strong>Nouveau site</strong> (<span class="insec">D-256</span>) : toutes les pages du projet sont maintenant sur https://chipat-neko.github.io/aaa-game-pages/, une adresse qui ne change plus. Les anciennes pages claude.ai restent en archive.</li>
     <li><strong>Échanges</strong> : le fil d&#x27;idées est devenu une discussion GitHub affichée dans l&#x27;accueil ; on y écrit avec un compte GitHub gratuit.</li>
     <li><strong>Licences</strong> : un son (« Energy Drain ») et les 384 voix générées de « Voix du nom » ne sont pas publiés, faute de licence sûre pour un site public.</li>
     <li><strong><span class="insec">D-257</span></strong> : les voix générées restent hors du site ; les anciennes pages claude.ai seront supprimées par le directeur ; la suite de la journée attend que la carte graphique soit libre.</li>
+    <li><strong><span class="insec">D-258</span></strong> (carte graphique libre) : écran « Commandes » pour changer les touches, puis la saison et la météo (fin de l&#x27;automne, premières neiges), et trois petits restes (Modèles 3D, pattes de l&#x27;araignée, cimier et pied tourné).</li>
   </ul>
 </section>
 
@@ -119,12 +120,29 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="lecture muted">Chaque ticket a un exécutant et un vérificateur ; une correction est confiée à un agent neuf (<span class="insec">D-231</span>).</p>
   <div class="files">
 <div class="file">
+  <h3>Unreal</h3>
+  <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0164</span> · <span class="insec">D-254</span> · <span class="insec">D-255</span> · <span class="insec">D-258</span> (1)</span><h3>Raccrochage payant, Endurance hors combat, écran « Commandes »</h3><p class="muted">Se raccrocher en l&#x27;air coûte 10 d&#x27;Endurance ; à zéro hors combat, le héros arrête seulement de courir ; un écran pour changer les touches au clavier et à la manette ; la démarche lourde du meneur vérifiée.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 10:58.</p></div>
+  </div>
+  <p class="suite">Après <span class="insec">T-0164</span> : la saison et la météo (<span class="insec">T-0168</span>), puis le cimier, le pied tourné et l&#x27;araignée corrigée (<span class="insec">T-0169</span>).</p>
+</div>
+<div class="file">
   <h3>Pages du projet</h3>
   <p class="muted">Le site de suivi du projet, pour le directeur et son ami.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0163</span> · <span class="insec">D-256</span></span><h3>Les pages du projet sur GitHub Pages</h3><p class="muted">Les 18 pages de « Pages du projet » et la semaine du 6 au 12 octobre publiées sur un site public non référencé, avec le fil Échanges sur les Discussions GitHub et un outil de publication à chaque étape.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 08:55, site en ligne à 09:08. Renvoyé une fois en correction : un outil pouvait vider le site s&#x27;il était relancé, et l&#x27;origine des images de concept était mal notée. Corrigé par un agent neuf, puis validé à 09:50 : rien de personnel dans le dépôt, aucun lien cassé, contrôle vert sur 23 pages.</p></div>
   </div>
   <p class="suite">Le directeur installe giscus d&#x27;un clic pour ouvrir les Échanges ; ensuite, chaque étape du travail est publiée ici.</p>
+</div>
+<div class="file">
+  <h3>Documents et modèles 3D</h3>
+  <p class="muted">Les documents de design et les bêtes, hors du projet Unreal.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0165</span> · <span class="insec">D-254</span> · <span class="insec">D-255</span> · <span class="insec">D-258</span> (1)</span><h3>Les décisions de la veille dans les documents</h3><p class="muted">Raccrochage payant, Endurance hors combat, touches réglables, démarche du meneur, franges du sanglier ; petites corrections (taille de la horde, origine des images de concept).</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 10:58.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0166</span> · <span class="insec">D-235</span> (8) · <span class="insec">D-258</span> (3)</span><h3>Les pattes de l&#x27;araignée ne se touchent plus</h3><p class="muted">Dernier défaut connu de l&#x27;araignée : ses pattes se croisent dans la marche, la course et la mort.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 10:58.</p></div>
+  </div>
+  <p class="suite">Ensuite : la page « Modèles 3D » à jour (perdrix, lapin, araignée corrigée).</p>
 </div>
   </div>
 </section>
@@ -152,16 +170,17 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>09:08</time><p>Le site est en ligne.</p></div>
     <div class="entree"><time>09:50</time><p><span class="insec">T-0163</span> validé après une correction.</p></div>
     <div class="entree"><time>10:08</time><p>Décision <span class="insec">D-257</span> (voix générées, anciennes pages, suite sans carte graphique). En attente du choix du directeur pour la suite.</p></div>
+    <div class="entree"><time>10:54</time><p>Carte graphique libre : décision <span class="insec">D-258</span> (écran « Commandes », saison et météo, petits restes).</p></div>
+    <div class="entree"><time>10:58</time><p>Lancement de <span class="insec">T-0164</span> (Unreal), <span class="insec">T-0165</span> (documents) et <span class="insec">T-0166</span> (pattes de l&#x27;araignée), en même temps.</p></div>
   </div>
 </section>
 
 <section id="questions">
   <h2>Questions pour le directeur</h2>
   <p class="lecture muted">Questions en attente du directeur.</p>
-  <p class="lecture muted">2 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <p class="lecture muted">1 question attend sa réponse. Personne ne les tranche à la place du directeur.</p>
   <div class="questions">
     <div class="question"><span class="ticket">Échanges</span><p>Surnoms de l&#x27;entité : quelle liste ? (à choisir à deux, dans le fil « Échanges »)</p></div>
-    <div class="question"><span class="ticket">Jour 4</span><p>La suite de la journée (<span class="insec">D-254</span> et <span class="insec">D-255</span> dans le jeu et les documents, puis saison et météo ou arc des archers) : à choisir quand la carte graphique sera libre.</p></div>
   </div>
 </section>
 
