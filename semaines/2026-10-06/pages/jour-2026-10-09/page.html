@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>Jour 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Semaine du 6 au 12 octobre</a></nav>
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de jour-2026-10-09.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · vendredi 9 octobre 2026 · semaine du 6 au 12 octobre</div>
+  <h1>Jour <em>4</em></h1>
+  <p class="lecture">Quatrième journée de la semaine. Les pages du projet déménagent sur un site GitHub Pages à adresse fixe, pour que tout le monde puisse les ouvrir.</p>
+  <p class="ticket">Mise à jour : 09/10/2026 à 09:50</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-valide">1 validé</span></div>
+  <ul class="liste lecture">
+    <li><strong>Quota</strong> : 37 % de la semaine utilisés au début de la journée (relevé /usage de 08:25) ; 12 % disponibles par jour jusqu&#x27;au 12 octobre (<span class="insec">D-254</span>).</li>
+    <li><strong>Nouveau site</strong> (<span class="insec">D-256</span>) : toutes les pages du projet sont maintenant sur https://chipat-neko.github.io/aaa-game-pages/, une adresse qui ne change plus. Les anciennes pages claude.ai restent en archive.</li>
+    <li><strong>Échanges</strong> : le fil d&#x27;idées est devenu une discussion GitHub affichée dans l&#x27;accueil ; on y écrit avec un compte GitHub gratuit.</li>
+    <li><strong>Licences</strong> : un son (« Energy Drain ») et les 384 voix générées de « Voix du nom » ne sont pas publiés, faute de licence sûre pour un site public.</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Chaque ticket a un exécutant et un vérificateur ; une correction est confiée à un agent neuf (<span class="insec">D-231</span>).</p>
+  <div class="files">
+<div class="file">
+  <h3>Pages du projet</h3>
+  <p class="muted">Le site de suivi du projet, pour le directeur et son ami.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0163</span> · <span class="insec">D-256</span></span><h3>Les pages du projet sur GitHub Pages</h3><p class="muted">Les 18 pages de « Pages du projet » et la semaine du 6 au 12 octobre publiées sur un site public non référencé, avec le fil Échanges sur les Discussions GitHub et un outil de publication à chaque étape.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 08:55, site en ligne à 09:08. Renvoyé une fois en correction : un outil pouvait vider le site s&#x27;il était relancé, et l&#x27;origine des images de concept était mal notée. Corrigé par un agent neuf, puis validé à 09:50 : rien de personnel dans le dépôt, aucun lien cassé, contrôle vert sur 23 pages.</p></div>
+  </div>
+  <p class="suite">Le directeur installe giscus d&#x27;un clic pour ouvrir les Échanges ; ensuite, chaque étape du travail est publiée ici.</p>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D du jour</h2>
+  <p class="lecture muted">Ce qui a été livré ou validé aujourd&#x27;hui.</p>
+  <div class="galerie">
+<article class="modele" id="mod-site-github">
+  <div class="tete"><h3>Le site du projet</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0163</span> · <span class="insec">D-256</span></p>
+  <figure><img src="images/site-github.jpg" alt="Accueil du site « Pages du projet » sur GitHub Pages" width="1280" height="900" loading="lazy"><figcaption>L&#x27;accueil du nouveau site, à la même adresse pour toutes les mises à jour.</figcaption></figure>
+  <p>Même apparence et même contenu qu&#x27;avant : modèles 3D, bible, fiches, maquettes, sons, présentation, et une page par jour rangée dans sa semaine.</p>
+  <p class="chemins">Sur le PC : E:/aaa-proto/pages-github/site/</p>
+</article>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>08:28</time><p>Point du matin : aucun ticket en cours, décisions jusqu&#x27;à <span class="insec">D-255</span>.</p></div>
+    <div class="entree"><time>08:53</time><p>Décision <span class="insec">D-256</span> : les pages passent sur GitHub Pages (site public non référencé, Échanges sur GitHub, publication à chaque étape).</p></div>
+    <div class="entree"><time>08:55</time><p>Lancement de <span class="insec">T-0163</span> ; le contenu des deux pages claude.ai est téléchargé (368 fichiers).</p></div>
+    <div class="entree"><time>09:08</time><p>Le site est en ligne.</p></div>
+    <div class="entree"><time>09:50</time><p><span class="insec">T-0163</span> validé après une correction.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Questions en attente du directeur.</p>
+  <p class="lecture muted">2 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question"><span class="ticket">Échanges</span><p>Surnoms de l&#x27;entité : quelle liste ? (à choisir à deux, dans le fil « Échanges »)</p></div>
+    <div class="question"><span class="ticket">Jour 4</span><p>Le gros chantier de la journée : saison et météo, arc des archers, ou vidéo en jeu ?</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:/aaa-proto/pages-github/site : le clone du site · E:/aaa-proto/livrables/suivi : les pages de jour et l&#x27;outil de publication · D:/aaa-game/.equipe/taches (les tickets)</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
