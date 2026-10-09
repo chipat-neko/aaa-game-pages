@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Nuit du prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Mise en page : une colonne de lecture (~68 caractères), images en pleine largeur de colonne, look sombre et brumeux assumé */
+:root{
+  --nuit:#15181c;        /* fond : ardoise froide, comme le fond des gorges */
+  --brume:#1d2127;       /* surfaces */
+  --roche:#2a2f36;       /* filets, bordures */
+  --pierre:#8b929b;      /* texte secondaire */
+  --lin:#e4e1d9;         /* texte principal : ivoire terne */
+  --aube:#d4a857;        /* accent : soleil d'aube de l'image 13 */
+  --mousse:#86a37a;      /* validé */
+  --braise:#c7715c;      /* refusé / incident */
+  --f-titre:"IM Fell English", "Iowan Old Style", Georgia, serif;
+  --f-texte:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+body{background:var(--nuit);color:var(--lin);font-family:var(--f-texte);font-size:16px;line-height:1.6;margin:0}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.5rem}
+.surtitre{font-family:var(--f-data);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font-family:var(--f-titre);font-weight:400;font-size:clamp(2.4rem,7vw,3.8rem);line-height:1.05;margin:0;text-wrap:balance}
+h1 em{color:var(--aube);font-style:italic}
+h2{font-family:var(--f-titre);font-weight:400;font-size:clamp(1.6rem,4.5vw,2.2rem);line-height:1.15;margin:0;text-wrap:balance}
+h3{font-family:var(--f-texte);font-weight:600;font-size:1rem;margin:0}
+p{margin:0}
+.chapo{font-size:1.1rem;color:var(--lin)}
+section{display:grid;gap:1.1rem;padding-block:2.2rem;border-top:1px solid var(--roche)}
+.muted{color:var(--pierre)}
+figure{margin:0;display:grid;gap:.5rem}
+figure img{display:block;width:100%;height:auto;border-radius:4px;background:var(--brume)}
+figcaption{font-size:.9rem;color:var(--pierre)}
+/* onglets du belvédère */
+.onglets{display:flex;flex-wrap:wrap;gap:.4rem}
+.onglets button{font:500 .85rem/1 var(--f-texte);color:var(--lin);background:var(--brume);border:1px solid var(--roche);border-radius:999px;padding:.55rem .9rem;cursor:pointer}
+.onglets button[aria-selected="true"]{background:var(--aube);border-color:var(--aube);color:var(--nuit)}
+.onglets button:focus-visible,a:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.vue{position:relative}
+.etiquette{position:absolute;left:.6rem;top:.6rem;font:500 .72rem/1 var(--f-data);letter-spacing:.06em;text-transform:uppercase;background:rgba(21,24,28,.8);color:var(--lin);padding:.4rem .55rem;border-radius:3px}
+/* tableau des écarts */
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:30rem;font-size:.92rem}
+th,td{text-align:right;padding:.5rem .6rem;border-bottom:1px solid var(--roche);font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+thead th{font:500 .75rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data)}
+td.mieux{color:var(--mousse)}
+td.pire{color:var(--braise)}
+/* grilles */
+.grille2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem}
+.fiches{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,10.5rem),1fr));gap:1rem}
+.fiche{display:grid;gap:.45rem;align-content:start}
+.fiche img{aspect-ratio:2/3;object-fit:cover;object-position:top;width:100%;border-radius:4px;background:var(--brume)}
+.fiche .nom{font-size:.9rem;font-weight:500}
+.puce{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.3rem .45rem;border-radius:3px;border:1px solid currentColor}
+.ok{color:var(--mousse)}
+.non{color:var(--braise)}
+.garde{color:var(--aube)}
+.incident{display:grid;gap:.6rem;border-left:3px solid var(--braise);background:var(--brume);padding:1rem 1.1rem;border-radius:0 4px 4px 0}
+.incident h3{color:var(--braise)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.45rem}
+.decisions{display:grid;gap:.7rem}
+.decision{display:grid;grid-template-columns:4.2rem 1fr;gap:.8rem;align-items:baseline}
+.decision code{font:500 .8rem var(--f-data);color:var(--aube)}
+.deux{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:1.4rem}
+.deux>div{display:grid;gap:.6rem;align-content:start;min-width:0}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+@media (prefers-reduced-motion:no-preference){figure img{transition:opacity .25s ease}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · prototypes Unreal et Unity · 29 et 30 septembre 2026</div>
+  <h1>Nuit du <em>prototype</em></h1>
+  <p class="chapo lecture">Pendant que tu dormais, l'équipe d'agents a reconstruit les Gorges des Soupirs en quatre passes, chacune mesurée contre l'image de concept 13, fait dessiner six fiches de personnages et préparé un héros MetaHuman. Voici où on en est, ce qui a bloqué et ce qui reste à trancher.</p>
+</header>
+
+<section id="comparaison">
+  <div class="surtitre">Mise à jour du 30 septembre, 14 h 30</div>
+  <h2>Unreal ou Unity : la même mini-tranche dans les deux</h2>
+  <p class="lecture">Même relief au mètre près (même carte de hauteurs), mêmes roches et textures libres de droits, mêmes créatures et même épée générées sur ton PC, mêmes règles et mêmes valeurs de combat, mêmes touches. Les deux passent leurs tests automatiques et gagnent le combat tout seuls ; les deux ont été relus par le vérificateur. Il reste à y jouer toi-même pour choisir (D-159).</p>
+  <div class="onglets" role="tablist" aria-label="Vues comparées">
+    <button role="tab" id="c-a" data-v="a_reveil" data-cap="Point de réveil. Unity est plus contrasté et plus clair au premier plan ; Unreal a plus de fougères et de débris." aria-selected="true">Réveil</button>
+    <button role="tab" id="c-b" data-v="b_parois" data-cap="Parois et torrent. Unreal a le ciel nuageux et la brume bleutée de la passe 5 ; Unity n'a pas encore ces nuages, d'où une image plus grise." aria-selected="false">Parois</button>
+    <button role="tab" id="c-e" data-v="e_point_eau" data-cap="Point d'eau du reflet. Le reflet est net dans les deux. C'est la vue qui coûte le plus cher à Unity (reflet recalculé à chaque image)." aria-selected="false">Point d'eau</button>
+    <button role="tab" id="c-g" data-v="g_heros_pied" data-cap="Le héros en pied. Unreal : le MetaHuman habillé ; Unity : le héros entièrement généré par IA (D-169). Ici on compare les modèles, pas les moteurs." aria-selected="false">Héros</button>
+    <button role="tab" id="c-f" data-v="f_heros_visage" data-cap="Le visage. Le MetaHuman est bien plus fin que le visage généré par IA ; l'écart vient du modèle, pas du moteur." aria-selected="false">Visage</button>
+    <button role="tab" id="c-2" data-v="combat_2_parade_parfaite" data-cap="Parade parfaite : l'ennemi est déséquilibré. Même règle, même fenêtre de 0,25 s dans les deux." aria-selected="false">Parade parfaite</button>
+    <button role="tab" id="c-4" data-v="combat_4_attaque_lourde" data-cap="Attaque lourde. Côté Unity, la caméra est à contre-jour et l'image devient peu lisible : à régler si Unity est retenu." aria-selected="false">Attaque lourde</button>
+  </div>
+  <div class="grille2" role="tabpanel" id="cmp-panneau" aria-labelledby="c-a">
+    <figure class="vue"><img id="cmp-ue" src="img/cmp-ue-a_reveil.jpg" alt="Unreal : réveil" width="1200" height="675"><span class="etiquette">Unreal 5.8</span></figure>
+    <figure class="vue"><img id="cmp-un" src="img/cmp-un-a_reveil.jpg" alt="Unity : réveil" width="1200" height="675"><span class="etiquette">Unity 6.5</span></figure>
+  </div>
+  <p class="lecture muted" id="cmp-cap">Point de réveil. Unity est plus contrasté et plus clair au premier plan ; Unreal a plus de fougères et de débris.</p>
+
+  <h3>Images par seconde en 1920 × 1080, chaque moteur seul sur la carte graphique</h3>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Vue</th><th>Unreal 5.8</th><th>Unity 6.5</th></tr></thead>
+      <tbody>
+        <tr><td>Réveil</td><td class="chiffre mieux">153</td><td class="chiffre">78</td></tr>
+        <tr><td>Parois</td><td class="chiffre">147</td><td class="chiffre mieux">229</td></tr>
+        <tr><td>Belvédère</td><td class="chiffre">122</td><td class="chiffre">—</td></tr>
+        <tr><td>Personnage</td><td class="chiffre">100</td><td class="chiffre mieux">131</td></tr>
+        <tr><td>Point d'eau</td><td class="chiffre mieux">104</td><td class="chiffre">81</td></tr>
+        <tr><td>Visage</td><td class="chiffre">132</td><td class="chiffre">131</td></tr>
+        <tr><td>Héros en pied</td><td class="chiffre mieux">136</td><td class="chiffre">123</td></tr>
+        <tr><td>Pendant le combat</td><td class="chiffre">133</td><td class="chiffre mieux">165</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="liste lecture muted">
+    <li>La scène Unity est plus légère : ni les 7 500 sapins, ni les cascades, ponts, nuages et plaine lointaine d'Unreal. Son avance en parois, personnage et combat en vient en partie. Le belvédère est hors de la zone faite dans Unity.</li>
+    <li>Unity perd du terrain dès que le point d'eau est visible (réveil, point d'eau) : son reflet est recalculé à chaque image. En le mettant à jour moins souvent, ces vues passeraient d'environ 80 à environ 135 images par seconde.</li>
+    <li>Les deux sont au-dessus de 60 images par seconde partout.</li>
+  </ul>
+
+  <h3>Le travail des agents dans chaque moteur</h3>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Mesure</th><th>Unreal 5.8</th><th>Unity 6.5</th></tr></thead>
+      <tbody>
+        <tr><td>Temps pour la mini-tranche</td><td class="chiffre">≈ 10 h</td><td class="chiffre">≈ 2 h *</td></tr>
+        <tr><td>Recompiler le code du jeu</td><td class="chiffre">7 à 16 s</td><td class="chiffre mieux">2,8 s</td></tr>
+        <tr><td>Contenu lisible en texte (suivi des changements)</td><td class="chiffre">0 %</td><td class="chiffre mieux">83 %</td></tr>
+        <tr><td>Taille du projet</td><td class="chiffre">8,0 Go</td><td class="chiffre mieux">5,3 Go</td></tr>
+        <tr><td>Jeu Windows autonome</td><td class="chiffre">pas encore fait</td><td class="chiffre">680 Mo</td></tr>
+        <tr><td>Vue à la première personne</td><td class="chiffre">pas encore faite</td><td class="chiffre">touche V</td></tr>
+        <tr><td>Gestes demandés à toi</td><td class="chiffre">ton accord pour MetaHuman (D-162)</td><td class="chiffre">aucun</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lecture muted">* Unity a tout repris de ce qu'Unreal avait préparé (relief, assets, règles, tests, pièges connus) : les 2 h ne se comparent pas aux 10 h. La licence Unity du PC se renouvelle avant le 20 octobre : si Unity refuse alors de démarrer, il suffira d'ouvrir Unity Hub et de s'y connecter une fois.</p>
+
+  <h3>Jouer aux deux</h3>
+  <p class="lecture">Un moteur à la fois (la carte graphique est partagée). Dans PowerShell :</p>
+  <p class="chemins">Unreal : powershell -NoProfile -ExecutionPolicy Bypass -File E:\aaa-proto\unreal-v2\scripts\jouer.ps1<br>Unity : powershell -NoProfile -ExecutionPolicy Bypass -File E:\aaa-proto\unity\scripts\jouer.ps1</p>
+  <ul class="liste lecture">
+    <li>Mêmes touches : ZQSD ou WASD, souris, Maj pour sprinter, clic gauche attaque rapide, F attaque lourde, clic droit parade (maintenir), C roulade, Tab verrouiller, molette changer de cible. Manette aussi.</li>
+    <li>Unreal : le premier lancement peut prendre quelques minutes (préparation des effets graphiques). Ne pas ouvrir le projet par le lanceur d'Epic : ses caches iraient sur C:.</li>
+    <li>À regarder en jouant : la sensation des coups et de la caméra, la lisibilité du combat, la brume et la lumière, la fluidité.</li>
+  </ul>
+</section>
+
+<section id="jouable">
+  <div class="surtitre">Mise à jour du 30 septembre, 11 h 30</div>
+  <h2>La mini-tranche est jouable</h2>
+  <p class="lecture">Le héros MetaHuman, habillé comme sur sa fiche (gambison taché, insigne sans nom, bottes, épée rouillée), combat deux morts-vivants et un esprit générés en 3D sur ton PC. Épée, parade, parade parfaite, roulade, verrouillage de cible, Endurance : tout est animé avec des animations libres de droits (Quaternius, CC0) et couvert par 22 tests automatiques.</p>
+  <div class="grille2">
+    <figure><img src="img/jeu-heros-pied.jpg" alt="Le héros habillé dans les gorges" loading="lazy" width="1400" height="788"><figcaption>Le héros en jeu : tenue générée par IA et ajustée à son corps.</figcaption></figure>
+    <figure><img src="img/jeu-heros-eau.jpg" alt="Le héros se reflète dans le point d'eau" loading="lazy" width="1400" height="788"><figcaption>Le point d'eau du reflet, avec le héros habillé.</figcaption></figure>
+    <figure><img src="img/jeu-combat-1.jpg" alt="Verrouillage de cible sur un mort-vivant" loading="lazy" width="1400" height="788"><figcaption>Les créatures approchent ; verrouillage de cible.</figcaption></figure>
+    <figure><img src="img/jeu-combat-4.jpg" alt="Attaque lourde après une parade parfaite" loading="lazy" width="1400" height="788"><figcaption>Attaque lourde après une parade parfaite.</figcaption></figure>
+    <figure><img src="img/jeu-combat-5.jpg" alt="Roulade d'esquive" loading="lazy" width="1400" height="788"><figcaption>Roulade d'esquive.</figcaption></figure>
+    <figure><img src="img/jeu-combat-3.jpg" alt="Victoire, créatures au sol" loading="lazy" width="1400" height="788"><figcaption>Victoire : les créatures tombent.</figcaption></figure>
+  </div>
+  <h3>Modèles 3D générés sur ton PC (gratuit, licences commerciales)</h3>
+  <div class="fiches">
+    <div class="fiche"><img src="img/m3d-mort-vivant.jpg" alt="Mort-vivant en 3D" loading="lazy"><span class="nom">Mort-vivant</span><span class="puce ok">Dans le jeu</span></div>
+    <div class="fiche"><img src="img/m3d-esprit.jpg" alt="Esprit en 3D" loading="lazy"><span class="nom">Esprit (redessiné plus solide)</span><span class="puce garde">À valider par toi</span></div>
+    <div class="fiche"><img src="img/m3d-soldat.jpg" alt="Soldat de l'Ordre en 3D" loading="lazy"><span class="nom">Soldat de l'Ordre</span><span class="puce ok">Prêt</span></div>
+    <div class="fiche"><img src="img/m3d-possede.jpg" alt="Possédé en 3D" loading="lazy"><span class="nom">Possédé (tenue inventée)</span><span class="puce garde">À valider par toi</span></div>
+    <div class="fiche"><img src="img/m3d-ange.jpg" alt="Silhouette de l'Ange Déchu" loading="lazy"><span class="nom">Ange Déchu (base des effets)</span><span class="puce ok">Prêt</span></div>
+  </div>
+  <p class="lecture muted">Les modèles en 3D sont carrés à l'écran pour la comparaison ; le soldat, le possédé et l'Ange Déchu serviront à la fin du didacticiel (patrouille, apparition).</p>
+</section>
+
+<section id="belvedere">
+  <h2>La vue du belvédère, passe par passe</h2>
+  <p class="lecture muted">Même cadrage que l'image 13, depuis le haut de la falaise de sortie. Touche une étape pour comparer.</p>
+  <div class="onglets" role="tablist" aria-label="Étapes du belvédère">
+    <button role="tab" id="t-cible" data-src="img/cible.jpg" data-cap="Image de concept 13 : la cible. Gorges brumeuses, aiguilles rocheuses, plaine en damier, hameau, pont à tours, lumière d'aube." aria-selected="false">Image 13</button>
+    <button role="tab" id="t-p1" data-src="img/belv-p1.jpg" data-cap="Passe 1, premier jet : teinte sépia, on ne voit presque pas la gorge." aria-selected="false">Passe 1</button>
+    <button role="tab" id="t-p1b" data-src="img/belv-p1b.jpg" data-cap="Passe 1 corrigée (T-0049) : la gorge apparaît, mais pas de brume, plaine vide, image trop chaude." aria-selected="false">Passe 1 corrigée</button>
+    <button role="tab" id="t-p2" data-src="img/belv-p2.jpg" data-cap="Passe 2 : torrent, cascades, dédale d'aiguilles ; la « brume » ressemble à une coulée d'écume, image surexposée." aria-selected="false">Passe 2</button>
+    <button role="tab" id="t-p3" data-src="img/belv-p3.jpg" data-cap="Passe 3 : vraie brume volumétrique dans les gorges, exposition calée, relief érodé ; plaine encore beige." aria-selected="false">Passe 3</button>
+    <button role="tab" id="t-p4" data-src="img/belv-p4.jpg" data-cap="Passe 4 (actuelle) : damier de champs verts, lacs, village et pont à tours, 7 500 sapins en massifs, chaîne de montagnes." aria-selected="true">Passe 4</button>
+  </div>
+  <figure class="vue" role="tabpanel" aria-labelledby="t-p4">
+    <img id="vue-img" src="img/belv-p4.jpg" alt="Vue du belvédère, passe 4" width="1600" height="900">
+    <span class="etiquette" id="vue-tag">Passe 4</span>
+    <figcaption id="vue-cap">Passe 4 (actuelle) : damier de champs verts, lacs, village et pont à tours, 7 500 sapins en massifs, chaîne de montagnes.</figcaption>
+  </figure>
+
+  <h3>Écart à l'image 13, mesuré sur la plaine et le plateau</h3>
+  <p class="lecture muted">Plus le chiffre est petit, plus la capture ressemble à l'image. Mesures de couleur moyennes calculées par le même script à chaque passe.</p>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Mesure</th><th>Passe 1 corrigée</th><th>Passe 3</th><th>Passe 4</th></tr></thead>
+      <tbody>
+        <tr><td>Chaleur (rouge − bleu)</td><td class="chiffre">0,099</td><td class="chiffre mieux">0,017</td><td class="chiffre mieux">0,010</td></tr>
+        <tr><td>Saturation</td><td class="chiffre">0,151</td><td class="chiffre mieux">0,071</td><td class="chiffre mieux">0,030</td></tr>
+        <tr><td>Luminosité</td><td class="chiffre">0,074</td><td class="chiffre mieux">0,013</td><td class="chiffre mieux">0,003</td></tr>
+        <tr><td>Ciel</td><td class="chiffre">0,227</td><td class="chiffre mieux">0,140</td><td class="chiffre mieux">0,035</td></tr>
+        <tr><td>Contraste</td><td class="chiffre">0,064</td><td class="chiffre pire">0,076</td><td class="chiffre mieux">0,054</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lecture muted">Contrepartie : la vue du belvédère tourne à 81 images par seconde au lieu de 141, à cause des 7 500 sapins et de la brume. Il reste à faire : nuages marqués et rayons de soleil, village en vraies maisons, plus de détail sur les roches de près.</p>
+</section>
+
+<section id="gorges">
+  <h2>Au fond des Gorges</h2>
+  <p class="lecture">C'est là que le joueur se réveille. Le personnage est encore le mannequin gris d'Unreal, en attendant le héros.</p>
+  <div class="grille2">
+    <figure><img src="img/fond-reveil.jpg" alt="Point de réveil au fond des gorges" loading="lazy" width="1400" height="788"><figcaption>Point de réveil : rochers scannés, ossements épars, brume.</figcaption></figure>
+    <figure><img src="img/fond-eau.jpg" alt="Le personnage se reflète dans le point d'eau" loading="lazy" width="1400" height="788"><figcaption>Le point d'eau du reflet : le personnage s'y reflète enfin. C'est là qu'on choisira visage et nom.</figcaption></figure>
+    <figure><img src="img/fond-perso.jpg" alt="Le personnage dans les gorges" loading="lazy" width="1400" height="788"><figcaption>Le personnage dans le décor (montée de sortie testée : 40 s jusqu'au belvédère).</figcaption></figure>
+    <figure><img src="img/fond-parois.jpg" alt="Les parois et aiguilles dans la brume" loading="lazy" width="1400" height="788"><figcaption>Parois et aiguilles dans la brume, vues d'en bas.</figcaption></figure>
+  </div>
+</section>
+
+<section id="personnages">
+  <h2>Personnages dessinés par IA</h2>
+  <p class="lecture">Dessinés par ChatGPT (via Codex, sur ton abonnement Plus) à partir de ce que disent les documents. Seuil demandé : au moins 5 bons sur 6. Atteint.</p>
+  <div class="fiches">
+    <div class="fiche"><img src="img/fiche-heros-reveil.jpg" alt="Le héros au réveil" loading="lazy"><span class="nom">Héros au réveil</span><span class="puce ok">Validé par toi</span></div>
+    <div class="fiche"><img src="img/fiche-heros-officier.jpg" alt="Le héros en armure d'officier" loading="lazy"><span class="nom">Héros officier (flash-back)</span><span class="puce ok">Couleurs validées (D-166)</span></div>
+    <div class="fiche"><img src="img/fiche-soldat.jpg" alt="Soldat de l'Ordre" loading="lazy"><span class="nom">Soldat de l'Ordre</span><span class="puce ok">Couleurs validées (D-166)</span></div>
+    <div class="fiche"><img src="img/fiche-esprit.jpg" alt="Esprit mineur" loading="lazy"><span class="nom">Esprit</span><span class="puce ok">Validé</span></div>
+    <div class="fiche"><img src="img/fiche-mort-vivant.jpg" alt="Mort-vivant" loading="lazy"><span class="nom">Mort-vivant</span><span class="puce garde">Gardé, fond à détourer</span></div>
+    <div class="fiche"><img src="img/fiche-ange.jpg" alt="L'Ange Déchu à trois paires d'yeux" loading="lazy"><span class="nom">Ange Déchu (2e essai)</span><span class="puce ok">Validé</span></div>
+    <div class="fiche"><img src="img/fiche-ange-v1.jpg" alt="Premier essai de l'Ange Déchu" loading="lazy"><span class="nom">Ange Déchu (1er essai)</span><span class="puce non">Refusé : 4 yeux</span></div>
+  </div>
+</section>
+
+<section id="heros">
+  <h2>Le héros MetaHuman, cette nuit</h2>
+  <div class="grille2">
+    <figure><img src="img/heros-visage.jpg" alt="Visage du héros MetaHuman" loading="lazy" width="900" height="900"><figcaption>Visage réglé d'après la fiche (préréglage Victor mêlé à Orlando, barbe de quelques jours).</figcaption></figure>
+    <figure><img src="img/heros-corps.jpg" alt="Corps du héros MetaHuman en pied" loading="lazy" width="900" height="1125"><figcaption>Corps athlétique d'1,80 m, dans la seule tenue livrée par Epic.</figcaption></figure>
+  </div>
+  <ul class="liste lecture">
+    <li>Créé sans connexion. Les cheveux et les sourcils n'apparaissent pas encore sur les captures : cause recherchée.</li>
+    <li>Avec ton accord (D-162), l'agent fait maintenant le rig du visage, les textures et l'assemblage, puis remplace le mannequin.</li>
+    <li>Ses vêtements, comme les autres personnages, seront générés par IA puis convertis en 3D, sur ton PC (D-164, D-165).</li>
+  </ul>
+</section>
+
+<section id="incident">
+  <div class="incident lecture">
+    <h3>Incident à 4 h 07 : un rapport de plantage est parti chez Epic</h3>
+    <p>Un script a fait planter l'éditeur, et Unreal a envoyé tout seul son rapport de plantage à Epic (journal du script, identifiants de la machine et du compte Epic du poste). Aucune connexion à ton compte n'a eu lieu. Des plantages de 1 h 19 à 1 h 38 ont peut-être été envoyés aussi. L'envoi automatique est désormais coupé dans le projet.</p>
+  </div>
+</section>
+
+<section id="decisions">
+  <h2>Décisions de la nuit</h2>
+  <div class="decisions lecture">
+    <div class="decision"><code>D-160</code><p>Le Chef choisit les assets et relance le prototype sans t'attendre ; seuil de 5 bons sur 6.</p></div>
+    <div class="decision"><code>D-161</code><p>Décor photoréaliste avec des roches, textures et ciels libres de droits ; personnage provisoire.</p></div>
+    <div class="decision"><code>D-162</code><p>Les agents peuvent utiliser ta connexion MetaHuman pour le rig, les textures et l'assemblage du héros.</p></div>
+    <div class="decision"><code>D-163</code><p>Héroïne possible au reflet ; tenue au réveil validée.</p></div>
+    <div class="decision"><code>D-164</code><p>Personnages et vêtements dessinés par IA puis convertis en 3D.</p></div>
+    <div class="decision"><code>D-165</code><p>Conversion 3D en local pour le prototype, Meshy pour le jeu complet.</p></div>
+  </div>
+</section>
+
+<section id="suite">
+  <h2>Ce matin et la suite</h2>
+  <div class="deux">
+    <div>
+      <h3>Fait depuis ce matin</h3>
+      <ul class="liste">
+        <li>Héros MetaHuman jouable (ta connexion, sans achat), habillé comme sur sa fiche.</li>
+        <li>Combat complet animé à l'épée ; bogue des créatures invisibles en marche trouvé et corrigé.</li>
+        <li>Génération 3D locale : créatures, tenue, épée, soldat, possédé, Ange Déchu.</li>
+        <li>C: passé de 17 à 99 Go libres ; routine /point et /fin-session installée.</li>
+        <li>Passe de décor 5 dans Unreal (ciel, brume, barres de vie à portée) et la même mini-tranche refaite dans Unity : les deux validées.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>À trancher par toi</h3>
+      <ul class="liste">
+        <li>L'esprit redessiné, plus solide que sa fiche de fumée.</li>
+        <li>La tenue de paysan du possédé (inventée).</li>
+        <li>Le moteur : Unreal ou Unity, après avoir joué aux deux.</li>
+        <li>Ensuite : le reste du didacticiel (réveil et reflet avec le nom, magie, sortie) dans le moteur choisi.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\unreal-v2\captures · E:\aaa-proto\unity\captures\finales\planches · E:\aaa-proto\personnages · D:\aaa-game\.equipe\decisions.md</p>
+</section>
+</div>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll('#belvedere .onglets button');
+  var img = document.getElementById('vue-img');
+  var cap = document.getElementById('vue-cap');
+  var tag = document.getElementById('vue-tag');
+  var panel = img.parentNode;
+  function choisir(b){
+    btns.forEach(function(x){ x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+    img.src = b.dataset.src; img.alt = 'Vue du belvédère : ' + b.textContent;
+    cap.textContent = b.dataset.cap; tag.textContent = b.textContent;
+    panel.setAttribute('aria-labelledby', b.id);
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ choisir(b); }); });
+})();
+(function(){
+  var btns = document.querySelectorAll('#comparaison .onglets button');
+  var ue = document.getElementById('cmp-ue');
+  var un = document.getElementById('cmp-un');
+  var cap = document.getElementById('cmp-cap');
+  var panel = document.getElementById('cmp-panneau');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      btns.forEach(function(x){ x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+      ue.src = 'img/cmp-ue-' + b.dataset.v + '.jpg'; ue.alt = 'Unreal : ' + b.textContent;
+      un.src = 'img/cmp-un-' + b.dataset.v + '.jpg'; un.alt = 'Unity : ' + b.textContent;
+      cap.textContent = b.dataset.cap;
+      panel.setAttribute('aria-labelledby', b.id);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

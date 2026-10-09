@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Modèles 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Modèles 3D : une galerie de cartes, chacune avec sa visionneuse <model-viewer> chargée à la demande, et sa fiche ; identité sombre du projet par défaut, thème clair seulement au bouton (comme le plan de la zone). Page écrite par _travail/construire_page.mjs */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --vue-haut:#3a414a; --vue-bas:#121417; /* fond « studio » des visionneuses, le même dans les deux thèmes (les aperçus sont pris dessus) */
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+code{font:400 .85em var(--f-data);overflow-wrap:anywhere}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.9rem}
+th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+ul.liste,ol.liste{margin:0;padding-left:1.1rem;display:grid;gap:.3rem}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+.bouton:disabled{cursor:progress;opacity:.85}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,22rem),1fr));gap:1.2rem;align-items:start}
+.modele,.perso{display:grid;grid-template-columns:minmax(0,1fr);gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.attente{border-style:dashed}
+.tete{display:flex;flex-wrap:wrap;gap:.3rem .8rem;align-items:baseline;justify-content:space-between}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.vue{position:relative;aspect-ratio:4/3;border-radius:4px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,var(--vue-haut),var(--vue-bas))}
+.vue img.apercu{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vue model-viewer{position:absolute;inset:0;width:100%;height:100%;background:transparent;--poster-color:transparent;--progress-bar-color:var(--aube)}
+.vue .charger{position:absolute;left:50%;bottom:.8rem;transform:translateX(-50%);white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.sans-apercu{position:absolute;inset:0;margin:0;padding:40% 1rem 0;text-align:center;color:var(--pierre);font-size:.92rem}
+.vide-vue{display:grid;place-items:center;padding:1rem;border:1px dashed var(--roche);background:transparent}
+.vide-vue p{text-align:center;color:var(--pierre);font-size:.92rem;max-width:22rem}
+.etat-vue:empty{display:none}
+.commandes{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.commandes[hidden]{display:none}
+.choix{display:flex;flex-wrap:wrap;min-width:0;max-width:100%;gap:.4rem;align-items:center;font:500 .78rem/1 var(--f-data);color:var(--pierre)}
+select{font:500 .82rem/1.2 var(--f-texte);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.4rem .5rem;min-width:0;max-width:100%}
+.resume{font-size:.95rem}
+dl.fiche{display:grid;grid-template-columns:minmax(0,7.2rem) minmax(0,1fr);gap:.45rem .8rem;margin:0;font-size:.9rem}
+dl.fiche dt{font:500 .7rem/1.6 var(--f-data);letter-spacing:.04em;text-transform:uppercase;color:var(--pierre)}
+dl.fiche dd{margin:0;min-width:0;overflow-wrap:anywhere}
+details.plus summary{cursor:pointer;font:500 .78rem/1.4 var(--f-data);color:var(--aube)}
+details.plus[open] summary{margin-bottom:.6rem}
+.persos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,22rem),1fr));gap:1.2rem}
+.paire{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.paire figure{margin:0;display:grid;gap:.25rem}
+.paire img{display:block;width:100%;height:auto;border-radius:4px}
+.paire figcaption{font:400 .75rem/1.3 var(--f-data);color:var(--pierre)}
+.insec{white-space:nowrap}
+@media (max-width:30rem){dl.fiche{grid-template-columns:minmax(0,1fr)}dl.fiche dd{margin-bottom:.35rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+<!--
+  Ajouter un modèle validé (le chien de berger, T-0123, a été ajouté ainsi) :
+  1. dans _travail/modeles.json, une entrée : mettre le GLB validé dans « sources » (lecture seule)
+     et remplir la fiche (copier celle d'un modèle voisin) ;
+  2. cd _travail ; node alleger.mjs <id> ; node construire_page.mjs ; node verifier.mjs ; node construire_page.mjs
+     (le contrôle fait l'aperçu, la seconde construction l'ajoute à la carte). L'araignée et la chauve-souris (T-0133)
+     ont été contrôlées avec « node verifier.mjs --garder-apercus --telephone=araignee,chauve-souris » : les aperçus
+     des autres modèles ne sont pas refaits, et les deux nouveaux sont aussi chargés à 360 px.
+  Champs facultatifs d'une entrée : « questions » (questions ouvertes pour le directeur, affichées dans la fiche) ;
+  « reechantillonner »: false (clés d'animation gardées telles quelles, sans resample()) ; « decisions » et
+  « decisions_intro » (décisions du directeur prises après la validation) ; « couleur » (texture de couleur livrée
+  avec le modèle qui remplace celle du GLB, comme la marque du cheval).
+  Le cheval et le gibier (T-0134, T-0135) ont été ajoutés le 06/10/2026, et le loup et le chien refaits sans resample() :
+  node alleger.mjs loup chien-berger cheval sanglier lapin perdrix ; node construire_page.mjs ;
+  node comparer_anims.mjs loup chien-berger araignee chauve-souris cheval sanglier lapin perdrix (animations de la page
+  comparées à celles des fichiers validés) ;
+  node verifier.mjs --garder-apercus --telephone=cheval,sanglier,lapin,perdrix ; node construire_page.mjs.
+  Le cheval, le loup et le chien ont été refaits le 06/10/2026 avec leur nouvelle version (T-0145 : cartes de crins et
+  de poils, dont la texture <id>_poils.png reste en PNG) :
+  node alleger.mjs cheval loup chien-berger ; node comparer_anims.mjs cheval loup chien-berger ; aperçus des trois
+  effacés, node construire_page.mjs ; node verifier.mjs --garder-apercus --telephone=cheval,chien-berger ;
+  node construire_page.mjs.
+  Le sanglier, le lapin, la perdrix, l'araignée et la chauve-souris ont été refaits le 06/10/2026 avec leur nouvelle
+  version (T-0149 : détail de matière, ORM, cartes de soies du sanglier dont sanglier_poils.png reste en PNG) :
+  node alleger.mjs sanglier lapin perdrix araignee chauve-souris (leurs aperçus sont effacés avec leur dossier) ;
+  node comparer_anims.mjs sanglier lapin perdrix araignee chauve-souris ; node construire_page.mjs ;
+  node verifier.mjs --garder-apercus --telephone=sanglier,lapin,perdrix,araignee,chauve-souris ;
+  node construire_page.mjs.
+  Le meneur de la horde et les 4 morts-vivants variés (T-0153, T-0154) ont été ajoutés le 07/10/2026, juste après le
+  mort-vivant, et le sanglier refait avec l'œil sombre (T-0155, D-251) ; travail dans _travail/.tmp/page-t0156/
+  (fiches.mjs, empreintes.mjs, page_finale.mjs, sous_verrou.sh) :
+  node alleger.mjs meneur mv-soldat mv-archer mv-deserteur mv-sergent sanglier ;
+  node comparer_anims.mjs meneur mv-soldat mv-archer mv-deserteur mv-sergent sanglier ; node construire_page.mjs ;
+  node verifier.mjs --garder-apercus --telephone=meneur,mv-soldat,mv-archer,mv-deserteur,mv-sergent,sanglier ;
+  node construire_page.mjs.
+  alleger.mjs publie chaque modèle en <id>.json (le .gltf renommé) et <id>.wasm (le .bin renommé, pas du WebAssembly),
+  car l'hébergement ne sert ni .gltf ni .bin ; les originaux vont dans _travail/gltf-origine/<id>/.
+-->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier <span class="insec">T-0125</span> · 07/10/2026</div>
+  <h1>Les modèles <em>3D</em></h1>
+  <p class="lecture">Tous les modèles 3D déjà validés du prototype, à faire tourner, à zoomer et à animer dans la page. Chaque fiche dit d'où vient le modèle, avec quels outils et quelles licences, et ses défauts connus. Les personnages faits avec MetaHuman n'y sont pour l'instant qu'en images : les sortir d'Unreal en 3D (cheveux, peau, squelette du visage) est un travail à faire dans Unreal, prévu plus tard.</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#prototype">Prototype</a><a href="#essais">Essais</a><a href="#metahuman">MetaHuman</a><a href="#fichiers">Fichiers</a><a href="#sources">Sources</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="m3d-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="prototype">
+  <h2>Les modèles du prototype</h2>
+  <p class="lecture muted">Touchez « Voir en 3D » pour charger un modèle (sa taille est indiquée). Ensuite : faites glisser pour tourner autour, pincez ou utilisez la molette pour zoomer, et choisissez une animation dans la liste quand le modèle en a.</p>
+  <div class="galerie">
+<article class="modele" id="m-loup" data-src="modeles/loup/loup.json" data-orbite="35deg 78deg auto"
+  data-anim="Walk" data-alt="Modèle 3D : Loup">
+  <div class="tete"><h3>Loup</h3><span class="ticket"><span class="insec">T-0097</span> · validé le 01/10/2026 (version 2, correction 3) ; teinte corrigée le 02/10/2026 (<span class="insec">T-0128</span>, <span class="insec">D-225</span>) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0145</span>, <span class="insec">D-240</span>)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/loup/loup_apercu.jpg" alt="Aperçu : Loup" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 6,8 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Loup"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le loup isolé des plaines de la quête « L'Agneau et le Loup » : gris-brun, silhouette basse et allongée, tête sous la ligne du dos (bible artistique, § 6.5).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>65 600 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,37 m de long, queue tendue comprise (1,39 m avec les poils de la queue) ; 0,85 m aux oreilles ; 0,35 m de large.</dd>
+    <dt>Animations</dt><dd>12 : Attaque <span class="muted">(Attack, 1,33 s)</span>, Mort <span class="muted">(Death, 1,08 s)</span>, Mange <span class="muted">(Eating, 2,54 s)</span>, Galop <span class="muted">(Gallop, 0,58 s)</span>, Saut au galop <span class="muted">(Gallop_Jump, 0,92 s)</span>, Attente <span class="muted">(Idle, 3,33 s)</span>, Attente 2 <span class="muted">(Idle_2, 3,33 s)</span>, Attente, tête basse <span class="muted">(Idle_2_HeadLow, 4 s)</span>, Touché 1 <span class="muted">(Idle_HitReact1, 0,67 s)</span>, Touché 2 <span class="muted">(Idle_HitReact2, 0,67 s)</span>, Saut puis arrêt <span class="muted">(Jump_ToIdle, 1,33 s)</span>, Marche <span class="muted">(Walk, 1,08 s)</span>. Sur place : dans le jeu, c'est Unreal qui fera avancer le loup.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">T-0145</span>) : poil fait par programme, sans épi ni remous ; le motif « en toile » de la carte de relief d'origine se voit encore sur la tête et le flanc ; la collerette prend un aspect d'écailles, déjà visible à la distance de cette visionneuse (une teinte par carte).</li><li><strong>Des cartes de poils entrent un peu dans la peau</strong> : elles suivent les os, sans physique ; dans les plis (cou baissé, <code>Eating</code>, <code>Attack</code>, queue contre les cuisses), jusqu'à 2 cm, sur 2 % de leurs sommets au pire instant. Le bout de la queue passe jusqu'à 0,9 cm sous le sol dans <code>Attack</code> et les sauts.</li><li>Peau encore étirée au pli de la hanche dans le galop et les sauts. La toile entre la queue et les cuisses a presque disparu (correction 3).</li><li><code>Death</code> : couché sur le flanc, les pattes se traversent (jusqu'à 3 cm), le corps reste raide et la queue se dresse un instant.</li><li><code>Attack</code> : la tête s'enfonce un peu dans les épaules (pli du cou très atténué), et la gueule ne s'ouvre pas : le squelette n'a pas d'os de mâchoire.</li><li>Animations sur place : les pieds glissent un peu dans <code>Walk</code> et <code>Gallop</code>.</li><li><code>Eating</code> : dos un peu voûté, pattes avant qui penchent vers l'arrière. <code>Gallop</code> encore un peu ramassé (animation du pack).</li><li>Quelques traînées pâles sous le ventre et à l'aisselle (couleur d'origine, gardée).</li><li><code>Gallop_Jump</code> : le point le plus bas passe 1,1 cm sous le sol entre deux images (invisible à 24 images par seconde).</li><li>Longueur du museau à la croupe : 1,47 fois la hauteur au garrot (un vrai loup est vers 1,6).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : FLUX.2 [klein] 4B, en local ; détourage rembg et BiRefNet.</li><li>3D : TRELLIS.2 (graine 42, texture 4096 px).</li><li>Retouche dans Blender : tronc allongé de 25 %, tête redressée, peau refaite d'une seule pièce (remaillage de 7 mm), 60 000 triangles, couleur et relief recuits. Le 02/10/2026 (<span class="insec">T-0128</span>, <span class="insec">D-225</span> (4)) : couleur recuite sans le métal de TRELLIS.2, qui l'assombrissait de 20 % (37 % en lumière linéaire) ; elle est maintenant à 98 % de celle du modèle TRELLIS.2 (97 % en linéaire). Maillage, squelette et animations inchangés.</li><li>Squelette (39 os) et 12 animations du loup du pack Quaternius, adaptés au corps ; pieds calés au sol à chaque image ; boucles sans saut.</li><li>Qualité (<span class="insec">T-0145</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (38 à 56,5 % de la texture) ; détail de poil orienté cuit dans la couleur et le relief, rugosité par matière et occlusion ; <strong>poils en cartes</strong> : 260 à la queue et 300 à la collerette (5 600 triangles), en 6 teintes prises dans la fiche et dans la peau livrée, qui suivent le squelette ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Forme, squelette et animations inchangés (écart 0,000 cm à chaque image) ; couleur gardée (0,999 de la précédente).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · squelette et animations Quaternius : CC0 · détail de poil et cartes de poils : faits par programme (<span class="insec">T-0145</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures du corps (couleur, relief, occlusion et rugosité) réduites de 4 096 à 2 048 px, en JPEG. Texture des cartes de poils gardée en PNG, telle quelle (<code>loup_poils.png</code>, 3 072 × 2 048 px), pour sa transparence. Maillage, squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 06/10/2026, <code>comparer_anims.mjs</code>). 6,8 Mo en 6 fichiers, au lieu de 46,2 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\loup\loup.glb<br>Détails : E:\aaa-proto\essai\loup\LISEZMOI.md ; avis des vérificateurs dans <span class="insec">T-0145</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-mort-vivant" data-src="modeles/mort-vivant/mort-vivant.json" data-orbite="20deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Mort-vivant">
+  <div class="tete"><h3>Mort-vivant</h3><span class="ticket"><span class="insec">T-0056</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/mort-vivant/mort-vivant_apercu.jpg" alt="Aperçu : Mort-vivant" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 5,5 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Créature du prototype, faite d'après sa fiche (détourée de son décor).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>43 947 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,75 m.</dd>
+    <dt>Animations</dt><dd>Aucune dans le fichier validé : son squelette porte les noms du mannequin UE5, les animations sont à recibler dans Unreal.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>Bras levés au-delà de l'horizontale : les pans du gilet à l'épaule s'écartent un peu.</li><li>Pas d'os de torsion (avant-bras, cuisses).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : fiche de concept <code>personnages\mort-vivant_v1_refuse-fond.png</code>, faite avec Codex, l'outil d'images d'OpenAI, le 29/09/2026 (<code>personnages\LISEZMOI.md</code>), détourée de son décor avec rembg et BiRefNet.</li><li>3D : TRELLIS.2 (graine 42), surface simple d'environ 60 000 faces, nettoyée ; textures de 2 048 px ; relief cuit depuis une version à 290 000 faces (Cycles).</li><li>Squelette UniRig de 53 os aux noms du mannequin UE5 ; poids de peau de Blender, corrigés pour que les lambeaux près des mains ne suivent pas les bras.</li><li>Métal forcé à 0 : TRELLIS.2 en avait mis à tort sur 93 % de la texture.</li></ol></dd>
+      <dt>Licences</dt><dd>Fiche d'entrée : image faite avec l'outil d'images d'OpenAI (Codex), d'après <code>personnages\LISEZMOI.md</code> ; ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Squelette retiré (pas d'animation) : le modèle est dans sa pose de référence, en A. Relief : la carte OpenGL, celle que lit le glTF (le GLB d'échange porte la carte DirectX, faite pour Unreal). Textures en JPEG. 5,5 Mo en 5 fichiers, au lieu de 23,4 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\creatures\mort-vivant\mort-vivant.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-meneur" data-src="modeles/meneur/meneur.json" data-orbite="20deg 80deg auto"
+  data-anim="Walk_Loop" data-alt="Modèle 3D : Meneur de la horde">
+  <div class="tete"><h3>Meneur de la horde</h3><span class="ticket"><span class="insec">T-0153</span> · validé le 07/10/2026 (correction 1)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/meneur/meneur_apercu.jpg" alt="Aperçu : Meneur de la horde" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 8,8 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Meneur de la horde"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le grand mort-vivant qui mène la horde du didacticiel et <strong>se voit de loin</strong> (<span class="insec">D-234</span> (2)) : un champion de l'Ordre, mort, plus grand et plus massif que les autres, sous l'Ange Déchu. Heaume ouvert couronné de pointes, énormes spalières, cage thoracique à nu, tabard ivoire galonné d'or, cotte de mailles. Il a le squelette et les animations du mort-vivant (fiche voisine), pour le remplacer dans la horde sans autre travail. Pas encore dans Unreal : l'import est un ticket à venir.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>63 025 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>2,50 m de haut, sous l'Ange Déchu (3,60 m) ; 1,64 m d'une main à l'autre dans la pose de repos (bras écartés), 0,55 m d'avant en arrière. Le mort-vivant du projet mesure 1,75 m.</dd>
+    <dt>Animations</dt><dd>8 : Mort <span class="muted">(Death01, 3 s)</span>, Coup reçu <span class="muted">(Hit_Chest, 0,42 s)</span>, Déséquilibre <span class="muted">(Idle_Shield_Break, 1,08 s)</span>, Course <span class="muted">(Jog_Fwd_Loop, 1,17 s)</span>, Marche <span class="muted">(Walk_Loop, 1,67 s)</span>, Attente <span class="muted">(Zombie_Idle_Loop, 1,33 s)</span>, Griffure <span class="muted">(Zombie_Scratch, 1,79 s)</span>, Démarche lourde <span class="muted">(Zombie_Walk_Fwd_Loop, 1,33 s)</span>. Les mêmes clés que le mort-vivant du jeu, tirées des mêmes animations Quaternius : <code>Zombie_Scratch</code> est l'attaque (griffure), <code>Hit_Chest</code> le coup reçu, <code>Idle_Shield_Break</code> le déséquilibre, <code>Death01</code> la mort. Dans le jeu, le mort-vivant marche et court avec les animations du mannequin d'Unreal, qui n'existent pas hors d'Unreal : ici, <code>Walk_Loop</code>, <code>Jog_Fwd_Loop</code> et <code>Zombie_Idle_Loop</code> les remplacent, et <code>Zombie_Walk_Fwd_Loop</code> est une démarche lourde proposée. Sur place : c'est Unreal qui fera avancer la créature. Pieds jusqu'à 2,5 cm sous le sol, faute de calage dans cette page.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><code>Zombie_Scratch</code> (griffure) : la cuisse gauche entre de 2,9 cm au plus dans la cotte, sur 13 images sur 44 ; le mort-vivant fait des traversées du même ordre (jusqu'à 2,8 cm).</li><li><code>Death01</code> : une fois couché, les doigts de la main gauche entrent jusqu'à 11,7 cm dans le sol, et pendant la chute la spalière droite jusqu'à 10,5 cm ; avec les mêmes clés, le mort-vivant s'enfonce plus (13,9 cm).</li><li><strong>Peau mauve</strong> (<code>#4E3E3E</code> aux bras), alors que le mort-vivant est brun (<code>#44392E</code>) : elle distingue le meneur, mais s'écarte du style du mort-vivant.</li><li>Petit à-coup du bassin dans les marches (1 cm), laissé par la correction des pieds : invisible à distance de jeu.</li><li>Dépliage à 54 % de la texture, sous les 60 % visés par l'étude de qualité.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, qui ont fait ce modèle :</p><ul class="liste"><li>Un <strong>meneur</strong> d'environ 2,5 m, qui mène la horde de 20 créatures et <strong>se voit de loin</strong> (<span class="insec">D-234</span> (2)).</li><li>Qualité améliorée dès la fabrication : génération en 1536 (piste C de l'étude de qualité) et chaîne de qualité des bêtes (piste A) (<span class="insec">D-240</span> (1)) ; lancé le 07/10/2026 (<span class="insec">D-250</span> (2)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>Choisir l'image de départ (champion retenu, porte-étendard à refaire sans croix, ou déserteur), la démarche (la lourde, <code>Zombie_Walk_Fwd_Loop</code>, ou celle du mort-vivant) et la teinte (peau mauve, ou ramenée au brun du mort-vivant), et dire que faire des deux défauts d'animation ci-dessus (cuisse dans la cotte, doigts dans le sol à la mort ; défauts déclarés, <span class="insec">D-235</span> (8)).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : FLUX.2 [klein] 4B, en local, dans le style du mort-vivant ; 3 variantes (champion, porte-étendard, déserteur), jugées sur des critères écrits avant le choix : silhouette lisible de loin, fidélité au mort-vivant et à la bible, faisable en 3D et en animation, bien distinct des morts-vivants variés ; retenue : le champion ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 en 1536 (piste C de l'étude de qualité, <span class="insec">D-240</span>), graine 42 ; maillage de jeu de 63 025 triangles, nettoyé de 160 petits débris ; relief cuit depuis une version à 393 000 faces.</li><li>Squelette : copie de celui du mort-vivant (53 os, mêmes noms, même ordre, mêmes parents, même rotation de repos) ; seules les longueurs changent (UniRig ne sert que de repères) ; poids de peau de Blender, corrigés pour le bras, la cotte et le tabard ; spalières suivies à 50 % par le bras.</li><li>Animations : les 8 du mort-vivant (Quaternius), reciblées sur le mort-vivant puis recopiées telles quelles, bassin × 1,466 ; une clé par image (24 par seconde) ; boucles fermées ; pieds : bassin relevé image par image, pour qu'aucun point ne passe plus de 2,5 cm sous le sol (méthode de la correction 1 de <span class="insec">T-0153</span>) ; <code>Death01</code> : pieds seuls (correction 1).</li><li>Qualité, piste A (<span class="insec">D-240</span> (1)) : 8 zones de matière (couronne, spalières, brassards, cotte de mailles, ceinture, tabard, bottes, os du crâne) et peau desséchée ; détail de matière (piqûres et rayures du métal, anneaux de la maille, trame du tissu, grain du cuir et de la peau), rugosité par matière, occlusion ; métal sur l'armure seulement (0,12 dans la rouille, jusqu'à 0,85 sur l'acier à nu) ; aucun noir plus sombre que <code>#1E1E1E</code> (bible, § 5 : ni poils ni crins noirs de bête, <span class="insec">D-240</span> (2)).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT (repères seulement) · animations de Quaternius (<em>Universal Animation Library</em> 1 et 2, celles du jeu) : CC0 1.0 · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, et occlusion, rugosité et métal dans une même image) réduites de 4 096 à 2 048 px, en JPEG. Le maillage est à facettes : ses normales ne sont pas stockées (même rendu, voir « Comment la page est faite »). Squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 07/10/2026, <code>comparer_anims.mjs</code>). 8,8 Mo en 5 fichiers, au lieu de 81,5 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\horde\meneur\meneur.glb<br>Détails : E:\aaa-proto\essai\horde\meneur\LISEZMOI.md ; avis des vérificateurs dans <span class="insec">T-0153</span></dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-mv-soldat" data-src="modeles/mv-soldat/mv-soldat.json" data-orbite="20deg 80deg auto"
+  data-anim="Walk_Loop" data-alt="Modèle 3D : Mort-vivant soldat">
+  <div class="tete"><h3>Mort-vivant soldat</h3><span class="ticket"><span class="insec">T-0154</span> · validé le 07/10/2026 (correction 1)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/mv-soldat/mv-soldat_apercu.jpg" alt="Aperçu : Mort-vivant soldat" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 7,3 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Mort-vivant soldat"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Un des quatre morts-vivants variés de la horde (<span class="insec">D-234</span> (2)), fait à partir du mort-vivant (fiche voisine) : un soldat de l'Ordre mort. Heaume en seau à fente, cotte de mailles, tabard ivoire à galon d'or, ceinture de cuir, pieds nus ; petit bouclier rond porté haut dans le dos. À 15 m dans la brume, on le reconnaît à sa tête carrée, au bord du bouclier derrière l'épaule et à la grande tache claire du tabard.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>47 990 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,78 m de haut ; 1,11 m d'une main à l'autre dans la pose de repos (bras écartés), 0,53 m d'avant en arrière. Le mort-vivant du projet mesure 1,75 m, le meneur 2,50 m.</dd>
+    <dt>Animations</dt><dd>8 : Mort <span class="muted">(Death01, 3 s)</span>, Coup reçu <span class="muted">(Hit_Chest, 0,42 s)</span>, Déséquilibre <span class="muted">(Idle_Shield_Break, 1,08 s)</span>, Course <span class="muted">(Jog_Fwd_Loop, 1,17 s)</span>, Marche <span class="muted">(Walk_Loop, 1,67 s)</span>, Attente <span class="muted">(Zombie_Idle_Loop, 1,33 s)</span>, Griffure <span class="muted">(Zombie_Scratch, 1,79 s)</span>, Démarche lourde <span class="muted">(Zombie_Walk_Fwd_Loop, 1,33 s)</span>. Les mêmes clés que le mort-vivant du jeu, tirées des mêmes animations Quaternius : <code>Zombie_Scratch</code> est l'attaque (griffure), <code>Hit_Chest</code> le coup reçu, <code>Idle_Shield_Break</code> le déséquilibre, <code>Death01</code> la mort. Dans le jeu, le mort-vivant marche et court avec les animations du mannequin d'Unreal, qui n'existent pas hors d'Unreal : ici, <code>Walk_Loop</code>, <code>Jog_Fwd_Loop</code> et <code>Zombie_Idle_Loop</code> les remplacent, et <code>Zombie_Walk_Fwd_Loop</code> est une démarche lourde proposée. Sur place : c'est Unreal qui fera avancer la créature. Pieds jusqu'à 2,5 cm sous le sol, faute de calage dans cette page.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>Armes portées sur le corps, pas en main</strong> : les animations du mort-vivant sont à mains nues. Des armes en main seraient des modèles à part, tenus par la main dans Unreal, avec des animations armées (ticket à part).</li><li><strong>Deux traversées</strong>, du même ordre que celles du mort-vivant : à la course (<code>Jog_Fwd_Loop</code>), le bras gauche entre de 1,5 cm dans le tabard, à l'aisselle ; à la griffure, la cuisse gauche entre de 2,5 cm dans la jupe de maille. Invisibles, même à 1,2 m.</li><li>Couché sur le dos (<code>Death01</code>), ce qu'il porte au dos passe jusqu'à 10,1 cm sous le sol (le mort-vivant du projet : 13,9 cm). Relever le corps le ferait flotter.</li><li>Peau un peu plus rouge que celle du mort-vivant (<code>#443531</code>, 14° contre 29°), et lueur des yeux retirée de la texture : si elle est voulue, elle se fera dans le matériau d'Unreal.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, qui ont fait ce modèle :</p><ul class="liste"><li>Des <strong>morts-vivants variés</strong> dans la horde de 20 : soldats et déserteurs morts, avec des armures, des armes et des silhouettes différentes, faits <strong>à partir du modèle existant</strong> (<span class="insec">D-234</span> (2)).</li><li>Qualité améliorée dès la fabrication : génération en 1536 (piste C de l'étude de qualité) et chaîne de qualité des bêtes (piste A) (<span class="insec">D-240</span> (1)) ; lancé le 07/10/2026 (<span class="insec">D-250</span> (2)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>Garder ces variantes ou en refaire une (environ 0,3 % de la semaine), garder les armes au dos ou les mettre en main, choisir que faire de ce qui passe sous le sol à la mort (armes qui tombent, ou mort en avant), garder la teinte ou la ramener au brun du mort-vivant, remettre ou non la lueur des yeux, et dire que faire de ses deux traversées (course, griffure) (défauts déclarés, <span class="insec">D-235</span> (8)).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : celle du mort-vivant du projet, éditée par FLUX.2 [klein] 4B, en local : même corps, même visage, même peau, même pose ; seuls l'armure, l'arme et la coiffe changent ; retenue : graine 8 ; lueur des yeux adoucie ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 en 1536 (piste C, <span class="insec">D-240</span>), graine 42 ; maillage de jeu de 47 990 triangles ; relief cuit depuis une version à 400 000 faces.</li><li>Squelette : copie de celui du mort-vivant (53 os, mêmes noms, même ordre, mêmes parents, même rotation de repos) ; seules les longueurs changent (UniRig ne sert que de repères) ; à la liaison, bras écartés de 10° de plus et épaules suivies à 50 % par le bras, ce qui réduit les traversées.</li><li>Animations : les 8 du mort-vivant et du meneur (Quaternius), mêmes clés de rotation, une clé par image (24 par seconde), boucles fermées ; pieds : bassin relevé image par image, pour qu'aucun point ne passe plus de 2,5 cm sous le sol (méthode de la correction 1 de <span class="insec">T-0153</span>) ; <code>Death01</code> : pieds seuls.</li><li>Qualité, piste A (<span class="insec">D-240</span> (1)) : zones de matière (heaume, tabard, bouclier, ceinture, cotte et chausses de mailles) et peau ; détail de matière, rugosité par matière, occlusion ; métal sur l'armure seulement (moyenne 0,090) ; violet de la lueur des yeux, étalé par TRELLIS.2 sur le visage, ramené au brun de la peau ; bleu vif sous l'aisselle gauche, artefact de TRELLIS.2, ramené à la teinte de la maille voisine (correction 1) ; aucun noir plus sombre que <code>#1E1E1E</code> (bible, § 5 : ni poils ni crins noirs de bête, <span class="insec">D-240</span> (2)).</li></ol></dd>
+      <dt>Licences</dt><dd>Image de base : celle du mort-vivant, faite avec l'outil d'images d'OpenAI (Codex) ; comme pour le mort-vivant, ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT (repères seulement) · animations de Quaternius (<em>Universal Animation Library</em> 1 et 2, celles du jeu) : CC0 1.0 · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, et occlusion, rugosité et métal dans une même image) réduites de 4 096 à 2 048 px, en JPEG. Le maillage est à facettes : ses normales ne sont pas stockées (même rendu, voir « Comment la page est faite »). Squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 07/10/2026, <code>comparer_anims.mjs</code>). 7,3 Mo en 5 fichiers, au lieu de 75,6 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\horde\morts-vivants\mv-soldat\mv-soldat.glb<br>Détails : E:\aaa-proto\essai\horde\morts-vivants\LISEZMOI.md (les 4 variantes, contrôles et défauts) ; avis des vérificateurs dans <span class="insec">T-0154</span></dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-mv-archer" data-src="modeles/mv-archer/mv-archer.json" data-orbite="20deg 80deg auto"
+  data-anim="Walk_Loop" data-alt="Modèle 3D : Mort-vivant archer">
+  <div class="tete"><h3>Mort-vivant archer</h3><span class="ticket"><span class="insec">T-0154</span> · validé le 07/10/2026 (correction 1)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/mv-archer/mv-archer_apercu.jpg" alt="Aperçu : Mort-vivant archer" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 7,5 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Mort-vivant archer"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Un des quatre morts-vivants variés de la horde (<span class="insec">D-234</span> (2)), fait à partir du mort-vivant (fiche voisine) : un archer de l'Ordre mort. Chapeau de fer à large bord, gambison déchiré, brassard, écharpe ivoire, bottes ; carquois de flèches brisées au dos. À 15 m dans la brume, on le reconnaît au bord du chapeau et aux flèches au-dessus des deux épaules.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>39 607 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,72 m de haut ; 1,12 m d'une main à l'autre dans la pose de repos (bras écartés), 0,52 m d'avant en arrière. Le mort-vivant du projet mesure 1,75 m, le meneur 2,50 m.</dd>
+    <dt>Animations</dt><dd>8 : Mort <span class="muted">(Death01, 3 s)</span>, Coup reçu <span class="muted">(Hit_Chest, 0,42 s)</span>, Déséquilibre <span class="muted">(Idle_Shield_Break, 1,08 s)</span>, Course <span class="muted">(Jog_Fwd_Loop, 1,17 s)</span>, Marche <span class="muted">(Walk_Loop, 1,67 s)</span>, Attente <span class="muted">(Zombie_Idle_Loop, 1,33 s)</span>, Griffure <span class="muted">(Zombie_Scratch, 1,79 s)</span>, Démarche lourde <span class="muted">(Zombie_Walk_Fwd_Loop, 1,33 s)</span>. Les mêmes clés que le mort-vivant du jeu, tirées des mêmes animations Quaternius : <code>Zombie_Scratch</code> est l'attaque (griffure), <code>Hit_Chest</code> le coup reçu, <code>Idle_Shield_Break</code> le déséquilibre, <code>Death01</code> la mort. Dans le jeu, le mort-vivant marche et court avec les animations du mannequin d'Unreal, qui n'existent pas hors d'Unreal : ici, <code>Walk_Loop</code>, <code>Jog_Fwd_Loop</code> et <code>Zombie_Idle_Loop</code> les remplacent, et <code>Zombie_Walk_Fwd_Loop</code> est une démarche lourde proposée. Sur place : c'est Unreal qui fera avancer la créature. Pieds jusqu'à 2,5 cm sous le sol, faute de calage dans cette page.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>Armes portées sur le corps, pas en main</strong> : les animations du mort-vivant sont à mains nues. Des armes en main seraient des modèles à part, tenus par la main dans Unreal, avec des animations armées (ticket à part).</li><li><strong>La main droite traverse le bord du chapeau</strong> : à une image de la griffure (image 15 sur 44), la main, le pouce et l'avant-bras droits passent dans le bord du chapeau, et à la chute (<code>Death01</code>, images 32 et 33) l'avant-bras droit, jusqu'à 6,8 cm. Net à 1 m, illisible à 4 m. Le corriger demande de réduire ou de relever le bord du chapeau, qui est sa marque à 15 m.</li><li>Couché sur le dos (<code>Death01</code>), le carquois passe jusqu'à 12,2 cm sous le sol (le mort-vivant du projet : 13,9 cm). Relever le corps le ferait flotter.</li><li>À la marche, une jambe frôle l'autre (0,9 cm, 3 images sur 41).</li><li>Peau un peu plus rouge que celle du mort-vivant (<code>#2F241E</code>, 20° contre 29°), et lueur des yeux retirée de la texture : si elle est voulue, elle se fera dans le matériau d'Unreal.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, qui ont fait ce modèle :</p><ul class="liste"><li>Des <strong>morts-vivants variés</strong> dans la horde de 20 : soldats et déserteurs morts, avec des armures, des armes et des silhouettes différentes, faits <strong>à partir du modèle existant</strong> (<span class="insec">D-234</span> (2)).</li><li>Qualité améliorée dès la fabrication : génération en 1536 (piste C de l'étude de qualité) et chaîne de qualité des bêtes (piste A) (<span class="insec">D-240</span> (1)) ; lancé le 07/10/2026 (<span class="insec">D-250</span> (2)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>Garder ces variantes ou en refaire une (environ 0,3 % de la semaine), garder les armes au dos ou les mettre en main, choisir que faire de ce qui passe sous le sol à la mort (armes qui tombent, ou mort en avant), garder la teinte ou la ramener au brun du mort-vivant, remettre ou non la lueur des yeux, et dire que faire de la main qui traverse le bord du chapeau (défauts déclarés, <span class="insec">D-235</span> (8)).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : celle du mort-vivant du projet, éditée par FLUX.2 [klein] 4B, en local : même corps, même visage, même peau, même pose ; seuls l'armure, l'arme et la coiffe changent ; retenue : graine 1 ; lueur des yeux adoucie ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 en 1536 (piste C, <span class="insec">D-240</span>), graine 42 ; maillage de jeu de 39 607 triangles ; relief cuit depuis une version à 400 000 faces.</li><li>Squelette : copie de celui du mort-vivant (53 os, mêmes noms, même ordre, mêmes parents, même rotation de repos) ; seules les longueurs changent (UniRig ne sert que de repères) ; à la liaison, bras écartés de 10° de plus et épaules suivies à 50 % par le bras, ce qui réduit les traversées.</li><li>Animations : les 8 du mort-vivant et du meneur (Quaternius), mêmes clés de rotation, une clé par image (24 par seconde), boucles fermées ; pieds : bassin relevé image par image, pour qu'aucun point ne passe plus de 2,5 cm sous le sol (méthode de la correction 1 de <span class="insec">T-0153</span>) ; <code>Death01</code> : pieds seuls.</li><li>Qualité, piste A (<span class="insec">D-240</span> (1)) : zones de matière (chapeau, écharpe, carquois, gambison, brassard, bottes) et peau ; détail de matière, rugosité par matière, occlusion ; métal sur l'armure seulement (moyenne 0,023) ; violet de la lueur des yeux, étalé par TRELLIS.2 sur le visage, ramené au brun de la peau ; bleu nuit dans le dos et sur le carquois, absent de l'image de départ, ramené au brun voisin (correction 1) ; aucun noir plus sombre que <code>#1E1E1E</code> (bible, § 5 : ni poils ni crins noirs de bête, <span class="insec">D-240</span> (2)).</li></ol></dd>
+      <dt>Licences</dt><dd>Image de base : celle du mort-vivant, faite avec l'outil d'images d'OpenAI (Codex) ; comme pour le mort-vivant, ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT (repères seulement) · animations de Quaternius (<em>Universal Animation Library</em> 1 et 2, celles du jeu) : CC0 1.0 · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, et occlusion, rugosité et métal dans une même image) réduites de 4 096 à 2 048 px, en JPEG. Le maillage est à facettes : ses normales ne sont pas stockées (même rendu, voir « Comment la page est faite »). Squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 07/10/2026, <code>comparer_anims.mjs</code>). 7,5 Mo en 5 fichiers, au lieu de 77,1 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\horde\morts-vivants\mv-archer\mv-archer.glb<br>Détails : E:\aaa-proto\essai\horde\morts-vivants\LISEZMOI.md (les 4 variantes, contrôles et défauts) ; avis des vérificateurs dans <span class="insec">T-0154</span></dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-mv-deserteur" data-src="modeles/mv-deserteur/mv-deserteur.json" data-orbite="20deg 80deg auto"
+  data-anim="Walk_Loop" data-alt="Modèle 3D : Mort-vivant déserteur">
+  <div class="tete"><h3>Mort-vivant déserteur</h3><span class="ticket"><span class="insec">T-0154</span> · validé le 07/10/2026 (correction 1)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/mv-deserteur/mv-deserteur_apercu.jpg" alt="Aperçu : Mort-vivant déserteur" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 7,1 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Mort-vivant déserteur"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Un des quatre morts-vivants variés de la horde (<span class="insec">D-234</span> (2)), fait à partir du mort-vivant (fiche voisine) : un déserteur de l'Ordre mort. Aucune armure : capuche et pèlerine, lambeaux du tabard sans or (bible, § 3.6), bandages, fer brisé au poignet, pieds nus ; la lance qui l'a tué est plantée dans son dos. À 15 m dans la brume, on le reconnaît à la capuche pointue et à la hampe en travers, au-dessus de l'épaule.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>44 204 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,70 m de haut ; 0,97 m d'une main à l'autre dans la pose de repos (bras écartés), 0,44 m d'avant en arrière. Le mort-vivant du projet mesure 1,75 m, le meneur 2,50 m.</dd>
+    <dt>Animations</dt><dd>8 : Mort <span class="muted">(Death01, 3 s)</span>, Coup reçu <span class="muted">(Hit_Chest, 0,42 s)</span>, Déséquilibre <span class="muted">(Idle_Shield_Break, 1,08 s)</span>, Course <span class="muted">(Jog_Fwd_Loop, 1,17 s)</span>, Marche <span class="muted">(Walk_Loop, 1,67 s)</span>, Attente <span class="muted">(Zombie_Idle_Loop, 1,33 s)</span>, Griffure <span class="muted">(Zombie_Scratch, 1,79 s)</span>, Démarche lourde <span class="muted">(Zombie_Walk_Fwd_Loop, 1,33 s)</span>. Les mêmes clés que le mort-vivant du jeu, tirées des mêmes animations Quaternius : <code>Zombie_Scratch</code> est l'attaque (griffure), <code>Hit_Chest</code> le coup reçu, <code>Idle_Shield_Break</code> le déséquilibre, <code>Death01</code> la mort. Dans le jeu, le mort-vivant marche et court avec les animations du mannequin d'Unreal, qui n'existent pas hors d'Unreal : ici, <code>Walk_Loop</code>, <code>Jog_Fwd_Loop</code> et <code>Zombie_Idle_Loop</code> les remplacent, et <code>Zombie_Walk_Fwd_Loop</code> est une démarche lourde proposée. Sur place : c'est Unreal qui fera avancer la créature. Pieds jusqu'à 2,5 cm sous le sol, faute de calage dans cette page.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>Armes portées sur le corps, pas en main</strong> : les animations du mort-vivant sont à mains nues. Des armes en main seraient des modèles à part, tenus par la main dans Unreal, avec des animations armées (ticket à part).</li><li><strong>La main droite entre dans la jambe gauche</strong> pendant la griffure (images 17 à 24, un tiers de seconde ; 2,1 cm) : l'avant-bras, puis le pouce et les doigts glissent dans le genou et le tibia, enveloppés de lambeaux. Net à 1 m, illisible à 4 m.</li><li>Couché sur le dos (<code>Death01</code>), ce qu'il porte au dos passe jusqu'à 20,4 cm sous le sol (le mort-vivant du projet : 13,9 cm). Relever le corps le ferait flotter.</li><li>Ses lambeaux ivoire n'ont pas de matière propre : ils ont le détail de la peau. Quelques points bleus (1,3 cm²) et un vert très sombre aux épaules (27 cm²) ne se voient que de très près.</li><li>Peau un peu plus rouge que celle du mort-vivant (<code>#37271F</code>, 20° contre 29°), et lueur des yeux retirée de la texture : si elle est voulue, elle se fera dans le matériau d'Unreal.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, qui ont fait ce modèle :</p><ul class="liste"><li>Des <strong>morts-vivants variés</strong> dans la horde de 20 : soldats et déserteurs morts, avec des armures, des armes et des silhouettes différentes, faits <strong>à partir du modèle existant</strong> (<span class="insec">D-234</span> (2)).</li><li>Qualité améliorée dès la fabrication : génération en 1536 (piste C de l'étude de qualité) et chaîne de qualité des bêtes (piste A) (<span class="insec">D-240</span> (1)) ; lancé le 07/10/2026 (<span class="insec">D-250</span> (2)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>Garder ces variantes ou en refaire une (environ 0,3 % de la semaine), garder les armes au dos ou les mettre en main, choisir que faire de ce qui passe sous le sol à la mort (armes qui tombent, ou mort en avant), garder la teinte ou la ramener au brun du mort-vivant, remettre ou non la lueur des yeux, et dire que faire de la main qui entre dans la jambe à la griffure (défauts déclarés, <span class="insec">D-235</span> (8)).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : celle du mort-vivant du projet, éditée par FLUX.2 [klein] 4B, en local : même corps, même visage, même peau, même pose ; seuls l'armure, l'arme et la coiffe changent ; retenue : graine 2 ; lueur des yeux adoucie ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 en 1536 (piste C, <span class="insec">D-240</span>), graine 42 ; maillage de jeu de 44 204 triangles ; relief cuit depuis une version à 400 000 faces.</li><li>Squelette : copie de celui du mort-vivant (53 os, mêmes noms, même ordre, mêmes parents, même rotation de repos) ; seules les longueurs changent (UniRig ne sert que de repères) ; à la liaison, bras écartés de 10° de plus et épaules suivies à 50 % par le bras, ce qui réduit les traversées.</li><li>Animations : les 8 du mort-vivant et du meneur (Quaternius), mêmes clés de rotation, une clé par image (24 par seconde), boucles fermées ; pieds : bassin relevé image par image, pour qu'aucun point ne passe plus de 2,5 cm sous le sol (méthode de la correction 1 de <span class="insec">T-0153</span>) ; <code>Death01</code> : pieds seuls.</li><li>Qualité, piste A (<span class="insec">D-240</span> (1)) : zones de matière (lambeaux, capuche, hampe) et peau ; détail de matière, rugosité par matière, occlusion ; métal sur l'armure seulement (aucun métal : pas d'armure) ; violet de la lueur des yeux, étalé par TRELLIS.2 sur le visage, ramené au brun de la peau ; rouge vif de la lueur des yeux, étalé sur la capuche, le cou, les épaules et les orbites, ramené au brun de la capuche (correction 1) ; aucun noir plus sombre que <code>#1E1E1E</code> (bible, § 5 : ni poils ni crins noirs de bête, <span class="insec">D-240</span> (2)).</li></ol></dd>
+      <dt>Licences</dt><dd>Image de base : celle du mort-vivant, faite avec l'outil d'images d'OpenAI (Codex) ; comme pour le mort-vivant, ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT (repères seulement) · animations de Quaternius (<em>Universal Animation Library</em> 1 et 2, celles du jeu) : CC0 1.0 · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, et occlusion, rugosité et métal dans une même image) réduites de 4 096 à 2 048 px, en JPEG. Le maillage est à facettes : ses normales ne sont pas stockées (même rendu, voir « Comment la page est faite »). Squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 07/10/2026, <code>comparer_anims.mjs</code>). 7,1 Mo en 5 fichiers, au lieu de 73,1 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\horde\morts-vivants\mv-deserteur\mv-deserteur.glb<br>Détails : E:\aaa-proto\essai\horde\morts-vivants\LISEZMOI.md (les 4 variantes, contrôles et défauts) ; avis des vérificateurs dans <span class="insec">T-0154</span></dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-mv-sergent" data-src="modeles/mv-sergent/mv-sergent.json" data-orbite="20deg 80deg auto"
+  data-anim="Walk_Loop" data-alt="Modèle 3D : Mort-vivant sergent">
+  <div class="tete"><h3>Mort-vivant sergent</h3><span class="ticket"><span class="insec">T-0154</span> · validé le 07/10/2026 (correction 1)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/mv-sergent/mv-sergent_apercu.jpg" alt="Aperçu : Mort-vivant sergent" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 8,3 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Mort-vivant sergent"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Un des quatre morts-vivants variés de la horde (<span class="insec">D-234</span> (2)), fait à partir du mort-vivant (fiche voisine) : un sergent de l'Ordre mort. Heaume à camail, cuirasse et spalières rouillées, jambières ; deux épées croisées au dos. À 15 m dans la brume, on le reconnaît aux deux poignées au-dessus des épaules et à ses épaules larges.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>42 114 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,82 m de haut ; 1,20 m d'une main à l'autre dans la pose de repos (bras écartés), 0,52 m d'avant en arrière. Le mort-vivant du projet mesure 1,75 m, le meneur 2,50 m.</dd>
+    <dt>Animations</dt><dd>8 : Mort <span class="muted">(Death01, 3 s)</span>, Coup reçu <span class="muted">(Hit_Chest, 0,42 s)</span>, Déséquilibre <span class="muted">(Idle_Shield_Break, 1,08 s)</span>, Course <span class="muted">(Jog_Fwd_Loop, 1,17 s)</span>, Marche <span class="muted">(Walk_Loop, 1,67 s)</span>, Attente <span class="muted">(Zombie_Idle_Loop, 1,33 s)</span>, Griffure <span class="muted">(Zombie_Scratch, 1,79 s)</span>, Démarche lourde <span class="muted">(Zombie_Walk_Fwd_Loop, 1,33 s)</span>. Les mêmes clés que le mort-vivant du jeu, tirées des mêmes animations Quaternius : <code>Zombie_Scratch</code> est l'attaque (griffure), <code>Hit_Chest</code> le coup reçu, <code>Idle_Shield_Break</code> le déséquilibre, <code>Death01</code> la mort. Dans le jeu, le mort-vivant marche et court avec les animations du mannequin d'Unreal, qui n'existent pas hors d'Unreal : ici, <code>Walk_Loop</code>, <code>Jog_Fwd_Loop</code> et <code>Zombie_Idle_Loop</code> les remplacent, et <code>Zombie_Walk_Fwd_Loop</code> est une démarche lourde proposée. Sur place : c'est Unreal qui fera avancer la créature. Pieds jusqu'à 2,5 cm sous le sol, faute de calage dans cette page.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>Armes portées sur le corps, pas en main</strong> : les animations du mort-vivant sont à mains nues. Des armes en main seraient des modèles à part, tenus par la main dans Unreal, avec des animations armées (ticket à part).</li><li>Couché sur le dos (<code>Death01</code>), la poignée des épées passe jusqu'à 40 cm sous le sol (le mort-vivant du projet : 13,9 cm). Relever le corps le ferait flotter. À 8 m, on voit une poignée dressée près de l'épaule gauche.</li><li>L'image devait donner une seule grande spalière et une seule épée (silhouette asymétrique) : elle en a donné deux de chaque, gardées, car la silhouette reste la plus distincte des quatre.</li><li>Peau un peu plus rouge que celle du mort-vivant (<code>#3A2C28</code>, 16° contre 29°), et lueur des yeux retirée de la texture : si elle est voulue, elle se fera dans le matériau d'Unreal.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, qui ont fait ce modèle :</p><ul class="liste"><li>Des <strong>morts-vivants variés</strong> dans la horde de 20 : soldats et déserteurs morts, avec des armures, des armes et des silhouettes différentes, faits <strong>à partir du modèle existant</strong> (<span class="insec">D-234</span> (2)).</li><li>Qualité améliorée dès la fabrication : génération en 1536 (piste C de l'étude de qualité) et chaîne de qualité des bêtes (piste A) (<span class="insec">D-240</span> (1)) ; lancé le 07/10/2026 (<span class="insec">D-250</span> (2)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>Garder ces variantes ou en refaire une (environ 0,3 % de la semaine), garder les armes au dos ou les mettre en main, choisir que faire de ce qui passe sous le sol à la mort (armes qui tombent, ou mort en avant), garder la teinte ou la ramener au brun du mort-vivant, remettre ou non la lueur des yeux, et dire que faire de ses deux spalières et de ses deux épées, au lieu d'une seule de chaque (défauts déclarés, <span class="insec">D-235</span> (8)).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : celle du mort-vivant du projet, éditée par FLUX.2 [klein] 4B, en local : même corps, même visage, même peau, même pose ; seuls l'armure, l'arme et la coiffe changent ; retenue : graine 5 ; lueur des yeux adoucie ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 en 1536 (piste C, <span class="insec">D-240</span>), graine 42 ; maillage de jeu de 42 114 triangles ; relief cuit depuis une version à 400 000 faces.</li><li>Squelette : copie de celui du mort-vivant (53 os, mêmes noms, même ordre, mêmes parents, même rotation de repos) ; seules les longueurs changent (UniRig ne sert que de repères) ; à la liaison, bras écartés de 10° de plus et épaules suivies à 50 % par le bras, ce qui réduit les traversées. Pouces et auriculaires placés d'après le mort-vivant : UniRig ne les avait pas trouvés.</li><li>Animations : les 8 du mort-vivant et du meneur (Quaternius), mêmes clés de rotation, une clé par image (24 par seconde), boucles fermées ; pieds : bassin relevé image par image, pour qu'aucun point ne passe plus de 2,5 cm sous le sol (méthode de la correction 1 de <span class="insec">T-0153</span>) ; <code>Death01</code> : pieds seuls.</li><li>Qualité, piste A (<span class="insec">D-240</span> (1)) : zones de matière (heaume, épées, cuirasse, ceinture, jambières) et peau ; détail de matière, rugosité par matière, occlusion ; métal sur l'armure seulement (moyenne 0,086) ; violet de la lueur des yeux, étalé par TRELLIS.2 sur le visage, ramené au brun de la peau ; aucun noir plus sombre que <code>#1E1E1E</code> (bible, § 5 : ni poils ni crins noirs de bête, <span class="insec">D-240</span> (2)).</li></ol></dd>
+      <dt>Licences</dt><dd>Image de base : celle du mort-vivant, faite avec l'outil d'images d'OpenAI (Codex) ; comme pour le mort-vivant, ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT (repères seulement) · animations de Quaternius (<em>Universal Animation Library</em> 1 et 2, celles du jeu) : CC0 1.0 · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, et occlusion, rugosité et métal dans une même image) réduites de 4 096 à 2 048 px, en JPEG. Le maillage est à facettes : ses normales ne sont pas stockées (même rendu, voir « Comment la page est faite »). Squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 07/10/2026, <code>comparer_anims.mjs</code>). 8,3 Mo en 5 fichiers, au lieu de 82,4 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\horde\morts-vivants\mv-sergent\mv-sergent.glb<br>Détails : E:\aaa-proto\essai\horde\morts-vivants\LISEZMOI.md (les 4 variantes, contrôles et défauts) ; avis des vérificateurs dans <span class="insec">T-0154</span></dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-esprit" data-src="modeles/esprit/esprit.json" data-orbite="20deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Esprit">
+  <div class="tete"><h3>Esprit</h3><span class="ticket"><span class="insec">T-0056</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/esprit/esprit_apercu.jpg" alt="Aperçu : Esprit" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 3,9 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Créature du prototype, d'après une entrée refaite (« v4 ») : un corps dense et mat, plus facile à convertir que la fumée lumineuse de la fiche.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>58 596 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,80 m.</dd>
+    <dt>Animations</dt><dd>Aucune dans le fichier validé (squelette prêt pour le reciblage dans Unreal).</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>Plus « solide » que la fiche de fumée (corps dense, pieds visibles) : à valider par le directeur.</li><li>L'aspect spectral (matériau translucide ou émissif lilas pâle, particules de brume) reste à faire dans Unreal : il n'est pas dans ce modèle.</li><li>Pas d'os de torsion.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : refaite avec FLUX.2 [klein] 4B (graine 1). La fiche d'origine, une fumée lumineuse, donnait un modèle bleu-noir.</li><li>3D : TRELLIS.2 (graine 42), surface simple d'environ 59 000 triangles ; relief cuit depuis une version à 290 000 faces.</li><li>Squelette UniRig de 53 os aux noms du mannequin UE5 ; poids de Blender, corrigés pour que la brume près des mains ne suive pas les bras.</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Squelette retiré (pas d'animation), pose de référence en A. Relief : carte OpenGL. Textures en JPEG. 3,9 Mo en 5 fichiers, au lieu de 22,9 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\creatures\esprit\esprit.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-soldat-ordre" data-src="modeles/soldat-ordre/soldat-ordre.json" data-orbite="20deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Soldat de l'Ordre">
+  <div class="tete"><h3>Soldat de l'Ordre</h3><span class="ticket"><span class="insec">T-0058</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/soldat-ordre/soldat-ordre_apercu.jpg" alt="Aperçu : Soldat de l'Ordre" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 6,1 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Simple soldat de la patrouille de l'Ordre du Sceptre d'Or, sans cape (<span class="insec">D-166</span>) : heaume, maille, spalières, tabard ivoire et or à l'emblème du sceptre.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>51 729 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,80 m.</dd>
+    <dt>Animations</dt><dd>Aucune dans le fichier validé (squelette prêt pour le reciblage dans Unreal).</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>L'épée au fourreau et le carquois font partie du corps : ils ne se détachent pas.</li><li>Pas d'os de torsion.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : fiche <code>personnages\soldat-ordre.png</code>, faite avec Codex, l'outil d'images d'OpenAI, le 29/09/2026 (<code>personnages\LISEZMOI.md</code>) ; arc et bouclier retirés, détourée.</li><li>3D : TRELLIS.2 (graine 42), 51 700 triangles ; relief cuit.</li><li>Squelette UniRig de 35 os (avec <code>root</code>) aux noms du mannequin UE5 ; poids de Blender corrigés autour des bras ; aucun sommet sur <code>root</code>.</li></ol></dd>
+      <dt>Licences</dt><dd>Fiche d'entrée : image faite avec l'outil d'images d'OpenAI (Codex), d'après <code>personnages\LISEZMOI.md</code> ; ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Squelette retiré (pas d'animation), pose de référence en A. Relief : carte OpenGL. Textures en JPEG. 6,1 Mo en 5 fichiers, au lieu de 26,8 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\soldat-ordre\soldat-ordre.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-possede" data-src="modeles/possede/possede.json" data-orbite="20deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Possédé">
+  <div class="tete"><h3>Possédé</h3><span class="ticket"><span class="insec">T-0058</span> · validé le 30/09/2026 (refait bras écartés)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/possede/possede_apercu.jpg" alt="Aperçu : Possédé" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 6,3 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le paysan possédé sur lequel tire la patrouille de l'Ordre au didacticiel (<span class="insec">D-03</span>, <em>Design du Didacticiel</em>) : veines noires sur le cou, le visage et les bras.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>52 325 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,75 m.</dd>
+    <dt>Animations</dt><dd>Aucune dans le fichier validé (squelette prêt pour le reciblage dans Unreal).</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>Tenue de paysan inventée : à valider par le directeur.</li><li>Visage peu détaillé ; la lueur des yeux est perdue (à ajouter en émissif s'il est vu de près).</li><li>Pose de référence en T souple, alors que les autres sont en A : à régler au reciblage.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : faite en local avec FLUX.2 [klein] 4B, puis refaite bras écartés du corps (<code>personnages\possede-poseT.png</code>).</li><li>3D : TRELLIS.2 (graine 7), 52 300 triangles ; relief cuit ; couleur étalonnée sur l'image (peau gris pâle).</li><li>Squelette UniRig de 53 os (avec <code>root</code>, doigts compris) ; poids d'UniRig corrigés (le calcul de Blender échouait sur ce maillage).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · UniRig : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Squelette retiré (pas d'animation), pose de référence en T souple. Relief : carte OpenGL. Textures en JPEG. 6,3 Mo en 5 fichiers, au lieu de 26,9 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\possede\possede.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-ange-dechu" data-src="modeles/ange-dechu/ange-dechu.json" data-orbite="25deg 82deg auto"
+  data-anim="" data-alt="Modèle 3D : Ange Déchu (silhouette)">
+  <div class="tete"><h3>Ange Déchu (silhouette)</h3><span class="ticket"><span class="insec">T-0058</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/ange-dechu/ange-dechu_apercu.jpg" alt="Aperçu : Ange Déchu (silhouette)" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 3,7 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">La silhouette de l'Ange Déchu, pour son apparition éclair de 0,5 s au didacticiel (<em>Design du Didacticiel</em>, étape 3 : « ailes d'ombre brisées, trois paires d'yeux dorés »). C'est une base pour les effets, pas un personnage animé.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>59 601 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>3,60 m de haut, 2,58 m d'envergure.</dd>
+    <dt>Animations</dt><dd>Aucune : silhouette statique.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>La fumée noire de la fiche sort gris ardoise : le générateur ne la rend pas.</li><li>Les trois paires d'yeux dorés ne sont pas dans la texture : elles sont à placer en effets au visage.</li><li>Le rendu voulu (matériau sombre et émissif, fumée et cendres, dissolution en 0,5 s) reste à faire dans Unreal.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : fiche <code>personnages\ange-dechu.png</code> (validée au 2ᵉ essai), faite avec Codex, l'outil d'images d'OpenAI, le 29/09/2026 (<code>personnages\LISEZMOI.md</code>) ; détourée avec sa fumée.</li><li>3D : TRELLIS.2 (graine 42), surface simple de 59 600 triangles, métal mis à 0.</li><li>Maillage statique, sans squelette ; pivot au centre de la base.</li></ol></dd>
+      <dt>Licences</dt><dd>Fiche d'entrée : image faite avec l'outil d'images d'OpenAI (Codex), d'après <code>personnages\LISEZMOI.md</code> ; ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures en JPEG ; maillage inchangé. 3,7 Mo en 4 fichiers, au lieu de 12,9 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\ange-dechu\ange-dechu.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-tenue-heros" data-src="modeles/tenue-heros/tenue-heros.json" data-orbite="20deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Tenue du héros">
+  <div class="tete"><h3>Tenue du héros</h3><span class="ticket"><span class="insec">T-0056</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/tenue-heros/tenue-heros_apercu.jpg" alt="Aperçu : Tenue du héros" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 6,6 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">La tenue du héros au réveil (<span class="insec">D-163</span>) : gambison matelassé déchiré, pantalon, bottes. Montrée seule, sans le corps, car le corps du héros est un MetaHuman.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>84 576 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>Environ 1,57 m, du col aux semelles (sur un corps de 1,80 m).</dd>
+    <dt>Animations</dt><dd>Aucune : dans le jeu, la tenue suit le squelette du corps.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>Le gambison descend à mi-cuisse ; celui de la fiche s'arrête aux hanches.</li><li>Les bandes molletières de la fiche manquent au pantalon.</li><li>Bras levés au-delà de l'horizontale, l'épaule du gambison s'étire.</li><li>Un point d'environ 1 cm au talon des bottes, visible seulement pied levé, vu de dessous.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B ; le gambison est refait en pose A d'après un rendu du corps du héros.</li><li>3D : TRELLIS.2 avec remaillage (coque épaisse, qu'on peut enfiler) : gambison 38 500 triangles, pantalon 23 100, bottes 2 × 11 500.</li><li>Ajustée sur le corps du héros dans Blender (repères, manches dépliées, coque poussée hors du corps) ; couleur du gambison étalonnée sur la fiche ; poids recopiés du corps.</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Les trois pièces sont réunies dans un seul fichier. Le squelette du MetaHuman (342 os) est retiré : la tenue reste dans sa pose de référence (pose A), sans aucune donnée MetaHuman. Textures en JPEG. 6,6 Mo en 8 fichiers, au lieu de 33,2 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\tenue-heros\heros_gambison.glb<br>E:\aaa-proto\echange\tenue-heros\heros_pantalon.glb<br>E:\aaa-proto\echange\tenue-heros\heros_bottes.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-epee-rouillee" data-src="modeles/epee-rouillee/epee-rouillee.json" data-orbite="30deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Épée rouillée">
+  <div class="tete"><h3>Épée rouillée</h3><span class="ticket"><span class="insec">T-0056</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/epee-rouillee/epee-rouillee_apercu.jpg" alt="Aperçu : Épée rouillée" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 1,6 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">L'épée rouillée trouvée dans les ruines au réveil (<span class="insec">D-163</span>), pour le combat.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>19 904 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,10 m.</dd>
+    <dt>Animations</dt><dd>Aucune : objet.</dd>
+    <dt>Défauts connus</dt><dd><p>Aucun défaut signalé à la validation.</p></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : découpée de la fiche du héros <code>personnages\heros-reveil.png</code>, faite avec Codex, l'outil d'images d'OpenAI, le 29/09/2026 (<code>personnages\LISEZMOI.md</code>).</li><li>3D : TRELLIS.2, 19 900 triangles.</li><li>Rouille refaite en 3D comme sur la fiche : plaques et piqûres sur la lame, la garde et le pommeau, métal plus faible et surface plus rugueuse dans la rouille.</li><li>Pivot au centre de la poignée, lame vers le haut.</li></ol></dd>
+      <dt>Licences</dt><dd>Fiche d'entrée : image faite avec l'outil d'images d'OpenAI (Codex), d'après <code>personnages\LISEZMOI.md</code> ; ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures en JPEG ; maillage inchangé. 1,6 Mo en 4 fichiers, au lieu de 7,7 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\armes\epee_rouillee.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-arc" data-src="modeles/arc/arc.json" data-orbite="35deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Arc du soldat">
+  <div class="tete"><h3>Arc du soldat</h3><span class="ticket"><span class="insec">T-0058</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/arc/arc_apercu.jpg" alt="Aperçu : Arc du soldat" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 1,0 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">L'arc long du soldat de l'Ordre.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>11 796 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,75 m.</dd>
+    <dt>Animations</dt><dd>Aucune : objet.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>La corde est un simple cylindre : pour qu'elle se tende, il faudra la remplacer par un câble dans le moteur.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : découpé sur la fiche <code>personnages\soldat-ordre.png</code>, faite avec Codex, l'outil d'images d'OpenAI, le 29/09/2026 (<code>personnages\LISEZMOI.md</code>) ; détouré.</li><li>3D : TRELLIS.2, 11 800 triangles.</li><li>Corde ajoutée : un cylindre de 2 mm (le modèle généré n'en avait pas). Pivot au centre de la poignée.</li></ol></dd>
+      <dt>Licences</dt><dd>Fiche d'entrée : image faite avec l'outil d'images d'OpenAI (Codex), d'après <code>personnages\LISEZMOI.md</code> ; ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures en JPEG ; maillage inchangé. 1,0 Mo en 4 fichiers, au lieu de 7,2 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\soldat-ordre\arc.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-bouclier" data-src="modeles/bouclier/bouclier.json" data-orbite="20deg 85deg auto"
+  data-anim="" data-alt="Modèle 3D : Bouclier du soldat">
+  <div class="tete"><h3>Bouclier du soldat</h3><span class="ticket"><span class="insec">T-0058</span> · validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/bouclier/bouclier_apercu.jpg" alt="Aperçu : Bouclier du soldat" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 1,5 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le bouclier rond du soldat de l'Ordre, d'après sa fiche.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>11 709 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>0,75 m de diamètre.</dd>
+    <dt>Animations</dt><dd>Aucune : objet.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>La poignée au dos est inventée par le générateur.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : découpé sur la fiche <code>personnages\soldat-ordre.png</code>, faite avec Codex, l'outil d'images d'OpenAI, le 29/09/2026 (<code>personnages\LISEZMOI.md</code>) ; détouré (génération relancée une fois).</li><li>3D : TRELLIS.2, 11 700 triangles ; pivot au centre.</li></ol></dd>
+      <dt>Licences</dt><dd>Fiche d'entrée : image faite avec l'outil d'images d'OpenAI (Codex), d'après <code>personnages\LISEZMOI.md</code> ; ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures en JPEG ; maillage inchangé. 1,5 Mo en 4 fichiers, au lieu de 10,3 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\echange\soldat-ordre\bouclier.glb<br>Détails : E:\aaa-proto\echange\LISEZMOI.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-chien-berger" data-src="modeles/chien-berger/chien-berger.json" data-orbite="35deg 78deg auto"
+  data-anim="Trot" data-alt="Modèle 3D : Chien de berger">
+  <div class="tete"><h3>Chien de berger</h3><span class="ticket"><span class="insec">T-0123</span> · validé le 02/10/2026 (correction 2) ; marches boiteuses ajoutées le 02/10/2026 (<span class="insec">T-0128</span>, <span class="insec">D-225</span>, <span class="insec">D-227</span>) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0145</span>, <span class="insec">D-240</span>)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/chien-berger/chien-berger_apercu.jpg" alt="Aperçu : Chien de berger" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 7,1 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Chien de berger"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le vieux chien de l'éleveur, compagnon de l'issue 2 de « L'Agneau et le Loup » (<span class="insec">D-213</span> (2), <span class="insec">D-215</span> (2), <span class="insec">D-223</span>) : chien de ferme de type colley, robe pie noir et blanc passée, museau gris, oreilles tombantes, collier de cuir gardé (<span class="insec">D-225</span> (1)) ; « il est vieux, mais il a du flair » (ELV-60). Son rôle en combat suit sa loyauté (<span class="insec">D-224</span>), paliers à 35 et 70 (<span class="insec">D-225</span> (3)) ; blessé, il boite de la patte touchée, deux pattes au plus (<span class="insec">D-225</span> (2), <span class="insec">D-227</span> (4)) ; il ne meurt pas définitivement : il se met à l'abri et revient après un repos (<span class="insec">D-227</span> (3)).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>64 510 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>0,95 m de long, queue comprise (0,97 m avec les poils de la queue) ; garrot à 0,54 m (le loup : 0,77 m) ; 0,63 m au sommet de la tête ; 0,29 m de large.</dd>
+    <dt>Animations</dt><dd>21 : Attaque <span class="muted">(Attack, 1,33 s)</span>, Aboiement <span class="muted">(Bark, 1,25 s)</span>, Mort <span class="muted">(Death, 1,08 s)</span>, Mange <span class="muted">(Eating, 2,54 s)</span>, Galop <span class="muted">(Gallop, 0,58 s)</span>, Saut au galop <span class="muted">(Gallop_Jump, 0,92 s)</span>, Attente <span class="muted">(Idle, 3,33 s)</span>, Attente 2 <span class="muted">(Idle_2, 3,33 s)</span>, Attente, tête basse <span class="muted">(Idle_2_HeadLow, 4 s)</span>, Touché 1 <span class="muted">(Idle_HitReact1, 0,67 s)</span>, Touché 2 <span class="muted">(Idle_HitReact2, 0,67 s)</span>, Saut puis arrêt <span class="muted">(Jump_ToIdle, 1,33 s)</span>, S'assoit <span class="muted">(Sit_Down, 1 s)</span>, Assis <span class="muted">(Sit_Idle, 3 s)</span>, Se relève <span class="muted">(Sit_Up, 0,83 s)</span>, Trot <span class="muted">(Trot, 0,58 s)</span>, Marche <span class="muted">(Walk, 1,08 s)</span>, Marche blessé (boite de l'avant gauche) <span class="muted">(Walk_Limp, 1,33 s)</span>, Marche blessé (boite de l'arrière gauche) <span class="muted">(Walk_Limp_Arriere, 1,33 s)</span>, Marche blessé (boite de l'arrière droite) <span class="muted">(Walk_Limp_ArriereDroit, 1,33 s)</span>, Marche blessé (boite de l'avant droite) <span class="muted">(Walk_Limp_AvantDroit, 1,33 s)</span>. Sur place : dans le jeu, c'est Unreal qui fera avancer le chien (marche 0,45 m/s, trot 1,0 m/s, galop 2 m/s, marches boiteuses 0,3 m/s). Marches boiteuses : une par patte, car la patte qui boite suit la blessure (<span class="insec">D-227</span> (4)). La patte blessée a un appui court et se lève plus haut ; à l'avant, la tête se relève quand elle porte ; à l'arrière, la hanche du côté blessé se relève. Deux pattes au plus boitent en même temps : le jeu combinera deux de ces animations dans Unreal (<span class="insec">T-0132</span>).</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">T-0145</span>) : poil fait par programme, sans épi ni remous. De près, et déjà à la distance de cette visionneuse, le jabot du poitrail se lit comme des franges, et des cartes plus sombres se détachent sur le blanc ; de plus loin, à distance de jeu, il se lit comme le jabot d'un colley.</li><li><strong>Des cartes de poils entrent un peu dans la peau</strong> : elles suivent les os, sans physique ; dans les plis (cou baissé, assis, <code>Attack</code>), jusqu'à 2 cm, sur 2 % de leurs sommets au pire instant. Le bout de la queue passe jusqu'à 0,8 cm sous le sol dans <code>Attack</code> et frôle le sol assis.</li><li>Au galop et aux sauts, le pied entier tourne de 10° au plus en vol et penche de 21° au plus sur le côté ; c'est dû à l'adaptation du squelette. Appuis très courts : les pieds glissent quand ils se posent et se lèvent.</li><li><code>Walk</code> (animation du pack, comme le loup) : en fin d'appui, un pied posé avance au sol, jusqu'à 3,1 cm par image.</li><li>Yeux peints dans la texture : de près, ils font « dessinés » et restent mats ; le disque gris autour se voit un peu.</li><li>Gueule : un intérieur sombre, sans dents ni langue, et une mâchoire inférieure mince ; de profil, gueule ouverte, on voit encore le fond entre le bout des deux lèvres.</li><li>Assis : pieds arrière posés de travers (le squelette n'a pas d'os d'orteils) ; de trois quarts, la patte arrière se lit mal.</li><li>Dents de scie à l'arrière des avant-bras (franges de poil devenues un peigne dans la géométrie, visibles jusque dans la silhouette) et plis cassés à la collerette ; quelques traînées claires sous le ventre.</li><li>Oreilles rigides : elles ne ballottent pas au galop.</li><li>Trot fait ici : correct de loin, moins souple qu'une vraie capture de mouvement, foulée courte (23 cm). Galop un peu ramassé, mort raide, attaque de loup : animations du pack.</li><li>Marches boiteuses faites ici (<span class="insec">T-0128</span>) : correctes de loin, moins souples qu'une vraie capture de mouvement ; quand un pied se pose, ses sommets avancent d'1 mm au plus. Le chien n'étant pas symétrique, les versions droites ne sont pas un miroir exact des gauches : même calcul, patte blessée à droite.</li><li>Longueur du museau à la croupe : 1,41 fois la hauteur au garrot (un vrai chien de berger est vers 1,5).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B, en local (graine 1 retenue pour l'allure), puis retouchée pour écarter la queue des cuisses (graine 4) ; détourage BiRefNet.</li><li>3D : TRELLIS.2 (graine 42, 60 000 faces, texture 4 096 px).</li><li>Retouche dans Blender : tête redressée, tronc allongé de 12 %, peau refaite d'une seule pièce (remaillage de 6 mm), 60 000 triangles, couleur cuite sans le métal de TRELLIS.2, relief recuit ; yeux peints dans la texture ; gueule qui s'ouvre (os de mâchoire et intérieur sombre).</li><li>Squelette du loup du pack Quaternius (40 os avec la mâchoire) et 12 de ses animations, adaptés au corps ; 9 animations faites ici (trot, s'assoit, assis, se relève, aboiement, et quatre marches boiteuses, une par patte) ; pieds calés au sol, boucles sans saut ; trot et marches boiteuses aux pieds verrouillés sur un sol qui défile.</li><li>Qualité (<span class="insec">T-0145</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (41 à 59 % de la texture) ; détail de poil orienté cuit dans la couleur et le relief, rugosité par matière et occlusion ; <strong>poils en cartes</strong> : 200 à la queue et 220 au jabot du poitrail (4 200 triangles), en 6 teintes prises dans la fiche (« pie noir et blanc passée, feu, museau gris ») et dans la peau livrée, qui suivent le squelette, boiterie comprise ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Forme, squelette, gueule et animations inchangés (écart 0,000 cm à chaque image) ; couleur gardée (0,999 de la précédente).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT · squelette et 12 animations Quaternius (<em>Ultimate Animated Animal Pack</em>) : CC0 · trot, position assise, aboiement, marches boiteuses, gueule et yeux : faits par programme (<span class="insec">T-0123</span>, <span class="insec">T-0128</span>) · détail de poil et cartes de poils : faits par programme (<span class="insec">T-0145</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures du corps (couleur, relief, occlusion et rugosité) réduites de 4 096 à 2 048 px, en JPEG. Texture des cartes de poils gardée en PNG, telle quelle (<code>chien-berger_poils.png</code>, 3 072 × 2 048 px), pour sa transparence. Les trois matériaux (corps, intérieur de la gueule, cartes) sont gardés ; l'intérieur de la gueule, à facettes, ne garde pas ses normales (même rendu, voir « Comment la page est faite »). Maillage, squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 06/10/2026, <code>comparer_anims.mjs</code>). 7,1 Mo en 6 fichiers, au lieu de 46,0 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\chien\chien.glb<br>Détails : E:\aaa-proto\essai\chien\LISEZMOI.md ; avis des vérificateurs dans <span class="insec">T-0123</span> et <span class="insec">T-0145</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-araignee" data-src="modeles/araignee/araignee.json" data-orbite="30deg 65deg auto"
+  data-anim="Walk" data-alt="Modèle 3D : Araignée géante">
+  <div class="tete"><h3>Araignée géante</h3><span class="ticket"><span class="insec">T-0133</span> · validé le 02/10/2026 (correction 1) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0149</span>, <span class="insec">D-240</span>)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/araignee/araignee_apercu.jpg" alt="Aperçu : Araignée géante" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 6,3 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Araignée géante"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">La bête de combat des galeries de la mine (<span class="insec">D-220</span>), avec les morts-vivants de mineurs et Brutus au fond (<span class="insec">D-216</span> (8)) : grande araignée chasseuse au sol, de type mygale ou lycose (pas de toile), gris-brun et terre d'ombre, pattes velues à bandes sombres, petits yeux noirs sans lueur (bible artistique, § 6.5). Au sol seulement, par 1 ou 2 (proposition de <code>groupes-ennemis.md</code>, § 3.3).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>57 089 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>Taille proposée, encore à trancher par le directeur : 2,50 m de large pattes comprises, 2,43 m de long, 0,61 m de haut au sommet de l'abdomen ; corps de 1,26 m (céphalothorax 0,65 m, abdomen 0,61 m). Elle passe dans une galerie de 3 m.</dd>
+    <dt>Animations</dt><dd>7 : Attaque <span class="muted">(Attack, 1,17 s)</span>, Mort <span class="muted">(Death, 1,92 s)</span>, Réaction au coup <span class="muted">(Hit, 0,67 s)</span>, Attente <span class="muted">(Idle, 2 s)</span>, Bond <span class="muted">(Leap, 1,42 s)</span>, Course <span class="muted">(Run, 0,38 s)</span>, Marche <span class="muted">(Walk, 1 s)</span>. Faites par programme, à 24 images par seconde. Sur place : dans le jeu, c'est Unreal qui fera avancer l'araignée (marche 0,51 m/s, course 2,05 m/s) et qui donnera sa distance au bond (2 à 3 m). « Blessée » est rendue par une réaction au coup (<code>Hit</code>). <code>Attack</code> : elle se cabre, frappe et mord. <code>Death</code> : elle reste couchée.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">D-235</span> (9), <span class="insec">T-0149</span>) : le détail ajouté par programme imite la matière sans l'usure ni les épis qu'un artiste dessinerait, et la couleur d'origine (TRELLIS.2) reste molle ; les poils des pattes restent des touffes sculptées ; les yeux n'ont pas de matière propre (reflet de la chitine) et rien ne luit ; <strong>un seul crochet brille</strong> : le chélicère droit, soudé au pédipalpe droit, garde la chitine.</li><li><strong>Moignon de la 9e patte</strong> : la patte en trop était déjà dans l'image FLUX.2 retenue (5 pattes sur le flanc gauche de la bête), et TRELLIS.2 l'a reproduite. Elle est retirée, mais il reste une bosse sur le flanc gauche, près de la racine des pattes 2 et 3. Refaire la 3D avec la même image redonnerait la patte : il faudrait une autre image, à 8 pattes. Non touché par la mise à niveau de qualité (<span class="insec">T-0149</span>) : ce défaut sera corrigé plus tard (<span class="insec">D-235</span> (8)).</li><li><strong>Pattes qui se touchent</strong> : dans <code>Run</code>, contacts brefs entre pattes voisines, sur une dizaine de demi-images, de 2 à 5,5 cm de profondeur selon la mesure ; dans <code>Death</code>, les pattes 2 et 3 gauches entrent l'une dans l'autre en se repliant (6 cm environ). Dans <code>Walk</code>, contact négligeable (moins d'1 cm). Cause : des pattes générées épaisses et serrées à la racine.</li><li><strong>Peau étirée à la racine des pattes avant</strong> et des pédipalpes, sous l'avant du corps (pas entre les pattes) : 892 cm² au pire dans <code>Run</code>, 350 environ dans <code>Walk</code> et <code>Death</code>.</li><li>Chélicères et pédipalpes soudés dans le modèle généré : ils bougent peu (19° au plus), pour ne pas déchirer la peau ; la morsure se lit surtout par l'élan du corps.</li><li>Bête sombre (segments de pattes presque noirs) : dans la vraie obscurité des galeries (bible artistique, § 4), elle risque de mal se lire. Ce n'est pas un défaut de cuisson : sa teinte est celle du modèle généré. La chitine lui donne maintenant des reflets (<span class="insec">T-0149</span>).</li><li>Dans la pose de liaison, des pieds restent de 0 à 4 cm au-dessus du sol (ils sont posés dans toutes les animations). Bond sur place ; aucune marche aux parois ni au plafond.</li><li>9 petits triangles isolés en plus de la peau (0,01 à 0,62 cm², dont un à 5,5 cm de la 3e patte droite), invisibles sur les rendus.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Tranché par le directeur le 06/10/2026 :</p><ul class="liste"><li><strong>Taille gardée</strong> : 2,50 m de large, corps de 1,26 m (<span class="insec">D-235</span> (1)).</li><li><strong>Combat</strong> : morsure et venin, toile, saut à distance ; pas sur les parois ni au plafond (<span class="insec">D-235</span> (1)).</li><li><strong>Lisibilité</strong> : des pierres de lumière dans les galeries, une faible lueur qui éclaire vraiment (<span class="insec">D-235</span> (1)).</li><li><strong>Pas de marche blessée</strong> pour l'araignée (<span class="insec">D-235</span> (7)).</li><li><strong>Le moignon sera corrigé</strong> : aucun défaut connu n'est accepté (<span class="insec">D-235</span> (8)), après l'étude de qualité (<span class="insec">T-0142</span>).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B, en local, 8 images ; détourage BiRefNet (rembg). Pattes comptées après coup : aucune vue de dessus n'a sûrement 8 pattes, et l'image retenue (vue de dessus, graine 2) en a 9.</li><li>3D : TRELLIS.2 (graine 42, 60 000 faces, texture 4 096 px) sur 5 images ; retenu : le modèle de l'image graine 2, qui reproduit sa 9e patte.</li><li>Retouche par programme (Blender, trimesh) : peau pleine refaite (contre les piqûres noires et l'intérieur creux de la coque double de TRELLIS.2), 9e patte retirée et trou rebouché, mise de niveau, 57 089 triangles ; couleur cuite sans le métal de TRELLIS.2 (même teinte que la source : 1,02 en moyenne sur la surface), relief recuit.</li><li>Squelette de 48 os (corps, abdomen, 2 chélicères, 2 pédipalpes de 2 os, 8 pattes de 5 os) et 7 animations faits par programme, sans pack : le projet n'a aucune araignée animée libre. Pattes posées par IK dans un plan fixe, genou en haut ; pieds posés immobiles (contrôle sur deux points par pied et sur son angle) ; boucles sans saut ; aucune patte ne prend de poids d'une autre, donc pas de toile de peau entre les pattes.</li><li>Qualité (<span class="insec">T-0149</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (20 à 40 % de la texture) ; <strong>chitine</strong> sur le céphalothorax, les pattes et les pédipalpes (plaques fines bombées et grain, reflet de cuticule), abdomen velu, crochet gauche lisse et brillant ; rugosité par matière (avant : 0,75 partout) et occlusion ; pas de cartes de poils ; teinte de la fiche gardée (1,01 de la précédente) ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Forme, squelette et animations inchangés (écart 0,000 cm à chaque image).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec TRELLIS-image-large, MIT, et DINOv3, usage commercial permis) · BiRefNet et rembg : MIT · trimesh et fast-simplification : MIT · SciPy et scikit-image : BSD · squelette et animations : faits par programme (<span class="insec">T-0133</span>), aucune ressource extérieure · détail de matière : fait par programme (<span class="insec">T-0149</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, occlusion et rugosité) réduites de 4 096 à 2 048 px, en JPEG ; métal 0, sans lueur. Maillage, squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 06/10/2026, <code>comparer_anims.mjs</code>). 6,3 Mo en 5 fichiers, au lieu de 48,0 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\araignee\araignee.glb<br>Détails : E:\aaa-proto\essai\araignee\LISEZMOI.md ; avis du vérificateur à la fin de <span class="insec">T-0133</span> ; avis des vérificateurs dans <span class="insec">T-0149</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-chauve-souris" data-src="modeles/chauve-souris/chauve-souris.json" data-orbite="20deg 45deg auto"
+  data-anim="Flap" data-alt="Modèle 3D : Chauve-souris">
+  <div class="tete"><h3>Chauve-souris</h3><span class="ticket"><span class="insec">T-0133</span> · validé le 02/10/2026 (correction 1) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0149</span>, <span class="insec">D-240</span>)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/chauve-souris/chauve-souris_apercu.jpg" alt="Aperçu : Chauve-souris" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 1,0 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Chauve-souris"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Une chauve-souris de la nuée des galeries de la mine, qui s'envole sans combattre : un décor vivant (<span class="insec">D-220</span>). Taille normale, pas « géante » (proposition de <code>groupes-ennemis.md</code>, § 3.3) : petite chauve-souris brune des grottes, ailes de peau brune plus sombres que le corps, oreilles pointues, ventre clair, sans lueur (bible artistique, § 6.5). Modèle léger, fait pour être répété en nombre ; la nuée elle-même se fera dans Unreal, plus tard.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>2 996 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>Taille proposée, encore à trancher par le directeur : envergure de 0,38 m (grand murin, une chauve-souris des grottes et des mines d'Europe), de 0,31 à 0,41 m pendant le battement ; 0,18 m de la tête au bout de la queue.</dd>
+    <dt>Animations</dt><dd>1 : Battement d'ailes <span class="muted">(Flap, 0,5 s)</span>. Battement d'ailes en boucle, fait par programme : 13 images à 24 images par seconde, soit 2 battements par seconde à la vitesse 1, celle de la page. Dans Unreal, lecture × 2 conseillée (4 battements par seconde), avec une phase et une cadence un peu différentes pour chaque chauve-souris (× 1,7 à × 2,4).</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">D-235</span> (9), <span class="insec">T-0149</span>) : le détail ajouté par programme imite la matière sans l'usure ni les épis qu'un artiste dessinerait, et la couleur d'origine (TRELLIS.2) reste molle ; le gain est discret à distance de jeu, pour une bête de 0,38 m vue en nuée : il se voit surtout de près.</li><li><strong>Museau tourné vers le bas</strong> : de profil, il pointe à environ 60° sous la direction du vol. Dans l'image FLUX.2, la bête regarde l'objectif ; mise en vol, son visage regarde donc le sol.</li><li>La pose de liaison n'est pas une pose de vol : ailes en V, relevées et ramenées vers l'arrière ; queue et pattes arrière relevées, que l'animation abaisse, mais il reste un petit aileron en arrière du dos.</li><li>Membrane épaisse de quelques millimètres (une plaque fermée, pour une surface propre) : de près, plus épaisse qu'une vraie membrane, et elle ne laisse pas passer la lumière. Le relief des rides (<span class="insec">T-0149</span>) ne la rend pas translucide : à régler dans le matériau maître d'Unreal (<span class="insec">T-0132</span>).</li><li>Ni pose suspendue au plafond, ni envol : la nuée part déjà en vol.</li><li>Peau un peu étirée à la racine des ailes et à la queue (8,8 cm² au pire, 6 triangles) ; 8 petits trous laissés par la réduction. Rien de visible sur les rendus.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Tranché par le directeur le 06/10/2026 :</p><ul class="liste"><li><strong>Taille gardée</strong> : 0,38 m d'envergure (<span class="insec">D-235</span> (1)).</li><li><strong>La nuée pend au plafond</strong> et <strong>s'envole quand l'araignée arrive</strong>, ce qui l'annonce (<span class="insec">D-235</span> (2)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>La nuée : cadence du battement (4 par seconde conseillés) et nombre de chauves-souris (30 dans l'aperçu de la vidéo) ?</li><li>Le museau vers le bas : à redresser dans l'animation, ou acceptable pour une bête vue de loin et en nombre ?</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B, en local, 6 images (de face et de dos) ; retenue : de face, graine 1, pour son visage lisible ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 (graine 42) sur 3 images.</li><li>Retouche par programme (Blender, trimesh) : peau pleine refaite (sans elle, la réduction déchirait la membrane), mise en vol, échelle, réduction à 2 996 triangles, UV ; couleur cuite sans le métal de TRELLIS.2 (0,98 de la source), relief recuit ; textures de 1 024 px, un seul matériau.</li><li>Squelette de 9 os (corps, tête, queue, 3 os par aile le long du bord d'attaque) et battement d'ailes faits par programme : abaissée ample, vague le long de l'aile, remontée à demi repliée ; boucle sans saut.</li><li>Qualité (<span class="insec">T-0149</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (41 à 58 % de la texture) ; <strong>membranes</strong> des ailes et de la queue (rides fines dans le sens de l'envergure, veines, peau un peu luisante), pelage fin sur le corps et la tête ; rugosité par matière et occlusion ; texture gardée en 1 024 px (modèle léger, répété en nombre) ; teinte de la fiche gardée (1,000 de la précédente) ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Forme, squelette et animation inchangés (écart 0,000 cm à chaque image).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 : MIT (avec TRELLIS-image-large, MIT, et DINOv3, usage commercial permis) · BiRefNet et rembg : MIT · trimesh et fast-simplification : MIT · SciPy et scikit-image : BSD · squelette et animation : faits par programme (<span class="insec">T-0133</span>), aucune ressource extérieure · détail de matière : fait par programme (<span class="insec">T-0149</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, occlusion et rugosité) gardées en 1 024 px, passées de PNG en JPEG. Maillage, squelette et animation inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 06/10/2026, <code>comparer_anims.mjs</code>). 1,0 Mo en 5 fichiers, au lieu de 4,6 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\chauves-souris\chauve_souris.glb<br>Détails : E:\aaa-proto\essai\chauves-souris\LISEZMOI.md ; avis du vérificateur à la fin de <span class="insec">T-0133</span> ; avis des vérificateurs dans <span class="insec">T-0149</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-cheval" data-src="modeles/cheval/cheval.json" data-orbite="35deg 78deg auto"
+  data-anim="Walk" data-alt="Modèle 3D : Cheval de la monture">
+  <div class="tete"><h3>Cheval de la monture</h3><span class="ticket"><span class="insec">T-0134</span> · validé le 03/10/2026 (correction 4) ; marque et allure gardées le 06/10/2026 (<span class="insec">D-235</span> (3)) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0145</span>)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/cheval/cheval_apercu.jpg" alt="Aperçu : Cheval de la monture" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 7,5 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Cheval de la monture"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le cheval que le hameau offre au héros, remis au Pont des Déserteurs (<span class="insec">D-184</span>) : un cheval pris aux déserteurs, soldats de l'Ordre, donc un cheval volé de l'Ordre (<span class="insec">D-37</span>), reconnu à sa marque aux portes d'Oakhaven (<span class="insec">D-204</span> (4)). Cheval de selle militaire trapu, robe bai brun sombre, crins et bas des jambes noirs, boue sèche ; selle de cuir simple, tapis de laine ivoire sali, sans or ni emblème (bible artistique, § 6.5). Trois allures : pas, trot et galop (<span class="insec">D-184</span>, <span class="insec">D-194</span>). Marque au fer : le sceptre de l'Ordre sans croix, 16 cm, sur la cuisse arrière gauche.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>67 551 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>1,55 m au garrot, 1,95 m aux oreilles ; 2,61 m de long, queue comprise (2,76 m avant <span class="insec">T-0145</span> : le bout relevé de la queue sculptée est rentré sous les crins) ; 0,72 m de large. Taille gardée (<span class="insec">D-235</span> (3)).</dd>
+    <dt>Animations</dt><dd>14 : Ruade <span class="muted">(Attack_Kick, 0,96 s)</span>, Mort <span class="muted">(Death, 1 s)</span>, Mange <span class="muted">(Eating, 6 s)</span>, Galop <span class="muted">(Gallop, 0,58 s)</span>, Saut au galop <span class="muted">(Gallop_Jump, 1,46 s)</span>, Attente <span class="muted">(Idle, 3,33 s)</span>, Attente 2 <span class="muted">(Idle_2, 3,33 s)</span>, Attente, tête basse <span class="muted">(Idle_Headlow, 3,33 s)</span>, Touché à gauche <span class="muted">(Idle_HitReact_Left, 0,67 s)</span>, Touché à droite <span class="muted">(Idle_HitReact_Right, 0,67 s)</span>, Saut puis arrêt <span class="muted">(Jump_toIdle, 1,71 s)</span>, Cabrage <span class="muted">(Rear, 2,42 s)</span>, Trot <span class="muted">(Trot, 0,67 s)</span>, Marche <span class="muted">(Walk, 1,17 s)</span>. Sur place : dans le jeu, c'est Unreal qui fera avancer le cheval (pas 1,00 m/s, trot 2,12 m/s, galop 3,71 m/s ; sauts à vitesse variable). <code>Rear</code> est un cabrage ; <code>Attack_Kick</code>, la « Ruade de Recul » du cheval militaire (<em>Exploration</em> § 5) ; <code>Gallop_Jump</code>, le saut d'obstacle. Ni monte ni descente du cavalier pour l'instant : aucune animation libre de droits n'a été trouvée.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">D-235</span> (9), <span class="insec">T-0145</span>) : poil fait par programme, sans épi ni remous ; la couleur d'origine (TRELLIS.2) n'a de vrai détail que pour une texture d'environ 1 000 px de côté ; derrière la joue et au haut du front, le bord découpé des crins sculptés se voit encore ; vues de chant, les cartes des fanons font des lames sombres derrière les boulets.</li><li><strong>Reflet du noir</strong> : de près, sous une lumière de contrôle, le chanfrein et la nuque, noirs, grisent quand on les voit en biais (rendus vers 65 et 49 sur 255, pour une couleur vers 27). À distance de jeu, ils se lisent noirs. Le matériau maître d'Unreal (<span class="insec">T-0132</span>) pourra baisser ce reflet.</li><li><strong>Des cartes de crins entrent un peu dans la peau</strong> : elles suivent les os, sans physique ; au pire instant, 0,8 % de leurs sommets sont à plus de 0,5 cm dedans, surtout des bouts de crinière sous les rênes et des crins de la queue dans la queue sculptée rentrée, où reste une petite boule noire (2 à 3 cm). Dans <code>Death</code>, cheval couché, la crinière passe sous le sol (jusqu'à 7,7 cm) ; au trot, le bout d'un fanon passe 0,6 cm sous le sol. Quelques mèches du garrot passent par-dessus le pommeau de la selle.</li><li>Allures lentes à la vitesse de l'animation : pas 1,00 m/s, trot 2,12 m/s, galop 3,71 m/s (un vrai cheval : environ 1,6, 3,5 et 8 à 12 m/s). Les foulées viennent du pack, et les jambes avant, presque tendues, ne vont pas plus loin.</li><li><strong>Entre deux clés</strong>, le sabot qui se pose ou bascule sur sa pince glisse ou s'enfonce : au pas, jusqu'à 7,4 cm par image et 2,5 cm sous le sol ; 6,6 à <code>Jump_toIdle</code>, 6,4 au galop. Aux clés, aucun sabot posé ne glisse (0,24 cm par image au plus). Prévu : le calage des pieds au sol dans Unreal (IK des sabots). Cette page joue les animations sans ce calage.</li><li>Jambes l'une dans l'autre : dans <code>Death</code>, une fois couché (jusqu'à 7,9 cm) ; à l'appel de <code>Gallop_Jump</code>, le sabot arrière gauche entre de 3,2 à 3,8 cm dans l'avant gauche pendant 2 images.</li><li>Au galop, à l'image 9, le sabot arrière droit est à 2,2 cm du sol, alors que la pince du pack y touche encore.</li><li>Peau étirée à la croupe, à la hanche et un peu à l'encolure au galop, aux sauts et à la ruade (2 117 à 2 336 cm², 2,5 à 2,7 % de la peau, autant que le pack) ; au garrot dans <code>Eating</code>.</li><li>Épaule qui glisse, sans à-coup, jusqu'à 8,0 cm au saut d'obstacle et 7,2 cm au trot : le prix des jambes avant presque tendues du modèle.</li><li><code>Eating</code> : genoux fléchis (le cou adapté est plus court que celui du pack). Galop un peu ramassé, ruade, sauts et mort raide : animations du pack ; sauts de rotation d'un os de jambe jusqu'à 55° d'une image à l'autre (ruade), comme le pack. La dernière image de <code>Jump_toIdle</code> n'est pas la pose d'<code>Idle</code> (fondu à faire dans Unreal) ; <code>Rear</code> finit à 4,1 cm de sa première image.</li><li>Tache gris-bleu sur le flanc gauche, que la cuisse découvre au galop et à la ruade (71 triangles) ; carrés clairs au bas des jambes arrière (environ 640 cm², texture d'origine).</li><li>Rênes faites d'une sangle qui suit l'encolure et peut se déformer quand la tête baisse ; étriers relevés contre la selle (des étriers à part seront à ajouter pour le cavalier) ; petit creux sur la cuisse gauche ; peau pas tout à fait fermée dans la queue (4 arêtes ouvertes, 0,2 à 1 cm, invisibles).</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, le 06/10/2026 (<span class="insec">D-235</span>, <span class="insec">D-240</span>) :</p><ul class="liste"><li><strong>Marque et allure gardées</strong> : la marque proposée (sceptre de l'Ordre sans croix, marqué au fer, 16 cm, cuisse arrière gauche), la robe sombre, le harnais usé, le tapis ivoire sali, les étriers relevés et 1,55 m au garrot (<span class="insec">D-235</span> (3)).</li><li><strong>Qualité AAA</strong> : le détail n'était pas au niveau d'un jeu AAA (poils en touffe collée), et cela vaut pour tous les modèles faits sur ce PC (<span class="insec">D-235</span> (9)). Les pistes de l'étude de qualité s'appliquent aux modèles existants (<span class="insec">D-240</span> (1)) : <strong>qualité améliorée (<span class="insec">T-0145</span>)</strong>, crins en cartes et détail de poil ; les noirs des crins peuvent descendre jusqu'à <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)).</li><li>Il aura <strong>peur des monstres</strong> : il se cabrera devant les morts-vivants, les esprits ou la horde, et le cavalier pourra tomber (<span class="insec">D-235</span> (3), qui prime sur <em>Monture</em> § 3).</li><li>La <strong>monte et la descente</strong> du cavalier seront des animations faites par programme (<span class="insec">D-235</span> (3)).</li><li>Ses <strong>allures</strong> seront refaites avec de vraies foulées, les sabots restant posés, au lieu d'accélérer la lecture (<span class="insec">D-235</span> (6)). Blessé, il boitera (<span class="insec">D-235</span> (7)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>Garder pour la monture <code>Eating</code>, la ruade (<code>Attack_Kick</code>) et les réactions au coup du pack ? (point 5 du LISEZMOI, que <span class="insec">D-235</span> ne tranche pas)</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B, en local : 8 images, puis 12 retouchées pour porter la queue en arrière, écartée des cuisses ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 sur 4 images (60 000 faces, texture 4 096 px) ; retenu : <code>cheval-n4s1</code> (jambes nettes, queue écartée).</li><li>Retouche par programme (Blender, trimesh) : surface pleine refaite (le tapis de laine gardait des piqûres), 59 999 triangles, une seule peau, un matériau ; couleur cuite sans le métal de TRELLIS.2 (0,99 de la source en sRGB), relief recuit ; marque proposée peinte dans une variante de la texture de couleur.</li><li>Squelette du cheval du pack Quaternius (46 os : paturons et sabots gardés comme os de la jambe) et 12 de ses animations, adaptés au corps ; trot et cabrage faits ici. Sabots calés au sol à chaque image sur les appuis du pack lui-même (deux points et l'angle de chaque sabot) ; une clé par image (24 par seconde) ; boucles sans saut.</li><li>Qualité (<span class="insec">T-0145</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (22,5 à 42,5 % de la texture) ; détail de poil orienté cuit dans la couleur et le relief, rugosité par matière (robe, crins, sabots, selle, tapis) et occlusion ; <strong>crins en cartes</strong> : crinière (200), toupet (6), queue en goupillon (190) et fanons (64), 7 552 triangles, qui suivent le squelette ; crinière et queue sculptées d'origine rentrées sous les cartes, crinière et toupet sculptés mis au noir de la fiche (<code>#1B1A19</code>) ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)) ; tapis ivoire gardé tel quel ; marque gardée refaite sur la nouvelle texture (<span class="insec">D-235</span> (3)). Squelette et animations inchangés (écart 0,000 cm à chaque image, hors crins sculptés déplacés exprès).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 et TRELLIS-image-large : MIT (avec DINOv3, usage commercial permis) · rembg, BiRefNet et trimesh : MIT · SciPy et scikit-image : BSD · cheval animé de Quaternius (<em>Ultimate Animated Animal Pack</em>, pris sur Poly Pizza) : CC0 1.0 · trot, cabrage, calage des sabots et marque : faits par programme (<span class="insec">T-0134</span>) · détail de poil et cartes de crins : faits par programme (<span class="insec">T-0145</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures du corps (couleur, relief, occlusion et rugosité) réduites de 4 096 à 2 048 px, en JPEG. Texture des cartes de poils gardée en PNG, telle quelle (<code>cheval_poils.png</code>, 512 × 2 048 px), pour sa transparence. Couleur : la variante avec la marque gardée par le directeur (<code>cheval_BaseColor_marque.png</code>, <span class="insec">D-235</span> (3)) ; le GLB validé, lui, n'a pas la marque. Maillage, squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 06/10/2026, <code>comparer_anims.mjs</code>). 7,5 Mo en 6 fichiers, au lieu de 50,0 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\cheval\cheval.glb<br>Détails : E:\aaa-proto\essai\cheval\LISEZMOI.md ; avis des vérificateurs dans <span class="insec">T-0134</span> et <span class="insec">T-0145</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-sanglier" data-src="modeles/sanglier/sanglier.json" data-orbite="35deg 78deg auto"
+  data-anim="Walk" data-alt="Modèle 3D : Sanglier">
+  <div class="tete"><h3>Sanglier</h3><span class="ticket"><span class="insec">T-0135</span> · validé le 06/10/2026 (correction 1) ; taille gardée le 06/10/2026 (<span class="insec">D-235</span> (4)) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0149</span>, <span class="insec">D-240</span>) ; œil sombre le 07/10/2026 (<span class="insec">T-0155</span>, <span class="insec">D-251</span> (2))</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/sanglier/sanglier_apercu.jpg" alt="Aperçu : Sanglier" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 6,9 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Sanglier"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le gibier de la nature libre autour du hameau : une compagnie de sangliers (<span class="insec">D-218</span>), règle qui vaut aussi pour le jeu complet (<span class="insec">D-230</span> (1)). Sanglier d'Europe adulte, un grand mâle : pelage d'hiver gris-brun dru, bas des pattes noir, crête de soies sur le dos, défenses courtes (bible artistique, § 6.5).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>62 559 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>0,92 m au plus haut (crête du garrot) : un grand mâle ; 1,20 m de long dans la pose de repos de ce fichier (le LISEZMOI donne 1,30 m du groin au bout de la queue) ; 0,44 m de large. Taille gardée (<span class="insec">D-235</span> (4)).</dd>
+    <dt>Animations</dt><dd>11 : Attaque <span class="muted">(Attack, 1 s)</span>, Charge <span class="muted">(Charge, 0,58 s)</span>, Mort <span class="muted">(Death, 1,25 s)</span>, Mange <span class="muted">(Eating, 6 s)</span>, Galop <span class="muted">(Gallop, 0,58 s)</span>, Attente <span class="muted">(Idle, 3,33 s)</span>, Attente 2 <span class="muted">(Idle_2, 3,33 s)</span>, Attente, tête basse <span class="muted">(Idle_Headlow, 3,33 s)</span>, Touché à gauche <span class="muted">(Idle_HitReact_Left, 0,67 s)</span>, Touché à droite <span class="muted">(Idle_HitReact_Right, 0,67 s)</span>, Marche <span class="muted">(Walk, 1,17 s)</span>. Sur place : dans le jeu, c'est Unreal qui fera avancer le sanglier (marche 0,47 m/s, course et charge 1,75 m/s). <code>Gallop</code> est sa course ; <code>Charge</code>, la course tête basse ; <code>Attack</code>, le coup de boutoir qui suit la charge ; <code>Eating</code>, la fouille du sol au groin ; « blessé » est rendu par les réactions au coup (<code>Idle_HitReact_Left</code> et <code>_Right</code>).</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">D-235</span> (9), <span class="insec">T-0149</span>) : le détail ajouté par programme imite la matière sans l'usure ni les épis qu'un artiste dessinerait, et la couleur d'origine (TRELLIS.2) reste molle ; les défenses sont lisses et brillantes, mais gardent l'ivoire gris de TRELLIS.2.</li><li><strong>Des cartes de soies entrent un peu dans la peau</strong> : elles suivent les os, sans physique ; au pire instant (<code>Eating</code>, cou baissé), 0,91 % de leurs sommets sont à plus de 0,5 cm sous la peau la plus proche, jusqu'à 1,9 cm, surtout dans la plaque mince de la crête. Pas de soies sur l'avant de la crête, entre les oreilles (cette peau suit les os des oreilles) : elle est seulement teintée. Les soies, teintées comme la peau à leur racine, paraissent plus claires que la crête sombre.</li><li><strong>Devant plus sombre qu'avant</strong> (<span class="insec">T-0149</span>) : épaules, avant-bras, crête, haut du cou et queue dès la racine, là où le gris blanchâtre a été ramené à la fiche ; l'arrière du corps garde sa couleur. Les franges, au gris-brun moyen de la fiche, éclaircissent aussi des parties déjà sombres du bas du cou (environ 335 cm²), que l'image de départ montre noir.</li><li><strong>L'œil suit le maillage</strong> (<span class="insec">T-0155</span>) : la teinte est posée par sommet, sur des arêtes de 9 mm. De très près, la paupière garde la forme anguleuse du croissant de TRELLIS.2, un pli gris reste à droite, et l'œil gauche paraît plus grand que le droit (les deux yeux livrés ne sont pas symétriques). À distance normale, l'œil se lit petit, sombre et humide.</li><li>Allures lentes à la vitesse de l'animation : marche 0,47 m/s, course et charge 1,75 m/s (un sanglier qui charge dépasse 10 m/s).</li><li><strong>Entre deux clés</strong>, le sabot qui se pose ou bascule sur sa pince glisse ou s'enfonce un peu : au pas, 4,2 cm par image et 0,82 cm sous le sol ; à la course et à la charge, 5,0 cm par image et 0,46 cm sous le sol. Aux clés, aucun sabot posé ne glisse (0,45 cm par image au plus). Prévu : le calage des pieds au sol dans Unreal. Cette page joue les animations sans ce calage.</li><li>Pas de cheval : sur des pattes courtes, la marche paraît un peu sautillante.</li><li><code>Death</code> : en tombant sur le flanc, les sabots du côté du sol glissent (jusqu'à 10,6 cm par image) et passent 1,69 cm sous le sol entre deux images ; couché, les pattes restent raides, tendues sur le côté.</li><li>Peau étirée à la course et à la charge (1 758 et 2 102 cm²) et au pas (752 cm²).</li><li><strong>Crête et franges</strong> : la crête reste une plaque sculptée sous les soies, et les franges sous le menton, le cou et derrière les pattes avant restent des lambeaux sculptés ; seule leur couleur a changé (<span class="insec">T-0149</span> : sombre, comme dans l'image FLUX.2). De près, on voit encore leur forme.</li><li>Queue raccourcie à 0,40 m (choix de l'exécutant ; TRELLIS.2 la faisait pendre presque jusqu'au sol) : elle pend près des fesses et peut les frôler.</li><li>Cuisses : au pas, un sommet de l'intérieur d'une cuisse entre de 4,4 cm dans l'autre ; à la course et à la charge, 5 sommets de 2,3 à 2,7 cm, là où les cuisses se touchent déjà au repos.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, le 06/10/2026 (<span class="insec">D-235</span>) et le 07/10/2026 (<span class="insec">D-251</span>) :</p><ul class="liste"><li><strong>Taille gardée</strong> ; des <strong>laies</strong> d'environ 0,75 m viendront pour la compagnie (<span class="insec">D-235</span> (4)).</li><li>Il fuit d'habitude, mais <strong>chargera</strong> (coup de boutoir) s'il est menacé : si on l'approche de trop près ou si on le blesse (<span class="insec">D-235</span> (4)). Blessé, il <strong>boitera</strong> (<span class="insec">D-235</span> (7)).</li><li>Sa <strong>course</strong> sera refaite avec de vraies foulées, les sabots restant posés, au lieu d'accélérer la lecture (<span class="insec">D-235</span> (6)).</li><li><strong>Crête</strong> couchée et sombre, gardée telle quelle (<span class="insec">D-251</span> (1)) ; <strong>œil sombre</strong>, petit et presque noir comme dans l'image de départ, fait par <span class="insec">T-0155</span> (<span class="insec">D-251</span> (2)).</li></ul></dd>
+    <dt>Questions ouvertes</dt><dd><p class="muted">Pour le directeur, non tranchées :</p><ul class="liste"><li>Franges du cou au gris-brun moyen de la fiche, qui éclaircissent un peu le bas du cou que l'image de départ montre noir : à garder ? (point de <span class="insec">T-0149</span> ; la crête et l'œil sont tranchés par <span class="insec">D-251</span>)</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B, en local, 4 images ; retenue : graine 2 (la graine 1 avait des défenses de phacochère, les graines 3 et 4 regardaient l'objectif) ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 sur 2 images (60 000 faces, texture 4 096 px).</li><li>Retouche par programme (Blender, trimesh) : surface pleine, une peau fermée de 59 994 triangles (et 5 triangles isolés d'aire quasi nulle), un matériau ; couleur cuite sans le métal de TRELLIS.2 (0,98 de la source en sRGB), relief recuit ; queue refaite et raccourcie à 0,40 m.</li><li>Squelette (46 os) et animations du cheval du pack Quaternius, adaptés au corps : le sanglier a des sabots, comme le cheval. Gestes de cheval retirés, coup de tête gardé comme coup de boutoir ; charge, mort et balancement de la queue faits ici ; encolure amortie à 40 % aux allures. Sabots calés au sol avec le calage final du cheval (<span class="insec">T-0134</span>), sur les appuis du pack lui-même ; une clé par image ; boucles sans saut ; au plus 4 os par sommet (correction 1).</li><li>Qualité (<span class="insec">T-0149</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (33 à 51 % de la texture) ; détail de matière orienté cuit dans la couleur et le relief (soies drues, groin en cuir humide, défenses lisses, sabots en corne), rugosité par matière et occlusion ; <strong>soies en cartes</strong> : 320 sur la ligne du dos, couchées vers l'arrière (2 560 triangles), en 3 teintes prises dans la fiche, qui suivent le squelette ; <strong>teinte ramenée à la fiche</strong> : la crête, les franges du cou, les traînées derrière les pattes avant et toute la queue, gris blanchâtre chez TRELLIS.2, prennent le sombre de la fiche et de l'image de départ (forme inchangée ; les yeux et leur pourtour gardent leur couleur) ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Forme, squelette et animations inchangés (écart 0,000 cm à chaque image).</li><li>Œil sombre (<span class="insec">T-0155</span>, <span class="insec">D-251</span> (2)), le 07/10/2026 : le globe prend la teinte de l'œil de l'image de départ (<code>#1C1C1E</code>), lisse et humide (rugosité 0,12, comme l'œil du lapin) ; le croissant blanc de TRELLIS.2 redevient paupière, dans le ton de la tête (<code>#3F3834</code>) ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Hors des yeux, couleur, rugosité et relief inchangés (au plus 1/255 sur quelques dizaines de texels) ; forme, squelette et animations inchangés.</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 et TRELLIS-image-large : MIT (avec DINOv3, usage commercial permis) · rembg, BiRefNet et trimesh : MIT · SciPy et scikit-image : BSD · cheval animé de Quaternius (<em>Ultimate Animated Animal Pack</em>) : CC0 1.0, déjà pris pour <span class="insec">T-0134</span> · charge, mort, queue, fouille et calage : faits par programme (<span class="insec">T-0135</span>) · détail de matière et cartes de soies : faits par programme (<span class="insec">T-0149</span>) · œil sombre : fait par programme (<span class="insec">T-0155</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures du corps (couleur, relief, occlusion et rugosité) réduites de 4 096 à 2 048 px, en JPEG. Texture des cartes de soies gardée en PNG, telle quelle (<code>sanglier_poils.png</code>, 1 536 × 2 048 px), pour sa transparence. Maillage, squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 07/10/2026, <code>comparer_anims.mjs</code>). 6,9 Mo en 6 fichiers, au lieu de 51,9 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\gibier\sanglier\sanglier.glb<br>Détails : E:\aaa-proto\essai\gibier\sanglier\LISEZMOI.md ; avis des vérificateurs dans <span class="insec">T-0135</span>, <span class="insec">T-0149</span> et <span class="insec">T-0155</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-lapin" data-src="modeles/lapin/lapin.json" data-orbite="35deg 75deg auto"
+  data-anim="Hop" data-alt="Modèle 3D : Lapin de garenne">
+  <div class="tete"><h3>Lapin de garenne</h3><span class="ticket"><span class="insec">T-0135</span> · validé le 06/10/2026 (correction 1) ; taille gardée le 06/10/2026 (<span class="insec">D-235</span> (4)) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0149</span>, <span class="insec">D-240</span>)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/lapin/lapin_apercu.jpg" alt="Aperçu : Lapin de garenne" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 4,4 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Lapin de garenne"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Le petit gibier de la nature libre autour du hameau (<span class="insec">D-218</span>, <span class="insec">D-230</span> (1)) : un lapin d'ambiance, qui fuit. Lapin de garenne assis en alerte : pelage gris-brun agouti, ventre chamois clair, petite queue blanche, oreilles dressées (bible artistique, § 6.5).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>30 000 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>0,27 m aux oreilles, assis ; 0,29 m de long ; 0,17 m de large. Taille gardée (<span class="insec">D-235</span> (4)).</dd>
+    <dt>Animations</dt><dd>4 : Mort <span class="muted">(Death, 1,5 s)</span>, Fuite <span class="muted">(Flee, 0,5 s)</span>, Saut <span class="muted">(Hop, 0,67 s)</span>, Attente <span class="muted">(Idle, 3 s)</span>. Faites par programme, sur place : dans le jeu, c'est Unreal qui fera avancer le lapin (saut 0,35 m/s, fuite 1,4 m/s). <code>Hop</code> est le déplacement lent ; <code>Flee</code>, la fuite en demi-bonds, oreilles couchées ; <code>Death</code>, un sursaut puis une chute sur le flanc.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">D-235</span> (9), <span class="insec">T-0149</span>) : le détail ajouté par programme imite la matière sans l'usure ni les épis qu'un artiste dessinerait, et la couleur d'origine (TRELLIS.2) reste molle ; elle a déjà des traits de poil peints, que le détail prolonge sans les remplacer : le gain reste discret à distance de jeu.</li><li><strong>Pattes l'une dans l'autre</strong> au saut et à la fuite : le genou et la jambe entrent dans l'avant-bras du même côté (jusqu'à 4,3 cm), et l'intérieur des cuisses se recouvre sous le ventre. Le lapin est généré assis : cuisses, ventre et pattes avant sont collés dans la peau. Le vérificateur en mesure 0,8 cm hors recouvrements du repos. Non touché par la mise à niveau de qualité (<span class="insec">T-0149</span>) : ce défaut sera corrigé plus tard (<span class="insec">D-235</span> (8)).</li><li>Avant-bras sous le sol : 0,41 cm au saut, 0,5 cm à la fuite entre deux images.</li><li>Pieds qui glissent un peu au lever et à la pose : 1,2 cm par image une fois au saut, 2,5 cm par image à la fuite (pieds arrière).</li><li>Allures lentes : 0,35 et 1,4 m/s (un lapin qui fuit dépasse 10 m/s).</li><li>Peau étirée aux cuisses et aux jambes quand le corps se tend (259 cm² à la fuite).</li><li>Œil en grand disque noir : il a maintenant un reflet (<span class="insec">T-0149</span>), mais sa forme ne change pas.</li><li><code>Death</code> : couché, les pattes se replient l'une dans l'autre ; le corps glisse un peu en tombant (0,7 cm).</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, le 06/10/2026 (<span class="insec">D-235</span>) :</p><ul class="liste"><li><strong>Taille gardée</strong> (<span class="insec">D-235</span> (4)).</li><li>Sa <strong>fuite</strong> sera refaite avec de vraies foulées, les pieds restant posés, au lieu d'accélérer la lecture (<span class="insec">D-235</span> (6)).</li><li>Les <strong>pattes qui se recouvrent</strong> seront corrigées : ce défaut n'est plus accepté (<span class="insec">D-235</span> (8)).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B, en local, 4 images ; retenue : graine 1 (les graines 3 et 4 ont deux têtes, la graine 2 regarde l'objectif) ; détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 (60 000 faces, texture 4 096 px).</li><li>Retouche par programme (Blender, trimesh) : surface pleine, une peau fermée de 29 986 triangles (et 14 triangles isolés d'aire quasi nulle), un matériau, textures de 2 048 px ; couleur cuite sans le métal de TRELLIS.2 (0,98 de la source en sRGB).</li><li>Squelette (21 os), poids et 4 animations faits par programme, sans pack : le loup et le cheval du pack ne sautent pas. Pieds posés fixés au sol par IK ; au plus 4 os par sommet (correction 1) ; boucles sans saut.</li><li>Qualité (<span class="insec">T-0149</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (32 à 46 % de la texture) ; détail de matière orienté cuit dans la couleur et le relief (pelage fin, truffe en cuir, queue plus floconneuse), rugosité par matière et occlusion ; <strong>œil lisse et brillant</strong> ; pas de cartes de poils (pas de poils longs) ; teinte de la fiche gardée (1,000 de la précédente) ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Forme, squelette et animations inchangés (écart 0,000 cm à chaque image).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 et TRELLIS-image-large : MIT (avec DINOv3, usage commercial permis) · rembg, BiRefNet et trimesh : MIT · SciPy et scikit-image : BSD · squelette, poids et animations : faits par programme (<span class="insec">T-0135</span>), aucune ressource extérieure · détail de matière : fait par programme (<span class="insec">T-0149</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures (couleur, relief, occlusion et rugosité) gardées en 2 048 px, passées de PNG en JPEG. Maillage, squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 06/10/2026, <code>comparer_anims.mjs</code>). 4,4 Mo en 5 fichiers, au lieu de 14,9 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\gibier\lapin\lapin.glb<br>Détails : E:\aaa-proto\essai\gibier\lapin\LISEZMOI.md ; avis des vérificateurs dans <span class="insec">T-0135</span> et <span class="insec">T-0149</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-perdrix" data-src="modeles/perdrix/perdrix.json" data-orbite="35deg 72deg auto"
+  data-anim="Idle" data-alt="Modèle 3D : Perdrix grise">
+  <div class="tete"><h3>Perdrix grise</h3><span class="ticket"><span class="insec">T-0135</span> · validé le 06/10/2026 (correction 1) ; taille gardée le 06/10/2026 (<span class="insec">D-235</span> (4)) ; qualité améliorée le 06/10/2026 (<span class="insec">T-0149</span>, <span class="insec">D-240</span>)</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/perdrix/perdrix_apercu.jpg" alt="Aperçu : Perdrix grise" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 5,7 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <label class="choix">Animation <select class="anim" aria-label="Animation de Perdrix grise"></select></label>
+    <button class="pause bouton" type="button" aria-pressed="false">Pause</button>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">L'oiseau du gibier de la nature libre autour du hameau (<span class="insec">D-218</span>, <span class="insec">D-230</span> (1)) : une compagnie posée au sol, qui part en vol à l'approche. Perdrix grise (espèce proposée à <span class="insec">T-0135</span>) : poitrine grise finement vermiculée, flancs barrés de roux, dos brun strié, face orangée (bible artistique, § 6.5).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>18 000 (comme le fichier validé)</dd>
+    <dt>Taille</dt><dd>0,27 m du bec au bout de la queue ; 0,21 m de haut, posée ; envergure de 0,28 à 0,44 m pendant le battement. Taille gardée (<span class="insec">D-235</span> (4)).</dd>
+    <dt>Animations</dt><dd>5 : Mort <span class="muted">(Death, 1,25 s)</span>, Mort au sol <span class="muted">(Death_Ground, 1 s)</span>, Vol <span class="muted">(Fly, 0,33 s)</span>, Attente <span class="muted">(Idle, 3 s)</span>, Envol <span class="muted">(TakeOff, 1 s)</span>. Faites par programme, sur place : dans le jeu, c'est Unreal qui fera monter et voler la perdrix. <code>Idle</code> : posée au sol, avec un coup de bec ; <code>TakeOff</code> : envol, le corps change à l'image 8 ; <code>Fly</code> : vol en boucle, 3 battements par seconde à la vitesse 1, celle de la page (à lire × 2 à × 3 dans Unreal) ; <code>Death</code> : mort en vol, chute de 10 cm ; <code>Death_Ground</code> : mort au sol.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li><strong>De très près, ce n'est pas encore du niveau d'un jeu AAA</strong> (<span class="insec">D-235</span> (9), <span class="insec">T-0149</span>) : le détail ajouté par programme imite la matière sans l'usure ni les épis qu'un artiste dessinerait, et la couleur d'origine (TRELLIS.2) reste molle ; les rémiges restent une texture sur des ailes en plaques ; l'œil n'a pas de matière propre (celle du plumage) ; le bec n'est vraiment lisse qu'au cœur (rugosité 0,42 ; 0,49 en moyenne sur le gris du bec du corps posé, 0,53 en vol).</li><li><strong>Deux corps</strong> : un seul maillage ne peut pas être à la fois posé, ailes repliées, et en vol, ailes ouvertes. Le changement se fait en une image dans <code>TakeOff</code> et se voit de près (l'oiseau posé rétrécit pendant que l'oiseau en vol grandit). Générés à part, les deux corps n'ont pas tout à fait la même teinte (en vol, plus gris, face plus rouge) ni la même tête. Non touché par la mise à niveau de qualité (<span class="insec">T-0149</span>) : ce défaut sera corrigé plus tard (<span class="insec">D-235</span> (8)).</li><li>Battement lent à la vitesse 1 : 3 par seconde, quand une perdrix bat des ailes environ 10 fois par seconde.</li><li>Ailes en plaques : le corps en vol n'a que 5 932 triangles, et les rémiges ne sont qu'une texture.</li><li>Queue longue pour une perdrix ; envergure un peu courte (0,44 m au plus).</li><li>Bas des tarses 0,09 cm sous le sol à l'attente, 0,16 cm à l'envol.</li><li>Mort en vol : chute de 10 cm seulement dans l'animation ; elle finit sur le dos, ailes à demi ouvertes.</li></ul></dd>
+    <dt>Décisions</dt><dd><p class="muted">Du directeur, le 06/10/2026 (<span class="insec">D-235</span>) :</p><ul class="liste"><li><strong>Taille gardée</strong> (<span class="insec">D-235</span> (4)).</li><li>Le <strong>changement de corps</strong> (deux corps) sera corrigé : ce défaut n'est plus accepté (<span class="insec">D-235</span> (8)).</li><li>Les oiseaux du jeu seront de plusieurs sortes : perdrix et petits oiseaux là où c'est paisible, corbeaux et charognards près des morts-vivants et des charniers, selon aussi la saison, la météo et la présence des hommes (<span class="insec">D-235</span> (5)).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Images : FLUX.2 [klein] 4B, en local : posée (graine 1) et en vol vue de côté (graine 3). Une vue de dessus est refusée : TRELLIS.2 en faisait un oiseau penché à 33°, pattes pendantes. Détourage BiRefNet (rembg).</li><li>3D : TRELLIS.2 (60 000 faces, texture 4 096 px) : 2 corps posés et 4 corps en vol comparés.</li><li>Retouche par programme (Blender, trimesh) : <strong>deux corps sur un même squelette</strong>, chacun une peau fermée : posé (12 000 triangles) et en vol (5 932 triangles, et 68 triangles isolés d'aire quasi nulle) ; le corps caché est réduit à l'échelle 0,001 par son os. Couleurs cuites sans le métal de TRELLIS.2 (0,99 de la source en sRGB), textures de 2 048 px, deux matériaux.</li><li>Squelette (20 os), poids et 5 animations faits par programme, sans pack ; pieds posés fixes ; au plus 4 os par sommet (correction 1) ; boucles sans saut.</li><li>Qualité (<span class="insec">T-0149</span>, <span class="insec">D-240</span> (1)), le 06/10/2026 : dépliage resserré (corps posé : 49 à 60 % de sa texture ; corps en vol : 39 à 54 %) ; détail de matière orienté cuit dans la couleur et le relief (plumage en écailles allongées à barbes fines, bec lisse, tarses écailleux), rugosité par matière et occlusion, chaque corps avec sa texture (occlusion cuite l'autre corps réduit, comme dans le jeu) ; pas de cartes de plumes ; teinte de la fiche gardée (1,01 de la précédente) ; aucun noir plus sombre que <code>#0C0C0C</code> (<span class="insec">D-240</span> (2)). Forme, squelette et animations inchangés (écart 0,000 cm à chaque image).</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] 4B : Apache-2.0 · TRELLIS.2 et TRELLIS-image-large : MIT (avec DINOv3, usage commercial permis) · rembg, BiRefNet et trimesh : MIT · SciPy et scikit-image : BSD · squelette, poids et animations : faits par programme (<span class="insec">T-0135</span>), aucune ressource extérieure · détail de matière : fait par programme (<span class="insec">T-0149</span>) · Blender (GPL) employé comme outil.</dd>
+      <dt>Pour cette page</dt><dd>Textures des deux corps (couleur, relief, occlusion et rugosité) gardées en 2 048 px, passées de PNG en JPEG ; les deux matériaux (corps posé, corps en vol) sont gardés. Maillage, squelette et animations inchangés : clés d'animation identiques au bit près à celles du fichier validé (contrôle du 06/10/2026, <code>comparer_anims.mjs</code>). 5,7 Mo en 8 fichiers, au lieu de 26,6 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\essai\gibier\perdrix\perdrix.glb<br>Détails : E:\aaa-proto\essai\gibier\perdrix\LISEZMOI.md ; avis des vérificateurs dans <span class="insec">T-0135</span> et <span class="insec">T-0149</span> ; version précédente dans avant-qualite\</dd>
+    </dl>
+  </details>
+</article>
+  </div>
+</section>
+
+<section id="essais">
+  <h2>Essais de la chaîne de fabrication</h2>
+  <p class="lecture muted">Les premiers essais de la génération 3D en local (<span class="insec">T-0053</span>, <span class="insec">D-164</span>, <span class="insec">D-165</span>), jugés bons à la validation. Ce sont des sorties brutes de TRELLIS.2, pas des modèles prêts pour le jeu. Le soldat, le mort-vivant et l'esprit de ces essais ne sont pas repris : ils ont été refaits pour le jeu (plus haut).</p>
+  <div class="galerie">
+<article class="modele" id="m-rocher" data-src="modeles/rocher/rocher.json" data-orbite="30deg 70deg auto"
+  data-anim="" data-alt="Modèle 3D : Rocher">
+  <div class="tete"><h3>Rocher</h3><span class="ticket"><span class="insec">T-0053</span> · essai validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/rocher/rocher_apercu.jpg" alt="Aperçu : Rocher" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 6,5 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Essai de la chaîne sur un objet du décor. Pour les rochers du jeu, l'étude conseille d'abord des scans libres (Poly Haven).</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>129 812 dans cette page (le fichier validé en a 295 121)</dd>
+    <dt>Taille</dt><dd>Sortie brute, dans un cube d'une unité : échelle non réglée.</dd>
+    <dt>Animations</dt><dd>Aucune : objet.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>Export par défaut de TRELLIS.2 : coque double à paroi mince, dont la moitié des triangles est dans la paroi intérieure, invisible.</li><li>Non préparé pour le jeu (échelle, pivot, budget de triangles).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : banc d'essai, FLUX.2 [klein] (« entrée v2 »). La première entrée, claire et lisse, donnait une roche « pâte à modeler ».</li><li>3D : TRELLIS.2 (graine 42), export par défaut, texturé.</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis).</dd>
+      <dt>Pour cette page</dt><dd>Allégé pour la page (simplification du maillage, meshoptimizer) et textures de 2 048 px en JPEG. 6,5 Mo en 4 fichiers, au lieu de 20,1 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\gen3d\sorties\trellis2\rocher-v2_s42.glb<br>Détails : E:\aaa-proto\gen3d\RAPPORT.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-maison" data-src="modeles/maison/maison.json" data-orbite="35deg 72deg auto"
+  data-anim="" data-alt="Modèle 3D : Maison">
+  <div class="tete"><h3>Maison</h3><span class="ticket"><span class="insec">T-0053</span> · essai validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/maison/maison_apercu.jpg" alt="Aperçu : Maison" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 5,9 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Essai de la chaîne sur un bâtiment, bon au premier essai.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>93 660 dans cette page (le fichier validé en a 292 507)</dd>
+    <dt>Taille</dt><dd>Sortie brute, dans un cube d'une unité : échelle non réglée.</dd>
+    <dt>Animations</dt><dd>Aucune : objet.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>Export par défaut de TRELLIS.2 : coque double à paroi mince, dont la moitié des triangles est dans la paroi intérieure, invisible.</li><li>Non préparé pour le jeu (échelle, pivot, intérieur, budget de triangles).</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : banc d'essai, FLUX.2 [klein].</li><li>3D : TRELLIS.2 (graine 42), export par défaut, texturé.</li></ol></dd>
+      <dt>Licences</dt><dd>FLUX.2 [klein] : Apache-2.0 · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis).</dd>
+      <dt>Pour cette page</dt><dd>Allégé pour la page (simplification du maillage, meshoptimizer) et textures de 2 048 px en JPEG. 5,9 Mo en 4 fichiers, au lieu de 22,4 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\gen3d\sorties\trellis2\maison_s42.glb<br>Détails : E:\aaa-proto\gen3d\RAPPORT.md</dd>
+    </dl>
+  </details>
+</article>
+<article class="modele" id="m-heros-essai" data-src="modeles/heros-essai/heros-essai.json" data-orbite="20deg 80deg auto"
+  data-anim="" data-alt="Modèle 3D : Héros au réveil (essai)">
+  <div class="tete"><h3>Héros au réveil (essai)</h3><span class="ticket"><span class="insec">T-0053</span> · essai validé le 30/09/2026</span></div>
+  <div class="vue">
+    <img class="apercu" src="modeles/heros-essai/heros-essai_apercu.jpg" alt="Aperçu : Héros au réveil (essai)" width="800" height="600" loading="lazy">
+    <button class="charger bouton" type="button">Voir en 3D · 4,6 Mo</button>
+  </div>
+  <p class="etat-vue muted" aria-live="polite"></p>
+  <div class="commandes" hidden>
+    <span class="muted">Pas d'animation dans ce modèle.</span>
+    <button class="recentrer bouton" type="button">Recentrer</button>
+  </div>
+  <p class="resume">Essai de la chaîne sur la fiche du héros au réveil (<span class="insec">D-163</span>). Ce n'est pas le héros du prototype : son corps et son visage sont un MetaHuman (<span class="insec">T-0052</span>) et sa tenue est la « Tenue du héros » plus haut.</p>
+  <dl class="fiche">
+    <dt>Triangles</dt><dd>82 054 dans cette page (le fichier validé en a 292 410)</dd>
+    <dt>Taille</dt><dd>Sortie brute, dans un cube d'une unité : échelle non réglée.</dd>
+    <dt>Animations</dt><dd>Aucune. Le squelette d'essai d'UniRig (28 os, <span class="insec">T-0053</span>) n'est pas repris : il n'avait pas d'animation.</dd>
+    <dt>Défauts connus</dt><dd><ul class="liste"><li>Visage un peu adouci par rapport à la fiche.</li><li>Export par défaut de TRELLIS.2 : coque double à paroi mince, dont la moitié des triangles est dans la paroi intérieure, invisible.</li></ul></dd>
+  </dl>
+  <details class="plus">
+    <summary>Fabrication, licences et fichiers</summary>
+    <dl class="fiche">
+      <dt>Fabrication</dt><dd><ol class="liste"><li>Image : fiche du héros au réveil <code>personnages\heros-reveil.png</code>, faite avec Codex, l'outil d'images d'OpenAI, le 29/09/2026 (<code>personnages\LISEZMOI.md</code>) ; épée retirée, détourée.</li><li>3D : TRELLIS.2 (graine 42), export par défaut, texturé.</li></ol></dd>
+      <dt>Licences</dt><dd>Fiche d'entrée : image faite avec l'outil d'images d'OpenAI (Codex), d'après <code>personnages\LISEZMOI.md</code> ; ses conditions d'usage n'ont pas été relues pour cette page et restent à vérifier. · TRELLIS.2 : MIT (avec DINOv3, usage commercial permis) · rembg et BiRefNet : MIT.</dd>
+      <dt>Pour cette page</dt><dd>Allégé pour la page (simplification du maillage, meshoptimizer) et textures de 2 048 px en JPEG. 4,6 Mo en 4 fichiers, au lieu de 18,3 Mo.</dd>
+      <dt>Fichier validé</dt><dd class="chemins">E:\aaa-proto\gen3d\sorties\trellis2\heros-reveil_s42.glb<br>Détails : E:\aaa-proto\gen3d\RAPPORT.md</dd>
+    </dl>
+  </details>
+</article>
+  </div>
+</section>
+
+<section id="metahuman">
+  <h2>Les personnages MetaHuman, en images</h2>
+  <p class="lecture muted">Captures en jeu (Unreal 5.8), déjà validées, recadrées et réduites. Pas encore de 3D, et ce n'est pas une question de licence : depuis MetaHuman 5.6, ces personnages relèvent de la licence d'Unreal et peuvent servir hors d'Unreal (étude MetaHuman, § 5). Leur export en 3D (cheveux, peau, squelette du visage) est un travail à faire dans Unreal, prévu plus tard. Deux points de cette licence restent à vérifier avant de les sortir d'Unreal : les animations <code>AS_MH_*</code> et les tenues Fab « UE-Only ».</p>
+  <div class="persos">
+<article class="perso">
+  <div class="tete"><h3>Le héros</h3><span class="ticket"><span class="insec">T-0052</span></span></div>
+  <div class="paire"><figure><img src="images/heros-pied.jpg" alt="Le héros, en pied (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>en pied</figcaption></figure><figure><img src="images/heros-visage.jpg" alt="Le héros, visage (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>visage</figcaption></figure></div>
+  <p class="muted">MetaHuman, au réveil dans les Gorges (captures en jeu du 30/09/2026). Il porte encore les vêtements d'exemple du MetaHuman ; sa tenue est la « Tenue du héros » en 3D plus haut.</p>
+</article>
+<article class="perso">
+  <div class="tete"><h3>Le forgeron du hameau</h3><span class="ticket"><span class="insec">T-0094</span></span></div>
+  <div class="paire"><figure><img src="images/forgeron-pied.jpg" alt="Le forgeron du hameau, en pied (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>en pied</figcaption></figure><figure><img src="images/forgeron-visage.jpg" alt="Le forgeron du hameau, visage de trois quarts (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>visage de trois quarts</figcaption></figure></div>
+  <p class="muted">MetaHuman fait selon sa fiche, avec sa tenue de forgeron (captures en jeu du 01/10/2026).</p>
+</article>
+<article class="perso">
+  <div class="tete"><h3>Le chef du Hameau de la Brume</h3><span class="ticket"><span class="insec">T-0110</span></span></div>
+  <div class="paire"><figure><img src="images/chef-pied.jpg" alt="Le chef du Hameau de la Brume, en pied (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>en pied</figcaption></figure><figure><img src="images/chef-visage.jpg" alt="Le chef du Hameau de la Brume, visage (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>visage</figcaption></figure></div>
+  <p class="muted">MetaHuman fait selon sa fiche (captures en jeu du 01/10/2026).</p>
+</article>
+<article class="perso">
+  <div class="tete"><h3>L'agente du Cartel de la Brume</h3><span class="ticket"><span class="insec">T-0110</span></span></div>
+  <div class="paire"><figure><img src="images/agente-pied.jpg" alt="L'agente du Cartel de la Brume, en pied (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>en pied</figcaption></figure><figure><img src="images/agente-visage.jpg" alt="L'agente du Cartel de la Brume, visage (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>visage</figcaption></figure></div>
+  <p class="muted">MetaHuman fait selon sa fiche, qui propose une femme (<span class="insec">D-217</span>) ; captures en jeu du 01/10/2026.</p>
+</article>
+<article class="perso">
+  <div class="tete"><h3>Le capitaine des portes d'Oakhaven</h3><span class="ticket"><span class="insec">T-0110</span></span></div>
+  <div class="paire"><figure><img src="images/capitaine-pied.jpg" alt="Le capitaine des portes d'Oakhaven, en pied (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>en pied</figcaption></figure><figure><img src="images/capitaine-visage.jpg" alt="Le capitaine des portes d'Oakhaven, visage de trois quarts (capture en jeu, Unreal 5.8)" width="720" height="720" loading="lazy"><figcaption>visage de trois quarts</figcaption></figure></div>
+  <p class="muted">MetaHuman fait selon sa fiche (captures en jeu du 01/10/2026).</p>
+</article>
+  </div>
+</section>
+
+<section id="fichiers">
+  <h2>Comment la page est faite</h2>
+  <ul class="liste lecture">
+    <li><strong>Visionneuse :</strong> <code>&lt;model-viewer&gt;</code> 4.3.1 (Google, Apache-2.0), chargée depuis cdn.jsdelivr.net, version fixée et empreinte vérifiée par le navigateur.</li>
+    <li><strong>Fichiers :</strong> chaque modèle est un glTF en plusieurs fichiers : sa description en <code>.json</code> (le fichier <code>.gltf</code>, renommé), ses données en <code>.wasm</code> et ses textures en JPEG de 2 048 px au plus. Seules les textures des cartes de crins et de poils (cheval, loup, chien, sanglier) restent en PNG, telles quelles, pour garder leur transparence. Le <code>.wasm</code> n'est pas du WebAssembly : c'est le fichier de données <code>.bin</code> du glTF, simplement renommé, parce que l'hébergement ne sert ni <code>.gltf</code> ni <code>.bin</code>. Aucune compression qui demande un décodeur venu d'ailleurs (ni Draco, ni KTX2, ni meshopt).</li>
+    <li><strong>Pourquoi pas un seul fichier <code>.glb</code> :</strong> la visionneuse lit les textures rangées dans un GLB par une adresse « blob: », qu'une page aussi fermée que celle-ci peut bloquer ; le modèle s'affiche alors tout blanc (essai fait avec la même règle de sécurité). Des textures en fichiers séparés se chargent comme le reste de la page.</li>
+    <li><strong>Les fichiers validés ne sont pas modifiés :</strong> la page en utilise des copies allégées. Les personnages sans animation y perdent leur squelette, sans changer de forme. Les modèles animés gardent toutes leurs clés d'animation, identiques au bit près à celles du fichier validé. Quand un modèle est à facettes (une normale par triangle), ses normales ne sont pas stockées : la visionneuse les recalcule, pour le même rendu et un fichier presque deux fois plus léger.</li>
+  </ul>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Modèle</th><th>Ticket</th><th>Triangles</th><th>Fichiers</th><th>Taille, aperçu compris</th><th>Plus gros fichier</th><th>Fichier validé</th></tr></thead>
+      <tbody>
+      <tr><td>Loup</td><td><span class="insec">T-0097</span></td><td class="chiffre">65 600</td><td class="chiffre">7</td><td class="chiffre">6,8 Mo</td><td class="chiffre">3,0 Mo</td><td class="chiffre">46,2 Mo</td></tr>
+      <tr><td>Mort-vivant</td><td><span class="insec">T-0056</span></td><td class="chiffre">43 947</td><td class="chiffre">6</td><td class="chiffre">5,5 Mo</td><td class="chiffre">2,9 Mo</td><td class="chiffre">23,4 Mo</td></tr>
+      <tr><td>Meneur de la horde</td><td><span class="insec">T-0153</span></td><td class="chiffre">63 025</td><td class="chiffre">6</td><td class="chiffre">8,8 Mo</td><td class="chiffre">3,1 Mo</td><td class="chiffre">81,5 Mo</td></tr>
+      <tr><td>Mort-vivant soldat</td><td><span class="insec">T-0154</span></td><td class="chiffre">47 990</td><td class="chiffre">6</td><td class="chiffre">7,3 Mo</td><td class="chiffre">2,6 Mo</td><td class="chiffre">75,6 Mo</td></tr>
+      <tr><td>Mort-vivant archer</td><td><span class="insec">T-0154</span></td><td class="chiffre">39 607</td><td class="chiffre">6</td><td class="chiffre">7,6 Mo</td><td class="chiffre">2,8 Mo</td><td class="chiffre">77,1 Mo</td></tr>
+      <tr><td>Mort-vivant déserteur</td><td><span class="insec">T-0154</span></td><td class="chiffre">44 204</td><td class="chiffre">6</td><td class="chiffre">7,1 Mo</td><td class="chiffre">2,7 Mo</td><td class="chiffre">73,1 Mo</td></tr>
+      <tr><td>Mort-vivant sergent</td><td><span class="insec">T-0154</span></td><td class="chiffre">42 114</td><td class="chiffre">6</td><td class="chiffre">8,3 Mo</td><td class="chiffre">3,2 Mo</td><td class="chiffre">82,4 Mo</td></tr>
+      <tr><td>Esprit</td><td><span class="insec">T-0056</span></td><td class="chiffre">58 596</td><td class="chiffre">6</td><td class="chiffre">3,9 Mo</td><td class="chiffre">1,7 Mo</td><td class="chiffre">22,9 Mo</td></tr>
+      <tr><td>Soldat de l'Ordre</td><td><span class="insec">T-0058</span></td><td class="chiffre">51 729</td><td class="chiffre">6</td><td class="chiffre">6,1 Mo</td><td class="chiffre">2,4 Mo</td><td class="chiffre">26,8 Mo</td></tr>
+      <tr><td>Possédé</td><td><span class="insec">T-0058</span></td><td class="chiffre">52 325</td><td class="chiffre">6</td><td class="chiffre">6,4 Mo</td><td class="chiffre">2,5 Mo</td><td class="chiffre">26,9 Mo</td></tr>
+      <tr><td>Ange Déchu (silhouette)</td><td><span class="insec">T-0058</span></td><td class="chiffre">59 601</td><td class="chiffre">5</td><td class="chiffre">3,7 Mo</td><td class="chiffre">2,1 Mo</td><td class="chiffre">12,9 Mo</td></tr>
+      <tr><td>Tenue du héros</td><td><span class="insec">T-0056</span></td><td class="chiffre">84 576</td><td class="chiffre">9</td><td class="chiffre">6,6 Mo</td><td class="chiffre">2,9 Mo</td><td class="chiffre">33,2 Mo</td></tr>
+      <tr><td>Épée rouillée</td><td><span class="insec">T-0056</span></td><td class="chiffre">19 904</td><td class="chiffre">5</td><td class="chiffre">1,6 Mo</td><td class="chiffre">0,6 Mo</td><td class="chiffre">7,7 Mo</td></tr>
+      <tr><td>Arc du soldat</td><td><span class="insec">T-0058</span></td><td class="chiffre">11 796</td><td class="chiffre">5</td><td class="chiffre">1,1 Mo</td><td class="chiffre">0,4 Mo</td><td class="chiffre">7,2 Mo</td></tr>
+      <tr><td>Bouclier du soldat</td><td><span class="insec">T-0058</span></td><td class="chiffre">11 709</td><td class="chiffre">5</td><td class="chiffre">1,5 Mo</td><td class="chiffre">0,6 Mo</td><td class="chiffre">10,3 Mo</td></tr>
+      <tr><td>Chien de berger</td><td><span class="insec">T-0123</span></td><td class="chiffre">64 510</td><td class="chiffre">7</td><td class="chiffre">7,1 Mo</td><td class="chiffre">3,0 Mo</td><td class="chiffre">46,0 Mo</td></tr>
+      <tr><td>Araignée géante</td><td><span class="insec">T-0133</span></td><td class="chiffre">57 089</td><td class="chiffre">6</td><td class="chiffre">6,3 Mo</td><td class="chiffre">3,0 Mo</td><td class="chiffre">48,0 Mo</td></tr>
+      <tr><td>Chauve-souris</td><td><span class="insec">T-0133</span></td><td class="chiffre">2 996</td><td class="chiffre">6</td><td class="chiffre">1,1 Mo</td><td class="chiffre">0,4 Mo</td><td class="chiffre">4,6 Mo</td></tr>
+      <tr><td>Cheval de la monture</td><td><span class="insec">T-0134</span></td><td class="chiffre">67 551</td><td class="chiffre">7</td><td class="chiffre">7,5 Mo</td><td class="chiffre">3,8 Mo</td><td class="chiffre">50,0 Mo</td></tr>
+      <tr><td>Sanglier</td><td><span class="insec">T-0135</span></td><td class="chiffre">62 559</td><td class="chiffre">7</td><td class="chiffre">6,9 Mo</td><td class="chiffre">3,1 Mo</td><td class="chiffre">51,9 Mo</td></tr>
+      <tr><td>Lapin de garenne</td><td><span class="insec">T-0135</span></td><td class="chiffre">30 000</td><td class="chiffre">6</td><td class="chiffre">4,4 Mo</td><td class="chiffre">1,6 Mo</td><td class="chiffre">14,9 Mo</td></tr>
+      <tr><td>Perdrix grise</td><td><span class="insec">T-0135</span></td><td class="chiffre">18 000</td><td class="chiffre">9</td><td class="chiffre">5,7 Mo</td><td class="chiffre">1,0 Mo</td><td class="chiffre">26,6 Mo</td></tr>
+      <tr><td>Rocher</td><td><span class="insec">T-0053</span></td><td class="chiffre">129 812</td><td class="chiffre">5</td><td class="chiffre">6,6 Mo</td><td class="chiffre">5,3 Mo</td><td class="chiffre">20,1 Mo</td></tr>
+      <tr><td>Maison</td><td><span class="insec">T-0053</span></td><td class="chiffre">93 660</td><td class="chiffre">5</td><td class="chiffre">5,9 Mo</td><td class="chiffre">3,7 Mo</td><td class="chiffre">22,4 Mo</td></tr>
+      <tr><td>Héros au réveil (essai)</td><td><span class="insec">T-0053</span></td><td class="chiffre">82 054</td><td class="chiffre">5</td><td class="chiffre">4,6 Mo</td><td class="chiffre">3,2 Mo</td><td class="chiffre">18,3 Mo</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">25 modèles et 10 images : 139,1 Mo en tout. Aucun fichier ne dépasse 15 Mo.</p>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lecture muted">Tickets validés : <span class="insec">T-0097</span> (loup), <span class="insec">T-0056</span> (créatures, tenue, épée), <span class="insec">T-0058</span> (soldat, arc, bouclier, possédé, Ange Déchu), <span class="insec">T-0053</span> (essais), <span class="insec">T-0123</span> (chien de berger), <span class="insec">T-0133</span> (araignée géante, chauve-souris), <span class="insec">T-0134</span> (cheval de la monture), <span class="insec">T-0135</span> (sanglier, lapin, perdrix), <span class="insec">T-0145</span> (qualité du cheval, du loup et du chien), <span class="insec">T-0149</span> (qualité du sanglier, du lapin, de la perdrix, de l'araignée et de la chauve-souris), <span class="insec">T-0153</span> (meneur de la horde), <span class="insec">T-0154</span> (morts-vivants variés), <span class="insec">T-0155</span> (œil sombre du sanglier), <span class="insec">T-0052</span>, <span class="insec">T-0094</span> et <span class="insec">T-0110</span> (MetaHuman). Décisions : <span class="insec">D-03</span>, <span class="insec">D-37</span>, <span class="insec">D-163</span> à <span class="insec">D-166</span>, <span class="insec">D-184</span>, <span class="insec">D-194</span>, <span class="insec">D-204</span>, <span class="insec">D-213</span>, <span class="insec">D-215</span>, <span class="insec">D-216</span>, <span class="insec">D-217</span>, <span class="insec">D-218</span>, <span class="insec">D-220</span>, <span class="insec">D-223</span>, <span class="insec">D-224</span>, <span class="insec">D-230</span>, <span class="insec">D-234</span>, <span class="insec">D-235</span>, <span class="insec">D-240</span>, <span class="insec">D-250</span>, <span class="insec">D-251</span>. Étude MetaHuman, § 5. Bible artistique, § 4 et § 6.5 ; <code>groupes-ennemis.md</code>, § 3.3 ; <em>Design du Didacticiel</em> ; <em>Structure - Quêtes Secondaires par Zone</em>.</p>
+  <div class="chemins">
+    E:\aaa-proto\essai\loup\ (loup.glb, LISEZMOI.md) · E:\aaa-proto\essai\chien\ (chien.glb, LISEZMOI.md) · E:\aaa-proto\essai\araignee\ (araignee.glb, LISEZMOI.md) · E:\aaa-proto\essai\chauves-souris\ (chauve_souris.glb, LISEZMOI.md) · E:\aaa-proto\essai\cheval\ (cheval.glb, cheval_BaseColor_marque.png, LISEZMOI.md) · E:\aaa-proto\essai\gibier\ (sanglier, lapin et perdrix : GLB et LISEZMOI.md de chacun) · E:\aaa-proto\essai\horde\ (meneur\ et morts-vivants\ : GLB et LISEZMOI.md) ·E:\aaa-proto\echange\ (GLB livrés par gen3d, LISEZMOI.md) · E:\aaa-proto\gen3d\ (RAPPORT.md, sorties\trellis2\)<br>
+    E:\aaa-proto\unreal-v2\captures\ (heros\jeu, forgeron\apres, pnj) : lus, non modifiés<br>
+    E:\aaa-proto\personnages\LISEZMOI.md (origine des fiches d'entrée) · D:\aaa-game\.equipe\etudes\etude-metahuman.md (§ 5, licence)<br>
+    E:\aaa-proto\livrables\modeles-3d\_travail\ (alleger.mjs, construire_page.mjs, comparer_anims.mjs, verifier.mjs, images.py, modeles.json)
+  </div>
+</section>
+</div>
+
+<script>
+/* Avant la visionneuse : model-viewer prépare au démarrage un décodeur meshopt en WebAssembly, dont ces modèles
+   n'ont pas besoin. Si l'hébergement interdit WebAssembly, ce seul échec est attendu : il est retenu ici au lieu de
+   remplir la console. Toute autre erreur reste affichée. */
+window.addEventListener('unhandledrejection', function (e) {
+  var r = e.reason;
+  if (r && r.name === 'CompileError' && /WebAssembly/.test(r.message) && /Content Security Policy/.test(r.message)) {
+    window.m3dWasmBloque = true; e.preventDefault();
+  }
+});
+</script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.3.1/dist/model-viewer.min.js" integrity="sha384-cprcVQt7wbUl0xngF3PGP6yBB7n4/t+4AoAMG9biiMCGFiWOdzUH10Ie2COTqFNW" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var racine = document.documentElement;
+  var bTheme = document.getElementById('m3d-theme');
+  var clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    bTheme.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    bTheme.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  bTheme.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+
+  var NOMS = {"Walk":"Marche","Trot":"Trot","Run":"Course","Gallop":"Galop","Gallop_Jump":"Saut au galop","Jump_ToIdle":"Saut puis arrêt","Idle":"Attente","Idle_2":"Attente 2","Idle_2_HeadLow":"Attente, tête basse","Idle_HitReact1":"Touché 1","Idle_HitReact2":"Touché 2","Attack":"Attaque","Death":"Mort","Eating":"Mange","Sit":"Assis","Sit_Down":"S'assoit","Sit_Idle":"Assis","Sit_Up":"Se relève","Bark":"Aboiement","Hurt":"Blessé","Hit":"Réaction au coup","Leap":"Bond","Flap":"Battement d'ailes","Walk_Limp":"Marche blessé (boite de l'avant gauche)","Walk_Limp_Arriere":"Marche blessé (boite de l'arrière gauche)","Walk_Limp_AvantDroit":"Marche blessé (boite de l'avant droite)","Walk_Limp_ArriereDroit":"Marche blessé (boite de l'arrière droite)","Idle_Headlow":"Attente, tête basse","Jump_toIdle":"Saut puis arrêt","Rear":"Cabrage","Attack_Kick":"Ruade","Idle_HitReact_Left":"Touché à gauche","Idle_HitReact_Right":"Touché à droite","Charge":"Charge","Hop":"Saut","Flee":"Fuite","TakeOff":"Envol","Fly":"Vol","Death_Ground":"Mort au sol","Zombie_Scratch":"Griffure","Hit_Chest":"Coup reçu","Idle_Shield_Break":"Déséquilibre","Death01":"Mort","Walk_Loop":"Marche","Jog_Fwd_Loop":"Course","Zombie_Idle_Loop":"Attente","Zombie_Walk_Fwd_Loop":"Démarche lourde"};
+  function visionneusePrete(delai) {
+    if (window.customElements && customElements.get('model-viewer')) return Promise.resolve(true);
+    return Promise.race([
+      customElements.whenDefined('model-viewer').then(function () { return true; }),
+      new Promise(function (ok) { setTimeout(function () { ok(false); }, delai); })
+    ]);
+  }
+  function charger(carte) {
+    var vue = carte.querySelector('.vue'), bouton = carte.querySelector('.charger'), etat = carte.querySelector('.etat-vue');
+    var texte = bouton.textContent;
+    bouton.disabled = true; bouton.textContent = 'Chargement…'; etat.textContent = '';
+    visionneusePrete(10000).then(function (ok) {
+      if (!ok) {
+        etat.textContent = 'La visionneuse 3D ne s\'est pas chargée (pas de connexion, ou script bloqué). Réessayez plus tard.';
+        bouton.disabled = false; bouton.textContent = texte; return;
+      }
+      var mv = document.createElement('model-viewer');
+      mv.setAttribute('camera-controls', '');
+      mv.setAttribute('touch-action', 'pan-y');
+      mv.setAttribute('shadow-intensity', '1');
+      mv.setAttribute('interaction-prompt', 'none');
+      mv.setAttribute('camera-orbit', carte.dataset.orbite);
+      mv.setAttribute('alt', carte.dataset.alt);
+      mv.addEventListener('progress', function (e) {
+        bouton.textContent = 'Chargement… ' + Math.round(100 * e.detail.totalProgress) + ' %';
+      });
+      mv.addEventListener('error', function () {
+        etat.textContent = 'Le modèle n\'a pas pu se charger.';
+        bouton.disabled = false; bouton.textContent = texte;
+      });
+      mv.addEventListener('load', function () { pret(carte, mv); }, { once: true });
+      vue.appendChild(mv);
+      mv.src = carte.dataset.src;
+    });
+  }
+  function pret(carte, mv) {
+    var vue = carte.querySelector('.vue');
+    ['.apercu', '.charger', '.sans-apercu'].forEach(function (s) { var el = vue.querySelector(s); if (el) el.remove(); });
+    var cmd = carte.querySelector('.commandes'); cmd.hidden = false;
+    var choix = cmd.querySelector('.anim'), pause = cmd.querySelector('.pause');
+    var orbite = carte.dataset.orbite, bascule = false;
+    cmd.querySelector('.recentrer').addEventListener('click', function () {
+      // même orbite écrite un peu autrement, pour que la visionneuse la reprenne à chaque clic
+      bascule = !bascule;
+      mv.cameraOrbit = bascule ? orbite.replace(/deg/, '.0deg') : orbite;
+      mv.cameraTarget = 'auto auto auto'; mv.fieldOfView = 'auto';
+    });
+    if (!choix) return;
+    var noms = mv.availableAnimations;
+    noms.forEach(function (n) {
+      var o = document.createElement('option'); o.value = n;
+      o.textContent = NOMS[n] ? NOMS[n] + ' (' + n + ')' : n; choix.appendChild(o);
+    });
+    var defaut = noms.indexOf(carte.dataset.anim) >= 0 ? carte.dataset.anim : noms[0];
+    choix.value = defaut; mv.animationName = defaut; mv.play();
+    choix.addEventListener('change', function () {
+      mv.animationName = choix.value; mv.currentTime = 0; mv.play();
+      pause.textContent = 'Pause'; pause.setAttribute('aria-pressed', 'false');
+    });
+    pause.addEventListener('click', function () {
+      if (mv.paused) { mv.play(); pause.textContent = 'Pause'; pause.setAttribute('aria-pressed', 'false'); }
+      else { mv.pause(); pause.textContent = 'Lecture'; pause.setAttribute('aria-pressed', 'true'); }
+    });
+  }
+  document.querySelectorAll('.modele[data-src] .charger').forEach(function (b) {
+    b.addEventListener('click', function () { charger(b.closest('.modele')); });
+  });
+})();
+</script>
+
+</body>
+</html>

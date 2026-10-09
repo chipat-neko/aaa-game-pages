@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Plan de la zone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Plan de la zone de départ : une colonne de lecture, le plan en SVG dans un cadre qu'on peut agrandir, des tableaux de lieux et de temps ; identité sombre du projet par défaut, thème clair seulement au bouton */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+.grille-images{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.pistes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.piste .ticket{font:500 .72rem/1 var(--f-data);letter-spacing:.06em;color:var(--pierre)}
+.etat{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--pierre)}.encours{color:var(--acier)}.valide{color:var(--mousse)}.bloque{color:var(--braise)}.fait{color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre)}
+/* Ajouts propres à cette page */
+/* Identité sombre par défaut (gabarit) ; le thème clair ne vient que du bouton « Thème » */
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .zd{--zd-fond:#f4f1ea;--zd-panneau:#ebe6dc;--zd-cadre:#cfc8ba;--zd-plaine:#dcdcc5;--zd-champ1:#e8d9aa;--zd-champ2:#cdd3af;--zd-foret:#a3b393;--zd-arbre:#8a9d79;--zd-plateau:#d3cbbb;--zd-crete:#c3a58c;--zd-gorge:#5a5650;--zd-ravin:#433e39;--zd-hach:#8d857b;--zd-eau:#3f6f99;--zd-jaune:#e2cfae;--zd-jaune-t:#b58a5c;--zd-ch-ex:#2a2f36;--zd-ch:#98600f;--zd-route:#7a5f2a;--zd-limite:#98600f;--zd-hors:rgba(255,255,255,.52);--zd-texte:#1b1f24;--zd-texte2:#4c535b;--zd-halo:#f4f1ea;--zd-grille:rgba(27,31,36,.10);--zd-bloc:#6b7078;--zd-braise:#a8452f;--zd-mousse:#3f6d33;--zd-vue:rgba(152,96,15,.12)}
+:root[data-theme="sombre"] .zd{--zd-fond:#15181c;--zd-panneau:#1d2127;--zd-cadre:#2a2f36;--zd-plaine:#343a2e;--zd-champ1:#4d4933;--zd-champ2:#3d4531;--zd-foret:#20271f;--zd-arbre:#2f3b2b;--zd-plateau:#34322d;--zd-crete:#4b3a2e;--zd-gorge:#0f1011;--zd-ravin:#0b0c0d;--zd-hach:#5d636a;--zd-eau:#7f9bb5;--zd-jaune:#5e4c3b;--zd-jaune-t:#a3856e;--zd-ch-ex:#e4e1d9;--zd-ch:#d4a857;--zd-route:#c9b27a;--zd-limite:#d4a857;--zd-hors:rgba(8,9,11,.55);--zd-texte:#e4e1d9;--zd-texte2:#a8aeb6;--zd-halo:#15181c;--zd-grille:rgba(228,225,217,.09);--zd-bloc:#8b929b;--zd-braise:#d0806a;--zd-mousse:#8fb083;--zd-vue:rgba(212,168,87,.12)}
+a{color:var(--aube)}
+.proposition{justify-self:start;font:500 .72rem/1 var(--f-data);letter-spacing:.06em;text-transform:uppercase;color:var(--aube);border:1px solid currentColor;border-radius:3px;padding:.38rem .55rem}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:transparent;border:1px solid var(--roche);border-radius:3px;padding:.5rem .7rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+.carte{overflow:auto;border:1px solid var(--roche);border-radius:6px;background:var(--brume);-webkit-overflow-scrolling:touch}
+.carte svg{display:block;width:100%;height:auto}
+.carte.zoom{max-height:85vh}
+.carte.zoom svg{width:1000px;max-width:none}
+.options{display:grid;gap:.8rem}
+.option{display:grid;gap:.45rem;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.9rem 1.05rem;min-width:0}
+.option.reco{border-color:var(--aube)}
+.option .qui{font:500 .72rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+.option.reco .qui{color:var(--aube)}
+td.num{font-family:var(--f-data);color:var(--aube);white-space:nowrap}
+tr.total td{font-weight:600}
+ol.questions{margin:0;padding-left:1.3rem;display:grid;gap:.55rem}
+.note{font-size:.92rem;border-left:2px solid var(--aube);padding-left:.7rem}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier T-0091 (P0-02) · 30/09/2026</div>
+  <h1>Plan de la <em>zone de départ</em></h1>
+  <p class="lecture">Le plan, vu de dessus, de la zone jouable du prototype pour les investisseurs (Unreal 5.8, D-181) : des Gorges des Soupirs jusqu'au Pont des Déserteurs et à la route d'Oakhaven, avec le Hameau de la Brume, la Ferme Fortifiée des Veilleurs, les Mines de Fer Oubliées, l'enclos de l'éleveur et un morceau de nature libre (D-177). Ce qui vient d'un document ou d'une décision est cité ; tout le reste est proposé. Les documents de design ne sont pas modifiés.</p>
+  <span class="proposition">Proposition, à valider</span>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#plan">Plan</a><a href="#bref">En bref</a><a href="#lieux">Lieux</a><a href="#temps">Temps</a><a href="#limite">Limite</a><a href="#route">Route</a><a href="#existant">Existant</a><a href="#ecarts">Écarts</a><a href="#questions">Questions</a><a href="#sources">Sources</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="zd-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="plan">
+  <h2>Le plan</h2>
+  <p class="lecture muted">Nord en haut. Coordonnées en mètres, dans le repère du prototype Unreal : X vers le nord, Y vers l'est, origine au centre du terrain déjà construit. Le ravin et la route courte, options recommandées des points bloquants PB-14 et PB-13, sont dessinés ; les variantes sont dans les coupes à droite du plan et plus bas sur la page. Tirets rouges : ≈ 2,8 km de limites (ouest, sud, sud-est) que le terrain actuel ne ferme pas et qui sont à construire. Encart sous la légende : une variante resserrée à ≈ 1,55 km².</p>
+  <div class="outils">
+    <button class="bouton" id="zd-zoom" type="button" aria-pressed="false" aria-controls="zd-carte">Agrandir le plan</button>
+    <span class="muted">Sur téléphone : agrandir, puis faire glisser le plan.</span>
+  </div>
+  <div class="carte" id="zd-carte">
+<svg xmlns="http://www.w3.org/2000/svg" class="zd" viewBox="0 0 1000 1610" role="img" aria-labelledby="zd-titre zd-desc" font-family="Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title id="zd-titre">Plan de la zone de départ jouable du prototype (proposition, à valider)</title>
+<desc id="zd-desc">Vue de dessus, nord en haut, de la zone jouable du prototype pour les investisseurs (T-0091, P0-02) : Gorges des Soupirs au sud (existantes dans Unreal), chemin du plateau et descente, Ferme Fortifiée des Veilleurs au centre, Hameau de la Brume, pâturage, tanière du loup et nature libre au nord-est, nid et Pont des Déserteurs sur le ravin qui ferme la zone, fourche de la route vers Oakhaven, gué et Mines de Fer Oubliées à l'ouest. Les limites de l'ouest, du sud et du sud-est (≈ 2,8 km) sont à construire. Encart : variante resserrée à ≈ 1,55 km². Échelle : 100 m pour 40 unités ; carreau de la grille : 250 m.</desc>
+<style>
+.zd{--zd-fond:#15181c;--zd-panneau:#1d2127;--zd-cadre:#2a2f36;--zd-plaine:#343a2e;--zd-champ1:#4d4933;--zd-champ2:#3d4531;--zd-foret:#20271f;--zd-arbre:#2f3b2b;--zd-plateau:#34322d;--zd-crete:#4b3a2e;--zd-gorge:#0f1011;--zd-ravin:#0b0c0d;--zd-hach:#5d636a;--zd-eau:#7f9bb5;--zd-jaune:#5e4c3b;--zd-jaune-t:#a3856e;--zd-ch-ex:#e4e1d9;--zd-ch:#d4a857;--zd-route:#c9b27a;--zd-limite:#d4a857;--zd-hors:rgba(8,9,11,.55);--zd-texte:#e4e1d9;--zd-texte2:#a8aeb6;--zd-halo:#15181c;--zd-grille:rgba(228,225,217,.09);--zd-bloc:#8b929b;--zd-braise:#d0806a;--zd-mousse:#8fb083;--zd-vue:rgba(212,168,87,.12)}
+.zd-fond{fill:var(--zd-fond)}
+.zd-panneau{fill:var(--zd-panneau);stroke:var(--zd-cadre)}
+.zd-cadre{fill:none;stroke:var(--zd-cadre);stroke-width:1.5}
+.zd-plaine{fill:var(--zd-plaine)}
+.zd-champ1{fill:var(--zd-champ1)}
+.zd-champ2{fill:var(--zd-champ2)}
+.zd-foret{fill:var(--zd-foret)}
+.zd-arbre{fill:var(--zd-arbre)}
+.zd-plateau{fill:var(--zd-plateau)}
+.zd-crete{fill:var(--zd-crete)}
+.zd-gorge{fill:var(--zd-gorge);stroke:var(--zd-hach);stroke-width:1}
+.zd-ravin{fill:var(--zd-ravin)}
+.zd-bord{fill:none;stroke:var(--zd-hach);stroke-width:6;stroke-dasharray:1.4 4}
+.zd-escarp{fill:none;stroke:var(--zd-hach);stroke-width:7;stroke-dasharray:1.4 4.6}
+.zd-escarp-l{fill:none;stroke:var(--zd-hach);stroke-width:1.2}
+.zd-eau{fill:none;stroke:var(--zd-eau);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.zd-eau-f{fill:var(--zd-eau)}
+.zd-jaune-fond{fill:var(--zd-jaune)}
+.zd-jaune-trait{stroke:var(--zd-jaune-t);stroke-width:1.4}
+.zd-ch-ex{fill:none;stroke:var(--zd-ch-ex);stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.zd-ch{fill:none;stroke:var(--zd-ch);stroke-width:2.8;stroke-dasharray:9 5;stroke-linecap:round;stroke-linejoin:round}
+.zd-sentier{fill:none;stroke:var(--zd-ch);stroke-width:1.7;stroke-dasharray:2 4;stroke-linecap:round}
+.zd-route{fill:none;stroke:var(--zd-route);stroke-width:2.8;stroke-dasharray:12 4 2 4;stroke-linecap:round;stroke-linejoin:round}
+.zd-galerie{fill:none;stroke:var(--zd-texte2);stroke-width:1.6;stroke-dasharray:4 3}
+.zd-limite{fill:none;stroke:var(--zd-limite);stroke-width:2;stroke-dasharray:14 6}
+.zd-limite-p{fill:none;stroke:var(--zd-limite);stroke-width:1.6;stroke-dasharray:5 3}
+.zd-construire{fill:none;stroke:var(--zd-braise);stroke-width:2.6;stroke-dasharray:4 5}
+.zd-variante{fill:var(--zd-vue);stroke:var(--zd-ch-ex);stroke-width:1.6}
+.zd-terrain{fill:none;stroke:var(--zd-eau);stroke-width:1.2;stroke-dasharray:4 3}
+.zd-hors{fill:var(--zd-hors);fill-rule:evenodd}
+.zd-grille{fill:none;stroke:var(--zd-grille);stroke-width:1}
+.zd-fenetre{fill:none;stroke:var(--zd-texte2);stroke-width:1.2;stroke-dasharray:2 4}
+.zd-nature{fill:none;stroke:var(--zd-mousse);stroke-width:1.8;stroke-dasharray:7 4}
+.zd-vue{fill:var(--zd-vue)}
+.zd-axe{fill:none;stroke:var(--zd-ch);stroke-width:1.2;stroke-dasharray:2 5}
+.zd-pont{stroke:var(--zd-ch-ex);stroke-width:7}
+.zd-pont-c{stroke:var(--zd-route);stroke-width:3}
+.zd-barrage{fill:none;stroke:var(--zd-braise);stroke-width:3;stroke-linecap:round}
+.zd-enceinte{fill:none;stroke:var(--zd-ch-ex);stroke-width:2.2}
+.zd-maison{fill:var(--zd-bloc);stroke:var(--zd-halo);stroke-width:.8}
+.zd-cloture{fill:none;stroke:var(--zd-texte2);stroke-width:1.2;stroke-dasharray:3 2}
+.zd-pt{fill:var(--zd-ch);stroke:var(--zd-halo);stroke-width:1.5}
+.zd-pt-ex{fill:var(--zd-ch-ex);stroke:var(--zd-halo);stroke-width:1.5}
+.zd-braise{fill:var(--zd-braise)}
+.zd-braise-t{fill:none;stroke:var(--zd-braise);stroke-width:2}
+.zd-croix{fill:none;stroke:var(--zd-halo);stroke-width:1.8}
+.zd-bete{fill:var(--zd-mousse);stroke:var(--zd-halo);stroke-width:1}
+.zd-monstre{fill:none;stroke:var(--zd-braise);stroke-width:1.8}
+.zd-gue{fill:none;stroke:var(--zd-ch-ex);stroke-width:2}
+.zd-lien{fill:none;stroke:var(--zd-texte2);stroke-width:1}
+.zd-fleche{fill:var(--zd-route)}
+.zd-t{fill:var(--zd-texte);font-size:13px;paint-order:stroke;stroke:var(--zd-halo);stroke-width:3.2px;stroke-linejoin:round}
+.zd-p{font-size:11.5px;fill:var(--zd-texte2)}
+.zd-n{font-size:10.5px;fill:var(--zd-texte2)}
+.zd-i{font-size:12px;font-style:italic;fill:var(--zd-texte2)}
+.zd-g{font-weight:600}
+.zd-or{fill:var(--zd-ch)}
+.zd-titre{fill:var(--zd-texte);font-family:"IM Fell English",Georgia,serif;font-size:27px}
+.zd-sur{fill:var(--zd-ch);font-size:12px;letter-spacing:.08em;font-weight:600}
+</style>
+<defs>
+<clipPath id="zd-clip"><rect x="40" y="100" width="780" height="860"/></clipPath>
+<pattern id="zd-pat-foret" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" class="zd-foret"/><circle cx="3" cy="3" r="2.4" class="zd-arbre"/><circle cx="9" cy="9" r="2.4" class="zd-arbre"/></pattern>
+<pattern id="zd-pat-jaune" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="7" height="7" class="zd-jaune-fond"/><line x1="0" y1="0" x2="0" y2="7" class="zd-jaune-trait"/></pattern>
+<marker id="zd-fleche" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="zd-fleche"/></marker>
+</defs>
+
+<rect class="zd-fond" x="0" y="0" width="1000" height="1610"/>
+
+<text class="zd-sur" x="40" y="30">PROPOSITION, À VALIDER · T-0091 (P0-02)</text>
+<text class="zd-titre" x="40" y="62">Zone de départ jouable : plan de niveau</text>
+<text class="zd-t zd-p" x="40" y="86">Vue de dessus, nord en haut. Prototype pour les investisseurs, Unreal 5.8 (D-181). Coordonnées du prototype Unreal, en mètres.</text>
+
+<g clip-path="url(#zd-clip)">
+<rect class="zd-plaine" x="40" y="100" width="780" height="860"/>
+<g>
+<polygon class="zd-champ2" points="240,322 300,318 302,360 242,364"/>
+<polygon class="zd-champ1" points="320,322 380,318 382,360 322,364"/>
+<polygon class="zd-champ2" points="400,320 460,316 462,358 402,362"/>
+<polygon class="zd-champ1" points="470,332 522,328 524,368 472,372"/>
+<polygon class="zd-champ1" points="232,380 288,376 290,418 234,422"/>
+<polygon class="zd-champ2" points="300,380 360,376 362,418 302,422"/>
+<polygon class="zd-champ1" points="380,380 430,376 432,420 382,424"/>
+<polygon class="zd-champ2" points="440,400 490,392 494,432 446,440"/>
+<polygon class="zd-champ1" points="300,442 344,436 346,478 302,482"/>
+<polygon class="zd-champ2" points="350,440 396,436 398,480 352,484"/>
+<polygon class="zd-champ1" points="440,512 480,492 500,530 460,550"/>
+<polygon class="zd-champ2" points="300,548 340,544 342,586 302,590"/>
+<polygon class="zd-champ1" points="346,544 396,540 398,582 348,586"/>
+</g>
+<polygon class="zd-plateau" points="40,655 120,645 200,632 232,632 280,634 360,607 400,591 440,591 480,608 520,628 560,644 600,653 680,682 760,741 820,768 820,960 40,960"/>
+<polygon class="zd-crete" points="40,330 54,338 72,352 72,580 136,700 168,820 192,948 192,960 40,960"/>
+<polygon fill="url(#zd-pat-jaune)" points="72,440 210,440 216,560 196,640 136,700 72,580"/>
+<polygon fill="url(#zd-pat-foret)" points="606,703 632,660 664,600 640,520 600,460 584,420 596,380 620,340 648,300 664,292 716,350 760,420 748,510 720,600 640,680"/>
+<polygon fill="url(#zd-pat-foret)" points="740,100 820,100 820,960 576,960 576,744 660,700 740,590 770,505 782,406 736,330 676,270 730,200"/>
+<polygon class="zd-gorge" points="364.8,891 356,868 346.4,844 338.8,820 324.8,796 310,772 296,744 282,716 268,688 254,660 244,634 236.8,614 260.8,614 276,634 294,660 312,688 326,716 340,744 354,772 364.8,796 374.8,820 378.4,844 380,868 380.8,891"/>
+<polyline class="zd-eau" points="356.8,820 344.8,796 332,772 318,744 304,716 290,688 274,660 260,634 248.8,614 270,596 284,580 290,520 250,460 145,380 96,338"/>
+<circle class="zd-eau-f" cx="248.8" cy="614" r="4"/>
+<circle class="zd-eau-f" cx="96" cy="338" r="4"/>
+<polygon class="zd-ravin" points="552,740 640,680 720,600 748,510 760,420 716,350 664,292 560,280 440,276 320,290 200,296 130,318 72,352 54,338 118,298 194,276 318,268 440,255 560,258 676,270 736,330 782,406 770,505 740,590 660,700 576,744"/>
+<polyline class="zd-bord" points="552,740 640,680 720,600 748,510 760,420 716,350 664,292 560,280 440,276 320,290 200,296 130,318 72,352"/>
+<polyline class="zd-bord" points="54,338 118,298 194,276 318,268 440,255 560,258 676,270 736,330 782,406 770,505 740,590 660,700 576,744"/>
+<path class="zd-escarp" d="M40,655 L120,645 L200,632 L232,632 M284,632 L360,607 L400,591 L440,591 L480,608 L520,628 L560,644 L600,653 L639,667"/>
+<path class="zd-escarp-l" d="M40,655 L120,645 L200,632 L232,632 M284,632 L360,607 L400,591 L440,591 L480,608 L520,628 L560,644 L600,653 L639,667"/>
+<path class="zd-grille" d="M60,100V960M160,100V960M260,100V960M360,100V960M460,100V960M560,100V960M660,100V960M760,100V960M40,200H820M40,300H820M40,400H820M40,500H820M40,600H820M40,700H820M40,800H820M40,900H820"/>
+<rect class="zd-fenetre" x="192" y="568" width="272" height="380"/>
+<path class="zd-hors" d="M40,100H820V960H40Z M192,948 L464,948 L552,740 L640,680 L720,600 L748,510 L760,420 L716,350 L664,292 L560,280 L440,276 L320,290 L200,296 L130,318 L72,352 L72,580 L136,700 L168,820 Z"/>
+</g>
+
+<polygon class="zd-limite" points="192,948 464,948 552,740 640,680 720,600 748,510 760,420 716,350 664,292 560,280 440,276 320,290 200,296 130,318 72,352 72,580 136,700 168,820"/>
+<polyline class="zd-construire" points="72,352 72,580 136,700 168,820 192,948 464,948 552,740"/>
+<ellipse class="zd-nature" cx="576" cy="460" rx="104" ry="112"/>
+<path class="zd-vue" d="M381.2,888.4 L299.4,800.7 A120,120 0 0 1 435.7,781.5 Z"/>
+<path class="zd-axe" d="M381.2,888.4 L353.4,690.3"/>
+<polyline class="zd-ch-ex" points="361.6,840.8 368.8,848.8 407.2,880.8 409.6,882.8 393.6,898.4 381.2,888.4"/>
+<polyline class="zd-ch" points="409.6,882.8 408,820 404,740 412,660 420,618 404,590 432,562 408,516 464,484 512,452 544,420 548,384 584,348 620,338 664,292"/>
+<polyline class="zd-ch" points="408,516 384,538 336,538 288,536 208,568 144,624"/>
+<polyline class="zd-sentier" points="407,800 368,800"/>
+<polyline class="zd-sentier" points="544,420 576,476 640,500"/>
+<polyline class="zd-sentier" points="408,516 384,512"/>
+<polyline class="zd-route" points="676,270 694,220 712,164 708,132 704,108" marker-end="url(#zd-fleche)"/>
+<polyline class="zd-route" points="712,164 772,132 788,123"/>
+<polyline class="zd-galerie" points="144,628 126,662 108,694"/>
+
+<path class="zd-enceinte" d="M384,506 V490 H344 V534 H384 V518"/>
+<g class="zd-maison"><rect x="349" y="495" width="10" height="10"/><rect x="363" y="497" width="15" height="7"/><rect x="350" y="515" width="14" height="9"/><rect x="368" y="514" width="10" height="13"/></g>
+<g class="zd-maison"><rect x="526" y="404" width="7" height="5"/><rect x="537" y="398" width="6" height="5"/><rect x="548" y="402" width="7" height="5"/><rect x="560" y="408" width="6" height="5"/><rect x="563" y="420" width="7" height="5"/><rect x="556" y="432" width="6" height="5"/><rect x="544" y="436" width="7" height="5"/><rect x="531" y="430" width="6" height="5"/><rect x="521" y="418" width="7" height="5"/><rect x="539" y="413" width="10" height="7"/><rect x="559" y="393" width="9" height="6"/><rect x="515" y="432" width="9" height="6"/></g>
+<rect class="zd-cloture" x="536" y="460" width="60" height="48" rx="3"/>
+<rect class="zd-maison" x="568" y="470" width="12" height="8"/>
+<path class="zd-pt" d="M634,505 a6,6 0 0 1 12,0 z"/>
+<circle class="zd-lien" cx="592" cy="380" r="18"/>
+<circle class="zd-lien" cx="592" cy="380" r="9"/>
+<circle class="zd-braise" cx="620" cy="338" r="6.5"/>
+<path class="zd-croix" d="M616.5,334.5 l7,7 M623.5,334.5 l-7,7"/>
+<path class="zd-braise" d="M662,313 l5,-8 l5,8 z M668,325 l5,-8 l5,8 z"/>
+<line class="zd-pont" x1="664" y1="292" x2="676" y2="270"/>
+<line class="zd-barrage" x1="657" y1="288" x2="671" y2="296"/>
+<circle class="zd-pt" cx="712" cy="164" r="4"/>
+<path class="zd-barrage" d="M784,114 l12,12 M796,114 l-12,12"/>
+<circle class="zd-pt" cx="408" cy="516" r="4"/>
+<circle class="zd-pt" cx="368" cy="800" r="3.5"/>
+<circle class="zd-pt-ex" cx="361.6" cy="840.8" r="4"/>
+<ellipse class="zd-eau-f" cx="355.2" cy="832" rx="4.5" ry="3"/>
+<path class="zd-pt-ex" d="M381.2,879 l7.5,12.5 h-15 z"/>
+<path class="zd-pt" d="M136,629 v-5 a8,8 0 0 1 16,0 v5 z"/>
+<circle class="zd-pt" cx="108" cy="694" r="3.5"/>
+<path class="zd-gue" d="M279,532 h18 M279,540 h18"/>
+<path class="zd-braise" d="M300,170 l8,9 l-8,9 l-8,-9 z"/>
+<path class="zd-braise-t" d="M320,444 l7,8 l-7,8 l-7,-8 z"/>
+<g class="zd-maison" opacity=".85"><rect x="424" y="193" width="6" height="6"/><rect x="433" y="189" width="6" height="6"/><rect x="438" y="198" width="6" height="6"/><rect x="427" y="203" width="6" height="6"/><rect x="417" y="199" width="5" height="5"/></g>
+<circle class="zd-bete" cx="500" cy="470" r="3.5"/>
+<circle class="zd-bete" cx="622" cy="452" r="3.5"/>
+<circle class="zd-bete" cx="236" cy="432" r="3.5"/>
+<circle class="zd-bete" cx="250" cy="426" r="3.5"/>
+<path class="zd-monstre" d="M466,796 l8,8 M474,796 l-8,8 M112,672 l8,8 M120,672 l-8,8"/>
+<path class="zd-lien" d="M390,892 L428,900 M390,866 L428,862"/>
+
+<g transform="translate(80,178)">
+<circle r="22" class="zd-lien"/>
+<path d="M0,-20 L6,0 L0,-5 L-6,0 Z" class="zd-or"/>
+<path d="M0,20 L6,0 L0,5 L-6,0 Z" class="zd-lien"/>
+<text class="zd-t zd-g" x="0" y="-27" text-anchor="middle">N</text>
+<text class="zd-t zd-p" x="30" y="4" text-anchor="middle">E</text>
+<text class="zd-t zd-p" x="0" y="37" text-anchor="middle">S</text>
+<text class="zd-t zd-p" x="-30" y="4" text-anchor="middle">O</text>
+</g>
+
+<g class="zd-t">
+<text class="zd-i" x="140" y="124">Plaine Royale au-delà du pont (hors zone)</text>
+<text class="zd-i" x="706" y="480" text-anchor="middle">Forêt</text>
+<text class="zd-i" x="520" y="705" text-anchor="middle">Plateau des Gorges</text>
+<text class="zd-i" transform="translate(58,466) rotate(-90)" text-anchor="middle">Limite ouest à construire (prop.)</text>
+<text class="zd-i" x="600" y="640" text-anchor="middle">escarpement</text>
+<text class="zd-i" x="206" y="408">torrent</text>
+<text class="zd-i" x="142" y="470" text-anchor="middle">sol qui jaunit</text>
+<text class="zd-i" x="568" y="584" text-anchor="middle">nature libre (D-177)</text>
+<text class="zd-i" x="200" y="957">limite sud à construire (prop.) ; au-delà, le Grand Fleuve de Sang (Topographie § 1)</text>
+<text class="zd-i" x="474" y="938">limite sud-est à construire</text>
+<text class="zd-g" x="330" y="232" text-anchor="middle">Ravin qui ferme la zone (PB-14, recommandé)</text>
+<text class="zd-p" x="330" y="246" text-anchor="middle">variante : rivière sur le même tracé</text>
+<text class="zd-i zd-g" x="285" y="760" text-anchor="end">Gorges des Soupirs</text>
+<text class="zd-p" x="285" y="774" text-anchor="end">fenêtre existante</text>
+<text class="zd-p" x="285" y="788" text-anchor="end">950 × 680 m</text>
+</g>
+
+<g class="zd-t">
+<text class="zd-g" x="330" y="845" text-anchor="end">1 · Réveil, reflet</text>
+<text class="zd-p" x="330" y="859" text-anchor="end">existants (D-42)</text>
+<text class="zd-g" x="432" y="866">2 · Couloir de sortie</text>
+<text class="zd-p" x="432" y="880">existant, haut à 74 m</text>
+<text class="zd-g" x="432" y="904">3 · Belvédère</text>
+<text class="zd-p" x="432" y="918">119 m, vue de l'image 13</text>
+<text class="zd-g" x="424" y="772">4 · Chemin du plateau</text>
+<text class="zd-p" x="424" y="786">≈ 760 m, rebord des Gorges</text>
+<text class="zd-g" x="394" y="584" text-anchor="end">5 · Descente</text>
+<text class="zd-p" x="394" y="598" text-anchor="end">≈ 180 m, 62 m plus bas</text>
+<text class="zd-g" x="338" y="506" text-anchor="end">6 · Ferme Fortifiée</text>
+<text class="zd-p" x="338" y="520" text-anchor="end">des Veilleurs (POI C)</text>
+<text class="zd-g" x="508" y="400" text-anchor="end">7 · Hameau de la Brume</text>
+<text class="zd-p" x="508" y="414" text-anchor="end">80 habitants (POI A)</text>
+<text class="zd-g" x="566" y="524" text-anchor="middle">8 · Pâturage, enclos</text>
+<text class="zd-p" x="566" y="538" text-anchor="middle">« L'Agneau et le Loup »</text>
+<text class="zd-g" x="652" y="496">9 · Tanière</text>
+<text class="zd-p" x="652" y="510">du loup</text>
+<text class="zd-g" x="606" y="320" text-anchor="end">10 · Nid (D-35)</text>
+<text class="zd-p" x="606" y="334" text-anchor="end">hors de vue du hameau (D-38)</text>
+<text class="zd-g" x="656" y="244" text-anchor="end">11 · Pont des Déserteurs</text>
+<text class="zd-p" x="656" y="258" text-anchor="end">(POI D) barrage, campement</text>
+<text class="zd-g" x="722" y="170">12 · Fourche</text>
+<text class="zd-p" x="722" y="184">(D-36)</text>
+<text class="zd-p" x="696" y="118" text-anchor="end">vers Oakhaven : ≈ 700 m de plus (PB-13)</text>
+<text class="zd-p" x="818" y="236" text-anchor="end">branche nord-est</text>
+<text class="zd-p" x="818" y="250" text-anchor="end">fermée (PB-13)</text>
+<text class="zd-g" x="300" y="558">13 · Gué</text>
+<text class="zd-g" x="132" y="598" text-anchor="end">14 · Mines</text>
+<text class="zd-p" x="132" y="612" text-anchor="end">de Fer Oubliées</text>
+<text class="zd-p" x="132" y="626" text-anchor="end">(POI B)</text>
+<text class="zd-p" x="114" y="710">Brutus</text>
+<text class="zd-g" x="290" y="178" text-anchor="end">15 · Patrouille de l'Ordre</text>
+<text class="zd-p" x="290" y="192" text-anchor="end">recommandé : hors zone</text>
+<text class="zd-p" x="308" y="456" text-anchor="end">15′ · variante</text>
+<text class="zd-p" x="446" y="198">blocs du décor actuel</text>
+<text class="zd-p" x="446" y="212">(à retirer, D-05)</text>
+</g>
+
+<rect class="zd-cadre" x="40" y="100" width="780" height="860"/>
+
+<g class="zd-t zd-n" text-anchor="end">
+<text x="36" y="204">1 250</text><text x="36" y="304">1 000</text><text x="36" y="404">750</text><text x="36" y="504">500</text><text x="36" y="604">250</text><text x="36" y="704">0</text><text x="36" y="804">−250</text><text x="36" y="904">−500</text>
+</g>
+<text class="zd-t zd-n" transform="translate(14,530) rotate(-90)" text-anchor="middle">X (vers le nord), en m</text>
+<g class="zd-t zd-n" text-anchor="middle">
+<text x="60" y="974">−750</text><text x="160" y="974">−500</text><text x="260" y="974">−250</text><text x="360" y="974">0</text><text x="460" y="974">250</text><text x="560" y="974">500</text><text x="660" y="974">750</text><text x="760" y="974">1 000</text>
+</g>
+<rect class="zd-pt-ex" x="40" y="984" width="100" height="6"/>
+<rect class="zd-lien" x="140" y="984" width="100" height="6"/>
+<g class="zd-t zd-n" text-anchor="middle"><text x="40" y="1004">0</text><text x="140" y="1004">250</text><text x="240" y="1004">500 m</text></g>
+<text class="zd-t zd-p" x="256" y="992">échelle ; un carreau de la grille = 250 m</text>
+<text class="zd-t zd-n" x="820" y="1004" text-anchor="end">Y (vers l'est), en m</text>
+
+<rect class="zd-panneau" x="832" y="100" width="160" height="860"/>
+<g class="zd-t">
+<text class="zd-g" x="840" y="122">Limite de la zone</text>
+<text class="zd-p" x="840" y="137">3 options (PB-14)</text>
+</g>
+<polygon class="zd-plateau" points="840,160 888,160 891,204 933,204 936,160 984,160 984,210 840,210"/>
+<line class="zd-pont-c" x1="886" y1="158" x2="938" y2="158"/>
+<polygon class="zd-plateau" points="840,322 884,322 894,346 930,346 940,322 984,322 984,362 840,362"/>
+<polygon class="zd-eau-f" points="886,327 938,327 931,344 893,344"/>
+<polygon class="zd-plateau" points="840,454 888,454 891,496 933,496 936,454 984,454 984,502 840,502"/>
+<rect class="zd-eau-f" x="891.5" y="489" width="41" height="7"/>
+<g class="zd-t">
+<text class="zd-n" x="912" y="152" text-anchor="middle">≈ 50 m</text>
+<text class="zd-n" x="912" y="188" text-anchor="middle">60–80 m</text>
+<text class="zd-g zd-or" x="840" y="228">A · Ravin (recommandé)</text>
+<text class="zd-p" x="840" y="243">infranchissable si les</text>
+<text class="zd-p" x="840" y="257">parois dépassent une</text>
+<text class="zd-p" x="840" y="271">barre d'Endurance, ou</text>
+<text class="zd-p" x="840" y="285">si elles ne sont pas</text>
+<text class="zd-p" x="840" y="299">grimpables (question 5)</text>
+<text class="zd-n" x="912" y="318" text-anchor="middle">40–60 m</text>
+<text class="zd-g" x="840" y="382">B · Rivière (variante)</text>
+<text class="zd-p" x="840" y="397">courant fort, eau</text>
+<text class="zd-p" x="840" y="411">profonde : ni gué ni</text>
+<text class="zd-p" x="840" y="425">gel (Topographie § 1)</text>
+<text class="zd-g" x="840" y="522">C · Ravin et torrent</text>
+<text class="zd-p" x="840" y="537">les deux à la fois ; le</text>
+<text class="zd-p" x="840" y="551">plus beau, un peu plus</text>
+<text class="zd-p" x="840" y="565">cher (option 3)</text>
+<text class="zd-g" x="840" y="596">Temps à la course</text>
+<text class="zd-p" x="840" y="611">5,7 m/s mesurés (T-0054)</text>
+<text class="zd-p" x="840" y="632">Belvédère → hameau</text>
+<text class="zd-g zd-or" x="840" y="647">1,49 km · 4 min 21 s</text>
+<text class="zd-p" x="840" y="667">Hameau → nid → pont</text>
+<text class="zd-g zd-or" x="840" y="682">470 m · 1 min 23 s</text>
+<text class="zd-p" x="840" y="702">Hameau → mines</text>
+<text class="zd-g zd-or" x="840" y="717">1,17 km · 3 min 25 s</text>
+<text class="zd-p" x="840" y="737">Pont → Oakhaven</text>
+<text class="zd-g zd-or" x="840" y="752">1,04 km · 3 min 03 s</text>
+<text class="zd-p" x="840" y="772">Chaîne obligatoire</text>
+<text class="zd-g zd-or" x="840" y="787">3,9 km · 11 min 20 s</text>
+<text class="zd-g" x="840" y="818">Surfaces</text>
+<text class="zd-p" x="840" y="834">zone fermée : 2,17 km²,</text>
+<text class="zd-p" x="840" y="849">Gorges (0,65) comprises</text>
+<text class="zd-p zd-or" x="840" y="864">visé : ≈ 1,5 km² en tout</text>
+<text class="zd-p" x="840" y="879">(ticket, P1-02) : + 45 %</text>
+<text class="zd-p" x="840" y="894">PB-14 : 1 à 2 km²</text>
+<text class="zd-p" x="840" y="909">variante resserrée :</text>
+<text class="zd-p" x="840" y="924">≈ 1,55 km² (encart)</text>
+<text class="zd-p" x="840" y="939">nature libre 0,23 km²</text>
+</g>
+
+<text class="zd-t zd-g" x="40" y="1032" style="font-size:15px">Légende</text>
+<line class="zd-ch-ex" x1="40" y1="1054" x2="76" y2="1054"/>
+<line class="zd-ch" x1="40" y1="1076" x2="76" y2="1076"/>
+<line class="zd-sentier" x1="40" y1="1098" x2="76" y2="1098"/>
+<line class="zd-route" x1="40" y1="1120" x2="76" y2="1120"/>
+<line class="zd-limite" x1="40" y1="1142" x2="76" y2="1142"/>
+<rect class="zd-ravin" x="40" y="1158" width="36" height="10"/><line class="zd-bord" x1="40" y1="1159" x2="76" y2="1159"/><line class="zd-bord" x1="40" y1="1167" x2="76" y2="1167"/>
+<line class="zd-escarp" x1="40" y1="1186" x2="76" y2="1186"/><line class="zd-escarp-l" x1="40" y1="1186" x2="76" y2="1186"/>
+<rect class="zd-fenetre" x="40" y="1203" width="36" height="12"/>
+<line class="zd-eau" x1="40" y1="1230" x2="66" y2="1230"/><circle class="zd-eau-f" cx="72" cy="1230" r="4"/>
+<rect class="zd-plaine" x="350" y="1048" width="36" height="12"/>
+<rect class="zd-champ1" x="350" y="1070" width="17" height="12"/><rect class="zd-champ2" x="369" y="1070" width="17" height="12"/>
+<rect fill="url(#zd-pat-foret)" x="350" y="1092" width="36" height="12"/>
+<rect class="zd-plateau" x="350" y="1114" width="36" height="12"/>
+<rect class="zd-crete" x="350" y="1136" width="36" height="12"/>
+<rect fill="url(#zd-pat-jaune)" x="350" y="1158" width="36" height="12"/>
+<ellipse class="zd-nature" cx="368" cy="1186" rx="17" ry="6"/>
+<rect class="zd-plaine" x="350" y="1202" width="36" height="12"/><rect class="zd-hors" x="350" y="1202" width="36" height="12"/>
+<rect class="zd-gorge" x="350" y="1224" width="36" height="12"/>
+<circle class="zd-pt-ex" cx="668" cy="1054" r="4"/><path class="zd-pt-ex" d="M686,1047 l7,11.5 h-14 z"/>
+<circle class="zd-pt" cx="678" cy="1076" r="4"/>
+<g class="zd-maison"><rect x="664" y="1094" width="8" height="6"/><rect x="676" y="1096" width="8" height="6"/><rect x="688" y="1093" width="6" height="5"/></g>
+<circle class="zd-braise" cx="678" cy="1120" r="6.5"/><path class="zd-croix" d="M674.5,1116.5 l7,7 M681.5,1116.5 l-7,7"/>
+<path class="zd-braise" d="M670,1133 l8,9 l-8,9 l-8,-9 z"/><path class="zd-braise-t" d="M690,1134 l7,8 l-7,8 l-7,-8 z"/>
+<g class="zd-maison" opacity=".85"><rect x="666" y="1158" width="6" height="6"/><rect x="675" y="1161" width="6" height="6"/><rect x="684" y="1157" width="6" height="6"/></g>
+<path class="zd-barrage" d="M672,1180 l12,12 M684,1180 l-12,12"/>
+<circle class="zd-bete" cx="670" cy="1208" r="3.5"/><path class="zd-monstre" d="M684,1204 l8,8 M692,1204 l-8,8"/>
+<line class="zd-pont" x1="664" y1="1230" x2="690" y2="1230"/><line class="zd-barrage" x1="668" y1="1223" x2="668" y2="1237"/>
+<line class="zd-construire" x1="40" y1="1252" x2="76" y2="1252"/>
+<circle class="zd-lien" cx="368" cy="1252" r="7"/><circle class="zd-lien" cx="368" cy="1252" r="3.5"/>
+<path class="zd-braise" d="M666,1257 l5,-8 l5,8 z M680,1257 l5,-8 l5,8 z"/>
+<g class="zd-t">
+<text x="86" y="1058">chemin existant (prototype Unreal)</text>
+<text x="86" y="1080">chemin proposé</text>
+<text x="86" y="1102">sentier, point de vue</text>
+<text x="86" y="1124">route après le pont (PB-13, option 1)</text>
+<text x="86" y="1146">limite de la zone (≈ 2,17 km²)</text>
+<text x="86" y="1168">ravin (PB-14, option 1)</text>
+<text x="86" y="1190">escarpement du plateau (pente ≈ 25°)</text>
+<text x="86" y="1212">fenêtre existante des Gorges</text>
+<text x="86" y="1234">torrent et cascades</text>
+<text x="396" y="1058">plaine</text>
+<text x="396" y="1080">champs de blé et prés</text>
+<text x="396" y="1102">forêt</text>
+<text x="396" y="1124">plateau des Gorges</text>
+<text x="396" y="1146">ouest, hors zone (relief doux)</text>
+<text x="396" y="1168">sol qui jaunit, vers les Canyons</text>
+<text x="396" y="1190">nature libre (D-177)</text>
+<text x="396" y="1212">hors zone (décor, non jouable)</text>
+<text x="396" y="1234">Gorges (lit et dédale)</text>
+<text x="706" y="1058">existant : réveil, belvédère</text>
+<text x="706" y="1080">carrefour, lieu proposé</text>
+<text x="706" y="1102">bâtiments (hameau, Ferme)</text>
+<text x="706" y="1124">nid (morts-vivants, esprits)</text>
+<text x="706" y="1146">patrouille (plein : recommandé)</text>
+<text x="706" y="1168">blocs du décor actuel</text>
+<text x="706" y="1190">passage fermé</text>
+<text x="706" y="1212">bêtes, monstres (indicatif)</text>
+<text x="706" y="1234">pont, barrage des déserteurs</text>
+<text x="86" y="1256">limite à construire (≈ 2,8 km)</text>
+<text x="396" y="1256">butte boisée (cache le nid)</text>
+<text x="706" y="1256">tentes du campement</text>
+<text class="zd-p" x="40" y="1284">Temps : course mesurée 5,7 m/s (T-0054). Le prototype n'a pas de marche lente : la marche est supposée à 1,5 m/s (hypothèse) ;</text>
+<text class="zd-p" x="40" y="1300">sprint relâché avant l'épuisement ≈ 7,9 m/s (calcul d'après les réglages du combat, non mesuré).</text>
+<text class="zd-p" x="40" y="1316">Vue du belvédère (axe −8°) : la Ferme est à −3°, le hameau à +19° ; l'image 13 montre l'inverse (village au centre, ferme à sa droite) : question 8.</text>
+<text class="zd-p" x="40" y="1338">Sources : Topographie de la Zone de Départ § 1 à 5 ; Échelle § 1 ; images 13 et 05 ; D-05, D-35 à D-38, D-158, D-177 ; PB-13, PB-14 ;</text>
+<text class="zd-p" x="40" y="1354">prototype Unreal E:\aaa-proto\unreal-v2 (lu, non modifié). Détail, chiffres et options : zone-depart.md.</text>
+<text class="zd-g zd-or" x="40" y="1376">Tout ce qui n'est pas cité est une proposition, à valider.</text>
+</g>
+
+<text class="zd-t zd-g" x="40" y="1408">Variante resserrée (proposition) : ≈ 1,55 km², Gorges comprises</text>
+<rect class="zd-plaine" x="40" y="1418" width="196" height="180"/>
+<rect class="zd-fenetre" x="78" y="1497" width="68" height="95"/>
+<polygon class="zd-variante" points="78,1592 146,1592 150,1530 190,1500 205,1475 205,1450 196,1428 160,1434 130,1444 100,1454 76,1470 58,1495 61,1530 72,1560"/>
+<polygon class="zd-limite-p" points="78,1592 146,1592 168,1540 190,1525 210,1505 217,1482.5 220,1460 209,1442.5 196,1428 170,1425 140,1424 110,1427.5 80,1429 62.5,1434.5 48,1443 48,1500 64,1530 72,1560"/>
+<path class="zd-terrain" d="M40,1429.2 H220.8 V1598"/>
+<path class="zd-pt-ex" d="M125.3,1571 l5,8 h-10 z"/>
+<rect class="zd-maison" x="117" y="1479" width="8" height="8"/>
+<circle class="zd-pt" cx="166" cy="1460" r="3.5"/>
+<circle class="zd-pt" cx="66" cy="1511" r="3"/>
+<line class="zd-pont-c" x1="194" y1="1431" x2="199" y2="1424"/>
+<g class="zd-t zd-n">
+<text x="112" y="1550" text-anchor="middle">Gorges</text>
+<text x="128" y="1490">Ferme</text>
+<text x="161" y="1464" text-anchor="end">hameau</text>
+<text x="190" y="1444" text-anchor="end">pont</text>
+<text x="70" y="1523">mines</text>
+</g>
+<g class="zd-t zd-p">
+<text x="256" y="1432">Pointillé or : la zone du plan (≈ 2,17 km²). Trait plein : la variante resserrée (≈ 1,55 km², Gorges comprises),</text>
+<text x="256" y="1448">dans la fourchette de PB-14 (« en tout 1 à 2 km² ») ; la surface visée par le ticket et P1-02 est ≈ 1,5 km².</text>
+<text x="256" y="1470">On rogne au nord et au nord-ouest (le ravin rentre de 100 à 250 m), à l'est au-delà de Y ≈ 850 m, au sud-est</text>
+<text x="256" y="1486">au-delà de Y ≈ 300 m, et de 30 à 130 m à l'ouest. Les lieux, les chemins et les temps ne changent pas.</text>
+<text x="256" y="1508">Tirets bleus : bords du terrain proche du prototype (X et Y = 1 008 m). Le plan et son ravin en sortent au nord</text>
+<text x="256" y="1524">et à l'est ; la variante y rentre, sauf aux abords du pont. Échelle de l'encart : 100 m = 10 unités.</text>
+<text x="256" y="1546">Limites à construire (tirets rouges sur le plan) : ≈ 2,8 km à l'ouest, au sud et au sud-est, où le relief actuel</text>
+<text x="256" y="1562">ne ferme rien ; proposition : ravin prolongé à l'ouest et au sud-est, falaises relevées au sud (question 5).</text>
+</g>
+</svg>
+  </div>
+</section>
+
+<section id="bref">
+  <h2>En bref</h2>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">SURFACE · ÉCART</span><h3>2,17 km², soit 45 % de trop</h3><p class="muted">Gorges comprises (0,65 km² déjà construits), environ 1,7 × 1,7 km. Le ticket et le plan de production visent ≈ 1,5 km² ; PB-14 et l'inventaire donnent « 1 à 2 km² » en tout. Seule l'étude de coût, qui compte le terrain à part des Gorges, donne 1,5 km² pour le terrain neuf (ici 1,52). Variante resserrée proposée : ≈ 1,55 km² en tout (question 9).</p></div>
+    <div class="piste"><span class="ticket">FORME</span><h3>Un « Y »</h3><p class="muted">Gorges au sud, Ferme au centre, hameau, nid et pont au nord-est, mines à l'ouest : la disposition proposée par PB-14, d'après la <em>Topographie</em> (§ 3) et D-05.</p></div>
+    <div class="piste"><span class="ticket">TRAJETS</span><h3>4 min 21 s jusqu'au hameau</h3><p class="muted">Depuis le belvédère, à la course mesurée (5,7 m/s, T-0054). La chaîne obligatoire jusqu'aux portes d'Oakhaven : ≈ 3,9 km, ≈ 11 min 20 s ; toute la démo : ≈ 22 min de trajets.</p></div>
+    <div class="piste"><span class="ticket">LIMITE</span><h3>Un ravin, une rivière en variante</h3><p class="muted">Option recommandée de PB-14. La rivière passerait sur le même tracé. Le pont est la seule sortie (D-36). À l'ouest, au sud et au sud-est, ≈ 2,8 km de limites n'existent pas dans le terrain actuel : à construire.</p></div>
+    <div class="piste"><span class="ticket">MARCHE</span><h3>Pas de marche lente</h3><p class="muted">Le prototype n'a qu'une vitesse de base (6 m/s) et le sprint (9 m/s). La marche utilisée ici est une hypothèse : 1,5 m/s.</p></div>
+  </div>
+</section>
+
+<section id="lieux">
+  <h2>Les lieux</h2>
+  <p class="lecture muted">Les numéros sont ceux du plan. « Prop. » : proposition de ce plan. Fiches des PNJ : T-0084. Coordonnées complètes et tracé des limites : <code>zone-depart.md</code>, § 4.1.</p>
+  <div class="tableau"><table>
+    <thead><tr><th>N°</th><th>Lieu</th><th>Ce qui s'y passe</th><th>Qui, bêtes et monstres</th><th>Dans Unreal aujourd'hui</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Réveil, reflet (−352 ; 4)</td><td>Didacticiel, étapes 1 à 3 : réveil dans les ruines, reflet (visage, corps, nom : D-03, D-155, D-163), deux ou trois créatures, puis la horde, l'Ange en un éclair et le pouvoir démesuré (<em>Design du Didacticiel</em> § 2 ; D-12, D-182)</td><td>Le héros seul ; 2 morts-vivants et 1 esprit ; horde de 8 à 12 (PB-09, prop.)</td><td>Oui, sauf l'aire de la horde (P1-03). Point d'eau placé par le level design (D-42)</td></tr>
+      <tr><td class="num">2</td><td>Couloir de sortie</td><td>Il sort des Gorges en grimpant la falaise (<em>Topographie</em> § 1 et § 2 ; D-01)</td><td>—</td><td>Oui, couloir d'éboulis ; montée testée en 38 à 40 s</td></tr>
+      <tr><td class="num">3</td><td>Belvédère (119 m)</td><td>Panorama sur la Plaine Royale ; au loin, une patrouille de l'Ordre tire sur un possédé ; la scène n'ouvre pas la QP1 (<em>Design du Didacticiel</em> § 3)</td><td>Patrouille et possédé (voir 15)</td><td>Oui, vue calée sur l'image 13</td></tr>
+      <tr><td class="num">4</td><td>Chemin du plateau (≈ 760 m)</td><td>Première marche libre, vue sur le dédale, les ponts de corde et les cascades (prop.)</td><td>Quelques esprits errants (prop. ; D-177 : « avec des monstres, des bêtes »)</td><td>Plateau et sapins oui ; chemin non</td></tr>
+      <tr><td class="num">5</td><td>Descente (≈ 180 m)</td><td>Du plateau à la plaine, 62 m plus bas (prop.)</td><td>—</td><td>La pente existe (≈ 25°)</td></tr>
+      <tr><td class="num">6</td><td>Ferme Fortifiée des Veilleurs (POI C)</td><td>Au centre, dans les champs de blé ; les Veilleurs de l'Aube vendent des remèdes (<em>Topographie</em> POI C) ; incluse (D-177), sans quête retenue (inventaire § 2.1)</td><td>La Veilleuse ; 3 à 6 Veilleurs et réfugiés muets (P2-16) ; une meute de prédateurs dans les champs (prop., d'après POI C)</td><td>Non</td></tr>
+      <tr><td class="num">7</td><td>Hameau de la Brume (POI A)</td><td>80 habitants, une seule IA collective ; auberge et premier lit de repos ; tableau de quêtes ; prime du nid ; quête du forgeron ; agent du Cartel (Choix B, D-39, D-41) ; le chef oriente vers Oakhaven, la QP1 s'active après le pont (D-150 ; moment : PB-06) ; la magie vue rend le hameau hostile (D-38)</td><td>Chef, forgeron, agent du Cartel, aubergiste ; 12 à 20 villageois visibles (hypothèse H-P7) ; le trappeur de la Coalition, sans quête (D-177) : à trancher</td><td>Non ; des blocs de décor sont ailleurs (voir « Existant »)</td></tr>
+      <tr><td class="num">8</td><td>Pâturage et enclos</td><td>« L'Agneau et le Loup » : tuer le loup, ou l'adopter et le ramener sans bruit, récompense double (<em>Structure</em> § 1 ; D-63, D-177). Avec PB-32 (option 1), le loup adopté reste couché à l'enclos</td><td>L'éleveur ; le bétail (moutons, prop.)</td><td>Non</td></tr>
+      <tr><td class="num">9</td><td>Tanière du loup</td><td>Le loup isolé ; retour à pas lents vers l'enclos (≈ 170 m, ≈ 2 min à la marche)</td><td>Le loup ; du gibier dans la nature libre (prop.)</td><td>Non</td></tr>
+      <tr><td class="num">10</td><td>Nid</td><td>Aux abords du pont, sur la route, hors de vue du hameau ; le vider ouvre le pont (D-35, D-38). Maîtrise d'un seul élément, Feu ou Glace (D-98, D-182). Une butte boisée le cache (prop.)</td><td>4 à 6 morts-vivants renforcés (PB-09, prop.)</td><td>Non</td></tr>
+      <tr><td class="num">11</td><td>Pont des Déserteurs (POI D)</td><td>Barrage de déserteurs blessés qui rackettent le hameau et le Cartel (D-24) ; tuer (cheval volé, D-37) ou empoisonner (D-39, D-41) ; insigne et premier souvenir (D-14, D-108 ; contenu : PB-07) ; seule sortie (D-36)</td><td>Le chef des déserteurs et 3 déserteurs (PB-09, prop.) ; leurs chevaux au campement (prop.)</td><td>Non (un pont à tours lointain existe)</td></tr>
+      <tr><td class="num">12</td><td>Fourche</td><td>Vers la forêt au nord-est, vers Oakhaven au nord (D-36) ; branche nord-est fermée par un obstacle (PB-13)</td><td>—</td><td>Non</td></tr>
+      <tr><td class="num">13</td><td>Gué</td><td>Le torrent des Gorges se passe à gué : il n'est pas la limite de la zone (prop.)</td><td>—</td><td>Le torrent existe</td></tr>
+      <tr><td class="num">14</td><td>Mines de Fer Oubliées (POI B)</td><td>Flanc ouest, sol qui jaunit ; le forgeron y envoie le héros, Brutus débloque le Minage (<em>Topographie</em> POI B et § 4 ; D-17, D-43) ; premier intérieur souterrain</td><td>Brutus, au fond ; morts-vivants de mineurs (PB-33, prop.)</td><td>Ni mine ni falaise : à l'ouest, le relief n'est qu'une pente douce sur le plateau, et plat dans la plaine</td></tr>
+      <tr><td class="num">15</td><td>Patrouille de l'Ordre</td><td><strong>Recommandé (prop.)</strong> : au-delà du ravin, à ≈ 1,8 km dans l'axe de la vue ; l'Ordre reste hors d'une zone dont le seul pont est tenu par ses déserteurs. <strong>Variante 15′</strong> : dans la zone, à ≈ 1,1 km ; le corps du possédé reste à visiter</td><td>Patrouille de l'Ordre et possédé</td><td>Non</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note lecture">Nature libre (D-177) : une ellipse de 560 × 520 m autour du hameau (≈ 0,23 km²) : pâturage, lisière, bosquets, tanière, gibier. Le nid reste dehors, caché du hameau et du pâturage par la butte et la lisière ; à vérifier dans le moteur par un test de ligne de vue (prop.).</p>
+</section>
+
+<section id="temps">
+  <h2>Distances et temps</h2>
+  <p class="lecture">Course : <strong>5,7 m/s mesurés</strong> (T-0054 ; 6,0 m/s une fois lancé). Le prototype n'a <strong>pas de marche lente</strong> : ce que son code appelle « marche » est cette même vitesse de base (600 cm/s) ; la marche est donc <strong>supposée à 1,5 m/s</strong>. Sprint : 9 m/s tant qu'il reste de l'Endurance ; en le relâchant avant l'épuisement, ≈ 7,9 m/s de moyenne (calcul, non mesuré). Les pentes ne ralentissent pas le héros (montée du couloir à 6,0 m/s).</p>
+  <div class="tableau"><table>
+    <thead><tr><th>Trajet</th><th>Longueur</th><th>Course</th><th>Sprint (calcul)</th><th>Marche (hyp.)</th></tr></thead>
+    <tbody>
+      <tr><td>Réveil → belvédère</td><td class="chiffre">≈ 256 m</td><td class="chiffre">≈ 44 s (montée mesurée)</td><td class="chiffre">—</td><td class="chiffre">2 min 51 s</td></tr>
+      <tr><td>Belvédère → haut de la descente</td><td class="chiffre">≈ 761 m</td><td class="chiffre">2 min 14 s</td><td class="chiffre">1 min 36 s</td><td class="chiffre">8 min 27 s</td></tr>
+      <tr><td>Descente, puis carrefour de la Ferme</td><td class="chiffre">≈ 310 m</td><td class="chiffre">54 s</td><td class="chiffre">39 s</td><td class="chiffre">3 min 27 s</td></tr>
+      <tr><td>Carrefour de la Ferme → hameau</td><td class="chiffre">≈ 419 m</td><td class="chiffre">1 min 13 s</td><td class="chiffre">53 s</td><td class="chiffre">4 min 39 s</td></tr>
+      <tr class="total"><td>Belvédère → hameau</td><td class="chiffre">≈ 1 490 m</td><td class="chiffre">4 min 21 s</td><td class="chiffre">3 min 09 s</td><td class="chiffre">16 min 33 s</td></tr>
+      <tr><td>Hameau → nid</td><td class="chiffre">≈ 311 m</td><td class="chiffre">55 s</td><td class="chiffre">39 s</td><td class="chiffre">3 min 27 s</td></tr>
+      <tr><td>Nid → pont</td><td class="chiffre">≈ 159 m</td><td class="chiffre">28 s</td><td class="chiffre">20 s</td><td class="chiffre">1 min 46 s</td></tr>
+      <tr class="total"><td>Hameau → pont</td><td class="chiffre">≈ 470 m</td><td class="chiffre">1 min 23 s</td><td class="chiffre">1 min 00 s</td><td class="chiffre">5 min 13 s</td></tr>
+      <tr><td>Pont (63 m) → fourche (280 m) → campements (≈ 700 m)</td><td class="chiffre">≈ 1 043 m</td><td class="chiffre">3 min 03 s</td><td class="chiffre">2 min 12 s</td><td class="chiffre">11 min 35 s</td></tr>
+      <tr class="total"><td>Hameau → mines (par le gué)</td><td class="chiffre">≈ 1 168 m</td><td class="chiffre">3 min 25 s</td><td class="chiffre">2 min 28 s</td><td class="chiffre">12 min 59 s</td></tr>
+      <tr><td>Hameau → enclos → tanière</td><td class="chiffre">≈ 332 m</td><td class="chiffre">58 s</td><td class="chiffre">42 s</td><td class="chiffre">3 min 41 s</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Parcours complets</h3>
+  <div class="tableau"><table>
+    <thead><tr><th>Parcours</th><th>Longueur</th><th>Course</th><th>Sprint (calcul)</th></tr></thead>
+    <tbody>
+      <tr><td>Chaîne obligatoire, du réveil aux campements d'Oakhaven, sans retour au hameau après le nid</td><td class="chiffre">≈ 3,26 km</td><td class="chiffre">≈ 9 min 30 s</td><td class="chiffre">≈ 7 min 05 s</td></tr>
+      <tr><td>Même chaîne, avec le retour au hameau après le nid (PB-06, option recommandée)</td><td class="chiffre">≈ 3,88 km</td><td class="chiffre">≈ 11 min 20 s</td><td class="chiffre">≈ 8 min 25 s</td></tr>
+      <tr><td>Quête du forgeron : hameau → mines → hameau (sans les galeries)</td><td class="chiffre">≈ 2,34 km</td><td class="chiffre">≈ 6 min 50 s</td><td class="chiffre">≈ 4 min 56 s</td></tr>
+      <tr><td>« L'Agneau et le Loup », retour avec le loup à la marche</td><td class="chiffre">≈ 0,66 km</td><td class="chiffre">≈ 3 min 20 s</td><td class="chiffre">≈ 2 min 55 s</td></tr>
+      <tr class="total"><td>Tous les trajets de la démo (avec la visite de la Ferme)</td><td class="chiffre">≈ 7,0 km</td><td class="chiffre">≈ 21 min 50 s</td><td class="chiffre">≈ 16 min 30 s</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="liste lecture">
+    <li>Près des deux tiers du trajet belvédère → hameau (≈ 940 m) se font sur le plateau, imposé par les Gorges déjà construites. Proposition : le jalonner (point de vue, esprits errants, plaine qui se découvre) pour ne jamais laisser plus de 60 à 90 s sans rien.</li>
+    <li>Pour la présentation, proposition : des sauvegardes prêtes devant chaque lieu, pour sauter un trajet sans rien changer au monde.</li>
+    <li>La patrouille, à 1,1 km comme à 1,8 km, ne fait que 1 à 3 pixels de haut : la scène passe par un plan de caméra (scène « panorama et patrouille » déjà comptée par l'étude de coût).</li>
+    <li>Avec le cheval du Choix A mené au pas, le kilomètre de route prend ≈ 11 min 35 s (voir « Route »).</li>
+  </ul>
+</section>
+
+<section id="limite">
+  <h2>La limite de la zone</h2>
+  <p class="lecture">La <em>Topographie</em> ferme la zone « par une rivière ou un ravin (à définir) », infranchissable en toute saison, « ni les gués de la saison sèche ni le gel de l'hiver » (§ 1) ; seul le Pont des Déserteurs la franchit (D-36). Tracé proposé : un arc de ≈ 2,9 km au nord et à l'est, où le torrent des Gorges se jette au nord-ouest.</p>
+  <p class="note lecture"><strong>À construire :</strong> à l'ouest, au sud et au sud-est, rien ne ferme la zone dans le terrain actuel (≈ 2,8 km) : la plaine est plate à l'ouest, la « crête de l'ouest » n'est qu'une pente de 12 à 15 % sur le plateau, moins raide que le couloir de sortie qu'on monte en courant, et le plateau est plat au sud-est. Proposition : prolonger le ravin à l'ouest (≈ 0,9 km) et au sud-est (≈ 0,56 km), relever des falaises au sud et au sud-ouest (≈ 1,3 km) ; ou ravin partout, ou falaises partout (question 5).</p>
+  <div class="options">
+    <div class="option reco"><span class="qui">Option 1 · recommandée (PB-14) · dessinée</span><h3>Un ravin</h3><p>Environ 50 m de large et 60 à 80 m de fond (prop.) ; pont de 63 m au-dessus du vide ; barrage des déserteurs en tête sud. « Infranchissable par nature, sans règle à ajouter pour les gués ou le gel » (PB-14) ; il réutilise les falaises déjà faites dans Unreal. L'image 05 montre un ravin franchi par un pont.</p><p class="muted">À régler : avec l'escalade libre (<em>Exploration</em> § 1), un ravin n'arrête le joueur que si ses parois dépassent ce qu'une barre d'Endurance permet de grimper, ou si elles ne sont pas grimpables.</p></div>
+    <div class="option"><span class="qui">Option 2 · variante</span><h3>Une rivière</h3><p>Même tracé : 40 à 60 m, courant fort, eau profonde (prop.) ; le torrent des Gorges en devient un affluent. Plus vivante ; l'image 13 montre un pont à tours sur une rivière. Il faut rendre crédible qu'aucun gué ni gel ne l'ouvre.</p></div>
+    <div class="option"><span class="qui">Option 3</span><h3>Un ravin avec un torrent au fond</h3><p>Les avantages des deux, la plus photogénique, un peu plus chère (PB-14).</p></div>
+  </div>
+  <p class="note lecture">Coût (prop.) : le ravin n'a pas besoin d'être partout détaillé : environ 600 m autour du pont et le long des chemins ; ailleurs, la forêt le cache (est) ou on le voit de loin (nord).</p>
+</section>
+
+<section id="route">
+  <h2>La route vers Oakhaven</h2>
+  <p class="lecture">Le monde fait 50 km de rayon (D-132) : une route d'environ un kilomètre est une convention de démo, qui ne change pas l'échelle du jeu (PB-13).</p>
+  <div class="options">
+    <div class="option reco"><span class="qui">Option 1 · recommandée (PB-13) · dessinée</span><h3>Route courte, cheval à la bride</h3><p>Pont 63 m, fourche à 280 m, campements d'Oakhaven ≈ 700 m plus loin : ≈ 1,04 km, 3 min 03 s à la course. Remparts visibles dès la fourche ; branche nord-est fermée. Le cheval reste aux écuries extérieures (plan d'Oakhaven : T-0092).</p><p class="muted">À trancher : l'allure. Au pas (≈ 1,5 m/s, hyp.) : ≈ 11 min 35 s ; au trot (≈ 3,5 m/s, hyp. ; le plan de production prévoit le trot) : ≈ 5 min ; route raccourcie à ≈ 600 m : ≈ 2 min 50 s au trot. Et le lieu du don : au pont (recommandé, pas d'aller-retour) ou au hameau (≈ 2 min 45 s de plus).</p></div>
+    <div class="option"><span class="qui">Option 2</span><h3>Route courte, puis ellipse</h3><p>Le jeu s'arrête à la fourche, puis un fondu « quelques heures plus tard ».</p></div>
+    <div class="option"><span class="qui">Option 3</span><h3>Route longue, cheval monté</h3><p>Non dessinée : plusieurs kilomètres, et tout un système de monture à produire.</p></div>
+    <div class="option"><span class="qui">Option 4</span><h3>Ellipse complète</h3><p>Le jeu s'arrête au pont.</p></div>
+  </div>
+</section>
+
+<section id="existant">
+  <h2>Ce qui existe déjà dans Unreal</h2>
+  <ul class="liste lecture">
+    <li><strong>Existant, gardé :</strong> les Gorges (950 × 680 m : relief, ruines, dédale d'aiguilles, ≈ 7 500 sapins, torrent, cascades, ponts de corde, brume), le réveil, le point d'eau du reflet, le couloir de sortie, le belvédère et sa vue, le combat de l'étape 2, le plateau, l'escarpement et la rivière qui sort des Gorges. Aucune limite n'existe : à l'ouest, le relief n'est qu'une pente douce.</li>
+    <li><strong>Le forgeron de l'essai</strong> (T-0081) est posé près du réveil pour l'essai seulement ; sur ce plan, il est à la forge du hameau.</li>
+    <li><strong>À reprendre :</strong> un village en blocs se trouve plein nord, à 1,7 km du belvédère, et un pont à tours au nord-est, à 3,57 km du belvédère (3,2 km du centre du repère) : ils suivent l'image 13, pas D-05 (hameau près du pont). Le village est à retirer ; le pont à tours peut rester comme décor lointain.</li>
+    <li><strong>À agrandir :</strong> le terrain construit s'arrête à 1 008 m du centre au nord et à l'est. Au nord, le bord de la zone, le ravin et la route en sortent ; à l'est, le ravin (bord intérieur jusqu'à 1 000 m, ≈ 50 m de large) en sort aussi. Agrandir le terrain vers le nord et l'est, ou rentrer le ravin : la variante resserrée le fait, sauf aux abords du pont.</li>
+    <li><strong>À construire :</strong> les ≈ 2,8 km de limites de l'ouest, du sud et du sud-est (voir « Limite »).</li>
+  </ul>
+</section>
+
+<section id="ecarts">
+  <h2>Écarts relevés</h2>
+  <p class="lecture muted">Signalés, pas tranchés.</p>
+  <ul class="liste lecture">
+    <li><strong>Image 13 et <em>Topographie</em> :</strong> dans l'image, le village fumant est au centre (au nord) et une ferme à tour fortifiée à sa droite ; le texte met la Ferme au centre et le hameau au nord-est, près du pont, ce que tranche D-05. Or D-158 demande que le prototype « ressemble aux images de concept » (zone de départ : image 13). Vu du belvédère (axe −8°), le plan met la Ferme dans l'axe (−3°) et le hameau à droite (+19°) : l'inverse de l'image. Deux décisions tirent en sens contraire ; le plan suit D-05 en attendant la réponse (question 8).</li>
+    <li><strong>Images 13 et 05 :</strong> un pont sur une rivière d'un côté, un ravin de l'autre. La <em>Topographie</em> laisse le choix : deux pistes pour PB-14.</li>
+    <li><strong>Escalade libre et ravin :</strong> <em>Exploration</em> § 1 permet de grimper sur toute surface rocheuse avec de l'Endurance ; PB-14 écrit « Infranchissable par nature, sans règle à ajouter pour les gués ou le gel », sans parler de l'escalade ; le plan de production parle de surfaces « marquées ». Une règle est à choisir, pour le ravin comme pour les limites à construire.</li>
+    <li><strong>Bible artistique :</strong> elle propose au pont une « brume de rivière » ; si le ravin est retenu, c'est la brume du ravin.</li>
+    <li><strong>« Lisière nord-est » :</strong> de la Plaine Royale (<em>Échelle</em> § 1) ou de la zone de départ (<em>Topographie</em> POI A) ? Sans effet ici : « près du pont » lève le doute.</li>
+    <li><strong>Surface :</strong> la synthèse compte 1,5 km² en plus des Gorges ; le ticket et le plan de production visent ≈ 1,5 km² ; PB-14 (« en tout 1 à 2 km² ») et l'inventaire (« ≈ 1 à 2 km² ») comptent les Gorges dedans. Le plan, à 2,17 km², dépasse de 0,67 km² (+ 45 %) et sort de la fourchette de PB-14 ; variante resserrée à ≈ 1,55 km² (question 9).</li>
+    <li><strong>Soleil :</strong> la bible veut un lever du soleil face au joueur ; le prototype met le soleil bas au nord-nord-ouest, ce qui n'est pas un lever pour un ciel de l'hémisphère nord. Aucun document ne fixe la course du soleil.</li>
+  </ul>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <ol class="questions lecture">
+    <li><strong>Limite</strong> (PB-14) : ravin (dessiné), rivière, ou ravin avec un torrent au fond ?</li>
+    <li><strong>Cheval du Choix A</strong> (PB-13) : au trot, route raccourcie, ou autre ? Offert au pont (recommandé) ou au hameau ?</li>
+    <li><strong>Patrouille du belvédère</strong> : au-delà du ravin (recommandé) ou dans la zone ?</li>
+    <li><strong>Durée des trajets</strong> (≈ 22 min pour toute la démo) : garder, avec des sauvegardes devant chaque lieu, ou rapprocher les mines d'environ 300 m (≈ 50 s de moins par trajet) ?</li>
+    <li><strong>Bords infranchissables</strong> (le ravin et les ≈ 2,8 km à construire) : parois plus hautes qu'une barre d'Endurance (règle du monde) ou parois non grimpables (règle du prototype) ? Et pour les ≈ 2,8 km : ravin à l'ouest et au sud-est, falaises au sud (recommandé), ravin partout, ou falaises partout ?</li>
+    <li><strong>Bords du terrain construit</strong> : le ravin en sort au nord et à l'est, la route au nord. Agrandir le terrain vers le nord et l'est, ou rentrer le ravin (variante resserrée) ?</li>
+    <li><strong>Soleil</strong> : garder le contre-jour de l'image 13 au nord-nord-ouest, ou tourner la vue du belvédère ?</li>
+    <li><strong>Vue du belvédère et image 13</strong> (D-05 contre D-158) : garder le plan (Ferme dans l'axe, hameau à droite ; la ressemblance porte sur les gorges, la lumière, la plaine, les mines à gauche, la forêt et le pont à droite), ou suivre l'image en plaçant la Ferme à l'est du hameau (elle ne serait plus au centre de la zone, <em>Topographie</em> POI C à modifier) ?</li>
+    <li><strong>Surface</strong> : garder la zone du plan (≈ 2,17 km², 45 % au-dessus des ≈ 1,5 km² visés), ou passer à la variante resserrée (≈ 1,55 km², Gorges comprises ; mêmes lieux, mêmes temps) ?</li>
+  </ol>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lecture muted">Documents de design : <em>Topographie de la Zone de Départ</em> § 1 à 6 ; <em>Échelle, Transitions et Spawn des Boss</em> § 1 et § 2 ; <em>Design du Didacticiel</em> § 2 et § 3 ; <em>Structure - Quêtes Secondaires par Zone</em> § 1 ; <em>Exploration, Escalade et Montures Évolutives</em> § 1 à 3 ; images 13 et 05. Décisions : D-01 à D-07, D-14, D-17, D-24, D-35 à D-42, D-63, D-98, D-108, D-132, D-150, D-158, D-177, D-181, D-182. Points bloquants : PB-06, PB-07, PB-09, PB-13, PB-14, PB-32, PB-33, PB-34.</p>
+  <div class="chemins">
+    D:\aaa-game\.equipe\prototype\plan-niveau\zone-depart.md (le détail, les coordonnées et tous les chiffres)<br>
+    D:\aaa-game\.equipe\prototype\plan-niveau\zone-depart.svg (le plan seul)<br>
+    D:\aaa-game\.equipe\prototype\plan-production.md (P0-02) · points-bloquants.md · fiches-pnj.md · bible-artistique.md<br>
+    D:\aaa-game\.equipe\etudes\cout-proto\inventaire.md · etude-cout-prototype-investisseurs.md (§ 2.1)<br>
+    E:\aaa-proto\unreal-v2\ (MESURES.md, LISEZMOI.md, python\generer_terrain.py, donnees\scene.json, python\ue_niveau.py, AaaGorges\Config\DefaultGame.ini) : lu, non modifié
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  var racine=document.documentElement;
+  var bTheme=document.getElementById('zd-theme');
+  var clair=false;
+  function appliquer(){
+    if(clair){racine.setAttribute('data-theme','clair');}else{racine.removeAttribute('data-theme');}
+    bTheme.textContent=clair?'Revenir au thème sombre':'Passer en thème clair';
+    bTheme.setAttribute('aria-pressed',clair?'true':'false');
+  }
+  bTheme.addEventListener('click',function(){clair=!clair;appliquer();});
+  appliquer();
+  var bZoom=document.getElementById('zd-zoom');
+  var carte=document.getElementById('zd-carte');
+  bZoom.addEventListener('click',function(){
+    var actif=carte.classList.toggle('zoom');
+    bZoom.textContent=actif?'Voir le plan entier':'Agrandir le plan';
+    bZoom.setAttribute('aria-pressed',actif?'true':'false');
+  });
+})();
+</script>
+
+</body>
+</html>

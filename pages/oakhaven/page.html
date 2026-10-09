@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Plan d'Oakhaven</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Plan d'Oakhaven : une colonne de lecture, le plan en grand (défilement dans son cadre sur téléphone), thème sombre du projet par défaut et thème clair au choix */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+  /* couleurs du plan, thème sombre */
+  --ok-fond:#1a1d22; --ok-champ:#20261d; --ok-champ2:#262e21; --ok-cadre:#2a2f36;
+  --ok-rive:#2b4350; --ok-eau:#2a5670; --ok-eau-t:#bcd6e6; --ok-roc:#8a7a5c; --ok-roc2:#4a4436;
+  --ok-ville:#2a2926; --ok-hachure:#3d3932; --ok-mur:#0b0c0e; --ok-mur-clair:#c9bea8; --ok-fort:#8f8573; --ok-bat:#5c5549;
+  --ok-fosse:#3d372b; --ok-bois:#8a6540; --ok-route:#6e5f45; --ok-facade:#0b0c0e; --ok-rue:#7d7566; --ok-ruef:#5a544a;
+  --ok-zone:#352f25; --ok-texte:#e4e1d9; --ok-texte2:#a4a29a; --ok-tente:#8d7b5a; --ok-feu:#e98a3c; --ok-nid:#d06a5a;
+  --ok-sous:#b08655; --ok-a:#f0a830; --ok-b:#e08ccb; --ok-c:#5bb8f0; --ok-commun:#c9c6bd;
+  --ok-gen:#fffaf0; --ok-gen-o:#000000; --ok-barr:#e0604f; --ok-pnj:#15181c; --ok-or:#d4a857;
+}
+/* thème clair, au choix du lecteur (bouton en tête de page) */
+:root:has(#theme-clair:checked){
+  --nuit:#f3efe6; --brume:#fbf9f4; --roche:#d6cfc2; --pierre:#5d646d; --lin:#1f2328;
+  --aube:#8f6410; --mousse:#4c6b42; --braise:#a3412f; --acier:#3d5d7a;
+  color-scheme:light;
+  --ok-fond:#f4efe3; --ok-champ:#e3e9d2; --ok-champ2:#d5dfbd; --ok-cadre:#b9ae98;
+  --ok-rive:#c6d9e2; --ok-eau:#9cc1d5; --ok-eau-t:#2f5f7a; --ok-roc:#9a8a6c; --ok-roc2:#d8cdb4;
+  --ok-ville:#dbd3c3; --ok-hachure:#bfb39c; --ok-mur:#5b5244; --ok-mur-clair:#efe7d6; --ok-fort:#cfc4ae; --ok-bat:#e6dcc8;
+  --ok-fosse:#cdbf9f; --ok-bois:#9a7147; --ok-route:#cdb88f; --ok-facade:#6b6152; --ok-rue:#fbf8f0; --ok-ruef:#d9d2c4;
+  --ok-zone:#efe3c6; --ok-texte:#2b2721; --ok-texte2:#6a6255; --ok-tente:#cbb58d; --ok-feu:#d8742a; --ok-nid:#8a2f2f;
+  --ok-sous:#8c6a45; --ok-a:#c26f00; --ok-b:#a2418a; --ok-c:#0a6fb0; --ok-commun:#4d4a45;
+  --ok-gen:#fffdf6; --ok-gen-o:#2b2721; --ok-barr:#b3362b; --ok-pnj:#ffffff; --ok-or:#b88a1e;
+}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+.grille-images{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.pistes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.piste .ticket{font:500 .72rem/1 var(--f-data);letter-spacing:.06em;color:var(--pierre)}
+.etat{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--pierre)}.encours{color:var(--acier)}.valide{color:var(--mousse)}.bloque{color:var(--braise)}.fait{color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre)}
+/* Ajouts propres à cette page */
+section{grid-template-columns:minmax(0,1fr)}
+a{color:var(--aube)}
+nav.themes{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.themes a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.themes a:hover,nav.themes a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.bascule{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.bouton-theme{justify-self:start;cursor:pointer;font:500 .78rem/1 var(--f-data);color:var(--lin);border:1px solid var(--aube);border-radius:3px;padding:.5rem .7rem}
+.bascule:focus-visible + .bouton-theme{outline:2px solid var(--aube);outline-offset:2px}
+.si-clair{display:none}
+:root:has(#theme-clair:checked) .si-sombre{display:none}
+:root:has(#theme-clair:checked) .si-clair{display:inline}
+.avis{border-left:3px solid var(--aube);padding:.6rem .9rem;background:var(--brume);border-radius:0 6px 6px 0}
+.plan-large{width:min(94vw,75rem);margin-left:calc(50% - min(47vw,37.5rem));display:grid;gap:.6rem}
+.plan-cadre{overflow-x:auto;border:1px solid var(--roche);border-radius:6px;background:var(--ok-fond)}
+.plan-cadre svg{display:block;width:100%;min-width:56rem;max-width:none;height:auto}
+.legende-voies{display:flex;flex-wrap:wrap;gap:.4rem 1rem;font-size:.9rem}
+.pastille{display:inline-block;width:1.6rem;height:.35rem;border-radius:2px;vertical-align:.2em;margin-right:.35rem}
+.pa{background:var(--ok-a)}.pb{background:var(--ok-b)}.pc{background:var(--ok-c)}.pco{background:var(--ok-commun)}
+.voie{border-top:3px solid var(--roche)}
+.voie.va{border-top-color:var(--ok-a)}.voie.vb{border-top-color:var(--ok-b)}.voie.vc{border-top-color:var(--ok-c)}
+.voie h3 .lettre{font:500 .8rem/1 var(--f-data);margin-right:.4rem}
+.voie dl{margin:0;display:grid;gap:.45rem}
+.voie dt{font:500 .7rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+.voie dd{margin:0;font-size:.93rem}
+.options{margin:0;padding:0;list-style:none;display:grid;gap:.45rem;counter-reset:opt}
+.options li{counter-increment:opt;position:relative;border:1px solid var(--roche);border-radius:4px;padding:.55rem .7rem .55rem 2.1rem;font-size:.93rem}
+.options li::before{content:counter(opt);position:absolute;left:.7rem;top:.55rem;font:500 .8rem/1.6 var(--f-data);color:var(--pierre)}
+.options li.reco{border-color:var(--aube)}
+.options li.reco::before{color:var(--aube)}
+.badge{display:inline-block;font:500 .66rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--aube);border:1px solid currentColor;border-radius:3px;padding:.22rem .4rem;margin-right:.35rem;vertical-align:.1em}
+.prop{font:500 .72rem/1 var(--f-data);color:var(--acier)}
+ol.liste{margin:0;padding-left:1.3rem;display:grid;gap:.5rem}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier T-0092 (P0-03) · 30/09/2026</div>
+  <h1>Plan d'<em>Oakhaven</em></h1>
+  <p class="lecture">La partie d'Oakhaven que traverse la première quête principale (QP1) : les abords et le checkpoint, les campements de réfugiés, les écuries, l'hospice des Veilleurs, les trois voies d'entrée et la grand-place, pour le prototype des investisseurs dans Unreal 5.8 (D-181).</p>
+  <p class="lecture avis"><strong>Proposition, à valider par le directeur.</strong> Rien n'est tranché ici et les documents de design ne sont pas modifiés. Ce qui vient d'un document ou d'une décision est cité ; le reste est marqué <span class="prop">prop.</span></p>
+  <input type="checkbox" id="theme-clair" class="bascule">
+  <label for="theme-clair" class="bouton-theme"><span class="si-sombre">Passer au thème clair</span><span class="si-clair">Passer au thème sombre</span></label>
+  <nav class="themes" aria-label="Sections">
+    <a href="#plan">Le plan</a><a href="#fixe">Ce qui est fixé</a><a href="#partis">Partis pris</a><a href="#lieux">Lieux</a><a href="#surfaces">Surfaces</a><a href="#distances">Distances</a><a href="#voies">Trois voies</a><a href="#place">Grand-place</a><a href="#pnj">PNJ</a><a href="#decor">Décor lointain</a><a href="#options">Points bloquants</a><a href="#questions">Questions</a><a href="#tensions">Tensions</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section>
+  <h2>En bref</h2>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">DESSINÉ</span><h3>Le plan minimal</h3><p class="muted">Option recommandée de PB-12 : porte et checkpoint, campements, écuries, hospice, grand-place et les rues qui les relient ; le reste de la ville en décor, 30 à 50 PNJ à l'écran.</p></div>
+    <div class="piste"><span class="ticket">VOIES</span><h3>Trois voies, deux niveaux</h3><p class="muted">Trait plein : version courte (PB-11, option 1 recommandée). Pointillé : ajouts de la version complète (option 4). Les trois mènent à la grand-place.</p></div>
+    <div class="piste"><span class="ticket">SURFACES</span><h3>≈ 4,1 ha aménagés hors les murs</h3><p class="muted">≈ 6 500 m² praticables dans la ville et ≈ 1 200 m² de souterrain ; une enceinte d'environ 15 ha en décor.</p></div>
+    <div class="piste"><span class="ticket">À TRANCHER</span><h3>9 questions</h3><p class="muted">Côté du fleuve, cloche, décor du souvenir, garde corrompu, trajet du Général, Culte, population, foule, noms de travail.</p></div>
+  </div>
+</section>
+
+<section id="plan">
+  <h2>Le plan</h2>
+  <p class="lecture muted">Nord en haut, 1 unité = 1 mètre ; coordonnées en mètres depuis le centre de la Porte du Sud. Sur téléphone, faites glisser le plan dans son cadre, ou <a href="oakhaven.svg">ouvrez le plan seul</a> pour zoomer.</p>
+  <div class="legende-voies">
+    <span><span class="pastille pco"></span>tronc commun</span>
+    <span><span class="pastille pa"></span>Voie A · Ordre</span>
+    <span><span class="pastille pb"></span>Voie B · Cartel</span>
+    <span><span class="pastille pc"></span>Voie C · Conclave</span>
+  </div>
+  <div class="plan-large">
+  <div class="plan-cadre">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1300" class="okp" role="img" aria-labelledby="okp-titre okp-desc" font-family="Figtree, 'Segoe UI', system-ui, sans-serif">
+  <title id="okp-titre">Oakhaven : plan de la QP1 (proposition, à valider)</title>
+  <desc id="okp-desc">Plan vu de dessus, nord en haut, 1 unité = 1 mètre. La route arrive du sud jusqu'au checkpoint de la Garde Royale, devant la Porte du Sud. Campement de réfugiés à l'ouest de la route, écuries extérieures et petit campement à l'est, hospice des Veilleurs au sud-ouest, nid de la voie A dans une ancienne carrière derrière une crête. Voie A en orange par la Rue de la Porte ; voie B en violet par le chariot, la Cour des Tonneliers et la ruelle des bas-fonds ; voie C en bleu par l'aqueduc souterrain, la salle des esprits, les catacombes et la crypte du beffroi. Les trois voies mènent à la grand-place, détaillée dans l'encart en bas à droite, avec le cortège du Général. Trait plein : version courte ; pointillé : ajouts de la version complète. Proposition, à valider (ticket T-0092).</desc>
+  <style>
+    .okp .fond{fill:var(--ok-fond,#f4efe3)}
+    .okp .champ{fill:var(--ok-champ,#e3e9d2)}
+    .okp .parc{fill:var(--ok-champ2,#d5dfbd)}
+    .okp .cadre-l{fill:none;stroke:var(--ok-cadre,#b9ae98);stroke-width:1.5}
+    .okp .rive{fill:none;stroke:var(--ok-rive,#c6d9e2);stroke-width:68;stroke-linecap:round;stroke-linejoin:round}
+    .okp .eau{fill:none;stroke:var(--ok-eau,#9cc1d5);stroke-width:56;stroke-linecap:round;stroke-linejoin:round}
+    .okp .escarp{fill:none;stroke:var(--ok-roc,#9a8a6c);stroke-width:4;stroke-dasharray:1.5 4;stroke-linecap:round}
+    .okp .ville{fill:var(--ok-ville,#dbd3c3)}
+    .okp .hach{fill:url(#okp-hach)}
+    .okp .hl{stroke:var(--ok-hachure,#bfb39c);stroke-width:1.4}
+    .okp .mur-o{fill:none;stroke:var(--ok-mur,#5b5244);stroke-width:9;stroke-linejoin:round}
+    .okp .mur{fill:none;stroke:var(--ok-mur-clair,#efe7d6);stroke-width:4.5;stroke-linejoin:round}
+    .okp .tour{fill:var(--ok-mur-clair,#efe7d6);stroke:var(--ok-mur,#5b5244);stroke-width:2}
+    .okp .fort{fill:var(--ok-fort,#cfc4ae);stroke:var(--ok-mur,#5b5244);stroke-width:2}
+    .okp .don{fill:var(--ok-mur-clair,#efe7d6);stroke:var(--ok-mur,#5b5244);stroke-width:2}
+    .okp .bat{fill:var(--ok-bat,#e6dcc8);stroke:var(--ok-mur,#5b5244);stroke-width:1.4}
+    .okp .cour{fill:var(--ok-rue,#fbf8f0);stroke:var(--ok-mur,#5b5244);stroke-width:1}
+    .okp .fosse{fill:var(--ok-fosse,#cdbf9f);stroke:var(--ok-mur,#5b5244);stroke-width:1;stroke-dasharray:3 3}
+    .okp .bois{fill:var(--ok-bois,#9a7147);stroke:var(--ok-mur,#5b5244);stroke-width:1}
+    .okp .route{fill:none;stroke:var(--ok-route,#cdb88f);stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+    .okp .route2{fill:none;stroke:var(--ok-route,#cdb88f);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+    .okp .rue-o{fill:none;stroke:var(--ok-facade,#6b6152);stroke-linecap:round;stroke-linejoin:round}
+    .okp .rue{fill:none;stroke:var(--ok-rue,#fbf8f0);stroke-linecap:round;stroke-linejoin:round}
+    .okp .ruef{fill:none;stroke:var(--ok-ruef,#d9d2c4);stroke-linecap:round;stroke-linejoin:round}
+    .okp .place{fill:var(--ok-rue,#fbf8f0);stroke:var(--ok-facade,#6b6152);stroke-width:2}
+    .okp .passage{fill:var(--ok-rue,#fbf8f0)}
+    .okp .pont-o{stroke:var(--ok-mur,#5b5244);stroke-width:15;stroke-linecap:butt}
+    .okp .pont{stroke:var(--ok-mur-clair,#efe7d6);stroke-width:10;stroke-linecap:butt}
+    .okp .zone{fill:var(--ok-zone,#efe3c6);stroke:var(--ok-texte2,#6a6255);stroke-width:1;stroke-dasharray:4 3}
+    .okp .enclos{fill:none;stroke:var(--ok-bois,#9a7147);stroke-width:1.6;stroke-dasharray:3 2}
+    .okp .tente{fill:var(--ok-tente,#cbb58d);stroke:var(--ok-mur,#5b5244);stroke-width:.8}
+    .okp .tente-c{fill:var(--ok-c,#0a6fb0);stroke:var(--ok-mur,#5b5244);stroke-width:.8}
+    .okp .feu{fill:var(--ok-feu,#d8742a)}
+    .okp .carriere{fill:var(--ok-roc2,#d8cdb4);stroke:var(--ok-roc,#9a8a6c);stroke-width:2}
+    .okp .crete{fill:none;stroke:var(--ok-roc,#9a8a6c);stroke-width:2}
+    .okp .crete-h{fill:none;stroke:var(--ok-roc,#9a8a6c);stroke-width:6;stroke-dasharray:1.5 5}
+    .okp .nid{fill:var(--ok-nid,#8a2f2f);stroke:var(--ok-fond,#f4efe3);stroke-width:1.5}
+    .okp .sous{fill:none;stroke:var(--ok-sous,#8c6a45);stroke-width:13;stroke-opacity:.5;stroke-linecap:round;stroke-linejoin:round}
+    .okp .sous-c{fill:none;stroke:var(--ok-sous,#8c6a45);stroke-width:8;stroke-opacity:.28;stroke-linecap:round;stroke-linejoin:round}
+    .okp .sous-f{fill:var(--ok-sous,#8c6a45);fill-opacity:.55;stroke:var(--ok-mur,#5b5244);stroke-width:1}
+    .okp .sous-f2{fill:var(--ok-sous,#8c6a45);fill-opacity:.22;stroke:var(--ok-mur,#5b5244);stroke-width:1;stroke-dasharray:3 3}
+    .okp .v{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+    .okp .vc{fill:none;stroke-width:2.6;stroke-dasharray:1.5 5;stroke-linecap:round;stroke-linejoin:round}
+    .okp .vch{fill:none;stroke-width:4;stroke-dasharray:11 6;stroke-linejoin:round}
+    .okp .ca{stroke:var(--ok-a,#c26f00)}
+    .okp .cb{stroke:var(--ok-b,#a2418a)}
+    .okp .cc{stroke:var(--ok-c,#0a6fb0)}
+    .okp .cco{stroke:var(--ok-commun,#4d4a45)}
+    .okp .mk-a{fill:var(--ok-a,#c26f00)}
+    .okp .mk-b{fill:var(--ok-b,#a2418a)}
+    .okp .mk-c{fill:var(--ok-c,#0a6fb0)}
+    .okp .mk-co{fill:var(--ok-commun,#4d4a45)}
+    .okp .mk-g{fill:var(--ok-gen,#fffdf6);stroke:var(--ok-gen-o,#2b2721);stroke-width:1}
+    .okp .gen-o{fill:none;stroke:var(--ok-gen-o,#2b2721);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+    .okp .gen{fill:none;stroke:var(--ok-gen,#fffdf6);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    .okp .barr{stroke:var(--ok-barr,#b3362b);stroke-width:4.5;stroke-linecap:round}
+    .okp .barr2{stroke:var(--ok-barr,#b3362b);stroke-width:3;stroke-linecap:round}
+    .okp .limite{fill:none;stroke:var(--ok-texte2,#6a6255);stroke-width:1.5;stroke-dasharray:7 5}
+    .okp .decl{stroke:var(--ok-texte,#2b2721);stroke-width:2;stroke-dasharray:3 3}
+    .okp .lead{fill:none;stroke:var(--ok-texte2,#6a6255);stroke-width:1;stroke-dasharray:3 2}
+    .okp .pnj{fill:var(--ok-pnj,#ffffff);stroke:var(--ok-texte,#2b2721);stroke-width:2}
+    .okp .foule{fill:url(#okp-foule)}
+    .okp .fl{fill:var(--ok-texte2,#6a6255)}
+    .okp .cadre{fill:var(--ok-fond,#f4efe3);stroke:var(--ok-cadre,#b9ae98);stroke-width:1.5}
+    .okp .cloche{fill:var(--ok-or,#b88a1e);stroke:var(--ok-mur,#5b5244);stroke-width:1.2}
+    .okp .cheval{fill:var(--ok-bois,#9a7147)}
+    .okp .rose{fill:var(--ok-fond,#f4efe3);stroke:var(--ok-texte,#2b2721);stroke-width:1.5}
+    .okp .rose-n{fill:var(--ok-texte,#2b2721)}
+    .okp .ech1{fill:var(--ok-texte,#2b2721)}
+    .okp .ech2{fill:var(--ok-fond,#f4efe3);stroke:var(--ok-texte,#2b2721);stroke-width:1}
+    .okp .bd-a{fill:var(--ok-fond,#f4efe3);stroke:var(--ok-a,#c26f00);stroke-width:2}
+    .okp .bd-b{fill:var(--ok-fond,#f4efe3);stroke:var(--ok-b,#a2418a);stroke-width:2}
+    .okp .bd-c{fill:var(--ok-fond,#f4efe3);stroke:var(--ok-c,#0a6fb0);stroke-width:2}
+    .okp text{fill:var(--ok-texte,#2b2721);font-size:13.5px;paint-order:stroke;stroke:var(--ok-fond,#f4efe3);stroke-width:3px;stroke-linejoin:round}
+    .okp .s{font-size:12px}
+    .okp .xs{font-size:11px}
+    .okp .b{font-weight:600}
+    .okp .i{font-style:italic}
+    .okp .m{text-anchor:middle}
+    .okp .e{text-anchor:end}
+    .okp .tt{font-size:18px;font-weight:700}
+    .okp .gd{font-size:17px;font-weight:700;letter-spacing:2px}
+    .okp .t2{fill:var(--ok-texte2,#6a6255)}
+    .okp .eau-t{fill:var(--ok-eau-t,#2f5f7a);stroke:none;font-style:italic}
+    .okp .pnj-t{font-size:10.5px;font-weight:700;text-anchor:middle;stroke:none}
+    .okp .bd-t{font-size:10px;font-weight:700;text-anchor:middle;stroke:none}
+    .okp .ta{fill:var(--ok-a,#c26f00)}
+    .okp .tb{fill:var(--ok-b,#a2418a)}
+    .okp .tc{fill:var(--ok-c,#0a6fb0)}
+  </style>
+  <defs>
+    <clipPath id="okp-clip"><rect x="10" y="10" width="940" height="940"/></clipPath>
+    <clipPath id="okp-clip-enc"><rect x="560" y="1000" width="384" height="255"/></clipPath>
+    <pattern id="okp-hach" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" class="hl"/></pattern>
+    <pattern id="okp-foule" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.3" class="fl"/></pattern>
+    <marker id="okp-fa" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-a"/></marker>
+    <marker id="okp-fb" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-b"/></marker>
+    <marker id="okp-fc" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-c"/></marker>
+    <marker id="okp-fco" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-co"/></marker>
+    <marker id="okp-fg" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0 0 L10 5 L0 10 Z" class="mk-g"/></marker>
+    <path id="okp-t" d="M-5 4 L0 -4 L5 4 Z"/>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="1300" class="fond"/>
+
+  <g clip-path="url(#okp-clip)">
+    <rect x="10" y="10" width="940" height="940" class="champ"/>
+    <rect x="625" y="775" width="110" height="55" class="parc"/>
+    <rect x="625" y="840" width="120" height="90" class="parc"/>
+    <rect x="18" y="640" width="34" height="110" class="parc"/>
+    <rect x="862" y="712" width="80" height="60" class="parc"/>
+    <rect x="910" y="780" width="32" height="70" class="parc"/>
+
+    <path d="M10,100 L80,107.5 Q150,115 215,132.5 Q280,150 365,125 Q450,100 525,110 Q600,120 660,165 Q720,210 745,290 Q770,370 760,450 Q750,530 765,610 Q780,690 815,760 Q850,830 885,890 L920,950" class="rive"/>
+    <path d="M10,100 L80,107.5 Q150,115 215,132.5 Q280,150 365,125 Q450,100 525,110 Q600,120 660,165 Q720,210 745,290 Q770,370 760,450 Q750,530 765,610 Q780,690 815,760 Q850,830 885,890 L920,950" class="eau"/>
+    <polyline points="222,344 270,214 500,170 640,198" class="escarp"/>
+
+    <polygon points="250,570 630,570 690,390 640,210 500,180 280,220 230,340" class="ville"/>
+    <polygon points="250,570 630,570 690,390 640,210 500,180 280,220 230,340" class="hach"/>
+
+    <polyline points="450,556 442,480 450,400" class="rue-o" stroke-width="11"/>
+    <polyline points="450,556 442,480 450,400" class="rue" stroke-width="8"/>
+    <polyline points="450,556 490,549 545,532" class="rue-o" stroke-width="7"/>
+    <polyline points="450,556 490,549 545,532" class="rue" stroke-width="5"/>
+    <polyline points="545,522 530,480 505,450 490,420 480,398" class="rue-o" stroke-width="6"/>
+    <polyline points="545,522 530,480 505,450 490,420 480,398" class="rue" stroke-width="3.6"/>
+    <polyline points="425,357 390,300 362,272" class="rue-o" stroke-width="8"/>
+    <polyline points="425,357 390,300 362,272" class="ruef" stroke-width="6"/>
+    <polyline points="478,372 530,340 570,270 580,199" class="rue-o" stroke-width="8"/>
+    <polyline points="478,372 530,340 570,270 580,199" class="ruef" stroke-width="6"/>
+    <rect x="530" y="520" width="30" height="20" class="place"/>
+    <rect x="420" y="355" width="60" height="45" class="place"/>
+
+    <polygon points="284,300 356,300 368,246 330,226 288,236" class="fort"/>
+    <rect x="305" y="248" width="34" height="34" class="don"/>
+    <rect x="395" y="215" width="50" height="47" class="bat"/>
+    <rect x="398" y="370" width="20" height="20" class="don"/>
+    <path d="M522,459 L529,466 L522,473 L515,466 Z" class="bat"/>
+
+    <polyline points="300,530 245,485 265,430 320,420 380,420" class="sous-c"/>
+    <polyline points="380,420 368,442 390,452 402,430 380,420" class="sous-c"/>
+    <polyline points="366,404 396,410" class="sous-c"/>
+    <rect x="253" y="420" width="25" height="20" class="sous-f2"/>
+    <polyline points="262,578 300,530 330,475" class="sous"/>
+    <rect x="328" y="455" width="25" height="20" class="sous-f"/>
+    <polyline points="353,460 380,420 402,385" class="sous"/>
+    <rect x="398" y="377" width="14" height="10" class="sous-f"/>
+    <circle cx="410" cy="378" r="4.5" class="cloche"/>
+
+    <rect x="250" y="572" width="380" height="12" class="fosse"/>
+    <rect x="445" y="572" width="10" height="12" class="bois"/>
+    <polygon points="250,570 630,570 690,390 640,210 500,180 280,220 230,340" class="mur-o"/>
+    <polygon points="250,570 630,570 690,390 640,210 500,180 280,220 230,340" class="mur"/>
+    <rect x="436" y="554" width="28" height="22" class="don"/>
+    <rect x="445" y="555" width="10" height="20" class="passage"/>
+    <rect x="571" y="189" width="18" height="14" class="don"/>
+    <g class="tour">
+      <circle cx="250" cy="570" r="7"/><circle cx="310" cy="570" r="7"/><circle cx="370" cy="570" r="7"/>
+      <circle cx="510" cy="570" r="7"/><circle cx="570" cy="570" r="7"/><circle cx="630" cy="570" r="7"/>
+      <circle cx="660" cy="480" r="7"/><circle cx="690" cy="390" r="7"/><circle cx="665" cy="300" r="7"/>
+      <circle cx="640" cy="210" r="7"/><circle cx="500" cy="180" r="7"/><circle cx="390" cy="200" r="7"/>
+      <circle cx="280" cy="220" r="7"/><circle cx="255" cy="280" r="7"/><circle cx="230" cy="340" r="7"/>
+      <circle cx="240" cy="455" r="7"/>
+      <circle cx="438" cy="568" r="8"/><circle cx="462" cy="568" r="8"/>
+      <circle cx="568" cy="195" r="7"/><circle cx="592" cy="199" r="7"/>
+    </g>
+
+    <line x1="580" y1="197" x2="596" y2="55" class="pont-o"/>
+    <line x1="580" y1="197" x2="596" y2="55" class="pont"/>
+    <circle cx="588" cy="121" r="6" class="tour"/>
+    <circle cx="596" cy="58" r="7" class="tour"/>
+    <polyline points="596,52 604,10" class="route2"/>
+
+    <polyline points="450,950 450,632" class="route"/>
+    <polyline points="450,690 510,707" class="route2"/>
+    <rect x="425" y="584" width="50" height="46" class="zone"/>
+    <line x1="450" y1="588" x2="450" y2="621" class="lead"/>
+    <rect x="428" y="590" width="14" height="10" class="tente"/>
+    <rect x="444" y="616" width="12" height="4" class="bois"/>
+    <line x1="425" y1="625" x2="475" y2="625" class="barr2"/>
+
+    <rect x="280" y="610" width="140" height="130" class="zone"/>
+    <g class="tente">
+      <use href="#okp-t" x="330" y="620"/><use href="#okp-t" x="356" y="620"/><use href="#okp-t" x="384" y="620"/><use href="#okp-t" x="408" y="620"/>
+      <use href="#okp-t" x="292" y="652"/><use href="#okp-t" x="316" y="652"/><use href="#okp-t" x="342" y="652"/><use href="#okp-t" x="368" y="652"/><use href="#okp-t" x="394" y="652"/>
+      <use href="#okp-t" x="304" y="668"/><use href="#okp-t" x="330" y="668"/><use href="#okp-t" x="356" y="668"/><use href="#okp-t" x="382" y="668"/><use href="#okp-t" x="408" y="668"/>
+      <use href="#okp-t" x="292" y="704"/><use href="#okp-t" x="318" y="704"/><use href="#okp-t" x="370" y="704"/><use href="#okp-t" x="396" y="704"/>
+      <use href="#okp-t" x="300" y="722"/><use href="#okp-t" x="382" y="722"/><use href="#okp-t" x="408" y="722"/>
+      <use href="#okp-t" x="292" y="736"/><use href="#okp-t" x="318" y="736"/><use href="#okp-t" x="344" y="736"/><use href="#okp-t" x="370" y="736"/><use href="#okp-t" x="396" y="736"/>
+      <use href="#okp-t" x="232" y="760"/><use href="#okp-t" x="250" y="766"/><use href="#okp-t" x="268" y="758"/>
+    </g>
+    <use href="#okp-t" x="306" y="616" class="tente-c"/>
+    <circle cx="340" cy="716" r="4" class="feu"/>
+    <rect x="470" y="648" width="36" height="44" class="zone"/>
+    <g class="tente"><use href="#okp-t" x="480" y="656"/><use href="#okp-t" x="497" y="660"/><use href="#okp-t" x="496" y="678"/></g>
+
+    <rect x="510" y="695" width="60" height="25" class="zone"/>
+    <rect x="510" y="720" width="50" height="25" class="bat"/>
+    <rect x="565" y="720" width="40" height="40" class="enclos"/>
+    <rect x="544" y="701" width="12" height="7" class="bois"/>
+    <ellipse cx="585" cy="742" rx="6" ry="3" class="cheval"/>
+
+    <rect x="220" y="785" width="60" height="50" class="bat"/>
+    <rect x="234" y="797" width="32" height="26" class="cour"/>
+
+    <polygon points="112,733 158,729 162,768 116,772" class="carriere"/>
+    <polyline points="118,745 156,742" class="crete"/>
+    <circle cx="137" cy="757" r="6" class="nid"/>
+    <polyline points="196,690 193,722" class="crete"/>
+    <polyline points="199,690 196,722" class="crete-h"/>
+    <polyline points="193,742 196,805" class="crete"/>
+    <polyline points="196,742 199,805" class="crete-h"/>
+    <path d="M255,583 A7,7 0 0 1 269,583 Z" class="sous-f"/>
+
+    <rect x="848" y="636" width="48" height="16" class="bat"/>
+    <rect x="864" y="620" width="16" height="50" class="bat"/>
+
+    <polyline points="250,586 60,586 60,948 610,948 610,586 630,586" class="limite"/>
+
+    <polyline points="406,686 254,782" class="vc ca"/>
+    <polyline points="222,800 126,776" class="vc ca" marker-end="url(#okp-fa)"/>
+    <polygon points="72,742 110,728 160,727 164,801 76,803" class="vc ca"/>
+    <polyline points="531,720 474,612" class="vc cb" marker-start="url(#okp-fb)" marker-end="url(#okp-fb)"/>
+    <polyline points="530,480 590,460 600,410 540,405 490,420" class="vc cb"/>
+    <polyline points="300,530 245,485 265,430 320,420 380,420" class="vc cc"/>
+    <polyline points="380,420 368,442 390,452 402,430" class="vc cc"/>
+
+    <polyline points="450,946 450,636" class="v cco" marker-end="url(#okp-fco)"/>
+    <polyline points="446,624 415,673" class="v ca"/>
+    <polyline points="404,681 280,690 160,750 148,751" class="v ca" marker-start="url(#okp-fa)" marker-end="url(#okp-fa)"/>
+    <polyline points="447,626 447,556 439,480 447,404 447,393" class="v ca" marker-end="url(#okp-fa)"/>
+    <polyline points="455,624 470,670 510,710 527,724" class="v cb"/>
+    <polyline points="541,722 548,711" class="v cb"/>
+    <polyline points="550,705 510,690 465,660 458,625 454,584 454,556 490,551 537,535" class="vch cb" marker-end="url(#okp-fb)"/>
+    <polyline points="545,530 530,480 505,450 490,420 480,400 470,392" class="v cb" marker-end="url(#okp-fb)"/>
+    <polyline points="444,626 390,642 300,631" class="v cc"/>
+    <polyline points="284,621 266,587" class="v cc"/>
+    <polyline points="262,578 300,530 330,475 353,460 380,420 402,385 418,380 436,379" class="v cc" marker-end="url(#okp-fc)"/>
+
+    <polyline points="505,355 480,370 450,375 425,355" class="gen-o"/>
+    <polyline points="505,355 480,370 450,375 425,355" class="gen"/>
+    <line x1="402" y1="334" x2="416" y2="326" class="barr"/>
+    <line x1="501" y1="348" x2="509" y2="362" class="barr"/>
+
+    <circle cx="346" cy="685" r="7" class="bd-a"/><text x="346" y="688.6" class="bd-t ta">A</text>
+    <circle cx="443" cy="515" r="7" class="bd-a"/><text x="443" y="518.6" class="bd-t ta">A</text>
+    <circle cx="490" cy="690" r="7" class="bd-b"/><text x="490" y="693.6" class="bd-t tb">B</text>
+    <circle cx="497" cy="435" r="7" class="bd-b"/><text x="497" y="438.6" class="bd-t tb">B</text>
+    <circle cx="340" cy="636" r="7" class="bd-c"/><text x="340" y="639.6" class="bd-t tc">C</text>
+    <circle cx="281" cy="554" r="7" class="bd-c"/><text x="281" y="557.6" class="bd-t tc">C</text>
+
+    <circle cx="450" cy="613" r="9" class="pnj"/><text x="450" y="616.8" class="pnj-t">9</text>
+    <circle cx="471" cy="600" r="9" class="pnj"/><text x="471" y="603.8" class="pnj-t">13</text>
+    <circle cx="412" cy="680" r="9" class="pnj"/><text x="412" y="683.8" class="pnj-t">10</text>
+    <circle cx="535" cy="730" r="9" class="pnj"/><text x="535" y="733.8" class="pnj-t">11</text>
+    <circle cx="290" cy="628" r="9" class="pnj"/><text x="290" y="631.8" class="pnj-t">12</text>
+
+    <text x="400" y="121" class="s m eau-t">fleuve central (D-06)</text>
+    <text x="614" y="34" class="s b">Pont d'Oakhaven : seul accès officiel</text>
+    <text x="614" y="49" class="s">à la Capitale (D-93) · décor</text>
+    <text x="614" y="64" class="xs t2">↑ vers la Capitale (silhouette au loin, image 14)</text>
+    <text x="572" y="172" class="xs e">Porte du Pont</text>
+    <text x="258" y="262" class="b e">Citadelle Haute (QP3)</text>
+    <text x="258" y="277" class="s e">QG de l'Ordre · décor</text>
+    <text x="420" y="242" class="xs m">garnison</text>
+    <text x="860" y="252" class="gd m">OAKHAVEN</text>
+    <text x="860" y="270" class="s m">Ville Régionale</text>
+    <text x="860" y="284" class="xs m">(D-06, D-07)</text>
+    <text x="860" y="298" class="xs m">enceinte ≈ 15 ha</text>
+    <text x="860" y="312" class="xs m">remparts ≈ 1,5 km</text>
+    <text x="380" y="326" class="s e">Rue Haute</text>
+    <text x="380" y="339" class="xs e">(fermée)</text>
+    <text x="546" y="300" class="s e">Rue du Pont</text>
+    <text x="546" y="313" class="xs e">(fermée sauf cortège)</text>
+    <text x="394" y="357" class="s b e">grand-place (encart ▾)</text>
+    <text x="434" y="530" class="xs e">Rue de la Porte</text>
+    <text x="314" y="500" class="xs">ancien aqueduc</text>
+    <text x="358" y="466" class="xs">salle des</text>
+    <text x="358" y="477" class="xs">esprits</text>
+    <text x="360" y="440" class="xs e">catacombes</text>
+    <text x="532" y="463" class="xs">Chopine Borgne (QP2)</text>
+    <text x="615" y="503" class="s i m">bas-fonds</text>
+    <text x="615" y="516" class="xs m">(Voie B)</text>
+    <text x="566" y="527" class="xs">cour des</text>
+    <text x="566" y="539" class="xs">Tonneliers</text>
+    <text x="420" y="600" class="s b e">Porte du Sud (prop.)</text>
+    <text x="254" y="604" class="s e">bouche de l'aqueduc</text>
+    <text x="482" y="596" class="s b">checkpoint (Garde Royale)</text>
+    <text x="356" y="758" class="b m">campements de réfugiés</text>
+    <text x="356" y="772" class="xs m">(QP1, étape 2)</text>
+    <text x="512" y="650" class="xs">campement est</text>
+    <text x="576" y="700" class="s b">écuries extérieures</text>
+    <text x="576" y="713" class="xs">(cheval du Choix A : D-37)</text>
+    <text x="250" y="852" class="s b m">hospice des Veilleurs</text>
+    <text x="250" y="865" class="xs m">(hors les murs, Worldbuilding § 1)</text>
+    <text x="137" y="712" class="xs m">ancienne carrière</text>
+    <text x="137" y="724" class="xs b m">nid (Voie A)</text>
+    <text x="202" y="700" class="xs">crête</text>
+    <text x="880" y="598" class="xs m">monastère des Veilleurs</text>
+    <text x="880" y="611" class="xs m t2">(décor, image 14)</text>
+    <text x="458" y="941" class="xs">▲ route depuis la fourche et le Pont des Déserteurs (plan T-0091)</text>
+  </g>
+  <rect x="10" y="10" width="940" height="940" class="cadre-l"/>
+
+  <rect x="14" y="12" width="330" height="52" class="cadre"/>
+  <text x="26" y="36" class="tt">Oakhaven : plan de la QP1</text>
+  <text x="26" y="54" class="xs">proposition, à valider · T-0092 (P0-03) · 30/09/2026</text>
+
+  <g transform="translate(60 205)">
+    <circle r="27" class="rose"/>
+    <path d="M0 -24 L6 0 L0 -5 L-6 0 Z" class="rose-n"/>
+    <path d="M0 24 L6 0 L0 5 L-6 0 Z" class="rose"/>
+    <text y="-32" class="s b m">N</text>
+    <text y="42" class="xs m">S</text>
+    <text x="32" y="4" class="xs">E</text>
+    <text x="-32" y="4" class="xs e">O</text>
+  </g>
+
+  <g transform="translate(70 912)">
+    <text y="-6" class="xs">échelle (1 unité = 1 m)</text>
+    <rect x="0" y="0" width="50" height="7" class="ech1"/>
+    <rect x="50" y="0" width="50" height="7" class="ech2"/>
+    <rect x="100" y="0" width="100" height="7" class="ech1"/>
+    <text x="0" y="21" class="xs m">0</text>
+    <text x="50" y="21" class="xs m">50</text>
+    <text x="100" y="21" class="xs m">100</text>
+    <text x="200" y="21" class="xs m">200 m</text>
+  </g>
+
+  <rect x="14" y="968" width="528" height="328" class="cadre"/>
+  <text x="26" y="992" class="s b">Légende</text>
+  <line x1="26" y1="1012" x2="66" y2="1012" class="v cco"/>
+  <text x="76" y="1016" class="xs">tronc commun : route → checkpoint</text>
+  <line x1="26" y1="1036" x2="66" y2="1036" class="v ca"/>
+  <text x="76" y="1040" class="xs">Voie A (Ordre) : sergent, nid</text>
+  <line x1="26" y1="1060" x2="66" y2="1060" class="v cb"/>
+  <text x="76" y="1064" class="xs">Voie B (Cartel) : voleur, chariot</text>
+  <line x1="26" y1="1084" x2="66" y2="1084" class="v cc"/>
+  <text x="76" y="1088" class="xs">Voie C (Conclave) : érudit, aqueduc</text>
+  <line x1="26" y1="1108" x2="38" y2="1108" class="vc ca"/>
+  <line x1="41" y1="1108" x2="53" y2="1108" class="vc cb"/>
+  <line x1="56" y1="1108" x2="66" y2="1108" class="vc cc"/>
+  <text x="76" y="1112" class="xs">ajouts de la version complète</text>
+  <line x1="26" y1="1132" x2="66" y2="1132" class="vch cb"/>
+  <text x="76" y="1136" class="xs">trajet du chariot (scène, voie B)</text>
+  <line x1="26" y1="1156" x2="66" y2="1156" class="sous"/>
+  <text x="76" y="1160" class="xs">souterrain : aqueduc, catacombes</text>
+  <line x1="26" y1="1180" x2="66" y2="1180" class="gen-o"/>
+  <line x1="26" y1="1180" x2="66" y2="1180" class="gen"/>
+  <text x="76" y="1184" class="xs">G · cortège du Général (encart)</text>
+
+  <circle cx="318" cy="1012" r="9" class="pnj"/><text x="318" y="1015.8" class="pnj-t">9</text>
+  <text x="346" y="1016" class="xs">PNJ parlant (n° de fiche T-0084)</text>
+  <text x="346" y="1030" class="xs t2">9 capitaine, 10 sergent, 11 voleur</text>
+  <text x="346" y="1043" class="xs t2">12 érudit, 13 garde corrompu</text>
+  <rect x="300" y="1055" width="36" height="12" class="place"/>
+  <text x="346" y="1064" class="xs">rues et place jouables</text>
+  <rect x="300" y="1079" width="36" height="12" class="ville"/>
+  <rect x="300" y="1079" width="36" height="12" class="hach"/>
+  <text x="346" y="1088" class="xs">ville en décor, non jouable</text>
+  <line x1="302" y1="1108" x2="334" y2="1108" class="barr"/>
+  <text x="346" y="1112" class="xs">barrière : rue fermée</text>
+  <line x1="300" y1="1132" x2="336" y2="1132" class="limite"/>
+  <text x="346" y="1136" class="xs">limite des abords jouables</text>
+  <rect x="300" y="1151" width="36" height="12" class="zone"/>
+  <text x="346" y="1160" class="xs">camps, checkpoint (aménagés)</text>
+  <circle cx="304" cy="1180" r="6" class="bd-a"/><text x="304" y="1183.4" class="bd-t ta">A</text>
+  <circle cx="318" cy="1180" r="6" class="bd-b"/><text x="318" y="1183.4" class="bd-t tb">B</text>
+  <circle cx="332" cy="1180" r="6" class="bd-c"/><text x="332" y="1183.4" class="bd-t tc">C</text>
+  <text x="346" y="1184" class="xs">repères des trois voies</text>
+
+  <text x="26" y="1212" class="xs">1 unité = 1 m · course 5,7 m/s (T-0054) · chariot et cheval au pas : 1,5 m/s (prop.)</text>
+  <text x="26" y="1228" class="xs">Du checkpoint au centre de la place (version courte) : A 969 m (2 min 50 s) ·</text>
+  <text x="26" y="1244" class="xs">B 359 m à pied (1 min 03 s) + scène du chariot · C 511 m (1 min 30 s).</text>
+  <text x="26" y="1260" class="xs">Dessiné : PB-11 option 1 (trait plein) et option 4 (pointillé) ; PB-12 option 1.</text>
+  <text x="26" y="1276" class="xs">Au loin : Citadelle Haute, Pont d'Oakhaven, monastère ; montagnes, Capitale (image 14).</text>
+  <text x="26" y="1290" class="xs b">Hors citations (oakhaven.md), tout est proposition, à valider.</text>
+
+  <rect x="550" y="968" width="396" height="328" class="cadre"/>
+  <text x="562" y="990" class="s b">Encart : la grand-place (× 3, nord en haut)</text>
+  <g clip-path="url(#okp-clip-enc)">
+    <rect x="560" y="1000" width="384" height="255" class="ville"/>
+    <rect x="560" y="1000" width="384" height="255" class="hach"/>
+    <polyline points="734,1258 734,1195" class="rue-o" stroke-width="28"/>
+    <polyline points="734,1258 734,1195" class="rue" stroke-width="24"/>
+    <polyline points="856,1258 824,1189" class="rue-o" stroke-width="14"/>
+    <polyline points="856,1258 824,1189" class="rue" stroke-width="10.5"/>
+    <polyline points="659,1060 597,998" class="rue-o" stroke-width="22"/>
+    <polyline points="659,1060 597,998" class="ruef" stroke-width="18"/>
+    <polyline points="824,1105 899,1060 948,1037" class="rue-o" stroke-width="22"/>
+    <polyline points="824,1105 899,1060 948,1037" class="ruef" stroke-width="18"/>
+    <rect x="644" y="1060" width="180" height="135" class="place"/>
+    <rect x="578" y="1105" width="60" height="60" class="don"/>
+    <rect x="586" y="1113" width="44" height="44" class="sous-f2"/>
+    <rect x="634" y="1127" width="8" height="16" class="passage"/>
+    <circle cx="608" cy="1135" r="9" class="cloche"/>
+    <rect x="650" y="1135" width="76" height="55" class="foule"/>
+    <rect x="744" y="1135" width="76" height="55" class="foule"/>
+    <rect x="704" y="1064" width="96" height="20" class="foule"/>
+    <polyline points="944,1039 899,1060 824,1105 734,1120 659,1060 603,1004" class="gen-o"/>
+    <polyline points="944,1039 899,1060 824,1105 734,1120 659,1060 603,1004" class="gen" marker-end="url(#okp-fg)"/>
+    <line x1="722" y1="1195" x2="746" y2="1195" class="decl"/>
+    <line x1="816" y1="1205" x2="837" y2="1195" class="decl"/>
+    <line x1="646" y1="1124" x2="646" y2="1146" class="decl"/>
+    <line x1="611" y1="1030" x2="629" y2="1012" class="barr"/>
+    <line x1="893" y1="1050" x2="905" y2="1070" class="barr"/>
+    <polyline points="734,1250 734,1172" class="v ca" marker-end="url(#okp-fa)"/>
+    <polyline points="852,1250 826,1194 815,1181" class="v cb" marker-end="url(#okp-fb)"/>
+    <polyline points="642,1135 688,1135" class="v cc" marker-end="url(#okp-fc)"/>
+    <path d="M734 1113 L736 1118 L741 1118 L737 1121 L739 1126 L734 1123 L729 1126 L731 1121 L727 1118 L732 1118 Z" class="cloche"/>
+    <polyline points="736,1110 748,1053" class="lead"/>
+    <circle cx="780" cy="1112" r="9" class="pnj"/><text x="780" y="1115.8" class="pnj-t">G</text>
+    <circle cx="734" cy="1242" r="7" class="bd-a"/><text x="734" y="1245.6" class="bd-t ta">A</text>
+    <circle cx="848" cy="1242" r="7" class="bd-b"/><text x="848" y="1245.6" class="bd-t tb">B</text>
+    <circle cx="664" cy="1135" r="7" class="bd-c"/><text x="664" y="1138.6" class="bd-t tc">C</text>
+
+    <text x="606" y="1098" class="xs b m">beffroi (cloche)</text>
+    <text x="608" y="1180" class="xs m">crypte (C)</text>
+    <text x="566" y="1070" class="xs">Rue Haute</text>
+    <text x="566" y="1083" class="xs">(fermée)</text>
+    <text x="940" y="1012" class="xs e">Rue du Pont</text>
+    <text x="940" y="1025" class="xs e">barrière ouverte au cortège</text>
+    <text x="742" y="1048" class="xs">regard croisé → 2e souvenir</text>
+    <text x="830" y="1124" class="xs b">cortège du Général</text>
+    <text x="830" y="1137" class="xs">92 m, ≈ 1 min au pas</text>
+    <text x="830" y="1166" class="xs">place 60 × 45 m</text>
+    <text x="830" y="1179" class="xs">≈ 2 700 m²</text>
+    <text x="688" y="1166" class="xs m">foule (30 à 40)</text>
+    <text x="752" y="1230" class="xs">Rue de la Porte</text>
+    <text x="862" y="1238" class="xs">ruelle (B)</text>
+    <path d="M932 1200 L937 1212 L932 1209 L927 1212 Z" class="rose-n"/>
+    <text x="932" y="1196" class="xs b m">N</text>
+  </g>
+  <text x="562" y="1272" class="xs">petits pointillés : déclencheurs du cortège</text>
+  <text x="562" y="1286" class="xs">(le héros entre sur la place)</text>
+  <rect x="880" y="1266" width="30" height="5" class="ech1"/>
+  <rect x="910" y="1266" width="30" height="5" class="ech2"/>
+  <text x="880" y="1284" class="xs m">0</text>
+  <text x="910" y="1284" class="xs m">10</text>
+  <text x="934" y="1284" class="xs m">20 m</text>
+</svg>
+  </div>
+  <p class="muted" style="font-size:.88rem">Numéros ronds : PNJ parlants (fiches T-0084 : 9 capitaine des portes, 10 sergent recruteur, 11 voleur des écuries, 12 érudit banni, 13 garde corrompu ; G le Général). Pointillé : ajouts de la version complète. Bande brune : souterrain.</p>
+  </div>
+</section>
+
+<section id="fixe">
+  <h2>Ce qui est fixé</h2>
+  <ul class="liste lecture">
+    <li><strong>Ville Régionale</strong> de 300 à 1 000 habitants (population à préciser), au nord de la Plaine Royale, <strong>sur le fleuve central</strong>, « la porte vers la Capitale » (D-06, D-07, D-94 ; <em>Worldbuilding</em> § 1 ; <em>Lexique</em>).</li>
+    <li>Le <strong>Pont d'Oakhaven</strong>, « immense pont de pierre fortifié », est le <strong>seul accès officiel</strong> à la Capitale (D-93 ; <em>Topographie</em> § 1).</li>
+    <li>Après le Pont des Déserteurs, <strong>Oakhaven est au nord</strong> ; la QP1 commence aux portes, au bout de la route du nord (D-36 ; <em>Topographie</em> POI D ; D-150).</li>
+    <li><strong>Architecture :</strong> hautes murailles de calcaire, tours de guet cylindriques, herses de fer, ponts-levis ; vert émeraude, ivoire, or (<em>Worldbuilding</em> § 1).</li>
+    <li><strong>Factions :</strong> QG de l'Ordre ; le Cartel à <em>La Chopine Borgne</em>, dans les bas-fonds ; les Veilleurs tiennent hospices et monastères hors les murs (<em>Worldbuilding</em> § 1) ; 5 consciences collectives (<em>IA Collective</em> § 3 ; <em>QP1</em>).</li>
+    <li><strong>Étape 1 :</strong> portes fermées, la Garde Royale fouille tout le monde ; Méfiance après le massacre du pont (D-40), Neutre/Méfiance après l'empoisonnement (<em>QP1</em>).</li>
+    <li><strong>Étape 2 :</strong> trois PNJ dans les campements : A sergent et nid proche, laissez-passer valable pour Oakhaven seulement (D-173) ; B voleur des écuries, chariot de vin, garde à corrompre, bas-fonds ; C érudit banni, aqueduc aux esprits, catacombes (<em>QP1</em>).</li>
+    <li><strong>Climax :</strong> une cloche sonne dès l'entrée dans la ville ; sur la grand-place, le Général à cheval blanc ; deuxième souvenir ; quatre états de fin (<em>QP1</em> ; D-139, D-167, D-171).</li>
+    <li>Ailleurs : la <strong>Citadelle Haute</strong> (<em>QP3</em>), la <strong>garnison</strong> (<em>Guide des Métiers</em> § 3.A), catacombes et égouts (<em>QP2</em>), une banque (<em>Arbre de Compétences</em> § 4.A). Le prototype comprend « portes et grand-place d'Oakhaven » (D-177).</li>
+  </ul>
+</section>
+
+<section id="partis">
+  <h2>Partis pris du plan</h2>
+  <h3>De quel côté du fleuve ?</h3>
+  <ol class="options">
+    <li class="reco"><span class="badge">Recommandé, dessiné</span><strong>Rive sud</strong>, dans une boucle du fleuve qui la borde au nord et à l'est. La route arrive par la terre, au sud ; le Pont d'Oakhaven part de la Porte du Pont vers la Capitale. C'est l'ordre de la <em>Topographie</em> § 1 et de la <em>QP1</em> (on arrive « devant les remparts », sans pont) ; aqueduc et catacombes restent du même côté.</li>
+    <li><strong>Rive nord</strong> : la route franchit le Pont d'Oakhaven avant les portes (lecture possible de l'image 14). Le checkpoint irait à la tête du pont, campements et écuries seraient serrés entre pont et remparts, et l'aqueduc devrait passer sous le fleuve.</li>
+  </ol>
+  <ul class="liste lecture">
+    <li><strong>Porte d'arrivée</strong> <span class="prop">prop.</span> : la <em>QP1</em> ne la nomme pas. La <strong>Porte du Sud</strong> (nom de travail), dans l'axe de la route : châtelet à deux tours, herse, pont-levis sur un fossé sec. La route du plan de la zone de départ (T-0091) entre par le bord sud du plan, à 330 m du checkpoint.</li>
+    <li><strong>Taille</strong> <span class="prop">prop.</span> : enceinte d'environ 15,4 ha, ≈ 1,5 km de remparts, ≈ 20 tours ; de 20 à 65 habitants par hectare (D-07).</li>
+    <li><strong>Hauteurs</strong> <span class="prop">prop.</span> : remparts 12 m, tours 18 m, beffroi 36 m, donjon de la Citadelle 45 m. Depuis la fourche (à ≈ 700 m des campements d'après le plan T-0091, soit ≈ 0,8 à 0,9 km de la porte ; PB-13 compte ≈ 1 km du pont aux campements), on voit la Porte du Sud dans l'axe de la route et le beffroi au-dessus.</li>
+  </ul>
+</section>
+
+<section id="lieux">
+  <h2>Les lieux</h2>
+  <p class="lecture muted">Positions en mètres (x vers l'est ; y vers le nord ; y négatif hors les murs).</p>
+  <div class="tableau"><table>
+    <thead><tr><th>Lieu</th><th>Position</th><th>Taille</th><th>Rôle dans la QP1</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Checkpoint de la Garde Royale</td><td>x -25 à 25 ; y -60 à -14</td><td>50 × 46 m</td><td>fouille, capitaine ; départ des trois voies ; files des piétons et des charrois <span class="prop">prop.</span></td><td><em>QP1</em> étape 1 ; D-40, D-130</td></tr>
+      <tr><td>Fossé et pont-levis</td><td>rempart sud</td><td>fossé 12 m</td><td>la herse s'ouvre au laissez-passer (A) ou au chariot (B)</td><td><em>Worldbuilding</em> § 1 ; <span class="prop">prop.</span></td></tr>
+      <tr><td>Porte du Sud</td><td>(0 ; 0)</td><td>28 × 22 m</td><td>entrée de la Voie A ; passage du chariot</td><td><em>QP1</em> ; nom et place <span class="prop">prop.</span></td></tr>
+      <tr><td>Campement ouest</td><td>x -170 à -30 ; y -170 à -40</td><td>≈ 1,8 ha ; 25 à 35 tentes</td><td>sergent (A), érudit (C), réfugiés</td><td><em>QP1</em> étape 2</td></tr>
+      <tr><td>Campement est</td><td>x 20 à 56 ; y -122 à -78</td><td>36 × 44 m</td><td>lisière des écuries (tension 2)</td><td><span class="prop">prop.</span></td></tr>
+      <tr><td>Écuries extérieures</td><td>x 60 à 155 ; y -190 à -125</td><td>écurie 50 × 25 m, cour 60 × 25 m, enclos 40 × 40 m</td><td>voleur (B), chariot ; cheval volé du Choix A</td><td><em>QP1</em> Voie B ; D-37 ; PB-13</td></tr>
+      <tr><td>Hospice des Veilleurs</td><td>x -230 à -170 ; y -265 à -215</td><td>60 × 50 m + infirmerie</td><td>décor habité ; soigne le camp</td><td><em>Worldbuilding</em> § 1 ; fiche des Veilleurs</td></tr>
+      <tr><td>Ancienne carrière (nid A)</td><td>x -340 à -290 ; y -200 à -160</td><td>50 × 40 m (complète 90 × 75 m)</td><td>combat de la Voie A, derrière une crête</td><td><em>QP1</em> Voie A ; carrière <span class="prop">prop.</span></td></tr>
+      <tr><td>Bouche de l'aqueduc</td><td>(-188 ; -8)</td><td>10 × 8 m</td><td>entrée de la Voie C, dans le fossé</td><td><em>QP1</em> Voie C ; place <span class="prop">prop.</span></td></tr>
+      <tr><td>Aqueduc, salle des esprits</td><td>de (-188 ; -8) à (-97 ; 110)</td><td>galerie 124 m ; salle 25 × 20 m</td><td>traversée par la magie</td><td><em>QP1</em> Voie C ; D-182</td></tr>
+      <tr><td>Catacombes, crypte</td><td>de (-97 ; 110) à (-48 ; 185)</td><td>couloir 90 m ; crypte 12 × 10 m</td><td>remonte dans le beffroi</td><td><em>QP1</em> ; <em>QP2</em></td></tr>
+      <tr><td>Rue de la Porte</td><td>de (0 ; 16) à (0 ; 170)</td><td>156 × 8 m</td><td>Voie A</td><td><span class="prop">prop.</span></td></tr>
+      <tr><td>Rue du Rempart, Cour des Tonneliers</td><td>de la porte à (95 ; 40)</td><td>100 × 5 m ; cour 30 × 20 m</td><td>trajet du chariot ; sortie du chariot</td><td><em>QP1</em> Voie B ; <span class="prop">prop.</span></td></tr>
+      <tr><td>Ruelle des bas-fonds</td><td>de la cour au coin sud-est de la place</td><td>152 × 3,5 m</td><td>Voie B ; façade de <em>La Chopine Borgne</em></td><td><em>QP1</em> ; <em>Worldbuilding</em> § 1 ; <em>QP2</em></td></tr>
+      <tr><td>Grand-place</td><td>x -30 à 30 ; y 170 à 215</td><td>60 × 45 m = 2 700 m²</td><td>cloche, cortège, regard, souvenir, fin</td><td><em>QP1</em> climax</td></tr>
+      <tr><td>Beffroi</td><td>x -52 à -32 ; y 180 à 200</td><td>20 × 20 m, 36 m de haut</td><td>la cloche ; sortie de la Voie C</td><td><em>QP1</em> ; <span class="prop">prop.</span></td></tr>
+      <tr><td>Rue Haute, Rue du Pont</td><td>vers la Citadelle ; vers la Porte du Pont</td><td>30 m jouables chacune</td><td>fermées ; la Rue du Pont s'ouvre au cortège</td><td><em>QP3</em> ; <em>Worldbuilding</em> § 1</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="surfaces">
+  <h2>Surfaces</h2>
+  <div class="tableau"><table>
+    <thead><tr><th>Ensemble</th><th>Version courte (dessinée)</th><th>Version complète</th></tr></thead>
+    <tbody>
+      <tr><td>Abords jouables</td><td>550 × 380 m ≈ 20,9 ha, surtout champs et relief</td><td>idem</td></tr>
+      <tr><td>dont zones aménagées</td><td>checkpoint, fossé, campements, hospice, écuries, carrière, route : <strong>≈ 4,1 ha</strong></td><td>carrière agrandie : <strong>≈ 4,5 ha</strong></td></tr>
+      <tr><td>Intra-muros praticable</td><td>porte, Rue de la Porte, place, beffroi, cour, ruelle, Rue du Rempart, débuts des rues fermées : <strong>≈ 6 500 m²</strong></td><td>+ petit quartier des bas-fonds : <strong>≈ 9 000 m²</strong></td></tr>
+      <tr><td>Façades le long de ces rues</td><td>≈ 870 m (60 à 70 façades de 12 à 15 m, modules répétés) <span class="prop">prop.</span></td><td>≈ 1 270 m</td></tr>
+      <tr><td>Souterrain (Voie C)</td><td><strong>≈ 1 200 m²</strong></td><td><strong>≈ 3 400 m²</strong> (galerie ≈ 250 m, deux salles, labyrinthe)</td></tr>
+      <tr><td>Décor lointain</td><td>enceinte ≈ 15,4 ha ; ≈ 1,5 km de remparts ; Pont ≈ 125 m</td><td>idem</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="distances">
+  <h2>Distances et temps</h2>
+  <p class="lecture muted">Mesurés sur les tracés du plan. Course 5,7 m/s (T-0054) ; chariot et cheval au pas 1,5 m/s <span class="prop">prop.</span></p>
+  <div class="tableau"><table>
+    <thead><tr><th>Trajet</th><th>Distance</th><th>Temps</th></tr></thead>
+    <tbody>
+      <tr><td>Bord sud du plan → checkpoint</td><td class="chiffre">330 m</td><td class="chiffre">58 s</td></tr>
+      <tr><td>Checkpoint → Porte du Sud</td><td class="chiffre">50 m</td><td class="chiffre">9 s</td></tr>
+      <tr><td>Porte du Sud → bord de la place</td><td class="chiffre">171 m</td><td class="chiffre">30 s</td></tr>
+      <tr><td>Checkpoint → sergent (A)</td><td class="chiffre">71 m</td><td class="chiffre">12 s</td></tr>
+      <tr><td>Sergent → nid de la carrière (A), aller</td><td class="chiffre">292 m</td><td class="chiffre">51 s</td></tr>
+      <tr><td>Checkpoint → voleur (B)</td><td class="chiffre">143 m</td><td class="chiffre">25 s</td></tr>
+      <tr><td>Voleur → garde corrompu → chariot (B, complète)</td><td class="chiffre">275 m</td><td class="chiffre">48 s</td></tr>
+      <tr><td>Chariot : écuries → Cour des Tonneliers (B)</td><td class="chiffre">299 m</td><td class="chiffre">3 min 19 s au pas</td></tr>
+      <tr><td>Cour des Tonneliers → centre de la place (B)</td><td class="chiffre">188 m</td><td class="chiffre">33 s</td></tr>
+      <tr><td>Checkpoint → érudit (C)</td><td class="chiffre">164 m</td><td class="chiffre">29 s</td></tr>
+      <tr><td>Érudit → bouche de l'aqueduc (C)</td><td class="chiffre">57 m</td><td class="chiffre">10 s</td></tr>
+      <tr><td>Souterrain : bouche → crypte (C, courte)</td><td class="chiffre">241 m</td><td class="chiffre">42 s hors combat</td></tr>
+      <tr><td>Crypte → centre de la place (C)</td><td class="chiffre">49 m</td><td class="chiffre">9 s</td></tr>
+      <tr><td>Cortège du Général sur la place</td><td class="chiffre">92 m</td><td class="chiffre">1 min 01 s au pas</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lecture"><strong>Du checkpoint au centre de la place (version courte) :</strong> A 969 m (2 min 50 s) ; B 359 m à pied (1 min 03 s) et la scène du chariot (30 à 45 s) ; C 511 m (1 min 30 s). Durée de jeu indicative <span class="prop">prop.</span> : A 8 à 12 min, B 5 à 8 min, C 7 à 10 min ; une QP1 ≈ 12 à 16 min.</p>
+</section>
+
+<section id="voies">
+  <h2>Les trois voies</h2>
+  <p class="lecture muted">Toutes partent du checkpoint et finissent sur la grand-place. Les trois PNJ sont à moins de 165 m du capitaine.</p>
+  <div class="pistes">
+    <div class="piste voie va">
+      <h3><span class="lettre">A</span>La Force ou la Diplomatie (l'Ordre)</h3>
+      <dl>
+        <dt>PNJ</dt><dd>Sergent recruteur (fiche 10), à sa table de recrutement, au bord du campement, face à la route.</dd>
+        <dt>Courte (dessinée)</dt><dd>Dialogue, traversée du camp, col de la crête, <strong>ancienne carrière</strong> (3 à 5 ennemis, PB-09), retour, <strong>laissez-passer légal</strong> pour Oakhaven seulement (D-173), le capitaine le vérifie, la herse se lève, Rue de la Porte, place.</dd>
+        <dt>Complète</dt><dd>Détour par l'hospice (un Veilleur indique les attaques) ; carrière sur deux niveaux, un ennemi plus résistant <span class="prop">prop.</span></dd>
+        <dt>Effets</dt><dd>Ordre Favorable, ou Neutre après le massacre du pont ; la Coalition le voit d'un mauvais œil (<em>QP1</em> ; D-139).</dd>
+      </dl>
+    </div>
+    <div class="piste voie vb">
+      <h3><span class="lettre">B</span>La Contrebande (le Cartel)</h3>
+      <dl>
+        <dt>PNJ</dt><dd>Voleur des écuries (fiche 11), au fond de l'écurie ; garde corrompu (fiche 13), à la file des charrois.</dd>
+        <dt>Courte (dessinée)</dt><dd>Dialogue, le héros se glisse dans le <strong>chariot de vin</strong> ; plan fixe dans le chariot au checkpoint (30 à 45 s) ; sortie dans la <strong>Cour des Tonneliers</strong> ; <strong>ruelle des bas-fonds</strong> jusqu'au coin de la place.</dd>
+        <dt>Complète</dt><dd>Le héros négocie lui-même avec le garde ; trajet du chariot joué en temps réel (3 min 19 s), fouille truquée sous les yeux du capitaine ; petit quartier des bas-fonds avec la façade de <em>La Chopine Borgne</em> <span class="prop">prop.</span></dd>
+        <dt>Effets</dt><dd>Réputation du Cartel en hausse, une faveur due (<em>QP1</em>).</dd>
+      </dl>
+    </div>
+    <div class="piste voie vc">
+      <h3><span class="lettre">C</span>Les Tunnels Oubliés (le Conclave)</h3>
+      <dl>
+        <dt>PNJ</dt><dd>Érudit banni (fiche 12), dans une tente isolée à l'angle du camp, face au fossé où s'ouvre l'aqueduc.</dd>
+        <dt>Courte (dessinée)</dt><dd><strong>Bouche de l'aqueduc</strong>, galerie sous le rempart, <strong>salle des esprits</strong> (4 à 6, PB-09), <strong>catacombes</strong>, crypte, escalier dans le beffroi, place.</dd>
+        <dt>Complète</dt><dd>Galerie d'environ 250 m, passages effondrés ou noyés qu'on ouvre avec le Feu comme avec la Glace (D-182 (2) ; <span class="prop">prop.</span>), deuxième salle, catacombes en labyrinthe.</dd>
+        <dt>Effets</dt><dd>Le Conclave retient l'aide ; la Synchronicité monte (départ proposé : +10 pour l'aqueduc, D-182 (3)) et la voix de l'entité s'intensifie (<em>QP1</em>).</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="place">
+  <h2>Grand-place, cloche et Général</h2>
+  <ol class="liste lecture">
+    <li>La cloche sonne dès que le héros est dans la ville : sortie du châtelet (A), du chariot (B), de la crypte (C, la cloche juste au-dessus de lui) <span class="prop">prop.</span></li>
+    <li>Le cortège part quand le héros entre sur la place (déclencheurs aux trois entrées) ; la foule, 30 à 40 figurants, s'écarte.</li>
+    <li>Le Général traverse au pas, de la Rue du Pont à la Rue Haute (92 m, ≈ 1 min) : du Pont d'Oakhaven vers la Citadelle, où est son bureau (<em>QP3</em>) ; il croise le regard du héros au plus près.</li>
+    <li>Deuxième souvenir ; le Général passe sans le reconnaître ; fin selon les quatre états (<em>QP1</em> ; D-03, D-139).</li>
+  </ol>
+  <h3>Où est la cloche ?</h3>
+  <ol class="options">
+    <li class="reco"><span class="badge">Recommandé, dessiné</span><strong>Un beffroi à l'ouest de la place</strong> : repère vu depuis la route, cloche et sortie de la Voie C dans un seul bâtiment.</li>
+    <li><strong>Le clocher d'un sanctuaire</strong> au nord de la place, dont la crypte sert à la Voie C : il faudrait fixer le culte de la ville.</li>
+    <li><strong>La cloche du châtelet</strong> de la Porte du Sud : le moins cher, mais loin de la place pour les voies B et C.</li>
+  </ol>
+  <h3>Décor du deuxième souvenir</h3>
+  <ol class="options">
+    <li class="reco"><span class="badge">Recommandé</span><strong>La grand-place elle-même, parée</strong> : décor réutilisé, la mémoire « repeint » le lieu (D-171).</li>
+    <li><strong>La cour de la Citadelle Haute</strong> : annonce la QP3 ; un décor de plus.</li>
+    <li><strong>Un décor abstrait</strong> (fond sombre, lumière dorée) : le moins cher.</li>
+  </ol>
+</section>
+
+<section id="pnj">
+  <h2>Les PNJ</h2>
+  <div class="tableau"><table>
+    <thead><tr><th>PNJ (fiche T-0084)</th><th>Où</th><th>Position</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td>09 Capitaine des portes</td><td>table du checkpoint</td><td>(0 ; -50)</td><td>vérifie le laissez-passer ; fouille plus longue en Méfiance (PB-08, non tranché)</td></tr>
+      <tr><td>10 Sergent recruteur</td><td>table de recrutement, bord du campement</td><td>(-38 ; -110)</td><td>registre de recrutement (fiche 10) ; bannière <span class="prop">prop.</span></td></tr>
+      <tr><td>11 Voleur des écuries</td><td>fond de l'écurie</td><td>(85 ; -160)</td><td>à la lisière du campement est</td></tr>
+      <tr><td>12 Érudit banni</td><td>tente isolée, angle du campement</td><td>(-160 ; -58)</td><td>à 57 m de la bouche de l'aqueduc</td></tr>
+      <tr><td>13 Garde corrompu</td><td>file des charrois</td><td>(20 ; -30)</td><td>parle : à définir (fiche 13)</td></tr>
+      <tr><td>M5 Le Général</td><td>cortège sur la place</td><td>—</td><td>destrier blanc (<em>QP1</em>) ; escorte de 4 gardes <span class="prop">prop.</span></td></tr>
+      <tr><td>Gardes, réfugiés, Veilleurs, foule</td><td>checkpoint, camps, hospice, place</td><td>—</td><td>≈ 45 à l'écran au plus (PB-12) ; chacun différent (D-179)</td></tr>
+      <tr><td>Cheval volé (Choix A)</td><td>enclos des écuries</td><td>(135 ; -170)</td><td>PB-13 option 1 ; reconnu à la marque de l'Ordre (PB-08)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lecture muted">Les cinq factions aux portes : l'Ordre (checkpoint, sergent), le Cartel (voleur, contrebandiers), le Conclave (érudit), la Coalition (réfugiés des Marches autour d'un feu <span class="prop">prop.</span>) et le Culte (question 6).</p>
+</section>
+
+<section id="decor">
+  <h2>Décor lointain</h2>
+  <ul class="liste lecture">
+    <li>Tout le tour des remparts, ≈ 20 tours, bannières or à l'arbre (image 14, bible artistique § 3.5) et sceptre doré (D-166) ; toits d'ardoise et fumées.</li>
+    <li>La <strong>Citadelle Haute</strong> et la garnison sur le plateau nord-ouest, dans l'axe de la Rue Haute (<em>QP3</em> ; <em>Guide des Métiers</em> § 3.A).</li>
+    <li>La <strong>Porte du Pont</strong> et le <strong>Pont d'Oakhaven</strong> vers le nord, dans l'axe de la Rue du Pont (D-93).</li>
+    <li>Le fleuve, l'escarpement et les cascades ; le <strong>monastère des Veilleurs</strong> sur l'autre rive (<em>Worldbuilding</em> § 1 ; image 14).</li>
+    <li>Au loin, la silhouette de la Capitale au nord et des montagnes au nord-ouest (image 14). Le cœur de la Capitale n'est pas concerné (D-173).</li>
+  </ul>
+</section>
+
+<section id="options">
+  <h2>Points bloquants</h2>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">PB-12 · OAKHAVEN</span><h3>Option 1 dessinée</h3><p class="muted">Variante « de façade » (option 3) : fondu de la porte à la place, sans rues (≈ 2 900 m² praticables en moins) ; B et C finissent aussi par un fondu. Option 2 : ce plan donne le cadre d'un world design complet.</p></div>
+    <div class="piste"><span class="ticket">PB-11 · VOIES B ET C</span><h3>Option 1 dessinée, option 4 en pointillé</h3><p class="muted">Option 2 (A et C) : sans voleur, garde, chariot, cour ni ruelle (≈ 1 600 m² en moins). Option 3 (A seule) : ni souterrain ni ruelle, deux états de fin seulement.</p></div>
+    <div class="piste"><span class="ticket">PB-13 · PB-08 · PB-09</span><h3>Route, méfiance, ennemis</h3><p class="muted">La route entre par le bord sud ; le cheval reste aux écuries. Les signes de méfiance ont chacun leur lieu (checkpoint, camp, écuries). Nid A : 3 à 5 ; aqueduc : 4 à 6 (non tranché).</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <ol class="liste lecture">
+    <li><strong>Côté du fleuve</strong> : rive sud (recommandée) · rive nord.</li>
+    <li><strong>La cloche</strong> : beffroi (recommandé) · sanctuaire · châtelet.</li>
+    <li><strong>Décor du souvenir</strong> : place parée (recommandée) · cour de la Citadelle · décor abstrait.</li>
+    <li><strong>Qui corrompt le garde</strong> : le voleur en version courte, le héros en complète (recommandé) · le héros dans les deux ; prix à définir.</li>
+    <li><strong>Trajet du Général</strong> : du Pont à la Citadelle (recommandé) · de la Citadelle vers la Porte du Sud.</li>
+    <li><strong>Le Culte aux portes</strong> : deux figurants muets (recommandé) · aucun figurant.</li>
+    <li><strong>Population</strong> : 1 000 · 600 · 300 (le plan ne change pas, seule la foule).</li>
+    <li><strong>Foule à l'écran</strong> : 30 à 50 (PB-12) · 12 à 20 (H-P7 du plan de production).</li>
+    <li><strong>Noms de travail</strong> (Porte du Sud, Rue de la Porte, Cour des Tonneliers, beffroi…) : à garder ou à remplacer.</li>
+  </ol>
+</section>
+
+<section id="tensions">
+  <h2>Tensions relevées</h2>
+  <p class="lecture muted">Signalées, pas tranchées.</p>
+  <ol class="liste lecture">
+    <li><strong>Foule</strong> : H-P7 du plan de production (même ordre que 12 à 20 villageois) contre PB-12 (30 à 50 à l'écran). Le plan suit PB-12, comme le demande le ticket.</li>
+    <li><strong>Voleur</strong> : la <em>QP1</em> met les trois PNJ « dans les campements », puis le voleur « dans les écuries extérieures » ; le plan met les écuries à la lisière d'un petit campement.</li>
+    <li><strong>Image 14</strong> : une ville bien plus grande qu'une Ville Régionale (D-07) et plusieurs ponts ; lecture possible avec la ville sur la rive nord (question 1).</li>
+    <li><strong>Veilleurs</strong> (manque) : une Ville Régionale n'a de conscience que pour les factions majeures (<em>IA Collective</em> § 3) ; les Veilleurs de l'hospice (faction mineure) n'en ont pas.</li>
+    <li><strong>Garde corrompu</strong> : la <em>QP1</em> ne dit pas qui corrompt ; la fiche 13 dit « que le voleur fait corrompre ».</li>
+  </ol>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lecture muted">Documents de design (non modifiés) : <em>Quête Principale 1 - Les Portes du Destin</em> ; <em>Worldbuilding - Les 5 Grandes Villes et Biomes</em> § 1 ; <em>Topographie de la Zone de Départ</em> § 1 et POI D ; <em>Lexique</em> ; <em>QP2</em>, <em>QP3</em> ; <em>IA Collective</em> § 3 ; <em>Guide des Métiers</em> § 3.A ; <em>Arbre de Compétences</em> § 4.A ; fiche des Veilleurs de l'Aube ; GDD ; image 14. Décisions D-03 à D-182.</p>
+  <p class="chemins">D:\aaa-game\.equipe\prototype\plan-niveau\oakhaven.md<br>D:\aaa-game\.equipe\prototype\plan-niveau\oakhaven.svg<br>D:\aaa-game\.equipe\prototype\plan-production.md (P0-03, jalon 5)<br>D:\aaa-game\.equipe\prototype\points-bloquants.md (PB-08, PB-09, PB-11 à PB-13)<br>D:\aaa-game\.equipe\prototype\fiches-pnj.md (fiches 09 à 13, M2, M4, M5)<br>D:\aaa-game\.equipe\etudes\cout-proto\inventaire.md (§ 4, § 5)</p>
+</section>
+</div>
+
+</body>
+</html>

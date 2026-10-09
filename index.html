@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Pages du projet AAA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page d'accueil : un sommaire en cartes, groupé par usage (suivi, prototype, pour les investisseurs) ; identité sombre du projet */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --acier:#7f9bb5; --braise:#e0907f;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:62rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px);display:grid;gap:2rem}
+header{display:grid;gap:.7rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.3rem,7vw,3.6rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.4rem,4vw,1.9rem)/1.15 var(--f-titre);margin:0}
+p{margin:0}
+.lecture{max-width:42rem}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1rem;padding-top:1.6rem;border-top:1px solid var(--roche)}
+.cartes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.carte{display:grid;gap:.45rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;color:inherit;text-decoration:none;min-width:0}
+a.carte:hover{border-color:var(--aube)}
+a.carte:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.carte h3{font:600 1.02rem/1.3 var(--f-texte);margin:0}
+a.carte h3{color:var(--aube)}
+.carte .date{font:500 .7rem/1 var(--f-data);letter-spacing:.05em;color:var(--pierre)}
+.etat{justify-self:start;font:500 .68rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.3rem .45rem;border-radius:3px;border:1px solid currentColor}
+.dispo{color:var(--mousse)}.avenir{color:var(--pierre)}.encours{color:var(--acier)}
+.lecture a,.lien{color:var(--aube)}
+/* Échanges : fil d'idées partagé (base de données de la page) */
+.composer{display:grid;gap:.6rem;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem}
+.composer .ligne,.outils{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+textarea,select{font:inherit;color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:4px;padding:.55rem .65rem;max-width:100%}
+textarea{width:100%;resize:vertical;min-height:5.5rem;line-height:1.5}
+textarea:focus,select:focus{outline:2px solid var(--aube);outline-offset:1px;border-color:var(--aube)}
+button{font:600 .9rem/1 var(--f-texte);cursor:pointer;border-radius:4px;padding:.6rem .9rem;border:1px solid var(--aube);background:var(--aube);color:var(--nuit)}
+button.discret{background:transparent;color:var(--pierre);border-color:var(--roche);font-weight:500;padding:.4rem .6rem;font-size:.8rem}
+button.discret:hover{color:var(--lin);border-color:var(--pierre)}
+button.danger{color:var(--braise);border-color:var(--braise)}
+button:disabled{opacity:.55;cursor:default}
+.msg{font:500 .8rem/1.4 var(--f-data);color:var(--pierre);min-height:1.1em}
+.fil{display:grid;gap:1rem}
+.idee{display:grid;gap:.5rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--acier);border-radius:6px;padding:.9rem 1.05rem;min-width:0}
+.idee.chef{border-left-color:var(--aube)}
+.entete{display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .7rem}
+.auteur{font-weight:600}
+.quand,.sujet,.nouveau{font:500 .7rem/1 var(--f-data);letter-spacing:.05em;color:var(--pierre)}
+.sujet{text-transform:uppercase;border:1px solid var(--roche);border-radius:3px;padding:.25rem .4rem}
+.nouveau{color:var(--nuit);background:var(--mousse);border-radius:3px;padding:.25rem .4rem;text-transform:uppercase}
+.texte{white-space:pre-wrap;overflow-wrap:anywhere}
+.suite{font-size:.9rem;color:var(--mousse)}
+.reponses{display:grid;gap:.6rem;margin-left:clamp(.4rem,3vw,1.4rem);padding-left:.8rem;border-left:1px solid var(--roche)}
+.reponses .idee{background:var(--nuit)}
+.demande{display:grid;gap:.5rem;border:1px dashed var(--aube);border-radius:5px;padding:.7rem .8rem}
+.demande .q{font-weight:600;color:var(--aube)}
+.demande .r{font:500 .8rem/1.4 var(--f-data);color:var(--pierre)}
+.demande .r.oui{color:var(--mousse)}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div class="surtitre">RPG dark fantasy en monde ouvert · titre de travail provisoire</div>
+  <h1>Pages du <em>projet</em></h1>
+  <p class="lecture">Toutes les pages du projet au même endroit : le suivi des nuits de travail, les essais du prototype, et les livrables préparés pour les investisseurs. Tout est réuni sous ce seul lien : chaque carte ouvre sa page ici même, et « ← Pages du projet » ramène à cette liste. Partager ce lien suffit pour donner accès à toutes les pages, y compris celles qui s'ajouteront. Pour proposer une idée ou répondre : <a href="#echanges">Échanges</a>, en bas de la page.</p>
+</header>
+
+<section id="video-complete">
+  <h2>Vidéo complète</h2>
+  <p class="lecture muted">Tout ce qui a été fait pendant la nuit du 2 au 3 octobre 2026, en 6 min 15 : le ciel, la lumière des Gorges, la horde, puis les modèles 3D (loup, chien, araignée, chauve-souris, cheval, et le gibier encore en correction), et enfin les documents. Ce sont les captures et les vidéos déjà vérifiées, pas une partie filmée. Une nouvelle vidéo complète remplacera celle-ci.</p>
+  <video controls preload="metadata" playsinline style="width:100%;max-width:100%;border-radius:6px;border:1px solid var(--roche);background:#000" src="videos/video-complete.mp4"></video>
+</section>
+
+<section id="le-jeu">
+  <h2>Le jeu</h2>
+  <div class="cartes">
+    <a class="carte" href="pages/pitch/page.html"><span class="date">T-0093</span><h3>Pitch du jeu</h3><p class="muted">Le jeu en cinq minutes : le héros, le monde, ce que fait le joueur, ce qui le distingue.</p><span class="etat dispo">Disponible</span></a>
+  </div>
+</section>
+
+<section id="suivi">
+  <h2>Suivi</h2>
+  <div class="cartes">
+    <a class="carte" href="pages/nuit-proto/page.html"><span class="date">29 et 30 septembre 2026</span><h3>Nuit du prototype</h3><p class="muted">Les Gorges des Soupirs passe par passe, la mini-tranche jouable, la comparaison Unreal / Unity.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" id="c-essai" href="pages/nuit/page.html"><span class="date">nuit du 30 septembre 2026</span><h3>Nuit de l'essai</h3><p class="muted">L'essai de départage entre les moteurs et les chantiers de la nuit, mis à jour en direct.</p><span class="etat dispo">Terminée</span></a>
+    <a class="carte" href="pages/nuit-2026-10-03/page.html"><span class="date">nuit du 2 au 3 octobre 2026</span><h3>Nuit 03</h3><p class="muted">Trois files en parallèle (Unreal, modèles 3D, documents), les modèles faits pendant la nuit avec leurs vidéos, et les questions posées au directeur.</p><span class="etat dispo">Terminée</span></a>
+    <a class="carte" data-semaine="2026-10-06" href="semaines/2026-10-06/"><span class="date">du 6 au 12 octobre 2026</span><h3>Semaine du 6 au 12 octobre</h3><p class="muted">Depuis le 6 octobre, chaque semaine de travail a sa propre page, avec ses jours et ses nuits. Jours et nuits y sont numérotés dans la semaine ; elle commence par le jour 1 : quota, questions tranchées, gibier, étude de qualité AAA.</p><span class="etat encours">En cours</span></a>
+    <!-- nouvelle-semaine -->
+  </div>
+</section>
+
+<section>
+  <h2>Essais et études</h2>
+  <div class="cartes">
+    <a class="carte" href="pages/voix/page.html"><span class="date">30 septembre 2026</span><h3>Voix du nom</h3><p class="muted">Quatre modèles de voix de synthèse disent le nom choisi par le joueur. Sur ce site : la méthode et les voix de départ (voix générées non publiées).</p><span class="etat dispo">Disponible</span></a>
+  </div>
+</section>
+
+<section>
+  <h2>Pour le prototype des investisseurs</h2>
+  <div class="cartes">
+    <a class="carte" href="pages/bible/page.html"><span class="date">T-0088</span><h3>Bible artistique</h3><p class="muted">Palettes, lumière, matières, silhouettes, style de l'interface.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/points/page.html"><span class="date">T-0085</span><h3>Points bloquants</h3><p class="muted">Les questions de design à trancher, avec options et recommandation.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/fiches/page.html"><span class="date">T-0084</span><h3>Fiches des PNJ</h3><p class="muted">Les personnages qui parlent, chacun avec son visage.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/modeles-3d/page.html"><span class="date">T-0125</span><h3>Modèles 3D</h3><p class="muted">Les modèles du prototype à faire tourner et à animer : les bêtes en qualité améliorée, la horde (le meneur et quatre morts-vivants variés), les créatures, les armes.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/maquettes/page.html"><span class="date">T-0083</span><h3>Maquettes d'interface</h3><p class="muted">Tous les écrans du prototype, cliquables.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/dialogues/page.html"><span class="date">T-0087</span><h3>Dialogues</h3><p class="muted">Premier jet des répliques du hameau, du forgeron et de l'éleveur.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/sons/page.html"><span class="date">T-0089</span><h3>Bibliothèque sonore</h3><p class="muted">Sons et ambiances libres de droits, à écouter.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/plan/page.html"><span class="date">T-0090</span><h3>Plan de production</h3><p class="muted">Le prototype en tickets et jalons, pour chaque moteur.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/groupes-surnoms/page.html"><span class="date">T-0116</span><h3>Groupes et surnoms</h3><p class="muted">La taille des groupes d'ennemis par espèce (décidée : D-222) et les surnoms de l'entité (D-221). Reste à choisir à deux, dans les Échanges : la liste des surnoms.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/objets/page.html"><span class="date">T-0113</span><h3>Objets, recettes, prix</h3><p class="muted">La liste courte du prototype : 23 objets, 6 recettes de fer, 6 marchands, la montée des métiers de 1 à 5. Proposition à valider.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/zone/page.html"><span class="date">T-0091</span><h3>Plan de la zone de départ</h3><p class="muted">Des Gorges au pont des Déserteurs : chemins, hameau, ferme, distances et temps de marche. Proposition à valider.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/oakhaven/page.html"><span class="date">T-0092</span><h3>Plan d'Oakhaven</h3><p class="muted">La ville traversée par la première quête principale : trois voies d'entrée, distances, PNJ. Proposition à valider.</p><span class="etat dispo">Disponible</span></a>
+    <a class="carte" href="pages/presentation/page.html"><span class="date">T-0086</span><h3>Présentation</h3><p class="muted">Brouillon de présentation pour les investisseurs.</p><span class="etat dispo">Disponible</span></a>
+  </div>
+</section>
+
+<section id="echanges">
+  <h2>Échanges</h2>
+  <p class="lecture muted">Un fil pour se lancer des idées sur le projet : une idée, une remarque ou une question, en précisant la page concernée ; on peut répondre sous chaque message. Le Chef de projet (Claude) lit ce fil et y répond ; ses messages commencent par « [Chef] ». Rien de ce qui est écrit ici ne change le projet sans l'accord du directeur. Pour écrire, il faut se connecter avec un compte GitHub (gratuit). Le même fil se lit aussi <a class="lien" href="https://github.com/chipat-neko/aaa-game-pages/discussions/1">sur GitHub</a>. Pour le contexte, voir le <a class="lien" href="#le-jeu">pitch du jeu</a>.</p>
+  <div class="giscus"></div>
+  <script src="https://giscus.app/client.js" data-repo="chipat-neko/aaa-game-pages" data-repo-id="R_kgDOVCCjnQ" data-category="Announcements" data-category-id="DIC_kwDOVCCjnc4DHZJz" data-mapping="number" data-term="1" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="transparent_dark" data-lang="fr" data-loading="lazy" crossorigin="anonymous" async></script>
+</section>
+</div>
+</body>
+</html>

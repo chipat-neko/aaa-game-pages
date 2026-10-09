@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Jour 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Semaine du 6 au 12 octobre</a></nav>
+
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de jour-2026-10-07.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · mercredi 7 octobre 2026 · semaine du 6 au 12 octobre</div>
+  <h1>Jour <em>2</em></h1>
+  <p class="lecture">Deuxième journée de la semaine. Le directeur a choisi la suite au point du matin : l&#x27;escalade libre dans Unreal, puis le meneur de la horde et les morts-vivants variés en modèles 3D.</p>
+  <p class="ticket">Mise à jour : 07/10/2026 à 17:28</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-valide">5 validés</span></div>
+  <ul class="liste lecture">
+    <li><strong>Quota</strong> : le directeur donne 18 % de la semaine utilisés (le compteur estimait 10,1 %) ; compteur recalé. Il reste environ 10,6 % pour aujourd&#x27;hui.</li>
+    <li><strong>Choix du jour</strong> (<span class="insec">D-250</span>) : l&#x27;escalade de <span class="insec">P1-05</span> dans Unreal (<span class="insec">T-0152</span>) ; le meneur de la horde (<span class="insec">T-0153</span>), puis les morts-vivants variés (<span class="insec">T-0154</span>) ; les MetaHumans des soldats de la patrouille après l&#x27;escalade ; pas de nuit en autonomie ce soir.</li>
+    <li><strong>Le sanglier</strong> (<span class="insec">D-251</span>) : le directeur garde la crête couchée et sombre, et veut l&#x27;œil sombre de l&#x27;image de départ (<span class="insec">T-0155</span>).</li>
+    <li><strong>MetaHumans des soldats</strong> : le directeur laisse le Chef décider. Ils ne demandent pas sa présence (<span class="insec">D-162</span>, <span class="insec">D-179</span>, comme <span class="insec">T-0110</span>) ; ils seront lancés après l&#x27;escalade si le quota du jour le permet, sinon demain.</li>
+    <li><strong>Décisions du jour</strong> (<span class="insec">D-252</span>) : le meneur « champion » est gardé, avec sa peau mauve qui le distingue de la horde ; les valeurs proposées pour l&#x27;escalade deviennent les valeurs de départ ; les petits défauts des nouveaux modèles, invisibles à distance de jeu, sont acceptés et notés.</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Chaque ticket a un exécutant et un vérificateur ; une correction est confiée à un agent neuf (<span class="insec">D-231</span>). Un seul agent à la fois dans Unreal.</p>
+  <div class="files">
+<div class="file">
+  <h3>Unreal</h3>
+  <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0152</span> · <span class="insec">P1-05</span> · <span class="insec">D-248</span> (4)</span><h3>Escalade libre : règles et Endurance</h3><p class="muted">Grimper sur la roche marquée, coût en Endurance, chute à zéro, reprise, détection des prises, caméra, pose provisoire faite par programme et paroi d&#x27;essai montée par l&#x27;automate.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 04:17, livré à 08:00 (commit e01962d), validé à 08:12. Le vérificateur a tout relancé : 110 tests sans échec, essai en jeu vert (coûts, chute à zéro, reprise, paroi montée de bout en bout, refus sur une limite), aucune main dans la roche sur 2 397 images, version jeu recompilée sans avertissement. La pose est raide mais provisoire (<span class="insec">P1-06</span>). Reste hors du ticket : l&#x27;escalade des murs bâtis (Exploration § 1).</p></div>
+  </div>
+  <p class="suite">Demain matin : les MetaHumans des soldats de la patrouille (<span class="insec">D-250</span> (1)) ; puis l&#x27;arc (<span class="insec">D-248</span> (2)), la saison et la météo (<span class="insec">D-232</span>, <span class="insec">D-233</span>, <span class="insec">D-236</span>), l&#x27;import du meneur.</p>
+</div>
+<div class="file">
+  <h3>Modèles 3D</h3>
+  <p class="muted">Les modèles du prototype, faits sur ce PC, sans Unreal.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0153</span> · <span class="insec">D-234</span> (2) · <span class="insec">D-240</span></span><h3>Le meneur de la horde</h3><p class="muted">Un grand mort-vivant d&#x27;environ 2,5 m qu&#x27;on voit de loin, en qualité améliorée, avec le squelette et les animations du mort-vivant, prêt à remplacer le meneur provisoire.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 04:17, livré à 07:03, renvoyé en correction à 07:27 (pieds enfoncés jusqu&#x27;à 10,7 cm, planches à compléter), corrigé par un agent neuf de 07:29 à 08:07, validé à 08:19 : pieds à 2,5 cm au plus sous le sol sur les 291 images (le mort-vivant s&#x27;enfonce plus), bottes entières, taille et squelette inchangés. À reprendre avant de le montrer en entier : pendant la chute de l&#x27;animation de mort, une spalière passe sous le sol (10,5 cm).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0154</span> · <span class="insec">D-234</span> (2) · <span class="insec">D-240</span></span><h3>Morts-vivants variés</h3><p class="muted">Au moins 4 morts-vivants différents (armure, arme, silhouette), tirés du modèle existant, pour que la horde ne soit plus faite de clones.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 08:20, livré à 09:37, renvoyé en correction à 10:08, corrigé par un agent neuf de 10:11 à 10:42, validé à 11:00 : les couleurs vives sont retirées (bleu du soldat, rouge du déserteur, bleu nuit de l&#x27;archer), la forme et les animations sont identiques. Restent soumis au directeur : la main de l&#x27;archer dans son chapeau (une image, nette à 1 m), la main du déserteur dans sa jambe (un tiers de seconde), les épées du sergent sous le sol quand il meurt sur le dos.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0155</span> · <span class="insec">D-251</span></span><h3>L&#x27;œil sombre du sanglier</h3><p class="muted">L&#x27;œil petit et presque noir de l&#x27;image de départ, à la place de l&#x27;œil pâle ; la crête reste couchée et sombre.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 04:31, livré à 05:18, validé à 05:31 : œil presque noir et humide comme sur l&#x27;image de départ, rien de changé ailleurs (animations, maillage, autres bêtes identiques). De très près, la paupière reste anguleuse. La fiche du sanglier dans « Modèles 3D » sera mise à jour avec le meneur.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0156</span> · <span class="insec">D-234</span> (2) · <span class="insec">D-251</span></span><h3>Page « Modèles 3D » : le meneur, les morts-vivants et l&#x27;œil du sanglier</h3><p class="muted">Cinq nouvelles fiches animées (le meneur, le soldat, l&#x27;archer, le déserteur, le sergent) et le sanglier rafraîchi.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 11:02, livré à 11:21, validé à 11:30, publié à 11:40 : cinq nouvelles fiches animées (le meneur, le soldat, l&#x27;archer, le déserteur, le sergent) à côté du mort-vivant, et le sanglier avec son œil sombre ; aucune erreur, toutes les animations jouent. La page grandit de 39 Mo (« Pages du projet » fait maintenant environ 220 Mo sur 256).</p></div>
+  </div>
+  <p class="suite">Puis les oiseaux, les laies et les défauts connus (<span class="insec">D-235</span>) ; l&#x27;import du meneur et des morts-vivants dans Unreal.</p>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D du jour</h2>
+  <p class="lecture muted">Ce qui a été livré ou validé aujourd&#x27;hui : modèles 3D et prototype.</p>
+  <div class="galerie">
+<article class="modele" id="mod-oeil-sanglier">
+  <div class="tete"><h3>Sanglier : l&#x27;œil sombre</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0155</span> · <span class="insec">D-251</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-sanglier" title="Voir sa fiche dans « Modèles 3D »"><img src="images/oeil-sanglier.jpg" alt="Œil du sanglier, avant et après" width="1280" height="881" loading="lazy"></a><figcaption>Avant et après : l&#x27;œil pâle devient sombre et humide, comme sur l&#x27;image de départ.</figcaption></figure>
+  <p>L&#x27;œil presque noir et humide de l&#x27;image de départ (<span class="insec">D-251</span>) ; la crête reste couchée et sombre. Animations et forme inchangées.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-sanglier">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:/aaa-proto/essai/gibier/sanglier/</p>
+</article>
+<article class="modele" id="mod-meneur">
+  <div class="tete"><h3>Le meneur de la horde</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0153</span> · <span class="insec">D-234</span> (2) · <span class="insec">D-240</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-meneur" title="Voir sa fiche dans « Modèles 3D »"><img src="images/meneur.jpg" alt="Le mort-vivant, le meneur et l&#x27;Ange Déchu côte à côte, de face, de profil et de dos" width="1280" height="324" loading="lazy"></a><figcaption>À la même échelle : le mort-vivant (1,75 m), le meneur (2,50 m) et l&#x27;Ange Déchu (3,60 m).</figcaption></figure>
+  <p>Un grand mort-vivant de 2,50 m, champion de l&#x27;Ordre tombé : heaume couronné de pointes, grandes spalières, côtes à nu, tabard ivoire et or. Même squelette et mêmes animations que le mort-vivant, prêt à remplacer le meneur provisoire dans Unreal. Trois variantes d&#x27;image de départ (champion, porte-étendard, déserteur) attendent l&#x27;avis du directeur.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-meneur">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:/aaa-proto/essai/horde/meneur/</p>
+</article>
+<article class="modele" id="mod-escalade">
+  <div class="tete"><h3>L&#x27;escalade libre dans le jeu</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0152</span> · <span class="insec">P1-05</span> · <span class="insec">D-248</span> (4)</p>
+  <figure><img src="images/escalade.jpg" alt="Neuf captures du héros qui grimpe une paroi d&#x27;essai dans le prototype Unreal" width="1280" height="720" loading="lazy"><figcaption>Montée, mains de près, bond, chute à zéro d&#x27;Endurance, épuisé, reprise, sommet et refus sur une paroi non grimpable.</figcaption></figure>
+  <p>Le héros grimpe la roche marquée en dépensant son Endurance (barre verte), bondit, chute quand elle tombe à zéro, puis se raccroche une fois reposé. La pose est provisoire, faite par programme : les vraies animations viendront avec <span class="insec">P1-06</span>.</p>
+  <p class="chemins">Sur le PC : E:/aaa-proto/unreal-v2/mesures/t0152/</p>
+</article>
+<article class="modele" id="mod-morts-vivants-varies">
+  <div class="tete"><h3>Morts-vivants variés de la horde</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0154</span> · <span class="insec">D-234</span> (2) · <span class="insec">D-240</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-mv-soldat" title="Voir sa fiche dans « Modèles 3D »"><img src="images/morts-vivants-varies.jpg" alt="Planche des quatre morts-vivants variés à côté du mort-vivant et du meneur, avec leurs silhouettes dans la brume" width="1280" height="1559" loading="lazy"></a><figcaption>De gauche à droite : le mort-vivant actuel, le soldat, l&#x27;archer, le déserteur, le sergent et le meneur, de face, de dos, puis à 15 m dans la brume.</figcaption></figure>
+  <p>Quatre soldats et déserteurs de l&#x27;Ordre morts, tirés du mort-vivant existant : le soldat (heaume en seau, tabard ivoire, bouclier au dos), l&#x27;archer (chapeau de fer, carquois), le déserteur (capuche, la lance qui l&#x27;a tué plantée dans le dos) et le sergent (heaume à camail, deux épées croisées au dos). À 15 m dans la brume, on les reconnaît à leur silhouette.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-mv-soldat">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:/aaa-proto/essai/horde/morts-vivants/</p>
+</article>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>04:12</time><p>Début de la journée : point du projet pour le directeur.</p></div>
+    <div class="entree"><time>04:15</time><p>Quota recalé sur le chiffre du directeur : 18 % de la semaine utilisés.</p></div>
+    <div class="entree"><time>04:16</time><p><span class="insec">D-250</span> : l&#x27;escalade d&#x27;abord dans Unreal, les MetaHumans des soldats ensuite ; le meneur puis les morts-vivants variés en modèles 3D ; pas de nuit en autonomie ce soir.</p></div>
+    <div class="entree"><time>04:17</time><p>Lancement de <span class="insec">T-0152</span> (escalade) et de <span class="insec">T-0153</span> (meneur de la horde).</p></div>
+    <div class="entree"><time>04:28</time><p>Le directeur part au travail jusqu&#x27;au soir : <span class="insec">T-0154</span> s&#x27;enchaînera seul après la validation du meneur.</p></div>
+    <div class="entree"><time>04:30</time><p><span class="insec">D-251</span>, le sanglier : crête couchée et sombre gardée, œil sombre comme sur l&#x27;image de départ.</p></div>
+    <div class="entree"><time>04:31</time><p>Lancement de <span class="insec">T-0155</span> (l&#x27;œil du sanglier).</p></div>
+    <div class="entree"><time>05:18</time><p><span class="insec">T-0155</span> livré (l&#x27;œil du sanglier) ; vérification lancée.</p></div>
+    <div class="entree"><time>05:31</time><p><span class="insec">T-0155</span> validé : le sanglier a l&#x27;œil sombre de l&#x27;image de départ (<span class="insec">D-251</span>).</p></div>
+    <div class="entree"><time>07:03</time><p><span class="insec">T-0153</span> livré (le meneur de la horde, 2,50 m) ; vérification lancée.</p></div>
+    <div class="entree"><time>07:27</time><p><span class="insec">T-0153</span> à corriger : pieds enfoncés dans le sol pendant certaines animations, planches à compléter.</p></div>
+    <div class="entree"><time>07:28</time><p>8 boucles d&#x27;attente oubliées (dont 4 du meneur et 4 d&#x27;hier) arrêtées par le Chef ; l&#x27;escalade continue.</p></div>
+    <div class="entree"><time>07:29</time><p>Correction 1 de <span class="insec">T-0153</span> confiée à un agent neuf.</p></div>
+    <div class="entree"><time>08:00</time><p><span class="insec">T-0152</span> livré (l&#x27;escalade libre) ; vérification lancée.</p></div>
+    <div class="entree"><time>08:07</time><p>Correction 1 de <span class="insec">T-0153</span> livrée (pieds relevés : 2,5 cm au plus sous le sol, moins que le mort-vivant) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>08:12</time><p><span class="insec">T-0152</span> validé : l&#x27;escalade libre est dans le prototype. Les MetaHumans des soldats passent à demain matin (quota du jour).</p></div>
+    <div class="entree"><time>08:19</time><p><span class="insec">T-0153</span> validé : le meneur de la horde (2,50 m), pieds corrigés.</p></div>
+    <div class="entree"><time>08:20</time><p>Lancement de <span class="insec">T-0154</span> (morts-vivants variés).</p></div>
+    <div class="entree"><time>09:37</time><p><span class="insec">T-0154</span> livré (4 morts-vivants variés) ; vérification lancée.</p></div>
+    <div class="entree"><time>10:08</time><p><span class="insec">T-0154</span> à corriger : deux couleurs vives à retirer (soldat, déserteur), une description et deux écritures sur C: à reprendre. Le fichier inconnu de 38,7 Mo sur C: vient de Steam, pas des agents.</p></div>
+    <div class="entree"><time>10:11</time><p>Correction 1 de <span class="insec">T-0154</span> confiée à un agent neuf.</p></div>
+    <div class="entree"><time>10:42</time><p>Correction 1 de <span class="insec">T-0154</span> livrée (couleurs vives retirées sur trois variantes) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>11:00</time><p><span class="insec">T-0154</span> validé : 4 morts-vivants variés pour la horde (soldat, archer, déserteur, sergent).</p></div>
+    <div class="entree"><time>11:05</time><p>Lancement de <span class="insec">T-0156</span> : le meneur, les morts-vivants variés et l&#x27;œil du sanglier sur la page « Modèles 3D ».</p></div>
+    <div class="entree"><time>11:30</time><p><span class="insec">T-0156</span> validé.</p></div>
+    <div class="entree"><time>11:40</time><p>Page « Modèles 3D » publiée : le meneur, les 4 morts-vivants variés et le sanglier à l&#x27;œil sombre.</p></div>
+    <div class="entree"><time>17:28</time><p><span class="insec">D-252</span> : le meneur « champion » est gardé, avec sa peau mauve ; les valeurs de l&#x27;escalade sont gardées comme valeurs de départ ; les défauts invisibles à distance de jeu sont acceptés et notés.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Questions en attente du directeur.</p>
+  <p class="lecture muted">2 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question"><span class="ticket">Échanges</span><p>Surnoms de l&#x27;entité : quelle liste ? (à choisir à deux, dans le fil « Échanges »)</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0149</span></span><p>Le sanglier : soies couchées et crête sombre (aujourd&#x27;hui), crête dressée, ou dressée seulement quand il charge ? Et ses yeux : l&#x27;œil pâle de l&#x27;ancienne version (aujourd&#x27;hui) ou l&#x27;œil sombre de l&#x27;image de départ ? À regarder sur la planche avant/après du sanglier.</p><p class="reponse">Réponse du directeur : Crête couchée et sombre, gardée ; œil sombre, comme sur l&#x27;image de départ (<span class="insec">D-251</span>, <span class="insec">T-0155</span>).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0153</span></span><p>Le meneur : quelle image de départ (champion, porte-étendard ou déserteur, planche des variantes) ? La démarche lourde proposée ? La teinte, plus sombre et plus rouge que l&#x27;image : l&#x27;étalonner ?</p><p class="reponse">Réponse du directeur : Champion gardé, peau mauve gardée (<span class="insec">D-252</span>) ; démarche lourde encore à trancher.</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0152</span></span><p>L&#x27;escalade, valeurs proposées (réglables) : 8 d&#x27;Endurance par seconde en grimpant, 2 immobile, 20 par bond, 10 pour se raccrocher ; chute sans dégâts jusqu&#x27;à 5 m, puis 8 PV par mètre ; après une chute à zéro, se raccrocher seulement au sol à 35 d&#x27;Endurance ; touches X / Carré pour prendre et lâcher, Espace / A pour bondir. À garder ?</p><p class="reponse">Réponse du directeur : Valeurs gardées comme valeurs de départ, réglables après des parties d&#x27;essai (<span class="insec">D-252</span>).</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0149</span></span><p>Le sanglier : ses franges éclaircies (le gris des franges du cou ramené vers la teinte de la fiche) sont-elles à garder ? Question restée ouverte, notée dans sa fiche de « Modèles 3D ».</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0153</span>, <span class="insec">T-0154</span></span><p>Défauts des nouveaux modèles, invisibles à distance de jeu : la cuisse du meneur dans sa cotte, la main de l&#x27;archer dans son chapeau, la main du déserteur dans sa jambe, les épées du sergent sous le sol quand il meurt sur le dos. À corriger (changer le dessin des modèles) ou à accepter ?</p><p class="reponse">Réponse du directeur : Acceptés et notés, à corriger plus tard avec des animations propres à chaque modèle (<span class="insec">D-252</span>).</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:\aaa-proto\unreal-v2 : le prototype Unreal (escalade) · E:\aaa-proto\essai\horde\ : le meneur et les morts-vivants variés · D:\aaa-game\.equipe\taches (les tickets) · D:/aaa-game/.equipe/decisions.md (<span class="insec">D-250</span> à <span class="insec">D-252</span>)</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

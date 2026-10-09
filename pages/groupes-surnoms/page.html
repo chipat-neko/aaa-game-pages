@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Groupes et surnoms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Groupes d'ennemis et surnoms de l'entité : une colonne de lecture, des cartes en bref, les tables en conteneurs défilants ; même identité sombre que les autres pages du projet */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.pistes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.piste .ticket{font:500 .72rem/1 var(--f-data);letter-spacing:.06em;color:var(--pierre)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+ul.liste,ol.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:44rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+/* Ajouts propres à cette page */
+nav.parties{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.parties a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.parties a:hover,nav.parties a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.provisoire{justify-self:start;font:500 .72rem/1 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--braise);border:1px solid currentColor;border-radius:3px;padding:.38rem .6rem}
+.large table{min-width:52rem}
+.moyen table{min-width:40rem}
+.pr,.pb,.dc{display:inline-block;font:500 .64rem/1 var(--f-data);letter-spacing:.04em;border-radius:3px;padding:.16rem .3rem;vertical-align:.12em;white-space:nowrap}
+.pr{color:var(--aube);border:1px dashed var(--aube)}
+.pb{color:var(--acier);border:1px solid var(--acier)}
+.dc{color:var(--nuit);background:var(--mousse);border:1px solid var(--mousse)}
+.nom{font-weight:600}
+.legende{display:grid;gap:.45rem;font-size:.92rem;max-width:44rem}
+.note{font-size:.92rem;border-left:2px solid var(--aube);padding-left:.7rem;max-width:42rem}
+.note b{color:var(--aube);font-weight:600}
+h3.sous{font:500 .78rem/1.3 var(--f-data);letter-spacing:.07em;text-transform:uppercase;color:var(--acier);margin-top:.4rem}
+.reco{color:var(--mousse);font-weight:600}
+.replique{font-style:italic;color:var(--lin)}
+.surnom{font:400 1.15rem/1.2 var(--f-titre);color:var(--aube);white-space:nowrap}
+td.non{color:var(--braise)}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier T-0116 · 01/10/2026 · second tour des points bloquants · correction 1</div>
+  <h1>Groupes d'ennemis <em>et surnoms</em></h1>
+  <span class="provisoire">Proposition · à valider par le directeur (D-216 (1) et (3))</span>
+  <p class="lecture">Deux propositions du second tour. D'abord, la taille des groupes de chaque espèce dans chaque lieu du prototype, et ce qu'elle coûte en modèles et en fluidité (D-216 (1), avec les bêtes des galeries de la mine, D-216 (8)). Ensuite, quinze surnoms moqueurs de l'entité, rangés par stade, chacun avec son moment et une réplique d'exemple (D-216 (3)). Le directeur choisit grâce aux deux questionnaires en bas de page. Les documents de design ne sont pas modifiés.</p>
+  <nav class="parties" aria-label="Parties">
+    <a href="#table">Groupes</a><a href="#regles">Règle par espèce</a><a href="#mine">Mine</a><a href="#paquets">Paquets</a><a href="#modeles">Modèles</a><a href="#perf">Fluidité</a><a href="#ton">Ton de l'entité</a><a href="#surnoms">Surnoms</a><a href="#emploi">Emploi</a><a href="#choisir">À choisir</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section>
+  <h2>En bref</h2>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">GROUPES</span><h3>Paquet « moyen » recommandé</h3><p class="muted">Horde de 8 à 12, nid de 4 à 6 en deux vagues, 4 déserteurs dont le chef, mine de 6 à 8, meute de 3 à 4 loups, petit gibier, route calme.</p></div>
+    <div class="piste"><span class="ticket">MINE</span><h3>Araignées et chauves-souris</h3><p class="muted">Recommandé : araignées géantes au combat, une nuée de chauves-souris de taille normale pour l'ambiance, Brutus au fond (D-216 (8)).</p></div>
+    <div class="piste"><span class="ticket">COÛT</span><h3>≈ 19 h de modèles nouveaux</h3><p class="muted">Proposition, avant vérification (11 à 34 h). Le nombre pèse peu sur les créatures, beaucoup sur les humains (un MetaHuman chacun, D-179).</p></div>
+    <div class="piste"><span class="ticket">FLUIDITÉ</span><h3>La horde, puis le hameau</h3><p class="muted">≈ 13 animés dans la horde, ≈ 35 au hameau (sans ennemi). Jamais mesuré au-delà de 3 créatures : banc de charge proposé.</p></div>
+    <div class="piste"><span class="ticket">SURNOMS</span><h3>15, du mépris à la possession</h3><p class="muted">« Capitaine » en premier (D-207), 3 déjà écrits, 3 nés des actes, aucun nom (D-155), tous justes pour un héros comme pour une héroïne.</p></div>
+  </div>
+  <div class="legende">
+    <p><span class="dc">doc</span> écrit dans les documents de design ou dans une décision.</p>
+    <p><span class="pb">PB-09</span> nombre de l'option 1 du dossier des points bloquants, déjà repris par les plans de niveau (non tranché).</p>
+    <p><span class="pr">prop.</span> proposition de cette page, sans source.</p>
+  </div>
+</section>
+
+<section id="table">
+  <h2>1. Groupes : espèces et lieux</h2>
+  <p class="lecture muted">Nombre de créatures ou de personnes par lieu, dans le paquet recommandé. « par 1 ou 2 » : taille d'une rencontre. Les nombres se règlent ensuite en jouant (PB-09).</p>
+  <div class="tableau large"><table>
+    <thead><tr><th>Espèce</th><th>Gorges</th><th>Nature libre et Ferme</th><th>Nid</th><th>Pont</th><th>Mine</th><th>Route</th><th>Oakhaven (pour mémoire)</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Morts-vivants</td><td>Étape 2 : 2 <span class="dc">doc</span> (existant) · horde : 6 à 8 <span class="pr">prop.</span></td><td>Nuit : rôdeur, 0 à 1 <span class="pr">prop.</span></td><td>4 à 6 renforcés <span class="pb">PB-09</span>, en 2 vagues <span class="pr">prop.</span></td><td>—</td><td>Mineurs : 3 à 4, par 1 ou 2 (D-216 (8)) <span class="pr">prop.</span></td><td>—</td><td>Carrière (Voie A) : 2 à 3 <span class="pb">PB-09</span></td></tr>
+      <tr><td class="nom">Esprits</td><td>Étape 2 : 1 (existant) · horde : 2 à 4 · plateau : 2 à 3 errants <span class="pr">prop.</span></td><td>Nuit : rôdeurs, 1 à 2 <span class="pr">prop.</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>Aqueduc : 4 à 6 <span class="pb">PB-09</span> · carrière : 1 à 2</td></tr>
+      <tr><td class="nom">Bêtes des galeries</td><td>—</td><td>—</td><td>—</td><td>—</td><td>3 à 4, par 1 ou 2 (D-216 (8)) <span class="pr">prop.</span></td><td>—</td><td>—</td></tr>
+      <tr><td class="nom">Loups</td><td>—</td><td>Loup isolé : 1 <span class="dc">doc</span> · meute : 3 à 4 · embuscade au feu de camp : 2 à 3 <span class="pr">prop.</span></td><td>—</td><td>—</td><td>—</td><td>— (option : 2 à 3)</td><td>—</td></tr>
+      <tr><td class="nom">Autres prédateurs</td><td>—</td><td>— <span class="pr">prop.</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td class="nom">Gibier</td><td>2 à 4 corbeaux sur les carcasses <span class="pr">prop.</span></td><td>Lapins 3 à 5, épars · oiseaux en vols de 5 à 10 <span class="pr">prop.</span></td><td>—</td><td>—</td><td>—</td><td>Oiseaux · 1 à 2 lapins <span class="pr">prop.</span></td><td>—</td></tr>
+      <tr><td class="nom">Déserteurs</td><td>—</td><td>—</td><td>—</td><td>4, dont le chef <span class="pb">PB-09</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td class="nom">Autres humains</td><td>Patrouille 3 et possédé 1, au loin <span class="pr">prop.</span></td><td>Aucun hostile</td><td>—</td><td>—</td><td>Brutus (PNJ)</td><td>2 à 3 réfugiés, non hostiles <span class="pr">prop.</span></td><td>Aucun hostile</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Pour mémoire</b>, les autres êtres animés comptent pour la fluidité : 12 à 20 villageois visibles (H-P7), 3 à 6 PNJ à la Ferme, 6 à 10 moutons <span class="pr">prop.</span>, le chien de berger (D-213), le loup adopté, 2 à 3 chevaux à l'enclos des déserteurs <span class="pr">prop.</span>, la foule d'Oakhaven (12 à 20, D-185).</p>
+</section>
+
+<section id="regles">
+  <h2>2. La règle de chaque espèce</h2>
+  <p class="lecture muted">D-216 (1) : la taille des groupes dépend de l'espèce. Ces règles servent aussi au jeu complet <span class="pr">prop.</span>.</p>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Espèce</th><th>Règle</th><th>Ce qui la fonde</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Morts-vivants</td><td>Groupes de 2 à 6, renforcés dans un nid ; jamais seuls à l'air libre, sauf le rôdeur de nuit ; dans la mine, par 1 ou 2 (galeries étroites) <span class="pr">prop.</span></td><td>« 2 ou 3 créatures mineures » (<em>Design du Didacticiel</em>) ; « ennemis plus résistants » (<em>Topographie</em> § 4) ; mémoire de ruche (<em>IA Évolutive</em> § 1)</td></tr>
+      <tr><td class="nom">Esprits</td><td>Errants par 1 à 3 ; 4 à 6 là où le lieu est « infesté »</td><td>« infesté d'esprits magiques » (QP1, Voie C)</td></tr>
+      <tr><td class="nom">Horde</td><td>Mélange des deux, le plus gros groupe du prototype (8 à 12), une seule fois</td><td>« impossible à battre » (<em>Design du Didacticiel</em> étape 3) ; PB-09</td></tr>
+      <tr><td class="nom">Bêtes des galeries</td><td>1 à 2 par rencontre (galeries étroites)</td><td>D-216 (8)</td></tr>
+      <tr><td class="nom">Loups</td><td>Solitaire ou meute de 3 à 4 ; 5 à 6 seulement dans les cas écrits ; pas de chef de meute (mini-boss) dans le prototype <span class="pr">prop.</span></td><td>« Loup isolé » (<em>Structure</em> § 1) ; « meutes de prédateurs locaux » (<em>Topographie</em> POI C) ; meute de 5 (<em>Forêt Sauvage</em>, escorte d'un boss) ; meute de 6 par tempête de neige (<em>Météo Étendue</em>) ; chef de meute = Bête Régnante (D-144) : D-177 n'écarte que les 3 boss mineurs, le laisser hors du prototype est une proposition</td></tr>
+      <tr><td class="nom">Gibier</td><td>Lapins épars, oiseaux en vols, sangliers en compagnie (option)</td><td>« Petit Gibier (lapins, oiseaux) » des plaines (<em>Météo Étendue</em>) ; sangliers dans la Plaine (<em>Topographie</em> § 6 ; <em>IA Évolutive</em> § 2)</td></tr>
+      <tr><td class="nom">Humains hostiles</td><td>3 à 4, dont un chef ; un MetaHuman différent par personne</td><td>« un groupe d'anciens soldats d'élite » (<em>Topographie</em> § 5) ; D-179</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="liste">
+    <li><b>Nid</b> : la seconde vague porte des plaques de cuir rigide si le joueur n'a frappé qu'à l'épée (<em>IA Évolutive</em> § 1) et arrive groupée, pour que le sort de zone de l'élément maîtrisé ait un sens (D-182) <span class="pr">prop.</span>.</li>
+    <li><b>Rôdeurs de nuit</b> : le hameau a peur « des monstres rôdeurs » (<em>Topographie</em> POI A) ; les monstres sont plus actifs la nuit (<em>Météo Dynamique</em>, cycle de D-187). Un combat près des maisons tente le joueur d'user de la magie devant les habitants (D-38) <span class="pr">prop.</span>.</li>
+    <li><b>Embuscade au feu de camp</b> : 15 % de chances qu'une meute attaque (<em>Repos</em> § 1) ; dans la zone, des loups seulement (le lion de la Plaine est un boss mineur ; l'Ordre reste hors de la zone) <span class="pr">prop.</span>.</li>
+    <li><b>Réapparition</b> : les groupes de quête ne reviennent jamais ; ceux de la nature reviennent après un jour de jeu ou un repos <span class="pr">prop.</span>.</li>
+  </ul>
+</section>
+
+<section id="mine">
+  <h2>3. La mine : quelles bêtes des galeries ?</h2>
+  <p class="lecture">D-216 (8) : des morts-vivants de mineurs et des bêtes des galeries (araignées ou chauves-souris géantes), avec Brutus au fond. Proposition : les morts-vivants dans les anciens chantiers près de l'entrée, les bêtes dans les cavités profondes, Brutus au-delà, « là où ils ne vont pas » (PB-33). Petits groupes, sans réapparition : la mine reste d'abord le lieu du métier (la quête fait miner 6 veines, soit 12 minerais, parmi les 12 veines des galeries : liste des objets T-0113). Les bêtes sont naturelles, sans lueur (bible artistique § 6.5).</p>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Option</th><th>Ce qu'on voit</th><th>Coût</th></tr></thead>
+    <tbody>
+      <tr><td class="nom reco">1. Recommandée : araignées et nuée</td><td>Araignées géantes au combat, au sol seulement ; une nuée de chauves-souris de taille normale, sans combat, qui s'envole à l'approche (ce ne sont pas les chauves-souris géantes de D-216 : une ambiance en plus)</td><td>Un modèle et son squelette à huit pattes (≈ 8 h, 4 à 15, prop.) ; la nuée : un petit effet visuel (≈ 1 h)</td></tr>
+      <tr><td class="nom">2. Araignées seulement</td><td>Le même combat, sans la nuée</td><td>≈ 8 h (4 à 15)</td></tr>
+      <tr><td class="nom">3. Chauves-souris géantes au combat</td><td>Nuées de 3 à 4 qui attaquent en vol</td><td>Le plus cher : vol en trois dimensions dans des galeries étroites, ailes ; combat peu lisible au verrouillage</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Option pluie</b> <span class="pr">prop.</span> : par Pluie Battante, « les monstres de Ruche souterrains migrent à la surface », mais dans la Forêt (<em>Météo Étendue</em> § 3) ; l'étendre à la mine de la Plaine est une proposition : une ou deux bêtes sortent devant l'entrée.</p>
+</section>
+
+<section id="paquets">
+  <h2>4. Trois paquets</h2>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Lieu</th><th>Petit</th><th>Moyen (recommandé)</th><th>Grand</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Horde</td><td>6</td><td class="reco">8 à 12 (départ : 10)</td><td>15 à 20, en vagues</td></tr>
+      <tr><td class="nom">Nid</td><td>3</td><td class="reco">4 à 6, 2 vagues</td><td>6 à 8</td></tr>
+      <tr><td class="nom">Pont</td><td>3</td><td class="reco">4 (chef + 3)</td><td>6 à 8</td></tr>
+      <tr><td class="nom">Mine</td><td>4</td><td class="reco">6 à 8</td><td>10</td></tr>
+      <tr><td class="nom">Meute ; embuscade</td><td>2 ; 2</td><td class="reco">3 à 4 ; 2 à 3</td><td>5 ; 4</td></tr>
+      <tr><td class="nom">Rôdeurs la nuit</td><td>0</td><td class="reco">1 à 2</td><td>3</td></tr>
+      <tr><td class="nom">Gibier</td><td>oiseaux seuls</td><td class="reco">lapins, oiseaux</td><td>+ sangliers, cerfs</td></tr>
+      <tr><td class="nom">MetaHumans hostiles</td><td>3</td><td class="reco">4</td><td>6 à 8</td></tr>
+      <tr><td class="nom">Effet</td><td>Moins cher ; la horde convainc moins</td><td class="reco">Une horde qui encercle, un groupe de déserteurs crédible</td><td>Spectaculaire ; fluidité à vérifier ; plus de MetaHumans</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="modeles">
+  <h2>5. Modèles à produire</h2>
+  <div class="tableau large"><table>
+    <thead><tr><th>Espèce</th><th>Existe</th><th>À produire</th><th>Ticket du plan</th><th>Estimation</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Morts-vivants</td><td>Modèle validé (44 000 triangles), animé</td><td>Variantes : horde, nid (plaques), mineurs (casque, pioche, lampe)</td><td>P1-14 ; P4-03</td><td>Mineurs ≈ 1,2 h <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Esprits</td><td>Modèle v4 (59 000 triangles), à valider (PB-10)</td><td>Variantes</td><td>P1-14 ; P5-05</td><td>Inchangé</td></tr>
+      <tr><td class="nom">Bêtes des galeries</td><td>Rien</td><td>Araignée : modèle, squelette, animations, IA au sol ; nuée en effet</td><td><b>Nouveau ticket</b>, jalon 4</td><td>≈ 8 h + 1 h <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Loups</td><td>Modèle, 39 os, 12 animations (T-0080, T-0097)</td><td>2 variantes ; IA de meute</td><td>P4-10 ; IA sans ticket</td><td>≈ 1,2 h + 3 h <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Gibier</td><td>Rien</td><td>Lapin ; oiseaux et corbeaux en effet</td><td>P2-01 (placement) ; à ajouter</td><td>≈ 4 h + 1 h <span class="pr">prop.</span> ; sangliers ≈ 6 h</td></tr>
+      <tr><td class="nom">Humains</td><td>Fiches et images</td><td>4 déserteurs, 3 soldats et 1 possédé (MetaHumans) ; réfugiés repris des campements</td><td>P3-07 ; P1-19 ; P5-07</td><td>Inchangé</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Total</b> <span class="pr">prop.</span> : ≈ 19 h probables (11 à 34) avant vérification, ≈ 27 h (14 à 55) avec elle, à ajouter au recalcul du plan (P0-01).</p>
+</section>
+
+<section id="perf">
+  <h2>6. Fluidité</h2>
+  <p class="lecture">Mesuré : 100 à 153 images/s dans les Gorges sur ce poste, 133 pendant le combat de la mini-tranche (3 créatures). Jamais mesuré : un groupe plus grand, un PC « moyen ». Le plan demande au moins 60 images/s.</p>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Lieu</th><th>Animés à l'écran</th><th>Points lourds</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Gorges, horde</td><td>≈ 13</td><td>≈ 0,5 million de triangles animés ; esprits translucides ; grand sort et Ange en même temps</td></tr>
+      <tr><td class="nom">Hameau et enclos</td><td>≈ 35</td><td>MetaHumans nombreux ; aucun ennemi</td></tr>
+      <tr><td class="nom">Ferme et champs</td><td>≈ 10</td><td>Feuillage dense</td></tr>
+      <tr><td class="nom">Nid ; pont</td><td>≈ 7 ; ≈ 7</td><td>Sort de zone ; 4 MetaHumans en combat</td></tr>
+      <tr><td class="nom">Mine ; route</td><td>≈ 4 ; ≈ 5</td><td>Lumière du premier intérieur</td></tr>
+      <tr><td class="nom">Oakhaven</td><td>≈ 25</td><td>Foule de MetaHumans</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="liste">
+    <li>Un <b>banc de charge</b> dans P1-14 : horde de 8, 12 et 20, images/s notées ; le nombre final se règle là <span class="pr">prop.</span>.</li>
+    <li>Des niveaux de détail pour chaque créature ; l'animation ralentie pour les personnages lointains (outil du moteur, à vérifier dans la 5.8) ; pas plus de 4 esprits à la fois <span class="pr">prop.</span>.</li>
+  </ul>
+</section>
+
+<section id="ton">
+  <h2>7. Surnoms : le ton de l'entité</h2>
+  <ul class="liste">
+    <li>Jamais le nom : des titres et des surnoms moqueurs, « Capitaine », « cadavre ambulant »… (D-155 ; <em>DA &amp; Script</em> § 3).</li>
+    <li>« Capitaine » par moquerie, en tête de liste (D-207).</li>
+    <li>Une critique continue et drôle (D-107), d'un être « cynique, poétique et profondément blessé » qui flatte la violence et isole le héros (<em>Lore Suprême</em> § 2) ; il tutoie et dit « nous ».</li>
+    <li>Moqueur au Stade 1, plus intime ensuite (PB-20) ; Stade 2 dès 35, Stade 3 dès 70, seuils provisoires (D-182) ; dans le prototype, Stade 3 réduit : la voix, sans illusion ni prise de contrôle (D-182 (4)).</li>
+    <li>Héros ou héroïne : aucun surnom ne se prononce autrement (D-163) ; jamais l'unité sacrifiée en solo (D-33).</li>
+  </ul>
+</section>
+
+<section id="surnoms">
+  <h2>8. Les 15 surnoms</h2>
+
+  <h3 class="sous">Stade 1 · Les Murmures</h3>
+  <div class="tableau large"><table>
+    <thead><tr><th>Surnom</th><th>Quand</th><th>Réplique d'exemple</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="surnom">Capitaine</td><td>Tous les stades ; d'abord juste après le premier « Capitaine » d'un PNJ (chef, éleveur)</td><td class="replique">« Capitaine… Une épée rouillée suffit donc pour avoir du grade, ici. Ce monde a les officiers qu'il mérite. »</td><td><span class="dc">doc</span> D-207 ; réplique <span class="pr">prop.</span></td></tr>
+      <tr><td class="surnom">Soldat</td><td>Dès le réveil ; surnom courant du Stade 1</td><td class="replique">« Regarde-toi... pathétique soldat. Ne cherche pas tes souvenirs, cherche plutôt une arme. Nous ne sommes pas seuls. »</td><td><span class="dc">doc</span> <em>Design du Didacticiel</em></td></tr>
+      <tr><td class="surnom">Cadavre ambulant</td><td>À la réapparition après une mort</td><td class="replique">« Encore par terre ? (Rire). Lève-toi, cadavre ambulant. Remercie-moi de recoudre tes chairs, ou reste pourrir dans cette boue. »</td><td><span class="dc">doc</span> <em>Lore &amp; Système</em> § 2</td></tr>
+      <tr><td class="surnom">Tête creuse</td><td>L'amnésie : le belvédère, l'insigne que le chef ne sait pas lire, un objet inconnu</td><td class="replique">« Ni ces champs, ni ces gens, ni ta propre figure… Avance, tête creuse. Moi, je me souviens pour deux. »</td><td><span class="pr">prop.</span> <em>Topographie</em> § 2</td></tr>
+      <tr><td class="surnom">Épouvantail</td><td>Au hameau méfiant, tant que le héros porte le gambison du réveil</td><td class="replique">« Souris-leur donc, épouvantail. Avec ce gambison en lambeaux, tu ferais fuir les corbeaux. »</td><td><span class="pr">prop.</span> D-163</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sous">Stade 1 · Nés des actes du joueur</h3>
+  <div class="tableau large"><table>
+    <thead><tr><th>Surnom</th><th>Quand</th><th>Réplique d'exemple</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="surnom">Bourreau</td><td>Après le Choix A et le premier souvenir, jusqu'à la fin ; surtout aux portes d'Oakhaven</td><td class="replique">« Proprement fait, Bourreau. Des frères d'armes, en plus… Je commence à t'apprécier. »</td><td><span class="pr">prop.</span> <em>Topographie</em> § 5</td></tr>
+      <tr><td class="surnom">Mains-Propres</td><td>Après le Choix B (empoisonnement), jusqu'à la fin</td><td class="replique">« Pas une goutte de sang, Mains-Propres. Juste une marmite. Ils sont morts quand même, tu sais. »</td><td><span class="pr">prop.</span> <em>Topographie</em> § 5</td></tr>
+      <tr><td class="surnom">Paria</td><td>Tant que le hameau est hostile (magie vue, crime)</td><td class="replique">« Les volets claquent, les fourches sortent. Bienvenue chez toi, Paria. Moi, je ne te fermerai jamais ma porte. »</td><td><span class="pr">prop.</span> D-38, D-205</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sous">Stade 2 · Les Visions</h3>
+  <div class="tableau large"><table>
+    <thead><tr><th>Surnom</th><th>Quand</th><th>Réplique d'exemple</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="surnom">Goinfre</td><td>Abus de magie (par exemple 3 sorts en 10 s) ; entrée au Stade 2</td><td class="replique">« Encore un sort ? Tu y prends goût, Goinfre. Et c'est moi qu'ils appellent le Démon. »</td><td><span class="pr">prop.</span> D-188</td></tr>
+      <tr><td class="surnom">Mon élève</td><td>Un sort combiné réussi</td><td class="replique">« Lame infusée, posture brisée… Pas mal, mon élève. Encore quelques siècles et tu seras présentable. »</td><td><span class="pr">prop.</span> <em>Lore &amp; Système</em> § 2</td></tr>
+      <tr><td class="surnom">Ma braise · Mon givre</td><td>Un sort de l'élément choisi au nid (Feu ou Glace)</td><td class="replique">« Brûle, ma braise. Plus tu brûles, mieux je respire. » · « Fige-les, mon givre. Le silence te va si bien. »</td><td><span class="pr">prop.</span> D-182 (2)</td></tr>
+      <tr><td class="surnom">Mon réceptacle</td><td>Mana vide (l'écran tourne au violet)</td><td class="replique">« Plus une goutte… Respire, mon réceptacle. Je n'ai pas fini de te remplir. »</td><td><span class="pr">prop.</span> d'après un mot du <em>Lore Suprême</em> § 2</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sous">Stade 3 · L'Illusion</h3>
+  <div class="tableau large"><table>
+    <thead><tr><th>Surnom</th><th>Quand</th><th>Réplique d'exemple</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="surnom">Mon reflet</td><td>Entrée au Stade 3 (dans le prototype : la voix seule)</td><td class="replique">« Au point d'eau, tu cherchais ton visage, mon reflet. Bientôt, c'est le mien que tu verras. »</td><td><span class="pr">prop.</span> d'après <em>DA &amp; Script</em> § 1.C</td></tr>
+      <tr><td class="surnom">Ma prison</td><td>Au repos, quand l'entité négocie ; quand la jauge redescend</td><td class="replique">« Ouvre-toi, ma prison. Une seule fois… J'ai attendu des millénaires sous Gath ; je saurai attendre que tes os cèdent. »</td><td><span class="pr">prop.</span> <em>Lore &amp; Système</em> § 1</td></tr>
+      <tr><td class="surnom">Ma marionnette</td><td>Quand l'entité prend un choix de dialogue ; <span class="muted">jeu complet seulement (D-182 (4))</span></td><td class="replique">« Chut. Laisse-moi répondre, ma marionnette. Tu parlais si mal. »</td><td><span class="pr">prop.</span> d'après un mot de la QP1</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Réserve</b>, pour un échange : <span class="surnom">Ferraille</span> (forge et mine), <span class="surnom">Ma moitié</span> (repos, Stade 3), <span class="surnom">Pion</span> (après le deuxième souvenir de la QP1).</p>
+</section>
+
+<section id="emploi">
+  <h2>9. Emploi et coût</h2>
+  <ul class="liste">
+    <li>Au plus un surnom par réplique, environ une réplique sur deux, jamais le même deux fois de suite <span class="pr">prop.</span>.</li>
+    <li>Les surnoms du Stade 1 servent toujours ; ceux des Stades 2 et 3 s'ajoutent avec la jauge et se taisent si elle redescend (D-13) : le joueur entend sa corruption <span class="pr">prop.</span>.</li>
+    <li>Bourreau et Mains-Propres s'excluent ; Paria dure tant que le hameau est hostile.</li>
+    <li>Aucune réplique ne contient le nom : toutes se génèrent à l'avance en voix de synthèse (D-206). Environ 28 à 30 répliques, dans les 60 à 150 de l'entité prévues par l'inventaire.</li>
+    <li>Écartés : les mots qui changent pour une héroïne (« petit mortel », « le boucher », « l'empoisonneur », « mon hôte »…), « sacrifié » (D-33), « déserteur », « étranger », « l'Anomalie » (laissé aux autres personnages), tout nom (D-155).</li>
+  </ul>
+</section>
+
+<section id="choisir">
+  <h2>10. À choisir</h2>
+  <p class="lecture muted">Deux questionnaires de quatre questions ; l'option recommandée vient en premier.</p>
+  <h3 class="sous">Groupes d'ennemis</h3>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>#</th><th>Question</th><th>Options</th></tr></thead>
+    <tbody>
+      <tr><td>G.1</td><td>Quelle taille de groupes ?</td><td><span class="reco">Moyen</span> · Petit · Grand</td></tr>
+      <tr><td>G.2</td><td>Quelles bêtes dans la mine ?</td><td><span class="reco">Araignées géantes au combat, nuée de chauves-souris de taille normale pour l'ambiance</span> · Araignées seulement · Chauves-souris géantes au combat</td></tr>
+      <tr><td>G.3</td><td>Quel gibier ?</td><td><span class="reco">Lapins et oiseaux</span> · Lapins, oiseaux et sangliers · Oiseaux seulement</td></tr>
+      <tr><td>G.4</td><td>Que trouve-t-on hors des quêtes ?</td><td><span class="reco">Meute près de la Ferme, embuscade au feu de camp, rôdeurs la nuit, route calme</span> · Idem, plus une meute sur la route · La meute près de la Ferme seulement</td></tr>
+    </tbody>
+  </table></div>
+  <h3 class="sous">Surnoms de l'entité</h3>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>#</th><th>Question</th><th>Options</th></tr></thead>
+    <tbody>
+      <tr><td>S.1</td><td>Quelle liste ?</td><td><span class="reco">Les 15 proposés</span> · Les 15 avec des échanges contre la réserve · Une autre liste</td></tr>
+      <tr><td>S.2</td><td>Des surnoms nés des actes ?</td><td><span class="reco">Bourreau, Mains-Propres, Paria</span> · Ceux du pont seulement · Aucun</td></tr>
+      <tr><td>S.3</td><td>Un surnom selon l'élément ?</td><td><span class="reco">Ma braise, mon givre</span> · Un seul pour les deux · Aucun</td></tr>
+      <tr><td>S.4</td><td>Le héros répond-il au « Capitaine » de l'entité ?</td><td><span class="reco">Non, c'est une voix intérieure</span> · Oui, « Non, moi c'est… » · Une réponse propre (« Tais-toi. »)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lecture muted">Décisions D-216, D-207, D-155, D-107, D-182, D-188, D-177, D-179 ; dossier des points bloquants (PB-09, PB-20, PB-33) ; documents de design : <em>Design du Didacticiel</em>, <em>Topographie de la Zone de Départ</em>, <em>Les 3 Monstres Uniques</em>, <em>IA Évolutive</em>, <em>Forêt Sauvage</em>, <em>Exploration</em>, <em>Météo Dynamique</em>, <em>Météo Étendue</em>, <em>Repos</em>, <em>Structure - Quêtes Secondaires</em>, QP1, <em>DA &amp; Script</em>, <em>Lore &amp; Système</em>, <em>Lore Suprême</em>, <em>Stades des Symptômes</em>, <em>Lexique</em>.</p>
+  <p class="chemins">D:\aaa-game\.equipe\prototype\groupes-ennemis.md<br>D:\aaa-game\.equipe\prototype\surnoms-entite.md<br>D:\aaa-game\.equipe\prototype\points-bloquants.md · plan-production.md · plan-niveau\zone-depart.md · plan-niveau\oakhaven.md · bible-artistique.md · dialogues-provisoires.md</p>
+</section>
+</div>
+
+</body>
+</html>

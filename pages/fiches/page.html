@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<!-- Page du chantier T-0084, faite d'après E:\aaa-proto\livrables\GABARIT-PAGE.html par travail/faire_page.py.
+Règles du gabarit : pas de doctype/html/head/body ; polices Google Fonts seulement ; images par chemin relatif (images/*.jpg) ;
+marche sur téléphone ; aucun formulaire, aucune alerte, aucun lien de téléchargement. -->
+<title>Fiches des PNJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Galerie de fiches : même identité sombre que le gabarit (ardoise, ivoire, or d'aube) */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte);margin:0}
+.page{max-width:72rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1.05rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:1rem}
+.chiffre-cle{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.9rem 1rem;display:grid;gap:.2rem}
+.chiffre-cle b{font:400 2.2rem/1 var(--f-titre);color:var(--aube)}
+.chiffre-cle span{font-size:.9rem;color:var(--pierre)}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,21rem),1fr));gap:1.2rem}
+.fiche{display:grid;grid-template-rows:auto 1fr;background:var(--brume);border:1px solid var(--roche);border-radius:6px;overflow:hidden;min-width:0}
+.fiche figure{margin:0;background:#6b6e72}
+.fiche img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain}
+.sansimage{aspect-ratio:3/2;display:grid;place-items:center;color:var(--nuit);font:500 .8rem var(--f-data)}
+.corps{display:grid;gap:.55rem;align-content:start;padding:1rem 1.1rem 1.2rem}
+.corps p{font-size:.92rem}
+.doc{color:var(--lin)}
+.cle{font:500 .68rem/1 var(--f-data);letter-spacing:.06em;text-transform:uppercase;color:var(--aube);margin-right:.35rem}
+.mh{font-size:.82rem!important;color:var(--pierre)}
+.verdict{font:400 .78rem/1.5 var(--f-data);color:var(--mousse)}
+.etat{justify-self:start;font:500 .68rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--pierre)}.encours{color:var(--acier)}.valide{color:var(--mousse)}.bloque{color:var(--braise)}.fait{color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.9rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · fiches des PNJ (T-0084) · 30/09/2026</div>
+  <h1>Les visages <em>du prototype</em></h1>
+  <p class="lecture">Les personnages qui parlent dans le prototype pour les investisseurs, et les figurants utiles :
+  rôle tiré des documents, caractère, manière de parler pour les dialogues, et réglages de visage proposés pour
+  MetaHuman. Ce sont des <strong>propositions, à valider</strong> ; le détail et toutes les sources sont dans
+  <span class="chemins">.equipe/prototype/fiches-pnj.md</span>.</p>
+</header>
+
+<section>
+  <h2>En bref</h2>
+  <div class="chiffres">
+    <div class="chiffre-cle"><b>13</b><span>PNJ qui parlent ou peuvent parler</span></div>
+    <div class="chiffre-cle"><b>16</b><span>planches générées cette nuit (ChatGPT via Codex)</span></div>
+    <div class="chiffre-cle"><b>0</b><span>réglage de visage repris de celui du héros (Victor, Orlando)</span></div>
+  </div>
+  <p class="lecture muted">Chaque planche montre le même personnage deux fois : portrait de trois quarts et vue en
+  pied, sur fond neutre, dans le style des fiches du 29/09. Le texte en blanc vient des documents ou des décisions
+  (D-xx) ; le reste est proposé ici. « MetaHuman » : l'outil d'Epic qui fabrique les visages ; chaque visage mêle
+  trois visages de départ fournis par l'outil (D-179 : tous différents, tous plausibles).</p>
+</section>
+
+<section>
+  <h2>Le Hameau de la Brume et ses abords</h2>
+  <p class="lecture muted">Hameau pauvre de 80 habitants, une seule conscience collective : méfiant au début, amical après une quête, hostile ou terrifié si un habitant voit un crime ou la magie (Topographie, IA Collective ; D-38).</p>
+  <div class="galerie">
+<article class="fiche">
+  <figure><img src="images/01-chef-hameau.jpg" width="1536" height="1024" loading="lazy" alt="Le chef du Hameau de la Brume : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>Le chef du Hameau de la Brume</h3>
+    <p class="doc">Offre la prime du nid, hors de vue du hameau ; oriente le héros vers Oakhaven et lance la QP1 (moment à définir). Topographie POI A, § 4 ; D-35, D-150.</p>
+    <p><span class="cle">Qui</span> 65 ans, sec, un peu voûté. Prudent, méfiant envers les étrangers, pragmatique.</p>
+    <p><span class="cle">Parler</span> Lent, économe, proverbes de la terre ; « étranger ». Voix grave, voilée.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Walter 55 % + Bruce 25 % + Lorenzo 20 % · 172 cm · muscles 0,30, graisse 0,30 · peau u 0,34 · cheveux gris attachés, barbe courte grise</p>
+    <p class="verdict">Image : bonne au 1er essai (visage, tenue, bâton conformes).</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/02-forgeron.jpg" width="1536" height="1024" loading="lazy" alt="Le forgeron du hameau : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>Le forgeron du hameau</h3>
+    <p class="doc">Quête de métier : envoie le héros aux Mines de Fer Oubliées, chez Brutus ; Forge et Minage jusqu&#x27;au niveau 29. PNJ de l&#x27;essai de départage. Topographie § 4 ; Guide des Métiers § 1 ; D-177, D-178.</p>
+    <p><span class="cle">Qui</span> 50 ans, très large d&#x27;épaules. Rude mais juste (comme l&#x27;essai T-0078 à T-0081).</p>
+    <p><span class="cle">Parler</span> Bref, impératif, mots du métier ; bourru mais jamais méprisant. Voix grave, sonore.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Bruce 45 % + Jorge 35 % + Dominic 20 % · 182 cm · muscles 0,78, graisse 0,55 · peau u 0,36 rougeaude · dégarni, grande barbe brune grisonnante · à réaligner sur T-0081</p>
+    <p class="verdict">Image : bonne au 1er essai (conforme aux consignes de T-0079 et T-0081).</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/03-brutus.jpg" width="1536" height="1024" loading="lazy" alt="Brutus le Brisé : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>Brutus le Brisé</h3>
+    <p class="doc">Maître du Minage, ancien esclave mineur évadé ; débloque le Minage dans les Mines de Fer Oubliées, puis retourne dans les Canyons. Guide des Métiers § 2.A ; D-17.</p>
+    <p><span class="cle">Qui</span> 42 ans, très grand, massif. Taciturne, dur ; cicatrices des fers, anneau brisé au poignet.</p>
+    <p><span class="cle">Parler</span> Très peu de mots, phrases sèches, silences. Voix basse, rauque.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Dominic 45 % + Bo 30 % + Kelvin 25 % · 192 cm · muscles 0,82, graisse 0,45 · peau u 0,22 blafarde · crâne ras, rasé · nez cassé par les repères</p>
+    <p class="verdict">Image : bonne au 1er essai (fers, cicatrices du cou ; nez cassé peu marqué). Ajout de l&#x27;image (proposition) : lanterne-tempête à globe de verre, plus tardive que la lanterne à huile de la fiche.</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/04-eleveur.jpg" width="1536" height="1024" loading="lazy" alt="L&#x27;éleveur : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>L&#x27;éleveur</h3>
+    <p class="doc">« L&#x27;Agneau et le Loup » : tuer le loup qui décime son bétail, ou l&#x27;adopter et le ramener sans bruit (récompense double). Structure § 1 ; D-63, D-177.</p>
+    <p><span class="cle">Qui</span> 35 ans, sec, nerveux. Épuisé, inquiet, peur panique du loup ; soulagé à la fin.</p>
+    <p><span class="cle">Parler</span> Rapide, phrases coupées, compte ses bêtes. Voix moyenne, éraillée.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Lorenzo 45 % + Kelvin 30 % + Cameron 25 % · 176 cm · muscles 0,45, graisse 0,20 · peau u 0,24, taches de rousseur · roux cuivré, barbe inégale</p>
+    <p class="verdict">Image : bonne au 1er essai.</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/05-agent-cartel.jpg" width="1536" height="1024" loading="lazy" alt="L&#x27;agent du Cartel : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>L&#x27;agent du Cartel</h3>
+    <p class="doc">À l&#x27;auberge : propose d&#x27;empoisonner les déserteurs (Choix B), vend la nourriture frelatée ; ouvre le marché noir. Topographie POI A, § 5 ; D-39, D-41.</p>
+    <p><span class="cle">Qui</span> 35 ans, mince, posée. Femme : proposition (les documents disent « un agent »).</p>
+    <p><span class="cle">Parler</span> Voix basse, soignée ; ne dit jamais « poison » ; tout est un marché. Voix alto, douce.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Sunita 40 % + Celeste 35 % + Tuya 25 % · 168 cm · muscles 0,40, graisse 0,30 · peau u 0,52 olive · noirs tirés en queue basse</p>
+    <p class="verdict">Image : bonne au 1er essai (accessoires en vignettes à droite ; cicatrice de la lèvre absente).</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/06-aubergiste.jpg" width="1536" height="1024" loading="lazy" alt="L&#x27;aubergiste : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat encours">Parole à définir</span>
+    <h3>L&#x27;aubergiste</h3>
+    <p class="doc">Tient l&#x27;auberge et son premier lit de repos (payant). Topographie POI A ; Repos § 1. Peut-être aussi le troc du hameau : à trancher.</p>
+    <p><span class="cle">Qui</span> 55 ans, petite et ronde. Chaleureuse avec les habitués, prudente avec les étrangers. Femme : proposition.</p>
+    <p><span class="cle">Parler</span> Rapide, familier ; le prix d&#x27;abord ; rumeurs à mots couverts. Voix chaude.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Lani 40 % + Grace 30 % + Vivian 30 % · 160 cm · muscles 0,40, graisse 0,72 · peau u 0,28 rosée · relevés sous le fichu, châtain grisonnant</p>
+    <p class="verdict">Image : bonne au 1er essai.</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/07-veilleuse.jpg" width="1536" height="1024" loading="lazy" alt="La Veilleuse de l&#x27;Aube : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat encours">Parole à définir</span>
+    <h3>La Veilleuse de l&#x27;Aube</h3>
+    <p class="doc">Ferme Fortifiée des Veilleurs, incluse par D-177 : vend des remèdes de base (Topographie POI C). Aucune quête des Veilleurs retenue.</p>
+    <p><span class="cle">Qui</span> 30 ans, grande, athlétique. Calme, droite, bienveillante. Couleurs bleu ardoise et demi-soleil : proposition (rien dans les documents).</p>
+    <p><span class="cle">Parler</span> Posée, phrases complètes, vouvoiement. Voix claire.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Vivian 45 % + Jelena 30 % + Ada 25 % · 175 cm · muscles 0,60, graisse 0,30 · peau u 0,22, taches de rousseur · auburn, queue basse (tresse à créer)</p>
+    <p class="verdict">Image : bonne au 1er essai (cicatrice sur la joue au lieu du menton).</p>
+  </div>
+</article>
+  </div>
+</section>
+<section>
+  <h2>Le Pont des Déserteurs</h2>
+  <p class="lecture muted">Seule sortie de la zone de départ : tuer les déserteurs (Choix A) ou les empoisonner (Choix B) ; sur le chef, l&#x27;insigne qui déclenche le premier souvenir (Topographie § 5 ; D-108).</p>
+  <div class="galerie">
+<article class="fiche">
+  <figure><img src="images/08-chef-deserteurs.jpg" width="1536" height="1024" loading="lazy" alt="Le chef des déserteurs : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat encours">Parole à définir</span>
+    <h3>Le chef des déserteurs</h3>
+    <p class="doc">Ancien soldat d&#x27;élite de l&#x27;Ordre, déserteur et blessé ; rackette le hameau et le Cartel ; porte l&#x27;insigne d&#x27;unité sans nom identique à celui du héros. Topographie POI D, § 5 ; D-24, D-108.</p>
+    <p><span class="cle">Qui</span> 38 ans, grand, amaigri. Amer envers l&#x27;Ordre, désespéré, encore discipliné. Sceptre découpé du tabard : proposition.</p>
+    <p><span class="cle">Parler</span> Ton de commandement, phrases militaires, lucidité noire ; « soldat ». Voix baryton, usée.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Mateo 45 % + Isaiah 30 % + Lorenzo 25 % · 184 cm · muscles 0,55, graisse 0,15 · peau u 0,45 pâle · mi-longs noirs, longue barbe négligée (corrigé : pas la pilosité du héros)</p>
+    <p class="verdict">Image : bonne au 1er essai (sceptre découpé visible) ; l&#x27;insigne rond au sceptre ne reprend pas celui du héros (heros-reveil.png) : à corriger au modèle 3D. Pilosité 3D changée (correction 1) : l&#x27;image reste la référence de la tenue seulement.</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/15-deserteur.jpg" width="1536" height="1024" loading="lazy" alt="Un déserteur blessé : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat encours">Parole à définir</span>
+    <h3>Un déserteur blessé</h3>
+    <p class="doc">Les hommes du chef, combattus au Choix A ; nombre et aspect à définir (inventaire § 5).</p>
+    <p><span class="cle">Qui</span> Proposition : même équipement que le chef, plus pauvre ; 3 têtes différentes.</p>
+    <p><span class="cle">Parler</span> Répliques de combat seulement (proposition).</p>
+    <p class="mh"><span class="cle">MetaHuman</span> 3 têtes : Isaiah, Mikel ou Trey dominants, peaux variées</p>
+    <p class="verdict">Image : 2e essai retenu (le 1er ressemblait au héros, gardé dans originaux/refuses) ; réserve : le sceptre n&#x27;est pas découpé comme demandé.</p>
+  </div>
+</article>
+  </div>
+</section>
+<section>
+  <h2>Les portes d&#x27;Oakhaven (QP1)</h2>
+  <p class="lecture muted">Checkpoint de la Garde Royale et trois voies d&#x27;entrée, une par faction (QP1 ; D-139, D-150).</p>
+  <div class="galerie">
+<article class="fiche">
+  <figure><img src="images/09-capitaine-portes.jpg" width="1536" height="1024" loading="lazy" alt="Le capitaine des portes : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>Le capitaine des portes</h3>
+    <p class="doc">Garde Royale : fouilles, portes fermées ; méfiant après le massacre du pont, refuse l&#x27;entrée sans laissez-passer après l&#x27;empoisonnement. QP1 étape 1 ; D-40, D-130, D-139.</p>
+    <p><span class="cle">Qui</span> 45 ans, grand, solide. Sévère, méthodique, inflexible. Gradé : cape courte ivoire (D-166, application proposée).</p>
+    <p><span class="cle">Parler</span> Formules réglementaires, vouvoiement froid ; « voyageur ». Voix basse, nette.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Omari 45 % + Trey 30 % + Isaiah 25 % · 186 cm · muscles 0,62, graisse 0,42 · peau u 0,86 · très courts, tempes grises, rasé</p>
+    <p class="verdict">Image : bonne au 1er essai (cape courte, filet d&#x27;or) ; épée montrée deux fois (au côté et à part).</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/10-sergent-recruteur.jpg" width="1536" height="1024" loading="lazy" alt="Le sergent recruteur : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>Le sergent recruteur</h3>
+    <p class="doc">Voie A : cherche des mercenaires pour un nid de monstres ; donne le laissez-passer légal (Oakhaven seulement). QP1 ; D-139, D-150, D-173.</p>
+    <p><span class="cle">Qui</span> 40 ans, trapu. Jovial, bruyant, recruteur roué. Cordon doré à l&#x27;épaule : proposition.</p>
+    <p><span class="cle">Parler</span> Voix forte, tutoiement de caserne, chiffres et solde ; « mercenaire ».</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Jorge 45 % + Kelvin 30 % + Walter 25 % · 176 cm · muscles 0,68, graisse 0,55 · peau u 0,30 rougeaude · brosse sable, moustache en morse</p>
+    <p class="verdict">Image : bonne au 1er essai (cordon doré, moustache en morse, cicatrice) ; sceptre dessiné autrement que sur soldat-ordre.png. Ajout de l&#x27;image (proposition) : fermoir à tête de lion.</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/11-voleur-ecuries.jpg" width="1536" height="1024" loading="lazy" alt="Le voleur des écuries : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>Le voleur des écuries</h3>
+    <p class="doc">Voie B : a vu les exploits du héros au hameau ; chariot de vin de contrebande, garde corrompu ; une faveur due au Cartel. QP1 ; D-150.</p>
+    <p><span class="cle">Qui</span> 22 ans, mince, agile. Effronté, charmeur ; tient ses marchés.</p>
+    <p><span class="cle">Parler</span> Rapide, argot des bas-fonds, tutoie d&#x27;emblée ; rappelle la dette. Voix vive.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Cameron 50 % + Mateo 30 % + Kelvin 20 % · 170 cm · muscles 0,40, graisse 0,18 · peau u 0,62 · bouclés noirs, fine moustache</p>
+    <p class="verdict">Image : bonne au 1er essai.</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/12-erudit-banni.jpg" width="1536" height="1024" loading="lazy" alt="L&#x27;érudit banni : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat valide">Parle</span>
+    <h3>L&#x27;érudit banni</h3>
+    <p class="doc">Voie C (Conclave) : veut un artefact confisqué par l&#x27;Ordre ; révèle l&#x27;aqueduc aux esprits ; entrée par les catacombes. QP1 ; D-150.</p>
+    <p><span class="cle">Qui</span> 60 ans, maigre, voûté. Brillant, orgueilleux, amer, curieux jusqu&#x27;à l&#x27;imprudence.</p>
+    <p><span class="cle">Parler</span> Phrases longues et savantes, ironie condescendante. Voix sèche.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Aoi 45 % + Lorenzo 30 % + Isaiah 25 % · 174 cm · muscles 0,18, graisse 0,22 · peau u 0,66 · sommet dégarni, longue barbe blanche</p>
+    <p class="verdict">Image : bonne au 1er essai (lunettes, sommet dégarni, robe blanche et bleu nuit).</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/13-garde-corrompu.jpg" width="1536" height="1024" loading="lazy" alt="Le garde corrompu : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat encours">Parole à définir</span>
+    <h3>Le garde corrompu</h3>
+    <p class="doc">Voie B : le garde qu&#x27;on soudoie pour laisser passer le chariot. QP1.</p>
+    <p><span class="cle">Qui</span> 32 ans, lourd. Cupide, lâche, obséquieux.</p>
+    <p><span class="cle">Parler</span> Chuchote, phrases à demi-mot, marchande. Voix nasillarde.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Bo 45 % + Jorge 30 % + Kelvin 25 % · 175 cm · muscles 0,35, graisse 0,78 · peau u 0,22 pâle · blonds fins et gras, barbe clairsemée</p>
+    <p class="verdict">Image : bonne au 1er essai (tabard taché de vin, bourse, heaume à part).</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/16-general.jpg" width="1536" height="1024" loading="lazy" alt="Le Général : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat attente">Muet dans la QP1</span>
+    <h3>Le Général</h3>
+    <p class="doc">Sur un destrier blanc, il croise le regard du héros sur la grand-place ; dans le deuxième souvenir, il décore l&#x27;officier. Tenue la plus ornée. QP1 ; D-166, D-167, D-171.</p>
+    <p><span class="cle">Qui</span> 55 ans, grand, droit ; regard pâle et froid (proposition).</p>
+    <p><span class="cle">Parler</span> Ne parle pas dans la QP1.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Kelvin 40 % + Walter 35 % + Bruce 25 % · 188 cm · muscles 0,55, graisse 0,35 · peau u 0,28 · argent en arrière, barbe grise nette</p>
+    <p class="verdict">Image : bonne au 1er essai (armure d&#x27;apparat la plus ornée, cape brodée). Ajouts de l&#x27;image (propositions) : lions des épaulières, col d&#x27;hermine, col et jupe de brocart noir, hors des couleurs acier, or et ivoire (D-166).</p>
+  </div>
+</article>
+  </div>
+</section>
+<section>
+  <h2>Figurants</h2>
+  <p class="lecture muted">PNJ muets ou à répliques courtes qui font vivre les lieux (D-177).</p>
+  <div class="galerie">
+<article class="fiche">
+  <figure><img src="images/14-villageois.jpg" width="1536" height="1024" loading="lazy" alt="Les villageois du hameau : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat attente">Répliques courtes</span>
+    <h3>Les villageois du hameau</h3>
+    <p class="doc">80 habitants, une seule conscience : méfiants, puis amicaux, ou hostiles et terrifiés. IA Collective § 1 ; Topographie POI A.</p>
+    <p><span class="cle">Qui</span> Proposition : 8 têtes de base (femmes et hommes de 20 à 70 ans), laine écrue, lin, peau de mouton.</p>
+    <p><span class="cle">Parler</span> Répliques courtes selon l&#x27;humeur du hameau.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> 8 mélanges différents de ceux des PNJ nommés (détail dans fiches-pnj.md, § 4.1)</p>
+    <p class="verdict">Image : bonne au 2e essai (correction 1) : peaux variées, jeune fermier bien distinct du héros. Le 1er essai (fermier trop proche du héros) est gardé dans originaux/refuses.</p>
+  </div>
+</article>
+<article class="fiche">
+  <figure><img src="images/soldat-ordre.jpg" width="800" height="1200" loading="lazy" alt="Les soldats de l&#x27;Ordre : portrait de trois quarts et vue en pied, fond gris"></figure>
+  <div class="corps">
+    <span class="etat attente">Répliques courtes</span>
+    <h3>Les soldats de l&#x27;Ordre</h3>
+    <p class="doc">Patrouille du didacticiel (tire sur un possédé, D-03) et gardes des portes. Fiche validée du 29/09 (personnages\soldat-ordre.png), reprise ici ; tenue du soldat (D-166).</p>
+    <p><span class="cle">Qui</span> Heaume à fente : le visage se voit peu.</p>
+    <p><span class="cle">Parler</span> Répliques courtes selon l&#x27;état de l&#x27;Ordre (D-139).</p>
+    <p class="mh"><span class="cle">MetaHuman</span> 3 têtes : Trey, Isaiah ou Kelvin dominants</p>
+    <p class="verdict">Fiche validée du 29/09 (E:\aaa-proto\personnages), reprise telle quelle.</p>
+  </div>
+</article>
+  </div>
+</section>
+
+<section>
+  <h2>Des visages tous différents</h2>
+  <p class="lecture muted">Un visage de départ différent domine chaque PNJ ; aucun n'utilise ceux du héros (Victor et
+  Orlando), ni sa pilosité (cheveux courts en bataille et barbe de quelques jours) : le chef des déserteurs, de la
+  même unité que lui, a été corrigé dans ce sens. Âges de 22 à 65 ans, tailles de 160 à 192 cm, peaux du plus clair (u 0,22) au plus foncé (u 0,86).</p>
+  <div class="tableau"><table>
+<thead><tr><th>PNJ</th><th>Visage dominant</th><th>Âge</th><th>Peau u</th><th>Taille</th><th>Cheveux, pilosité</th></tr></thead>
+<tbody>
+<tr class="muted"><td>Héros (pour mémoire)</td><td>Victor 65 %</td><td class="chiffre">30</td><td class="chiffre">0,27</td><td class="chiffre">180</td><td>courts en bataille, barbe de quelques jours</td></tr>
+<tr><td>Chef du hameau</td><td>Walter 55 %</td><td class="chiffre">65</td><td class="chiffre">0,34</td><td class="chiffre">172</td><td>gris attachés, barbe courte</td></tr>
+<tr><td>Forgeron</td><td>Bruce 45 %</td><td class="chiffre">50</td><td class="chiffre">0,36</td><td class="chiffre">182</td><td>dégarni, grande barbe brune</td></tr>
+<tr><td>Brutus le Brisé</td><td>Dominic 45 %</td><td class="chiffre">42</td><td class="chiffre">0,22</td><td class="chiffre">192</td><td>crâne ras, rasé</td></tr>
+<tr><td>Éleveur</td><td>Lorenzo 45 %</td><td class="chiffre">35</td><td class="chiffre">0,24</td><td class="chiffre">176</td><td>roux mi-longs, barbe inégale</td></tr>
+<tr><td>Agent du Cartel</td><td>Sunita 40 %</td><td class="chiffre">35</td><td class="chiffre">0,52</td><td class="chiffre">168</td><td>noirs tirés en arrière</td></tr>
+<tr><td>Aubergiste</td><td>Lani 40 %</td><td class="chiffre">55</td><td class="chiffre">0,28</td><td class="chiffre">160</td><td>relevés, grisonnants</td></tr>
+<tr><td>Veilleuse</td><td>Vivian 45 %</td><td class="chiffre">30</td><td class="chiffre">0,22</td><td class="chiffre">175</td><td>auburn, queue ou tresse</td></tr>
+<tr><td>Chef des déserteurs</td><td>Mateo 45 %</td><td class="chiffre">38</td><td class="chiffre">0,45</td><td class="chiffre">184</td><td>mi-longs noirs, longue barbe négligée</td></tr>
+<tr><td>Capitaine des portes</td><td>Omari 45 %</td><td class="chiffre">45</td><td class="chiffre">0,86</td><td class="chiffre">186</td><td>très courts, rasé</td></tr>
+<tr><td>Sergent recruteur</td><td>Jorge 45 %</td><td class="chiffre">40</td><td class="chiffre">0,30</td><td class="chiffre">176</td><td>brosse sable, moustache en morse</td></tr>
+<tr><td>Voleur des écuries</td><td>Cameron 50 %</td><td class="chiffre">22</td><td class="chiffre">0,62</td><td class="chiffre">170</td><td>bouclés noirs, fine moustache</td></tr>
+<tr><td>Érudit banni</td><td>Aoi 45 %</td><td class="chiffre">60</td><td class="chiffre">0,66</td><td class="chiffre">174</td><td>dégarni, longue barbe blanche</td></tr>
+<tr><td>Garde corrompu</td><td>Bo 45 %</td><td class="chiffre">32</td><td class="chiffre">0,22</td><td class="chiffre">175</td><td>blonds fins, barbe clairsemée</td></tr>
+<tr><td>Le Général</td><td>Kelvin 40 %</td><td class="chiffre">55</td><td class="chiffre">0,28</td><td class="chiffre">188</td><td>argent en arrière, barbe grise nette</td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+  <h2>À valider par le directeur</h2>
+  <ul class="liste">
+<li>Genres proposés : l&#x27;agent du Cartel, l&#x27;aubergiste et la Veilleuse en femmes (les documents emploient le masculin générique ou ne disent rien).</li>
+<li>Peuples et teintes de peau du Royaume : rien dans les documents ; la variété proposée est à valider (bible artistique, T-0088).</li>
+<li>Tenues entre le soldat et l&#x27;officier (D-166) : cordon doré du sergent, cape courte du capitaine.</li>
+<li>Aspect des déserteurs : tabard au sceptre découpé, blessures.</li>
+<li>Couleurs et emblème des Veilleurs (bleu ardoise, demi-soleil levant).</li>
+<li>Rôles à fusionner ou non : agent du Cartel et marchand du Cartel qui apporte les nouvelles ; aubergiste et marchand de troc.</li>
+<li>Qui parle parmi l&#x27;aubergiste, la Veilleuse, le chef des déserteurs et le garde corrompu ; le chef des déserteurs remarque-t-il l&#x27;insigne du héros avant la fin ?</li>
+<li>Qui dit « Capitaine » au héros (D-172, point ouvert) : les fiches proposent d&#x27;autres titres.</li>
+<li>Brutus : de qui il était l&#x27;esclave.</li>
+<li>Forgeron : à réaligner sur les réglages et l&#x27;image de l&#x27;essai (T-0081, T-0079), en cours cette nuit.</li>
+<li>Forme du sceptre doré : elle change d&#x27;une image à l&#x27;autre ; la référence reste soldat-ordre.png (D-166), à fixer dans la bible artistique (T-0088). L&#x27;insigne du chef des déserteurs doit reprendre celui du héros.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Sources</h2>
+  <p class="chemins">Documents : Topographie de la Zone de Départ · Guide Complet des Métiers · Quête Principale 1 ·
+  Structure - Quêtes Secondaires par Zone · IA Collective et Réactivité des PNJ · fiches de factions et GDD.
+  Décisions : D-03, D-17, D-24, D-35, D-38 à D-41, D-63, D-108, D-130, D-139, D-150, D-155, D-163, D-166, D-167,
+  D-170 à D-173, D-177 à D-179. Inventaire du prototype : .equipe/etudes/cout-proto/inventaire.md (§ 4.2).
+  Images : prompts et originaux PNG gardés dans le dossier du chantier (travail/prompts.md, originaux/), non publiés.</p>
+</section>
+</div>
+
+</body>
+</html>

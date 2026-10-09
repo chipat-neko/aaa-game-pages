@@ -1,0 +1,148 @@
+{
+  "asset": {
+    "generator": "glTF-Transform v4.5.1",
+    "version": "2.0"
+  },
+  "accessors": [
+    {
+      "type": "SCALAR",
+      "componentType": 5123,
+      "count": 131841,
+      "bufferView": 0,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 60121,
+      "max": [
+        0.44909122586250305,
+        1.75,
+        0.20529325306415558
+      ],
+      "min": [
+        -0.44909119606018066,
+        0,
+        -0.20529323816299438
+      ],
+      "bufferView": 1,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 60121,
+      "bufferView": 1,
+      "byteOffset": 12
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 263684,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 263684,
+      "byteLength": 1202420,
+      "byteStride": 20,
+      "target": 34962
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "textures": [
+    {
+      "source": 1,
+      "sampler": 0
+    },
+    {
+      "source": 0,
+      "sampler": 0
+    },
+    {
+      "source": 2,
+      "sampler": 0
+    }
+  ],
+  "images": [
+    {
+      "name": "mort-vivant_normales",
+      "mimeType": "image/jpeg",
+      "uri": "mort-vivant_normales.jpg"
+    },
+    {
+      "name": "mort-vivant_couleur",
+      "mimeType": "image/jpeg",
+      "uri": "mort-vivant_couleur.jpg"
+    },
+    {
+      "name": "mort-vivant_orm",
+      "mimeType": "image/jpeg",
+      "uri": "mort-vivant_orm.jpg"
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "mort-vivant.wasm",
+      "byteLength": 1466104
+    }
+  ],
+  "materials": [
+    {
+      "name": "M_mort-vivant",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0,
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 2
+        }
+      },
+      "normalTexture": {
+        "index": 1
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "geometry_0.001",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 0,
+          "indices": 0
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "mort-vivant",
+      "mesh": 0
+    }
+  ],
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0
+}

@@ -1,0 +1,136 @@
+{
+  "asset": {
+    "generator": "glTF-Transform v4.5.1",
+    "version": "2.0"
+  },
+  "accessors": [
+    {
+      "type": "SCALAR",
+      "componentType": 5125,
+      "count": 246162,
+      "bufferView": 0,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 113242,
+      "max": [
+        0.238031268119812,
+        0.4985888600349426,
+        0.1177838072180748
+      ],
+      "min": [
+        -0.2380208522081375,
+        -0.5008485317230225,
+        -0.11793947219848633
+      ],
+      "bufferView": 1,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 113242,
+      "bufferView": 1,
+      "byteOffset": 12
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 984648,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 984648,
+      "byteLength": 2264840,
+      "byteStride": 20,
+      "target": 34962
+    }
+  ],
+  "samplers": [
+    {
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "sampler": 0
+    },
+    {
+      "source": 1,
+      "sampler": 0
+    }
+  ],
+  "images": [
+    {
+      "name": "heros-essai_couleur",
+      "mimeType": "image/jpeg",
+      "uri": "heros-essai_couleur.jpg"
+    },
+    {
+      "name": "heros-essai_orm",
+      "mimeType": "image/jpeg",
+      "uri": "heros-essai_orm.jpg"
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "heros-essai.wasm",
+      "byteLength": 3249488
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "geometry_0",
+      "extras": {
+        "units": "meters",
+        "from_gltf_primitive": false,
+        "name": "geometry_0",
+        "node": "geometry_0"
+      },
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 1,
+            "TEXCOORD_0": 2
+          },
+          "mode": 4,
+          "material": 0,
+          "indices": 0
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "geometry_0",
+      "mesh": 0
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0
+}

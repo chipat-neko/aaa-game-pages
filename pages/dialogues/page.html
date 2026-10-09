@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Dialogues provisoires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Dialogues provisoires : une colonne de lecture, les répliques en script (identifiant, personnage, réplique, condition, durée) ; même identité sombre que les autres pages du projet */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.pistes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.piste .ticket{font:500 .72rem/1 var(--f-data);letter-spacing:.06em;color:var(--pierre)}
+.etat{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--pierre)}.encours{color:var(--acier)}.valide{color:var(--mousse)}.bloque{color:var(--braise)}.fait{color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+ul.liste,ol.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+a{color:var(--aube)}
+/* Ajouts propres à cette page */
+nav.scenes{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.scenes a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.scenes a:hover,nav.scenes a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.provisoire{justify-self:start;font:500 .72rem/1 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--braise);border:1px solid currentColor;border-radius:3px;padding:.38rem .6rem}
+.didascalie{font:italic 400 1.02rem/1.55 var(--f-titre);color:var(--pierre);max-width:42rem}
+.branche{font:500 .76rem/1.3 var(--f-data);letter-spacing:.06em;text-transform:uppercase;color:var(--acier);margin-top:.6rem}
+.script{display:grid}
+.rep{display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:.1rem .8rem;padding:.7rem 0;border-bottom:1px solid var(--roche)}
+.rep .id{font:500 .74rem/1.9 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.qui{display:flex;justify-content:space-between;gap:.6rem;font:600 .74rem/1.9 var(--f-data);letter-spacing:.07em;text-transform:uppercase;color:var(--aube)}
+.duree{font-weight:400;letter-spacing:0;text-transform:none;color:var(--pierre);white-space:nowrap}
+.texte{font:400 1.14rem/1.5 var(--f-titre);color:var(--lin)}
+.rep.heros .qui{color:var(--acier)}
+.rep.entite .qui{color:var(--braise)}
+.rep.entite .texte{font-style:italic;color:#d8c9c3}
+.rep.variante{border-left:2px dashed var(--roche);padding-left:.6rem}
+.var{color:var(--aube)}
+.sous{font-size:.86rem;color:var(--lin);opacity:.85;margin-top:.15rem}
+.sous b{font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre);margin-right:.35rem}
+.cond{font-size:.83rem;line-height:1.5;color:var(--pierre);margin-top:.2rem}
+.pb{display:inline-block;font:500 .66rem/1 var(--f-data);letter-spacing:.04em;color:var(--aube);border:1px solid currentColor;border-radius:3px;padding:.2rem .35rem;vertical-align:.1em;margin-left:.15rem}
+.en{font-size:.86rem;color:var(--acier);margin-top:.15rem}
+.note{font-size:.92rem;border-left:2px solid var(--aube);padding-left:.7rem;max-width:42rem}
+.note b{color:var(--aube);font-weight:600}
+.tension{border-left-color:var(--braise)}
+.tension b{color:var(--braise)}
+.legende{display:grid;gap:.45rem;font-size:.92rem;max-width:44rem}
+.legende .cle{font:500 .8rem var(--f-data);color:var(--aube)}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier T-0087 · 30/09/2026 · relu par le gardien du lore · mis à jour le 01/10/2026 (T-0112)</div>
+  <h1>Dialogues <em>provisoires</em></h1>
+  <span class="provisoire">Provisoire · proposition à valider</span>
+  <p class="lecture">Premier jet des dialogues du prototype pour les investisseurs (D-175, D-177) qui ne dépendent d'aucun point de design ouvert : le chef du Hameau de la Brume, le forgeron, Brutus le Brisé, l'éleveur de « L'Agneau et le Loup » et les villageois. Chaque réplique a son identifiant, son personnage, sa condition et sa durée estimée. Quand une réplique dépend d'un point encore ouvert du dossier des points bloquants, elle le signale. Les 13 remarques du gardien du lore sont intégrées. Les documents de design ne sont pas modifiés.</p>
+  <p class="note"><b>Mise à jour du 01/10/2026 (T-0112) :</b> alignement sur les décisions D-182, D-184, D-192, D-204 à D-208 et D-210. La plupart des points dont dépendaient ces dialogues sont tranchés : la réplique cite alors la décision. Le texte s'étend au choix de l'élément que l'entité propose au nid (scène 8). Aucune réplique de l'essai (FOR-01 à FOR-05) n'est changée. <b>Correction 1</b> le même jour : CHF-25 ne parle plus des déserteurs (D-204 (2)) ; report de D-212 à D-215.</p>
+  <nav class="scenes" aria-label="Scènes">
+    <a href="#regles">Règles</a><a href="#deroule">Déroulé</a><a href="#chef">1. Chef</a><a href="#forge">2. Forge</a><a href="#mine">3. Brutus</a><a href="#eleveur">4. Éleveur</a><a href="#choix-element">8. Au nid</a><a href="#nid">5. Retour du nid</a><a href="#pont">6. Au pont</a><a href="#villageois">7. Villageois</a><a href="#relecture">Relecture</a><a href="#trancher">À trancher</a><a href="#annexe">Annexe</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section>
+  <h2>En bref</h2>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">RÉPLIQUES</span><h3>151 répliques</h3><p class="muted">Le chef 22, le forgeron 19, Brutus 15, l'éleveur 27, les villageois 35 (8 voix), le héros 21 (dont 11 réponses de choix, dites ou affichées : à trancher), l'entité 12 (7 facultatives, 5 pour le choix de l'élément). Avant la mise à jour : 144. En plus : 9 versions avec le nom des PNJ, générées en direct (annexe).</p></div>
+    <div class="piste"><span class="ticket">DURÉE</span><h3>≈ 10 min 50 s</h3><p class="muted">Estimation au débit de chaque personnage (651,5 s) ; ≈ 11 min 25 s avec la seconde voix du héros (héroïne possible, D-163). Avant la mise à jour : ≈ 10 min 25 s.</p></div>
+    <div class="piste"><span class="ticket">NOM DU HÉROS</span><h3>Dit par la voix (D-206)</h3><p class="muted">Les répliques avec le nom sont générées en entier, en direct. À « Capitaine », le héros répond « Non, moi c'est [Nom du héros]. » (D-172). Les PNJ disent le nom quand leur conscience l'a retenu, après un service rendu (D-208 (1)). Voix de base du domaine public, une par PNJ (D-214 (2)).</p></div>
+    <div class="piste"><span class="ticket">RELECTURE</span><h3>Gardien du lore : 13 remarques</h3><p class="muted">Toutes intégrées avec les décisions du Chef. La contradiction et la tension signalées au directeur sont tranchées depuis (D-205 (2), D-207). La phrase de la remarque 5 (le barrage, dans CHF-25) est retirée à la correction 1 (D-204 (2)).</p></div>
+  </div>
+</section>
+
+<section id="regles">
+  <h2>Comment lire ce script</h2>
+  <div class="legende">
+    <p><span class="cle">CHF · FOR · MIN · ELV · VIL · NID</span> Un préfixe par scène : le chef, la forge, la mine, l'éleveur, les villageois, le choix de l'élément au nid (ajouté le 01/10/2026). Les répliques du héros et de l'entité prennent l'identifiant de la scène. Une variante porte le numéro de la réplique qu'elle remplace, suivi de « b ».</p>
+    <p><span class="cle">Couleurs</span> PNJ en or, <span style="color:var(--acier)">héros en bleu acier</span>, <span style="color:var(--braise)">entité en braise</span> (répliques facultatives, pour la critique continue et drôle, D-107 ; sauf celles du choix de l'élément, que D-182 (2) rend nécessaires).</p>
+    <p><span class="cle">Durée</span> Nombre de mots divisé par le débit du personnage (chef 2,2 mots par seconde, forgeron 2,6, Brutus 2,0, éleveur 3,0, villageois et héros 2,6, entité 2,2), plus 0,5 s par « … ». Un ordre de grandeur, pas une mesure.</p>
+    <p><span class="cle">{ami|amie}</span> Un mot qui change seulement à l'écrit selon le genre du héros : une seule prise, le sous-titre choisit la forme (D-163). Seule exception, sans objet depuis D-207 : {étranger|étrangère}, dans deux anciennes variantes, se prononçait différemment et demandait deux prises.</p>
+    <p><span class="cle">Le nom</span> Depuis D-206, tout le prototype est en voix de synthèse, et les répliques qui contiennent le nom choisi sont générées en entier, en direct, en tâche de fond : la voix dit le nom. Le héros dit « Non, moi c'est [Nom du héros]. » en entier (CHF-02, ELV-02). Les PNJ disent le nom quand leur conscience l'a retenu, après un service rendu (D-208 (1)) ; avant, un titre. Leurs versions avec le nom sont dans l'annexe ; les versions sans nom servent aussi de repli si la génération échoue (proposition). Le sous-titre écrit ce que dit la voix (D-208 (2)). Ancienne règle (avant D-206) : aucun PNJ ne disait le nom, et la voix du héros s'arrêtait avant le nom ; elle ne sert plus que de repli pour le héros. Correction 1 : voix de base des PNJ du domaine public, licence vérifiée, une voix distincte par PNJ (D-214 (2)) ; dans le prototype, un essai chronométré dans Unreal précède le ticket de la voix du nom (D-214 (1)) ; dans le jeu complet, les répliques avec le nom seront générées pendant les temps morts (reflet, chargements) puis gardées (D-212 (3)).</p>
+    <p><span class="cle">« Capitaine »</span> Titre d'usage pour tout inconnu armé (D-207) : le chef et l'éleveur le disent à la première rencontre, et le héros le dément (D-172). L'entité le dit aussi, par moquerie (D-207) ; ses répliques disent encore « soldat » (surnoms : PB-20, ouvert), et savoir si le héros répond à l'entité n'est pas tranché. La tension avec le <em>Lexique</em> § 5 est levée par D-207 ; les variantes « étranger » sont sans objet. Les villageois ne le disent jamais au passage.</p>
+    <p><span class="cle">Humeurs</span> Le hameau n'a qu'une conscience : méfiant au début, amical après une quête réussie, hostile après un crime ou la magie vus. Quand c'est la magie, la peur est une variante de l'état hostile (D-205 (2) : certains fuient, se cachent ou supplient) ; le forgeron, lui, répond par la colère. Après une quête échouée par la mort du héros : « Deuil/Colère » (<em>Repos</em> § 3.A).</p>
+    <p><span class="cle">Tu · vous</span> Proposition : le chef et les villageois vouvoient le héros tant que le hameau est méfiant, puis le tutoient ; le forgeron et Brutus tutoient d'emblée ; l'éleveur vouvoie toujours. Les témoins d'une mort vouvoient même quand le hameau est amical : l'horreur remet la distance.</p>
+    <p><span class="cle"><span class="pb">PB-xx</span></span> La réplique dépend d'un point ouvert du dossier T-0085 et suit son option recommandée ; <span class="pb">D-xxx</span> à la place, quand le point est tranché.</p>
+    <p><span class="cle">Choix</span> Des scènes jouées ; un choix court seulement aux moments qui comptent (D-208 (3)) : accepter une quête, choisir son élément au nid, décider de l'issue de l'adoption du loup. Tuer ou adopter le loup se décide par les actes.</p>
+  </div>
+</section>
+
+<section id="deroule">
+  <h2>Déroulé proposé</h2>
+  <ol class="liste lecture">
+    <li>Arrivée au hameau après les Gorges : le chef accueille le héros et offre la prime du nid (scène 1). Les villageois, méfiants, commentent (scène 7).</li>
+    <li>Dans l'ordre choisi par le joueur : le forgeron (scène 2), puis Brutus dans les Mines (scène 3) ; l'éleveur (scène 4). La première quête réussie rend tout le hameau amical (<em>Structure</em> § 1).</li>
+    <li>Le nid, hors de vue du hameau (D-38) : l'entité y propose l'élément, que le joueur choisit (scène 8, D-182 (2)) ; puis le retour au chef : la prime et l'orientation vers Oakhaven (scène 5, D-204 (2)).</li>
+    <li>Le pont (hors de ce chantier). Au Choix A, la monture (le cheval pris aux déserteurs, D-37) est offerte au Pont des Déserteurs, au début de la route (scène 6, D-184). L'ancienne variante B de l'orientation est sans objet (D-204 (2)).</li>
+    <li>La route vers Oakhaven, à cheval au Choix A (pas, trot, galop, D-184) ; la QP1 s'active une fois le pont franchi (D-150).</li>
+  </ol>
+</section>
+
+<section id="chef">
+  <h2>1. Le chef du hameau : l'accueil et la prime du nid</h2>
+  <p class="didascalie">Le héros arrive au hameau. Le chef vient à sa rencontre, appuyé sur son bâton ; des villageois observent de loin. Le hameau est méfiant.</p>
+  <div class="script">
+    <div class="rep"><span class="id">CHF-01</span><div><p class="qui">Le chef<span class="duree">7 s</span></p><p class="texte">« Restez où vous êtes, Capitaine. Ici, on n'aime pas les lames qu'on ne connaît pas. »</p><p class="cond">Première rencontre, hameau méfiant ; « Capitaine », titre d'usage pour tout inconnu armé <span class="pb">D-207</span></p></div></div>
+    <div class="rep variante"><span class="id">CHF-01b</span><div><p class="qui">Le chef · ancienne variante<span class="duree">7 s</span></p><p class="texte">« Restez où vous êtes, {étranger|étrangère}. Ici, on n'aime pas les lames qu'on ne connaît pas. »</p><p class="cond">Sans objet depuis D-207 (« Capitaine » est retenu) ; gardée pour mémoire, hors décompte</p></div></div>
+    <div class="rep heros"><span class="id">CHF-02</span><div><p class="qui">Le héros<span class="duree">2 s</span></p><p class="texte">« Non, moi c'est <span class="var">[Nom du héros]</span>. »</p><p class="cond">Réponse après « Capitaine » (D-172) ; réplique entière générée en direct, avec le nom saisi <span class="pb">D-206</span> ; sous-titre identique (D-208 (2)). Repli si la génération échoue : « Non, moi c'est… », la voix s'arrête avant le nom (ancienne version ; sous-titre : à trancher)</p></div></div>
+    <div class="rep"><span class="id">CHF-03</span><div><p class="qui">Le chef<span class="duree">5 s</span></p><p class="texte">« Un nom, ça se donne vite. On verra ce qu'il vaut. »</p></div></div>
+    <div class="rep"><span class="id">CHF-04</span><div><p class="qui">Le chef<span class="duree">6 s</span></p><p class="texte">« D'où vous venez, ça ne me regarde pas. Cette épée, elle sert encore ? »</p><p class="cond">L'épée rouillée du réveil (D-163)</p></div></div>
+    <div class="rep heros"><span class="id">CHF-05</span><div><p class="qui">Le héros<span class="duree">1 s</span></p><p class="texte">« Elle a servi. »</p></div></div>
+    <div class="rep"><span class="id">CHF-06</span><div><p class="qui">Le chef<span class="duree">4,5 s</span></p><p class="texte">« Sur la route du pont, il y a un nid. »</p><p class="cond">Offre de la prime (<em>Topographie</em> § 4 ; D-35)</p></div></div>
+    <div class="rep"><span class="id">CHF-07</span><div><p class="qui">Le chef<span class="duree">4 s</span></p><p class="texte">« Des morts. Des morts qui ne restent pas couchés. »</p><p class="cond">Nid de morts-vivants <span class="pb">PB-09</span> ; s'il y a aussi des esprits, ajouter « Et des choses qu'on voit à travers. »</p></div></div>
+    <div class="rep"><span class="id">CHF-08</span><div><p class="qui">Le chef<span class="duree">7,5 s</span></p><p class="texte">« Ici, on tient des fourches, pas des épées. Ce nid vidé, le hameau paiera ce qu'il peut. »</p></div></div>
+    <div class="rep"><span class="id">CHF-09</span><div><p class="qui">Le chef<span class="duree">6,5 s</span></p><p class="texte">« Du grain, des peaux, quelques pièces. Ce n'est pas grand-chose. C'est ce qu'on a. »</p><p class="cond">Troc et quelques pièces (<em>Économie</em> § 2) ; contenu : liste courte (T-0113, validée ; relecture du directeur à venir, D-215) <span class="pb">D-209 (4)</span></p></div></div>
+    <div class="rep entite"><span class="id">CHF-10</span><div><p class="qui">L'entité · facultative<span class="duree">7 s</span></p><p class="texte">« Des fourches… Montre-leur donc ce que nous savons faire, soldat. Pour voir leurs têtes. »</p><p class="cond">Elle pousse à la faute que le hameau punit (D-38, D-107)</p></div></div>
+    <div class="rep heros"><span class="id">CHF-11</span><div><p class="qui">Le héros · choix<span class="duree">1 s + 1 s</span></p><p class="texte">« J'y vais. » · « Plus tard. »</p><p class="cond">Accepter la prime <span class="pb">D-208 (3)</span></p></div></div>
+    <div class="rep"><span class="id">CHF-12</span><div><p class="qui">Le chef<span class="duree">4,5 s</span></p><p class="texte">« La route du pont. Et avant la nuit, si possible. »</p><p class="cond">Après « J'y vais »</p></div></div>
+    <div class="rep"><span class="id">CHF-13</span><div><p class="qui">Le chef<span class="duree">4,5 s</span></p><p class="texte">« Le nid ne partira pas tout seul. Nous non plus. »</p><p class="cond">Après « Plus tard »</p></div></div>
+    <div class="rep"><span class="id">CHF-14</span><div><p class="qui">Le chef<span class="duree">4 s</span></p><p class="texte">« Ce nid, toujours ? Chaque nuit, on compte les nôtres. »</p><p class="cond">Rappel : prime acceptée, nid pas encore vidé</p></div></div>
+  </div>
+  <p class="branche">Autres humeurs</p>
+  <div class="script">
+    <div class="rep"><span class="id">CHF-15</span><div><p class="qui">Le chef<span class="duree">6,5 s</span></p><p class="texte">« On m'a parlé de toi. Il y a du travail, si ça te dit. »</p><p class="cond">Hameau déjà amical à la première rencontre : remplace CHF-01 à CHF-05, puis CHF-06 (écrites sans « tu » ni « vous », les répliques CHF-06 à CHF-14 servent aux deux humeurs) ; version avec le nom en annexe</p></div></div>
+    <div class="rep"><span class="id">CHF-16</span><div><p class="qui">Le chef<span class="duree">3 s</span></p><p class="texte">« N'approchez pas ! Rentrez, vous autres… rentrez ! »</p><p class="cond">Hostile (magie vue, D-38) : variante de peur (D-205 (2)) ; il refuse de parler</p></div></div>
+    <div class="rep"><span class="id">CHF-17</span><div><p class="qui">Le chef<span class="duree">3,5 s</span></p><p class="texte">« Vous n'avez plus rien à faire ici. Partez. »</p><p class="cond">Hostile (crime vu, ou magie vue sans la variante de peur)</p></div></div>
+  </div>
+</section>
+
+<section id="forge">
+  <h2>2. Le forgeron : la quête des Mines de Fer Oubliées</h2>
+  <p class="didascalie">La forge du hameau. Le forgeron martèle une pièce et s'arrête quand le héros approche.</p>
+  <p class="note"><b>Répliques de l'essai.</b> FOR-01 à FOR-05 sont r1, r2, le choix, r3a et r3b de l'essai (D-178). Écrites ici, sans nom ni mot genré, en 4 à 6 s chacune, elles ont été reprises mot pour mot par le ticket de la voix (T-0078), traduction anglaise comprise : texte et essai sont alignés. Dans l'essai, les réponses du choix sont affichées sans être doublées. <b>Mise à jour du 01/10/2026 :</b> leur texte ne change pas ; seule la condition de FOR-03 cite désormais D-208 (3). La voix de l'essai vient d'un lecteur LibriVox (Public Domain Mark 1.0, T-0078). <b>D-214 (2)</b> (correction 1) : les PNJ prennent des voix du domaine public, licence vérifiée, une voix distincte par PNJ ; la voix de l'essai y répond si sa licence est vérifiée et qu'aucun autre PNJ ne la prend ; sinon, ces répliques seront régénérées, texte inchangé.</p>
+  <div class="script">
+    <div class="rep"><span class="id">FOR-01</span><div><p class="qui">Le forgeron<span class="duree">5 s</span></p><p class="texte">« Cette lame rouillée ne te sauvera pas. Moi, il me faut du fer. »</p><p class="en">"That rusty blade won't save you. Me, I need iron."</p><p class="cond">Première rencontre, hameau méfiant · r1 de l'essai</p></div></div>
+    <div class="rep"><span class="id">FOR-02</span><div><p class="qui">Le forgeron<span class="duree">5,5 s</span></p><p class="texte">« Descends aux Mines de Fer Oubliées. Cherche Brutus le Brisé : il t'apprendra à creuser. »</p><p class="en">"Go down to the Forgotten Iron Mines. Find Brutus the Broken: he'll teach you to dig."</p><p class="cond">r2 · <em>Topographie</em> § 4 ; <em>Guide des Métiers</em> § 1</p></div></div>
+    <div class="rep heros"><span class="id">FOR-03</span><div><p class="qui">Le héros · choix<span class="duree">1 s + 1 s</span></p><p class="texte">« J'accepte. » · « Plus tard. »</p><p class="en">"I accept." · "Later."</p><p class="cond">Choix de l'essai <span class="pb">D-208 (3)</span></p></div></div>
+    <div class="rep"><span class="id">FOR-04</span><div><p class="qui">Le forgeron<span class="duree">4,5 s</span></p><p class="texte">« Bien. Rapporte-moi du minerai, et je t'apprendrai à en faire une lame. »</p><p class="en">"Good. Bring me ore, and I'll teach you to make a blade of it."</p><p class="cond">Après « J'accepte » · r3a</p></div></div>
+    <div class="rep"><span class="id">FOR-05</span><div><p class="qui">Le forgeron<span class="duree">4 s</span></p><p class="texte">« Comme tu veux. Le fer attendra. Les monstres, eux, n'attendent pas. »</p><p class="en">"Suit yourself. The iron will wait. The monsters won't."</p><p class="cond">Après « Plus tard » · r3b</p></div></div>
+    <div class="rep"><span class="id">FOR-06</span><div><p class="qui">Le forgeron<span class="duree">6 s</span></p><p class="texte">« Les Mines sont à l'ouest, là où la terre jaunit. Prends une pioche sur l'établi. »</p><p class="cond">Flanc ouest, sol qui jaunit (<em>Topographie</em> POI B) ; la pioche prêtée est une proposition</p></div></div>
+    <div class="rep"><span class="id">FOR-07</span><div><p class="qui">Le forgeron<span class="duree">4,5 s</span></p><p class="texte">« Brutus ne parle pas beaucoup. Ne lui demande pas d'où il vient. »</p><p class="cond">Son passé d'esclave n'est pas dit (son ancien maître : à définir)</p></div></div>
+    <div class="rep entite"><span class="id">FOR-08</span><div><p class="qui">L'entité · facultative<span class="duree">7,5 s</span></p><p class="texte">« Des heures à taper sur un bout de fer… J'ai connu des tortures plus courtes, soldat. »</p><p class="cond">À la forge (D-107)</p></div></div>
+    <div class="rep"><span class="id">FOR-09</span><div><p class="qui">Le forgeron<span class="duree">4 s</span></p><p class="texte">« Alors, ce fer ? Les Mines ne viendront pas à toi. »</p><p class="cond">Rappel : quête acceptée sans minerai, ou après « Plus tard »</p></div></div>
+    <div class="rep"><span class="id">FOR-10</span><div><p class="qui">Le forgeron<span class="duree">3,5 s</span></p><p class="texte">« Montre. … Du fer honnête. Brutus t'a appris, alors. »</p><p class="cond">Retour avec le minerai</p></div></div>
+    <div class="rep"><span class="id">FOR-11</span><div><p class="qui">Le forgeron<span class="duree">5 s</span></p><p class="texte">« Le fer ne ment pas. Chauffe-le trop, il casse. Pas assez, il plie. »</p><p class="cond">Première arme de base (<em>Topographie</em> § 4)</p></div></div>
+    <div class="rep"><span class="id">FOR-12</span><div><p class="qui">Le forgeron<span class="duree">5,5 s</span></p><p class="texte">« Du fer, rien que du fer, tant que ta main n'en saura pas plus. »</p><p class="cond">Le métal de son palier (D-45)</p></div></div>
+    <div class="rep"><span class="id">FOR-13</span><div><p class="qui">Le forgeron<span class="duree">6 s</span></p><p class="texte">« Une lame au-dessus de ta main, tu l'abîmeras. Forge d'abord des armes de ton niveau. »</p><p class="cond">Écho du message de verrou (<em>Guide des Métiers</em> § 3.A)</p></div></div>
+    <div class="rep"><span class="id">FOR-14</span><div><p class="qui">Le forgeron<span class="duree">7,5 s</span></p><p class="texte">« Et une arme lourde, ça se tient à deux mains. Ça ne coupe pas la garde : ça la brise. »</p><p class="cond">Théorie de la Branche 1 (armes lourdes, bris de garde), palier 1 ; progression comme dans le jeu complet <span class="pb">D-210 (1)</span> ; le forgeron comme source de la théorie : proposition, non tranchée par D-210 (1)</p></div></div>
+    <div class="rep"><span class="id">FOR-15</span><div><p class="qui">Le forgeron<span class="duree">6 s</span></p><p class="texte">« Ce que tu ne gardes pas, vends-le. Mais ici, on paie en grain plus qu'en pièces. »</p><p class="cond">Vendre ses composants (<em>Topographie</em> § 4) ; troc du hameau (<em>Économie</em> § 2)</p></div></div>
+    <div class="rep"><span class="id">FOR-16</span><div><p class="qui">Le forgeron<span class="duree">6 s</span></p><p class="texte">« Une lame s'use. Garde des lingots sur toi : un feu, un marteau, et elle repart. »</p><p class="cond">Réparation au feu de camp (<em>Matrice de Durabilité</em> § 3)</p></div></div>
+    <div class="rep"><span class="id">FOR-17</span><div><p class="qui">Le forgeron<span class="duree">5,5 s</span></p><p class="texte">« Ta première lame. Laide, mais droite. Le hameau saura que tu as travaillé ici. »</p><p class="cond">Fin de la quête : tout le hameau devient amical (<em>Structure</em> § 1)</p></div></div>
+    <div class="rep"><span class="id">FOR-18</span><div><p class="qui">Le forgeron<span class="duree">4 s</span></p><p class="texte">« Reviens quand tu veux, l'{apprenti|apprentie}. La forge est ouverte. »</p><p class="cond">Hameau amical ; version avec le nom en annexe</p></div></div>
+  </div>
+  <p class="branche">Autres humeurs</p>
+  <div class="script">
+    <div class="rep"><span class="id">FOR-19</span><div><p class="qui">Le forgeron<span class="duree">6 s</span></p><p class="texte">« On m'a parlé de toi. Il me faut du fer : voyons ce que valent tes mains. »</p><p class="cond">Hameau déjà amical à la première rencontre : remplace FOR-01</p></div></div>
+    <div class="rep"><span class="id">FOR-20</span><div><p class="qui">Le forgeron<span class="duree">5,5 s</span></p><p class="texte">« Pas dans ma forge. Pas avec ce que tu as dans les mains. Dehors ! »</p><p class="cond">Hostile (magie vue, D-38) ; lui le dit en colère</p></div></div>
+    <div class="rep"><span class="id">FOR-21</span><div><p class="qui">Le forgeron<span class="duree">4 s</span></p><p class="texte">« Je ne forge rien pour les gens de ton espèce. »</p><p class="cond">Hostile (crime vu, ou magie vue)</p></div></div>
+  </div>
+</section>
+
+<section id="mine">
+  <h2>3. Brutus le Brisé, au fond des Mines</h2>
+  <p class="didascalie">Au fond des Mines de Fer Oubliées, passé les galeries hantées. Brutus attend près d'une lanterne. Il parle peu, ne répète jamais une consigne et juge aux gestes. Il n'appartient à aucune conscience collective.</p>
+  <div class="script">
+    <div class="rep"><span class="id">MIN-01</span><div><p class="qui">Brutus<span class="duree">2,5 s</span></p><p class="texte">« Pas un pas de plus. »</p><p class="cond">Première rencontre</p></div></div>
+    <div class="rep"><span class="id">MIN-02</span><div><p class="qui">Brutus<span class="duree">4,5 s</span></p><p class="texte">« Le forgeron t'envoie. Je le vois à ta pioche. »</p></div></div>
+    <div class="rep heros"><span class="id">MIN-03</span><div><p class="qui">Le héros<span class="duree">2,5 s</span></p><p class="texte">« Il dit que tu peux m'apprendre. »</p></div></div>
+    <div class="rep"><span class="id">MIN-04</span><div><p class="qui">Brutus<span class="duree">2,5 s</span></p><p class="texte">« Apprendre. … Frappe. Là. »</p><p class="cond">Il montre une veine de fer : le joueur frappe, c'est l'épreuve</p></div></div>
+    <div class="rep"><span class="id">MIN-05</span><div><p class="qui">Brutus<span class="duree">3 s</span></p><p class="texte">« Trop fort. La roche se ferme. »</p><p class="cond">Si le coup est raté</p></div></div>
+    <div class="rep"><span class="id">MIN-06</span><div><p class="qui">Brutus<span class="duree">3,5 s</span></p><p class="texte">« Écoute-la. Elle te dit où elle cède. »</p></div></div>
+    <div class="rep"><span class="id">MIN-07</span><div><p class="qui">Brutus<span class="duree">3,5 s</span></p><p class="texte">« Mieux. … Le reste, tu l'apprendras {seul|seule}. »</p><p class="cond">Coup réussi : Brutus débloque le Minage ; le joueur monte ensuite seul jusqu'au niveau 29 (<em>Guide des Métiers</em> § 2.A ; D-43)</p></div></div>
+    <div class="rep"><span class="id">MIN-08</span><div><p class="qui">Brutus<span class="duree">7 s</span></p><p class="texte">« Plus tu frappes, plus elle donne. Un jour, une pierre qui brille. Pas souvent. »</p><p class="cond">Gemmes : +1 % par niveau de Minage, plus une veine sûre au fond de la mine, près de Brutus (D-215 (5))</p></div></div>
+    <div class="rep"><span class="id">MIN-09</span><div><p class="qui">Brutus<span class="duree">7 s</span></p><p class="texte">« La pierre se moque de qui tu es. Elle ne connaît que ta main. »</p></div></div>
+    <div class="rep heros"><span class="id">MIN-10</span><div><p class="qui">Le héros · facultatif<span class="duree">1 s</span></p><p class="texte">« Brutus le Brisé ? »</p></div></div>
+    <div class="rep"><span class="id">MIN-11</span><div><p class="qui">Brutus<span class="duree">5 s</span></p><p class="texte">« Brutus. Le reste, ce sont les autres qui l'ont dit. »</p></div></div>
+    <div class="rep heros"><span class="id">MIN-12</span><div><p class="qui">Le héros · facultatif<span class="duree">2,5 s</span></p><p class="texte">« Et ce fer, à ton poignet ? »</p><p class="cond">L'anneau brisé proposé par sa fiche (T-0084)</p></div></div>
+    <div class="rep"><span class="id">MIN-13</span><div><p class="qui">Brutus<span class="duree">6 s</span></p><p class="texte">« Ça ? Un souvenir. Je le garde pour ne pas oublier le poids. »</p><p class="cond">Ancien esclave mineur évadé ; de qui : à définir, non dit</p></div></div>
+    <div class="rep entite"><span class="id">MIN-14</span><div><p class="qui">L'entité · facultative<span class="duree">4,5 s</span></p><p class="texte">« Un souvenir, lui. Tu vois, soldat : certains en ont. »</p><p class="cond">Moquerie sur l'amnésie (D-107)</p></div></div>
+    <div class="rep"><span class="id">MIN-15</span><div><p class="qui">Brutus<span class="duree">7 s</span></p><p class="texte">« Les morts, là-haut… ils ne descendent pas jusqu'ici. Je ne demande pas pourquoi. »</p><p class="cond">Morts-vivants de mineurs dans les galeries, Brutus au fond <span class="pb">PB-33</span></p></div></div>
+    <div class="rep"><span class="id">MIN-16</span><div><p class="qui">Brutus<span class="duree">7 s</span></p><p class="texte">« Ce que tu portes en toi, ça te regarde. Ici, seule ta main compte. »</p><p class="cond">Si le héros use de la magie devant lui (proposition : il reste indifférent)</p></div></div>
+    <div class="rep"><span class="id">MIN-17</span><div><p class="qui">Brutus<span class="duree">3 s</span></p><p class="texte">« Demain, je ne serai plus là. »</p><p class="cond">Fin de la rencontre (D-17)</p></div></div>
+    <div class="rep heros"><span class="id">MIN-18</span><div><p class="qui">Le héros · facultatif<span class="duree">1 s</span></p><p class="texte">« Où iras-tu ? »</p></div></div>
+    <div class="rep"><span class="id">MIN-19</span><div><p class="qui">Brutus<span class="duree">8,5 s</span></p><p class="texte">« Là où le fer s'arrête. Quand ton fer ne t'apprendra plus rien… cherche l'odeur du soufre. »</p><p class="cond">Indice vers son repaire des Canyons de la Brume, Veines de Soufre, où il débloque le palier 30 (D-17, D-43) ; la force de l'indice est une proposition</p></div></div>
+    <div class="rep"><span class="id">MIN-20</span><div><p class="qui">Brutus<span class="duree">1 s</span></p><p class="texte">« Déjà dit. »</p><p class="cond">Si le héros redemande une consigne</p></div></div>
+  </div>
+</section>
+
+<section id="eleveur">
+  <h2>4. L'éleveur : « L'Agneau et le Loup »</h2>
+  <p class="didascalie">À l'enclos, près du hameau. L'éleveur recompte ses brebis. Il faut éliminer un prédateur isolé, ou l'adopter et le ramener soumis au village sans bruit, pour une récompense double (<em>Structure</em> § 1, D-177). Ce loup n'est pas le Loup Nommé de la QP4 (D-63) : il n'a pas de nom et ne suit pas le héros. Après l'adoption, trois issues au choix du joueur (D-210 (2)) : le loup garde le troupeau ; le chien de berger part avec le héros et le loup garde le troupeau (D-213 (2), D-215 (2)) ; ou de l'or et le loup repart.</p>
+  <div class="script">
+    <div class="rep"><span class="id">ELV-01</span><div><p class="qui">L'éleveur<span class="duree">5 s</span></p><p class="texte">« Capitaine ! Capitaine, attendez… pardon. Vous avez une épée. Vous savez vous en servir ? »</p><p class="cond">Première rencontre, hameau méfiant ; « Capitaine », titre d'usage <span class="pb">D-207</span></p></div></div>
+    <div class="rep variante"><span class="id">ELV-01b</span><div><p class="qui">L'éleveur · ancienne variante<span class="duree">6 s</span></p><p class="texte">« {Étranger|Étrangère} ! Attendez… pardon. Vous avez une épée. Écoutez… un loup. Il me prend mes bêtes. »</p><p class="cond">Sans objet depuis D-207 ; gardée pour mémoire, hors décompte</p></div></div>
+    <div class="rep heros"><span class="id">ELV-02</span><div><p class="qui">Le héros<span class="duree">2 s</span></p><p class="texte">« Non, moi c'est <span class="var">[Nom du héros]</span>. »</p><p class="cond">Comme CHF-02 : réplique entière générée en direct (D-172) <span class="pb">D-206</span> ; repli : la voix s'arrête avant le nom</p></div></div>
+    <div class="rep"><span class="id">ELV-03</span><div><p class="qui">L'éleveur<span class="duree">4 s</span></p><p class="texte">« Oui. Oui, pardon. Écoutez… un loup. Il me prend mes bêtes. »</p></div></div>
+    <div class="rep"><span class="id">ELV-04</span><div><p class="qui">L'éleveur<span class="duree">5,5 s</span></p><p class="texte">« Six brebis. Six, en dix nuits. Je veille, je veille, et le matin il en manque une. »</p></div></div>
+    <div class="rep"><span class="id">ELV-05</span><div><p class="qui">L'éleveur<span class="duree">5,5 s</span></p><p class="texte">« Il est seul. Un seul loup, pas une meute. C'est pire : il n'a peur de rien. »</p><p class="cond">Prédateur isolé (<em>Structure</em> § 1)</p></div></div>
+    <div class="rep"><span class="id">ELV-06</span><div><p class="qui">L'éleveur<span class="duree">4,5 s</span></p><p class="texte">« Tuez-le. Je n'ai pas grand-chose, mais je vous donnerai ce que je peux. »</p></div></div>
+    <div class="rep"><span class="id">ELV-07</span><div><p class="qui">L'éleveur<span class="duree">4 s</span></p><p class="texte">« Mon père, lui… il disait qu'on peut calmer un loup. »</p><p class="cond">Théorie de la Branche 9 (Empathie Sauvage), palier 1 ; progression comme dans le jeu complet <span class="pb">D-210 (1)</span> ; l'éleveur comme source de la théorie : proposition, non tranchée par D-210 (1)</p></div></div>
+    <div class="rep"><span class="id">ELV-08</span><div><p class="qui">L'éleveur<span class="duree">5 s</span></p><p class="texte">« L'arme rangée, pas un bruit, de la viande dans la main. Des histoires de vieux. »</p><p class="cond">L'approche de la QP4 : rengainer, sans bruit, viande ou os</p></div></div>
+    <div class="rep heros"><span class="id">ELV-09</span><div><p class="qui">Le héros · choix<span class="duree">1 s + 1 s</span></p><p class="texte">« Je m'en occupe. » · « Plus tard. »</p><p class="cond">Accepter la quête <span class="pb">D-208 (3)</span></p></div></div>
+    <div class="rep"><span class="id">ELV-10</span><div><p class="qui">L'éleveur<span class="duree">4 s</span></p><p class="texte">« Merci. Merci… Il vient par le bois, quand la brume tombe. »</p><p class="cond">Après « Je m'en occupe » ; le chemin du loup est une proposition</p></div></div>
+    <div class="rep"><span class="id">ELV-11</span><div><p class="qui">L'éleveur<span class="duree">5,5 s</span></p><p class="texte">« Plus tard… Cette nuit, il en prendra une autre. Pardon. Ce n'est pas votre faute. »</p><p class="cond">Après « Plus tard »</p></div></div>
+    <div class="rep"><span class="id">ELV-12</span><div><p class="qui">L'éleveur<span class="duree">3,5 s</span></p><p class="texte">« Il est encore venu cette nuit. Encore une brebis. Encore une. »</p><p class="cond">Rappel : quête en cours</p></div></div>
+    <div class="rep"><span class="id">ELV-13</span><div><p class="qui">L'éleveur<span class="duree">4 s</span></p><p class="texte">« On dit que vous aidez les gens, ici. Alors peut-être… »</p><p class="cond">Hameau déjà amical à la première rencontre : remplace ELV-01 à ELV-03 ; version avec le nom en annexe</p></div></div>
+  </div>
+  <p class="branche">Fin 1 · le loup est tué</p>
+  <div class="script">
+    <div class="rep heros"><span class="id">ELV-20</span><div><p class="qui">Le héros<span class="duree">1,5 s</span></p><p class="texte">« Le loup est mort. »</p><p class="cond">Faut-il une preuve : à définir</p></div></div>
+    <div class="rep"><span class="id">ELV-21</span><div><p class="qui">L'éleveur<span class="duree">5,5 s</span></p><p class="texte">« Mort ? Vraiment mort ? … Alors cette nuit, je dors. Pour la première fois depuis des nuits. »</p></div></div>
+    <div class="rep"><span class="id">ELV-22</span><div><p class="qui">L'éleveur<span class="duree">3,5 s</span></p><p class="texte">« Tenez. De la laine, du cuir. C'est ce que j'avais promis. »</p><p class="cond">Récompense simple, en troc ; contenu : liste courte (T-0113, validée ; relecture du directeur à venir, D-215) <span class="pb">D-209 (4)</span></p></div></div>
+    <div class="rep"><span class="id">ELV-23</span><div><p class="qui">L'éleveur<span class="duree">2,5 s</span></p><p class="texte">« Je n'oublierai pas. Le hameau non plus. »</p><p class="cond">Le hameau devient amical ; version avec le nom en annexe</p></div></div>
+    <div class="rep entite"><span class="id">ELV-24</span><div><p class="qui">L'entité · facultative<span class="duree">6,5 s</span></p><p class="texte">« Quelques moutons. Voilà le prix d'une vie, ici. Je commence à aimer ce hameau. »</p><p class="cond">D-107</p></div></div>
+  </div>
+  <p class="branche">Fin 2 · le loup est adopté et ramené sans bruit ; trois issues au choix du joueur (D-210 (2))</p>
+  <div class="script">
+    <div class="rep"><span class="id">ELV-30</span><div><p class="qui">L'éleveur<span class="duree">5,5 s</span></p><p class="texte">« Non… non, non, non. Qu'est-ce que vous faites ? Il est là ! Il est juste là ! »</p><p class="cond">Le héros revient avec le loup soumis (<em>Structure</em> § 1)</p></div></div>
+    <div class="rep heros"><span class="id">ELV-31</span><div><p class="qui">Le héros<span class="duree">3 s</span></p><p class="texte">« Regardez-le. Il ne vous fera plus rien. »</p></div></div>
+    <div class="rep"><span class="id">ELV-32</span><div><p class="qui">L'éleveur<span class="duree">4 s</span></p><p class="texte">« Il… il ne grogne pas. Il vous suit comme un chien. »</p></div></div>
+    <div class="rep"><span class="id">ELV-38</span><div><p class="qui">L'éleveur<span class="duree">8,5 s</span></p><p class="texte">« Je n'ai pas de quoi payer ça. De la laine, du cuir… mon vieux chien, si ce loup le remplace… ou mes pièces. »</p><p class="cond">Ajout du 01/10/2026 : il annonce les trois récompenses avant le choix <span class="pb">D-210 (2)</span> ; le chien de berger : <span class="pb">D-213 (2)</span> ; le texte : proposition</p></div></div>
+    <div class="rep heros"><span class="id">ELV-33</span><div><p class="qui">Le héros · choix<span class="duree">2,5 s + 3,5 s + 3 s</span></p><p class="texte">« Il restera ici. Avec vos bêtes. » · « Il restera ici. Et votre chien viendra avec moi. » · « Je le ramène au bois. Les pièces suffiront. »</p><p class="cond">Choix de l'issue, au moment qui compte <span class="pb">D-208 (3)</span> <span class="pb">D-210 (2)</span> : 1 : le loup garde le troupeau ; 2 : le chien de berger part avec le héros, le loup garde le troupeau (D-213 (2), D-215 (2)) ; 3 : de l'or, et le loup repart. La première réponse est l'ancienne ELV-33, inchangée ; les deux autres sont ajoutées (proposition)</p></div></div>
+    <div class="rep"><span class="id">ELV-34</span><div><p class="qui">L'éleveur<span class="duree">4,5 s</span></p><p class="texte">« Un loup qui garde des moutons… Mon père ne m'aurait jamais cru. »</p><p class="cond">Issues 1 et 2 (le loup reste à l'enclos ; D-215 (2))</p></div></div>
+    <div class="rep"><span class="id">ELV-35</span><div><p class="qui">L'éleveur<span class="duree">7 s</span></p><p class="texte">« Prenez tout. La laine, le cuir, la viande… Le double de ce que j'avais promis, et c'est encore trop peu. »</p><p class="cond">Issue 1 : récompense double, matérielle (<em>Structure</em> § 1) ; contenu : liste de D-209 (4) (T-0113, validée ; relecture du directeur à venir, D-215) <span class="pb">D-210 (2)</span></p></div></div>
+    <div class="rep"><span class="id">ELV-60</span><div><p class="qui">L'éleveur<span class="duree">4,5 s</span></p><p class="texte">« Prenez-le. Il est vieux, mais il a du flair. Ici, il n'a plus d'ouvrage. »</p><p class="cond">Issue 2, après ELV-34 : le chien de berger devient le compagnon du héros, avec sa propre jauge de loyauté, et peut le suivre avec le Loup Nommé de la QP4 <span class="pb">D-210 (2)</span> <span class="pb">D-213 (2)</span> ; son nom, son rôle en combat et l'écran pour le nommer (E13) : à définir</p></div></div>
+    <div class="rep"><span class="id">ELV-65</span><div><p class="qui">L'éleveur<span class="duree">6,5 s</span></p><p class="texte">« Au bois… Oui, c'est mieux comme ça. Tenez : toutes mes pièces. Le double de ce que j'avais promis. »</p><p class="cond">Issue 3 : de l'or, et le héros relâche le loup dans la nature <span class="pb">D-210 (2)</span> ; montant : liste de D-209 (4) (T-0113, validée)</p></div></div>
+    <div class="rep"><span class="id">ELV-36</span><div><p class="qui">L'éleveur<span class="duree">1 s</span></p><p class="texte">« Merci. Vraiment. »</p><p class="cond">Les trois issues : le hameau devient amical ; version avec le nom en annexe</p></div></div>
+    <div class="rep entite"><span class="id">ELV-37</span><div><p class="qui">L'entité · facultative<span class="duree">4 s</span></p><p class="texte">« Un loup pour garder des moutons. Quelle ambition, soldat. »</p><p class="cond">Issues 1 et 2 (D-107)</p></div></div>
+  </div>
+  <p class="branche">Échecs et autres humeurs</p>
+  <div class="script">
+    <div class="rep"><span class="id">ELV-40</span><div><p class="qui">Un villageois (V2)<span class="duree">4 s</span></p><p class="texte">« Un loup ! Il y a un loup dans le hameau ! »</p><p class="cond">Le héros ramène le loup en faisant du bruit ; conséquence de l'échec : à définir</p></div></div>
+    <div class="rep"><span class="id">ELV-41</span><div><p class="qui">L'éleveur<span class="duree">3 s</span></p><p class="texte">« Emmenez-le ! Emmenez-le loin d'ici, je vous en supplie ! »</p></div></div>
+    <div class="rep"><span class="id">ELV-45</span><div><p class="qui">L'éleveur<span class="duree">5 s</span></p><p class="texte">« Il est venu pendant que vous n'étiez pas là. Il ne me reste presque rien. »</p><p class="cond">Le héros est mort pendant la quête et revient des heures plus tard : quête échouée (<em>Repos</em> § 3.A) ; hameau en « Deuil/Colère »</p></div></div>
+    <div class="rep"><span class="id">ELV-46</span><div><p class="qui">L'éleveur<span class="duree">3 s</span></p><p class="texte">« Vous aviez dit que vous vous en occupiez. Allez-vous-en. »</p><p class="cond">Suite ; ce que devient le loup ensuite : à définir</p></div></div>
+    <div class="rep"><span class="id">ELV-50</span><div><p class="qui">L'éleveur<span class="duree">2 s</span></p><p class="texte">« Restez loin de mes bêtes ! Loin ! »</p><p class="cond">Hostile (magie vue, D-38) : variante de peur (D-205 (2))</p></div></div>
+    <div class="rep"><span class="id">ELV-51</span><div><p class="qui">L'éleveur<span class="duree">3 s</span></p><p class="texte">« Je n'ai plus rien à vous demander. Allez-vous-en. »</p><p class="cond">Hostile (crime vu, ou magie vue)</p></div></div>
+  </div>
+</section>
+
+<section id="choix-element">
+  <h2>8. Au nid : l'entité propose l'élément</h2>
+  <p class="didascalie">Au nid, aux abords du Pont des Déserteurs, hors de vue du hameau. Le héros y apprend à maîtriser un seul élément, qu'il choisit par un dialogue avec l'entité : elle lui propose le Feu ou la Glace dans le prototype, les quatre éléments dans le jeu complet (D-182 (1) et (2) ; <em>Design du Didacticiel</em>, étape 3). Moment exact : au nid, avant le premier combat (proposition ; D-182 ne le fixe pas). Ces répliques ne sont pas facultatives. Elles ne nomment aucun autre élément : le deuxième, enseigné par la QP2, est l'opposé sur la roue (Feu → Vide, Glace → Foudre, D-190, D-192), pas l'élément refusé ici. Scène ajoutée le 01/10/2026.</p>
+  <div class="script">
+    <div class="rep entite"><span class="id">NID-01</span><div><p class="qui">L'entité<span class="duree">6,5 s</span></p><p class="texte">« Dans les Gorges, c'était moi. Ici, c'est toi qui vas le porter, ce pouvoir. »</p><p class="cond">Arrivée au nid ; le grand sort des Gorges était l'acte de l'entité et ne comptait pas dans la jauge (D-10, D-188)</p></div></div>
+    <div class="rep entite"><span class="id">NID-02</span><div><p class="qui">L'entité<span class="duree">8,5 s</span></p><p class="texte">« Pas tout. Tu n'en tiendrais pas le quart. Choisis : le feu, qui dévore… ou la glace, qui fige. »</p><p class="cond">L'entité propose les éléments <span class="pb">D-182 (2)</span> : Feu ou Glace dans le prototype ; dans le jeu complet, les quatre (variante à écrire)</p></div></div>
+    <div class="rep heros"><span class="id">NID-03</span><div><p class="qui">Le héros · choix<span class="duree">1 s + 1 s</span></p><p class="texte">« Le feu. » · « La glace. »</p><p class="cond">Choix au moment qui compte <span class="pb">D-208 (3)</span> ; ouvre le seul quadrant de cet élément sur la roue, les autres restent scellés (D-182 (1))</p></div></div>
+    <div class="rep entite"><span class="id">NID-04</span><div><p class="qui">L'entité<span class="duree">5,5 s</span></p><p class="texte">« Le feu. Évidemment. Tâche de ne pas brûler tes propres doigts, soldat. »</p><p class="cond">Après « Le feu »</p></div></div>
+    <div class="rep entite"><span class="id">NID-05</span><div><p class="qui">L'entité<span class="duree">5,5 s</span></p><p class="texte">« La glace. Froide, patiente… tout ce que tu n'es pas, soldat. »</p><p class="cond">Après « La glace »</p></div></div>
+    <div class="rep entite"><span class="id">NID-06</span><div><p class="qui">L'entité<span class="duree">6 s</span></p><p class="texte">« Le reste dort encore. Et ne compte pas sur moi pour le réveiller. »</p><p class="cond">Après NID-04 ou NID-05 ; les trois autres quadrants restent scellés (D-182 (1)) ; aucun élément nommé <span class="pb">D-192</span></p></div></div>
+  </div>
+</section>
+
+<section id="nid">
+  <h2>5. Le chef au retour du nid : la prime et l'orientation vers Oakhaven</h2>
+  <p class="didascalie">Le nid est vidé ; tout le hameau devient amical. Le chef reçoit le héros devant sa maison. D-204 (2) tranche le moment de l'orientation : au retour du nid, en remarquant l'insigne qu'il ne sait pas lire, sans parler des déserteurs. C'est l'ancienne variante A ; l'ancienne variante B (au retour du pont) est sans objet et retirée.</p>
+  <p class="branche">Le paiement</p>
+  <div class="script">
+    <div class="rep"><span class="id">CHF-20</span><div><p class="qui">Le chef<span class="duree">6,5 s</span></p><p class="texte">« Les nuits vont être plus calmes. Le hameau n'oublie pas ce genre de chose. »</p><p class="cond">Nid vidé ; hameau amical</p></div></div>
+    <div class="rep"><span class="id">CHF-21</span><div><p class="qui">Le chef<span class="duree">4 s</span></p><p class="texte">« Tiens, mon {ami|amie}. La prime. Compte, si tu veux. »</p><p class="cond">Paiement ; contenu : liste (T-0113, validée ; relecture du directeur à venir, D-215) <span class="pb">D-209 (4)</span> ; version avec le nom en annexe</p></div></div>
+  </div>
+  <p class="branche">L'orientation vers Oakhaven (D-204 (2))</p>
+  <div class="script">
+    <div class="rep"><span class="id">CHF-22</span><div><p class="qui">Le chef<span class="duree">5,5 s</span></p><p class="texte">« Cet insigne que tu portes. Je l'ai remarqué dès le premier jour. »</p><p class="cond">L'insigne d'unité, sans nom (D-108, D-163) <span class="pb">D-204 (2)</span></p></div></div>
+    <div class="rep"><span class="id">CHF-23</span><div><p class="qui">Le chef<span class="duree">7,5 s</span></p><p class="texte">« C'est un insigne de soldat, ça, je le sais. Le reste, je ne sais pas le lire. »</p><p class="cond">Il ne sait pas le lire (D-204 (2))</p></div></div>
+    <div class="rep heros"><span class="id">CHF-24</span><div><p class="qui">Le héros<span class="duree">1 s</span></p><p class="texte">« Moi non plus. »</p><p class="cond">Le héros est amnésique</p></div></div>
+    <div class="rep"><span class="id">CHF-25</span><div><p class="qui">Le chef<span class="duree">5,5 s</span></p><p class="texte">« Alors va à Oakhaven. Par le pont, puis la route du nord. »</p><p class="cond">La route d'Oakhaven part au nord après le pont (D-36). Correction 1 : la phrase sur le barrage (« Ceux qui tiennent le pont ne laissent passer personne. ») est retirée, car elle parlait des déserteurs, et D-204 (2) dit « sans parler des déserteurs » (question 10)</p></div></div>
+    <div class="rep"><span class="id">CHF-26</span><div><p class="qui">Le chef<span class="duree">6 s</span></p><p class="texte">« Il y a une garnison, là-bas. Des gens qui savent lire ces choses-là. »</p><p class="cond">Garnison d'Oakhaven (<em>Guide des Métiers</em> § 3.A) ; ce qu'elle saurait : proposition (retenue avec l'option de D-204 (2))</p></div></div>
+    <div class="rep"><span class="id">CHF-27</span><div><p class="qui">Le chef<span class="duree">7 s</span></p><p class="texte">« Ce que tu trouveras là-bas, garde-le pour toi. Ici, on a assez de nos peurs. »</p><p class="cond">Fin de l'échange ; la QP1 s'inscrit une fois le pont franchi (D-150)</p></div></div>
+    <div class="rep entite"><span class="id">CHF-28</span><div><p class="qui">L'entité · facultative<span class="duree">8,5 s</span></p><p class="texte">« Une garnison… Oui, va donc frapper à leur porte, soldat. Je ne manquerais ça pour rien au monde. »</p><p class="cond">Ironie : l'entité sait d'où vient le héros ; le joueur, lui, ne l'apprend qu'au pont (« votre ancienne faction, mais vous ne le savez pas », <em>Topographie</em> § 5) (D-107)</p></div></div>
+  </div>
+  <p class="note"><b>Rien sur les déserteurs.</b> Le chef ne parle pas des déserteurs (D-204 (2)) : ni de leur barrage (phrase retirée de CHF-25 à la correction 1) ni de leur insigne, qu'il ne sait pas qu'ils portent (leur insigne reste caché) ; la découverte de l'insigne identique sur le cadavre reste le « Choc Narratif » du pont (<em>Topographie</em> § 5). Le racket est raconté par les villageois (VIL-20 à VIL-22, D-24), pas par le chef dans cette scène.</p>
+</section>
+
+<section id="pont">
+  <h2>6. Au pont, après le Choix A : la monture offerte</h2>
+  <p class="didascalie">Au Choix A, le passage libéré, des habitants du hameau viennent au Pont des Déserteurs : la monture, un cheval pris aux déserteurs (D-37), est offerte là, au début de la route (D-184 ; le cheval vient de l'enclos du campement, plan de la zone de départ). Elle se monte : pas, trot, galop, et sa propre barre d'Endurance (D-184, D-194). Qui la remet n'est pas fixé (<em>Topographie</em> § 5 : « à définir ») : ici, le chef (proposition). L'ancienne variante B de l'orientation est sans objet (D-204 (2)).</p>
+  <p class="branche">La monture · Choix A</p>
+  <div class="script">
+    <div class="rep"><span class="id">CHF-40</span><div><p class="qui">Le chef<span class="duree">7 s</span></p><p class="texte">« Le hameau te doit sa tranquillité. Ce cheval était à eux. Il est à toi. »</p><p class="cond">Choix A, au Pont des Déserteurs <span class="pb">D-184</span> ; le hameau « vous adore » (<em>Topographie</em> § 5)</p></div></div>
+    <div class="rep"><span class="id">CHF-41</span><div><p class="qui">Le chef<span class="duree">5 s</span></p><p class="texte">« Un cheval, par ici, ça n'appartient qu'aux soldats. Ne l'oublie pas. »</p><p class="cond">Un cheval volé peut attirer l'attention de l'Ordre (D-37) ; le hameau, coupé de la politique, ne nomme pas l'Ordre</p></div></div>
+    <div class="rep entite"><span class="id">CHF-42</span><div><p class="qui">L'entité · facultative<span class="duree">6,5 s</span></p><p class="texte">« Un cheval volé à des morts, offert par des paysans reconnaissants. Tu progresses, soldat. »</p><p class="cond">D-107</p></div></div>
+  </div>
+  <p class="note"><b>Variante B retirée.</b> L'ancienne variante B (CHF-30 à CHF-34) est retirée : D-204 (2) place l'orientation au retour du nid ; la tension qu'elle posait avec D-150 est sans objet. Son texte est gardé pour mémoire dans la relecture. Les répliques du premier souvenir, au pont, ne sont pas dans ce chantier.</p>
+</section>
+
+<section id="villageois">
+  <h2>7. Les villageois du Hameau de la Brume</h2>
+  <p class="didascalie">Des répliques courtes, dites au passage ou entendues entre deux habitants. Elles ne disent jamais « Capitaine » et ne désignent jamais le héros par « il » ou « elle ». Tous partagent la même opinion : pas de désaccord entre eux. Voix : les 8 têtes de base de la fiche des villageois : V1 femme de 70 ans, V2 homme de 22 ans, V3 femme de 40 ans, V4 homme de 50 ans, V5 femme de 20 ans, V6 homme de 35 ans, V7 femme de 60 ans, V8 homme de 65 ans.</p>
+  <p class="branche">Méfiant · au début</p>
+  <div class="script">
+    <div class="rep"><span class="id">VIL-01</span><div><p class="qui">Villageoise V7<span class="duree">3 s</span></p><p class="texte">« Encore quelqu'un qui vient d'on ne sait où. »</p></div></div>
+    <div class="rep"><span class="id">VIL-02</span><div><p class="qui">Villageois V4<span class="duree">2,5 s</span></p><p class="texte">« Gardez votre lame au fourreau, ici. »</p></div></div>
+    <div class="rep"><span class="id">VIL-03</span><div><p class="qui">Villageoise V3<span class="duree">3 s</span></p><p class="texte">« Rentre. On ne parle pas aux gens de passage. »</p><p class="cond">À un enfant, en voyant le héros</p></div></div>
+    <div class="rep"><span class="id">VIL-04</span><div><p class="qui">Villageois V8<span class="duree">4 s</span></p><p class="texte">« On n'a rien à vendre. Rien à donner non plus. »</p></div></div>
+    <div class="rep"><span class="id">VIL-05</span><div><p class="qui">Villageoise V1<span class="duree">5,5 s</span></p><p class="texte">« Des monstres la nuit, des étrangers le jour… Par les Dieux, quelle époque. »</p><p class="cond">Peur des étrangers et des monstres (<em>Topographie</em> POI A) ; « Par les Dieux » vient de <em>Repos</em> § 3.B</p></div></div>
+  </div>
+  <p class="branche">Amical · après une quête réussie</p>
+  <div class="script">
+    <div class="rep"><span class="id">VIL-10</span><div><p class="qui">Villageoise V3<span class="duree">4 s</span></p><p class="texte">« Bonne journée ! Passe à la maison, il reste de la soupe. »</p><p class="cond">Tutoiement de l'état amical</p></div></div>
+    <div class="rep"><span class="id">VIL-11</span><div><p class="qui">Villageois V4<span class="duree">2,5 s</span></p><p class="texte">« Le hameau te doit une fière chandelle. »</p></div></div>
+    <div class="rep"><span class="id">VIL-12</span><div><p class="qui">Villageoise V5<span class="duree">4 s</span></p><p class="texte">« Repasse quand tu veux. Ici, on n'oublie pas les amis. »</p></div></div>
+    <div class="rep"><span class="id">VIL-13</span><div><p class="qui">Villageois V8<span class="duree">1 s</span></p><p class="texte">« Salut à toi ! »</p><p class="cond">Version avec le nom en annexe</p></div></div>
+    <div class="rep"><span class="id">VIL-14</span><div><p class="qui">Villageoise V7<span class="duree">2,5 s</span></p><p class="texte">« Tu passes à l'auberge, ce soir ? »</p><p class="cond">Version avec le nom en annexe</p></div></div>
+    <div class="rep"><span class="id">VIL-15</span><div><p class="qui">Villageois V6<span class="duree">6 s</span></p><p class="texte">« Le forgeron tape depuis l'aube. Ça veut dire qu'il a du fer, pour une fois. »</p><p class="cond">Après la quête du forgeron</p></div></div>
+  </div>
+  <p class="branche">Rumeurs · entre habitants</p>
+  <div class="script">
+    <div class="rep"><span class="id">VIL-20</span><div><p class="qui">Villageois V4<span class="duree">4 s</span></p><p class="texte">« Ceux du pont sont encore venus. La moitié du grain. »</p><p class="cond">Avant le pont ; le racket des déserteurs (D-24)</p></div></div>
+    <div class="rep"><span class="id">VIL-21</span><div><p class="qui">Villageois V6<span class="duree">2,5 s</span></p><p class="texte">« Et on n'y peut rien. Comme toujours. »</p><p class="cond">Résignation commune</p></div></div>
+    <div class="rep"><span class="id">VIL-22</span><div><p class="qui">Villageois V4<span class="duree">4,5 s</span></p><p class="texte">« On donne, et on se tait. C'est comme ça qu'on vit encore. »</p><p class="cond">Résignation commune</p></div></div>
+    <div class="rep"><span class="id">VIL-23</span><div><p class="qui">Villageoise V1<span class="duree">6,5 s</span></p><p class="texte">« Ne va pas sur la route du pont, petite. Plus maintenant. Il y a des choses, là-bas. »</p><p class="cond">Avant le nid (D-35), à V5</p></div></div>
+    <div class="rep"><span class="id">VIL-24</span><div><p class="qui">Villageoise V5<span class="duree">6 s</span></p><p class="texte">« Le marchand n'est pas passé depuis des semaines. On ne sait plus rien de rien. »</p><p class="cond">Le hameau n'apprend le monde que par le marchand du Cartel (<em>IA Collective</em> § 1)</p></div></div>
+    <div class="rep"><span class="id">VIL-25</span><div><p class="qui">Villageoise V3<span class="duree">4 s</span></p><p class="texte">« Encore une brebis, chez l'éleveur. Il ne dort plus, le pauvre. »</p><p class="cond">Quête de l'éleveur non résolue</p></div></div>
+    <div class="rep"><span class="id">VIL-26</span><div><p class="qui">Villageois V8<span class="duree">7,5 s</span></p><p class="texte">« Le fer se fait rare. Le forgeron parle des vieilles mines. Personne n'y descend plus, à part un ermite. »</p><p class="cond">Avant la quête du forgeron ; l'ermite annonce Brutus sans le nommer</p></div></div>
+  </div>
+  <p class="branche">Après le pont</p>
+  <div class="script">
+    <div class="rep"><span class="id">VIL-30</span><div><p class="qui">Villageoise V7<span class="duree">4 s</span></p><p class="texte">« Le pont est libre ! Plus personne ne prendra notre grain ! »</p><p class="cond">Choix A</p></div></div>
+    <div class="rep"><span class="id">VIL-31</span><div><p class="qui">Villageoise V1<span class="duree">3,5 s</span></p><p class="texte">« Ceux du pont ne reviendront plus. Le hameau respire. »</p><p class="cond">Choix A ; soulagement commun</p></div></div>
+    <div class="rep"><span class="id">VIL-32</span><div><p class="qui">Villageois V6<span class="duree">1 s</span></p><p class="texte">« À toi ! »</p><p class="cond">Choix A, à l'auberge ; version avec le nom en annexe</p></div></div>
+    <div class="rep"><span class="id">VIL-33</span><div><p class="qui">Villageois V4<span class="duree">5,5 s</span></p><p class="texte">« Ceux du pont… tous morts dans la nuit. Sans une blessure, qu'on dit. »</p><p class="cond">Choix B ; la réaction du hameau n'est pas écrite (proposition)</p></div></div>
+    <div class="rep"><span class="id">VIL-34</span><div><p class="qui">Villageoise V3<span class="duree">5 s</span></p><p class="texte">« Une maladie, peut-être. Ou les Dieux. Moi, je ne pose pas de questions. »</p><p class="cond">Choix B</p></div></div>
+  </div>
+  <p class="branche">Hostile (crime ou magie vus) et sa variante de peur (magie vue, D-205 (2))</p>
+  <div class="script">
+    <div class="rep"><span class="id">VIL-40</span><div><p class="qui">Villageois V4<span class="duree">1,5 s</span></p><p class="texte">« Au meurtre ! Au meurtre ! »</p><p class="cond">Hostile : un meurtre vu</p></div></div>
+    <div class="rep"><span class="id">VIL-41</span><div><p class="qui">Villageois V8<span class="duree">1 s</span></p><p class="texte">« On nous vole ! »</p><p class="cond">Hostile : un vol vu</p></div></div>
+    <div class="rep"><span class="id">VIL-42</span><div><p class="qui">Villageoise V3<span class="duree">4 s</span></p><p class="texte">« Ne nous parlez plus. Plus personne ne vous parlera, ici. »</p><p class="cond">Hostile (crime ou magie vus)</p></div></div>
+    <div class="rep"><span class="id">VIL-43</span><div><p class="qui">Villageois V2<span class="duree">4 s</span></p><p class="texte">« Le chef le saura. Tout le monde le sait déjà. »</p><p class="cond">Hostile ; une seule conscience</p></div></div>
+    <div class="rep"><span class="id">VIL-50</span><div><p class="qui">Villageoise V5<span class="duree">3 s</span></p><p class="texte">« Ses mains… Vous avez vu ses mains ? »</p><p class="cond">Hostile (magie vue, D-38) : variante de peur (D-205 (2))</p></div></div>
+    <div class="rep"><span class="id">VIL-51</span><div><p class="qui">Villageoise V1<span class="duree">3 s</span></p><p class="texte">« Par les Dieux… Rentrez les enfants ! Rentrez ! »</p><p class="cond">Variante de peur</p></div></div>
+    <div class="rep"><span class="id">VIL-52</span><div><p class="qui">Villageois V6<span class="duree">3 s</span></p><p class="texte">« Ne me touchez pas ! Ne me regardez pas ! »</p><p class="cond">Variante de peur</p></div></div>
+    <div class="rep"><span class="id">VIL-53</span><div><p class="qui">Villageoise V7<span class="duree">3,5 s</span></p><p class="texte">« Une magie pareille… ça ne vient pas des Dieux. »</p><p class="cond">Variante de peur</p></div></div>
+  </div>
+  <p class="branche">Témoins d'une mort (Repos § 3.B)</p>
+  <div class="script">
+    <div class="rep"><span class="id">VIL-60</span><div><p class="qui">Villageoise V3<span class="duree">6,5 s</span></p><p class="texte">« Par les Dieux… Je vous ai {vu|vue} tomber. J'ai vu votre cadavre ! Qu'est-ce que vous êtes ? »</p><p class="cond">Le héros est mort devant des habitants et réapparaît à l'auberge (réplique de <em>Repos</em> § 3.B adaptée)</p></div></div>
+    <div class="rep"><span class="id">VIL-61</span><div><p class="qui">Villageois V8<span class="duree">3 s</span></p><p class="texte">« Arrière ! Ceux du nid aussi se relevaient ! »</p></div></div>
+    <div class="rep"><span class="id">VIL-62</span><div><p class="qui">Villageoise V5<span class="duree">3 s</span></p><p class="texte">« On a tous vu ! Tous ! Et vous êtes là ! »</p></div></div>
+  </div>
+</section>
+
+<section id="relecture">
+  <h2>Relecture</h2>
+  <h3>Les 13 remarques du gardien du lore, avec la décision du Chef</h3>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>#</th><th>Remarque</th><th>Décision du Chef</th><th>Intégré dans</th></tr></thead>
+      <tbody>
+        <tr><td class="chiffre">1</td><td>Les variantes « Nom » font dire le nom à des PNJ, ce qu'interdisent D-155 (3), D-170, l'<em>IA Collective</em> (« À l'oral ») et le <em>Lexique</em> § 3</td><td>Les versions sans nom deviennent principales ; les versions « Nom » passent en annexe ; la voix du héros s'arrête avant le nom (PB-16, option 3)</td><td>CHF-02, CHF-15, CHF-21, FOR-18, ELV-02, ELV-13, ELV-23, ELV-36, VIL-13, VIL-14, VIL-32 ; annexe</td></tr>
+        <tr><td class="chiffre">2</td><td>« Capitaine » : le <em>Lexique</em> § 5 dit qu'on n'appelle un capitaine ainsi « qu'une fois identifiés » (D-31, D-108)</td><td>Garder, marquer dépendant de PB-17, écrire une variante « étranger » ; tension signalée au directeur</td><td>CHF-01, CHF-01b, ELV-01, ELV-01b</td></tr>
+        <tr><td class="chiffre">3</td><td>La magie vue : « hostile » (D-38, <em>Topographie</em> § 4) ou « hostile ou terrifié » (<em>Topographie</em> POI A, <em>IA Collective</em> § 1)</td><td>Hostile par défaut ; la peur devient une variante de l'état hostile ; contradiction signalée</td><td>CHF-16, CHF-17, FOR-20, FOR-21, ELV-50, ELV-51, VIL-42, VIL-50 à VIL-53</td></tr>
+        <tr><td class="chiffre">4</td><td>CHF-32 : le chef ne doit pas savoir que les déserteurs portent l'insigne</td><td>Le héros montre les deux insignes ; celui des déserteurs reste caché</td><td>CHF-32</td></tr>
+        <tr><td class="chiffre">5</td><td>CHF-25 : mentionner le barrage</td><td>« Ceux qui tiennent le pont ne laissent passer personne. »</td><td>CHF-25</td></tr>
+        <tr><td class="chiffre">6</td><td>VIL-61</td><td>« Arrière ! Ceux du nid aussi se relevaient ! »</td><td>VIL-61</td></tr>
+        <tr><td class="chiffre">7</td><td>ELV-06 et ELV-22</td><td>« ce que je peux » ; « C'est ce que j'avais promis »</td><td>ELV-06, ELV-22</td></tr>
+        <tr><td class="chiffre">8</td><td>ELV-21 et ELV-12</td><td>« depuis des nuits » ; pas de chiffre fixe</td><td>ELV-12, ELV-21</td></tr>
+        <tr><td class="chiffre">9</td><td>VIL-10</td><td>« Passe » (tutoiement de l'état amical)</td><td>VIL-10</td></tr>
+        <tr><td class="chiffre">10</td><td>VIL-21, VIL-22, VIL-31 : une seule conscience (<em>IA Collective</em> § 1)</td><td>Résignation commune, sans désaccord</td><td>VIL-21, VIL-22, VIL-31</td></tr>
+        <tr><td class="chiffre">11</td><td>Aucune réplique si le héros meurt pendant la quête (<em>Repos</em> § 3.A)</td><td>Ajouter une réplique d'échec</td><td>ELV-45, ELV-46</td></tr>
+        <tr><td class="chiffre">12</td><td>VIL-26</td><td>« …à part un ermite »</td><td>VIL-26</td></tr>
+        <tr><td class="chiffre">13</td><td>La voix V2 a 22 ans (fiche T-0084)</td><td>Correction</td><td>Scène 7</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note tension"><b>Signalé au directeur, pas tranché (tranché depuis : D-205 (2) et D-207).</b> La magie vue par le hameau : « hostile » (D-38, <em>Topographie</em> § 4) contre « hostile ou terrifié » (<em>Topographie</em> POI A, <em>IA Collective</em> § 1). Et « Capitaine » : « qu'une fois identifiés » (<em>Lexique</em> § 5) contre un premier titre « Capitaine » dès le début (D-172, <em>Design du Didacticiel</em>) ; c'est le point PB-17.</p>
+  <h3>La passe de cohérence du rédacteur, mise à jour</h3>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Point vérifié</th><th>Source</th><th>Résultat</th></tr></thead>
+      <tbody>
+        <tr><td>Qui dit le nom à l'oral</td><td>D-155, D-170 ; D-206, D-208 (1) ; <em>Lexique</em> § 3</td><td>Conforme à D-206 : les PNJ disent le nom une fois retenu par leur conscience, après un service (versions de l'annexe, générées en direct) ; avant, un titre</td></tr>
+        <tr><td>« Non, moi c'est [Nom du héros]. » après chaque « Capitaine » d'un dialogue</td><td>D-172 ; D-206 ; <em>Design du Didacticiel</em></td><td>Conforme : réplique entière générée ; repli : la voix s'arrête avant le nom</td></tr>
+        <tr><td>Qui dit « Capitaine »</td><td>D-207 ; D-03, D-108, <em>QP2</em> ; <em>Lexique</em> § 5</td><td>Conforme à D-207 (titre d'usage ; l'entité par moquerie) ; variantes « étranger » sans objet</td></tr>
+        <tr><td>Héroïne possible : aucun mot genré prononcé</td><td>D-163</td><td>Conforme, sauf « étranger » des variantes (deux prises)</td></tr>
+        <tr><td>Hameau pauvre, troc, peur des étrangers et des monstres, coupé de la politique</td><td><em>Topographie</em> POI A ; <em>Économie</em> § 2</td><td>Conforme ; l'Ordre n'est pas nommé par le hameau</td></tr>
+        <tr><td>Une seule conscience, sans désaccord ; hostile après un crime ou la magie</td><td><em>IA Collective</em> § 1 ; <em>Structure</em> § 1 ; D-38 ; D-205 (2)</td><td>Conforme ; la peur en variante (D-205 (2), qui confirme la décision du Chef)</td></tr>
+        <tr><td>Quête échouée si le héros meurt en route</td><td><em>Repos</em> § 3.A</td><td>Conforme (ELV-45, ELV-46)</td></tr>
+        <tr><td>Nouvelles du monde par le marchand du Cartel</td><td><em>IA Collective</em> § 1</td><td>Conforme (VIL-24)</td></tr>
+        <tr><td>Le nid sur la route du pont, hors de vue</td><td><em>Topographie</em> § 4 ; D-35, D-38</td><td>Conforme ; morts-vivants (PB-09)</td></tr>
+        <tr><td>Le racket et le barrage des déserteurs</td><td>D-24 ; <em>Topographie</em> POI D ; D-204 (2)</td><td>Les villageois le disent (VIL-20 à VIL-22) ; le chef n'en parle pas au moment de l'orientation (CHF-25 récrite à la correction 1)</td></tr>
+        <tr><td>La découverte de l'insigne identique reste au pont</td><td><em>Topographie</em> § 5 ; D-204 (2)</td><td>Le chef ne parle pas des déserteurs, ni de leur insigne ni de leur barrage (CHF-25 récrite à la correction 1 ; l'ancienne variante B est retirée)</td></tr>
+        <tr><td>Insigne d'unité, sans nom ; personne ne reconnaît le héros</td><td>D-108, D-03</td><td>Conforme</td></tr>
+        <tr><td>Oakhaven au nord ; une garnison ; la QP1 s'active au pont</td><td>D-36 ; <em>Guide des Métiers</em> § 3.A ; D-150 ; D-204 (2)</td><td>Orientation au retour du nid (D-204 (2)) ; CHF-25 garde la route du nord (D-36), sans le barrage (correction 1)</td></tr>
+        <tr><td>La monture offerte au Choix A, volée, au Pont des Déserteurs</td><td>D-37, D-184</td><td>Conforme ; remise par le chef : proposition (qui la remet : à définir)</td></tr>
+        <tr><td>La quête du forgeron ; il n'est pas le Maître de la Forge</td><td><em>Topographie</em> § 4 ; <em>Guide des Métiers</em> § 1 et § 3.A ; D-46</td><td>Conforme</td></tr>
+        <tr><td>Métal de son palier, verrou, réparation au feu de camp</td><td>D-45 ; <em>Guide</em> § 3.A ; <em>Matrice</em> § 3</td><td>Conforme</td></tr>
+        <tr><td>Brutus : esclave évadé, débloque le Minage, repart aux Canyons ; gemmes</td><td><em>Guide des Métiers</em> § 2.A ; D-17, D-43</td><td>Conforme ; son ancien maître n'est pas nommé</td></tr>
+        <tr><td>« L'Agneau et le Loup » : récompense double, le loup jamais compagnon, pas le Loup Nommé ; trois issues</td><td><em>Structure</em> § 1 ; D-63 ; <em>QP4</em> ; D-210 (2) ; D-213 (2), D-215 (2)</td><td>Conforme ; ELV-22, ELV-35 et ELV-65 se répondent ; trois issues au choix (ELV-33) ; à l'issue 2, le chien de berger part avec le héros et le loup garde le troupeau</td></tr>
+        <tr><td>La Branche 1 est celle des armes lourdes</td><td><em>Arbre de Compétences</em> § 3</td><td>Conforme (FOR-14)</td></tr>
+        <tr><td>L'entité tutoie, ne dit jamais le nom, critique avec humour ; propose l'élément</td><td><em>DA &amp; Script</em> § 3 ; <em>Lore Suprême</em> ; D-107 ; D-182 (2), D-207</td><td>Conforme ; « soldat » seulement ; « Capitaine » par moquerie possible (D-207), pas encore placé ; NID-01 à NID-06</td></tr>
+        <tr><td>Le juron « Par les Dieux » ; le héros amnésique ; le prototype solo</td><td><em>Repos</em> § 3.B ; <em>Design du Didacticiel</em> ; D-177</td><td>Conforme</td></tr>
+        <tr><td>La manière de parler et la voix de chaque PNJ</td><td>Fiches T-0084 (en vérification)</td><td>Suivies ; à réaligner si elles changent</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Mise à jour du 01/10/2026 (T-0112) : alignement sur les décisions</h3>
+  <p class="lecture">Aucune réplique de l'essai n'est changée : FOR-01 à FOR-05 gardent leur texte (seule la condition de FOR-03 cite D-208 (3)).</p>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Répliques</th><th>Avant</th><th>Après</th><th>Décision</th></tr></thead>
+      <tbody>
+        <tr><td>CHF-01, ELV-01</td><td>« Capitaine », dépendant de PB-17</td><td>« Capitaine », titre d'usage ; texte inchangé</td><td>D-207</td></tr>
+        <tr><td>CHF-01b, ELV-01b</td><td>Variantes « étranger »</td><td>Sans objet, gardées pour mémoire, hors décompte</td><td>D-207</td></tr>
+        <tr><td>CHF-02, ELV-02</td><td>« Non, moi c'est… », la voix s'arrête avant le nom (1,5 s)</td><td>« Non, moi c'est [Nom du héros]. », réplique entière générée en direct (2 s) ; l'ancienne version devient le repli</td><td>D-172, D-206</td></tr>
+        <tr><td>CHF-15, CHF-21, FOR-18, ELV-13, ELV-23, ELV-36, VIL-13, VIL-14, VIL-32</td><td>Versions avec le nom en annexe, « si PB-16 est tranché »</td><td>Versions avec le nom en service (annexe), générées en direct, quand la conscience a retenu le nom ; texte inchangé</td><td>D-206, D-208 (1)</td></tr>
+        <tr><td>CHF-16, ELV-50, VIL-50 à VIL-53</td><td>Peur en variante, décision du Chef</td><td>Même texte ; la décision est celle du directeur</td><td>D-205 (2)</td></tr>
+        <tr><td>CHF-11, FOR-03, ELV-09</td><td>Choix, PB-21</td><td>Même texte ; choix aux moments qui comptent</td><td>D-208 (3)</td></tr>
+        <tr><td>CHF-20 à CHF-28</td><td>Variantes A et B de l'orientation</td><td>La variante A seule ; texte inchangé (CHF-25 : voir la correction 1)</td><td>D-204 (2)</td></tr>
+        <tr><td>CHF-30, CHF-31, CHF-32, CHF-33, CHF-34</td><td>Variante B (au retour du pont)</td><td><strong>Retirées</strong> (texte ci-dessous, pour mémoire)</td><td>D-204 (2)</td></tr>
+        <tr><td>CHF-40 à CHF-42</td><td>Au hameau, après le pont</td><td>Au Pont des Déserteurs, au début de la route ; texte inchangé</td><td>D-184</td></tr>
+        <tr><td>ELV-33</td><td>« Il restera ici. Avec vos bêtes. » (une seule fin)</td><td>Choix entre trois issues ; la première réponse est l'ancienne ELV-33</td><td>D-208 (3), D-210 (2)</td></tr>
+        <tr><td>ELV-38, ELV-60, ELV-65 et deux réponses d'ELV-33</td><td>—</td><td><strong>Ajoutées</strong> : l'offre des trois récompenses, le chien offert, les pièces et le loup relâché (proposition)</td><td>D-210 (2)</td></tr>
+        <tr><td>ELV-34, ELV-35, ELV-36, ELV-37</td><td>Fin 2 unique</td><td>Conditions par issue ; texte inchangé</td><td>D-210 (2)</td></tr>
+        <tr><td>NID-01 à NID-06</td><td>—</td><td><strong>Ajoutées</strong> : l'entité propose le Feu ou la Glace, le joueur choisit ; aucun autre élément nommé</td><td>D-182 (1) et (2), D-192</td></tr>
+        <tr><td>FOR-14, ELV-07</td><td>Théorie des Branches 1 et 9, PB-31</td><td>Même texte ; progression comme dans le jeu complet ; la source de la théorie reste une proposition</td><td>D-210 (1)</td></tr>
+        <tr><td>CHF-09, CHF-21, ELV-22, ELV-35</td><td>Contenu des récompenses, PB-30</td><td>Même texte ; contenu à prendre dans la liste courte (T-0113)</td><td>D-209 (4)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Correction 1 (01/10/2026, après l'avis du vérificateur de T-0112)</h3>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Répliques</th><th>Avant</th><th>Après</th><th>Décision</th></tr></thead>
+      <tbody>
+        <tr><td>CHF-25</td><td>« Alors va à Oakhaven. Par le pont, puis la route du nord. Ceux qui tiennent le pont ne laissent passer personne. » (9,5 s ; phrase ajoutée à la remarque 5 du gardien)</td><td>« Alors va à Oakhaven. Par le pont, puis la route du nord. » (5,5 s) : le chef ne parle plus des déserteurs (question 10)</td><td>D-204 (2)</td></tr>
+        <tr><td>ELV-33, ELV-34, ELV-38, ELV-60</td><td>Issue 2 : « un autre animal compagnon », le chien n'étant qu'un exemple</td><td>Le chien de berger, avec sa propre jauge de loyauté, qui peut suivre le héros avec le Loup Nommé ; le loup garde le troupeau ; texte inchangé</td><td>D-213 (2), D-215 (2)</td></tr>
+        <tr><td>FOR-01 à FOR-05 (note)</td><td>Voix de l'essai réservée à l'essai : à régénérer si la voix change</td><td>Voix du domaine public, une par PNJ : la voix de l'essai y répond si sa licence est vérifiée ; texte inchangé</td><td>D-214 (2)</td></tr>
+        <tr><td>MIN-08</td><td>Gemmes : +1 % par niveau</td><td>Même texte ; plus une veine sûre près de Brutus</td><td>D-215 (5)</td></tr>
+        <tr><td>CHF-09, CHF-21, ELV-22, ELV-35, ELV-65</td><td>Liste courte « en cours » (T-0113)</td><td>Liste validée (T-0113), en attente de la relecture du directeur ; texte inchangé</td><td>D-209 (4), D-215</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lecture muted">Décompte : 151 répliques ; −4 s (CHF-25).</p>
+  <p class="lecture muted"><strong>Répliques retirées (ancienne variante B, pour mémoire) :</strong> CHF-30 (chef) « Le chemin du pont est libre. Pour le reste, le hameau ne peut rien pour toi. » (7,5 s) ; CHF-31 (chef) « Le pont est libre. Je ne demande pas comment, et je ne veux pas le savoir. » (7,5 s) ; CHF-32 (chef) « Deux fois le même. Le tien, et celui du pont. » (4,5 s) ; CHF-33 (héros) « Je servais avec eux. Je ne sais rien d'autre. » (3,5 s) ; CHF-34 (chef) « Alors va à Oakhaven. La garnison saura peut-être d'où viennent ces insignes. » (5,5 s). Soit 5 répliques et 28,5 s en moins.</p>
+  <h3>Décompte après la mise à jour</h3>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Personnage</th><th>Répliques</th><th>Durée estimée</th></tr></thead>
+      <tbody>
+        <tr><td>Chef du hameau</td><td class="chiffre">22</td><td class="chiffre">≈ 120,5 s</td></tr>
+        <tr><td>Forgeron</td><td class="chiffre">19</td><td class="chiffre">≈ 98 s</td></tr>
+        <tr><td>Brutus le Brisé</td><td class="chiffre">15</td><td class="chiffre">≈ 71 s</td></tr>
+        <tr><td>Éleveur</td><td class="chiffre">27</td><td class="chiffre">≈ 119,5 s</td></tr>
+        <tr><td>Héros (par voix ; deux voix, D-163)</td><td class="chiffre">21 (18 textes différents)</td><td class="chiffre">≈ 34,5 s</td></tr>
+        <tr><td>Entité (7 facultatives, 5 nécessaires au choix de l'élément)</td><td class="chiffre">12</td><td class="chiffre">≈ 76,5 s</td></tr>
+        <tr><td>Villageois (8 voix)</td><td class="chiffre">35</td><td class="chiffre">≈ 132 s</td></tr>
+        <tr><td><strong>Total</strong></td><td class="chiffre"><strong>151</strong></td><td class="chiffre"><strong>≈ 10 min 50 s</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lecture muted">Avant : 144 répliques, ≈ 10 min 25 s (valeurs arrondies par personnage ; 623 s en tout). Changements : 5 répliques retirées (−28,5 s), 12 ajoutées (+60 s), CHF-02 et ELV-02 passées de 1,5 à 2 s (+1 s) ; à la correction 1, CHF-25 raccourcie (−4 s). En tout 651,5 s ; ≈ 11 min 25 s avec la seconde voix du héros. Les 21 répliques du héros comprennent 11 réponses de choix (≈ 17 s) ; si elles sont seulement affichées, il reste 10 répliques et ≈ 17,5 s par voix. NID-04 et NID-05 sont deux suites possibles : une seule est jouée. Générées en direct : CHF-02 et ELV-02 (comptées), et les 9 versions avec le nom des PNJ (≈ 29 s, hors total). Hors total aussi : les 2 anciennes variantes « étranger », sans objet, et la phrase « esprits » de CHF-07.</p>
+</section>
+
+<section id="trancher">
+  <h2>Ce qui reste à trancher</h2>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Point</th><th>Répliques</th><th>État au 01/10/2026</th><th>Écrit ici</th></tr></thead>
+      <tbody>
+        <tr><td>PB-06 · moment de l'orientation</td><td>CHF-22 à CHF-28</td><td><strong>Tranché : D-204 (2)</strong></td><td>Au retour du nid, sans parler des déserteurs (CHF-25 récrite : question 10) ; l'ancienne variante B est retirée</td></tr>
+        <tr><td>PB-07 · premier souvenir</td><td>(aucune ici)</td><td><strong>Tranché : D-204 (3)</strong></td><td>Hors de ce chantier : voir la question 7</td></tr>
+        <tr><td>PB-09 · nature du nid</td><td>CHF-07</td><td>Ouvert (second tour)</td><td>Morts-vivants ; esprits ou mélange : ajouter la phrase sur les esprits</td></tr>
+        <tr><td>PB-16 · voix du nom</td><td>CHF-02, ELV-02 ; annexe</td><td><strong>Tranché : D-206</strong> ; voix de base : <strong>D-214 (2)</strong> ; essai puis ticket : <strong>D-214 (1)</strong></td><td>Répliques avec le nom générées en direct ; versions sans nom en repli</td></tr>
+        <tr><td>PB-17 · « Capitaine »</td><td>CHF-01 à CHF-03, ELV-01 à ELV-03</td><td><strong>Tranché : D-207</strong></td><td>Titre d'usage ; variantes « étranger » sans objet</td></tr>
+        <tr><td>PB-18 · mémoire du nom</td><td>Annexe</td><td><strong>Tranché : D-208 (1)</strong></td><td>La conscience retient le nom après un service rendu (question 8)</td></tr>
+        <tr><td>PB-19 · sous-titres</td><td>Toutes</td><td><strong>Tranché : D-208 (2)</strong></td><td>Le sous-titre écrit ce que dit la voix (repli du héros : question 1)</td></tr>
+        <tr><td>PB-20 · surnoms de l'entité</td><td>7 répliques facultatives, NID-04, NID-05</td><td>Ouvert (second tour)</td><td>« soldat » ; « Capitaine » par moquerie possible (D-207), pas encore placé</td></tr>
+        <tr><td>PB-21 · forme des dialogues</td><td>CHF-11, FOR-03, ELV-09, ELV-33, NID-03</td><td><strong>Tranché : D-208 (3)</strong></td><td>Scènes jouées, choix aux moments qui comptent (réponse dite ou affichée : question 9)</td></tr>
+        <tr><td>PB-30 · objets et prix</td><td>CHF-09, CHF-21, ELV-22, ELV-35, ELV-65</td><td><strong>Tranché : D-209 (4)</strong> ; liste validée (T-0113), relecture du directeur à venir (D-215) ; poids : D-214 (3)</td><td>Troc et quelques pièces ; à reprendre selon la liste validée</td></tr>
+        <tr><td>PB-31 · théorie des Branches 1 et 9</td><td>FOR-14, ELV-07, ELV-08</td><td><strong>Tranché : D-210 (1)</strong> (progression du jeu complet)</td><td>Le forgeron et l'éleveur donnent la théorie : proposition, que D-210 (1) ne tranche pas</td></tr>
+        <tr><td>PB-32 · récompense du loup</td><td>ELV-33 à ELV-38, ELV-60, ELV-65</td><td><strong>Tranché : D-210 (2)</strong> ; issue 2 : <strong>D-213 (2), D-215 (2)</strong></td><td>Trois issues au choix du joueur ; à l'issue 2, le chien de berger part avec le héros et le loup garde le troupeau (reste ouvert : question 4)</td></tr>
+        <tr><td>PB-33 · ennemis de la mine</td><td>MIN-15</td><td>Ouvert (second tour)</td><td>Morts-vivants de mineurs ; sinon, réécrire MIN-15</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note"><b>La contradiction et la tension signalées le 30/09/2026</b> sont tranchées par le directeur : la magie vue (D-205 (2)) ; « Capitaine » (D-207).</p>
+  <h3>Questions ouvertes par l'alignement du 01/10/2026 (rien n'est tranché ici)</h3>
+  <ol class="liste lecture">
+    <li><strong>Repli de la réplique du héros</strong> (CHF-02, ELV-02) si la génération du nom échoue : D-208 (2) veut un sous-titre fidèle à la voix. (a) La voix s'arrête avant le nom et le sous-titre écrit aussi « Non, moi c'est… » ; (b) le sous-titre affiche le nom quand même (écart à D-208 (2), à accepter par le directeur) ; (c) pas de repli : la réplique est générée dès le reflet (pré-écoute, étude T-0070 § 5.3) et la scène attend qu'elle soit prête. Pour le jeu complet, D-212 (3) va dans le sens de (c) (génération pendant les temps morts, puis répliques gardées) ; pour le prototype, l'essai de D-214 (1) dira si le repli est utile.</li>
+    <li><strong>L'entité dit « Capitaine »</strong> (D-207) : le héros lui répond-il « Non, moi c'est… » ? (a) Non : D-172 vise les PNJ d'un dialogue, l'entité est une voix intérieure (proposition) ; (b) oui, comme aux PNJ ; (c) une réponse propre (un silence, ou un « Tais-toi. »). Quelles répliques de l'entité disent « Capitaine » : avec la liste de PB-20.</li>
+    <li><strong>Voix de base</strong> : <strong>Tranché : D-214 (2)</strong> (correction 1) : des voix du domaine public, licence vérifiée, une voix distincte par PNJ. La voix du forgeron de l'essai (lecteur LibriVox, Public Domain Mark 1.0, T-0078) y répond si sa licence est vérifiée ; FOR-01 à FOR-05 gardent leur texte dans tous les cas.</li>
+    <li><strong>L'autre animal compagnon</strong> (issue 2) : <strong>en partie tranché : D-213 (2), D-215 (2)</strong> (correction 1) : c'est le chien de berger de l'éleveur, avec sa propre jauge de loyauté ; il peut suivre le héros en même temps que le Loup Nommé de la QP4 ; à l'issue 2, le loup garde le troupeau. Restent à définir : son nom (écran E13 ?) et son rôle en combat.</li>
+    <li><strong>Qui remet la monture au pont</strong> (<em>Topographie</em> § 5 : « à définir ») : (a) des villageois venus voir le passage libéré ; (b) le chef (écrit ici, proposition) ; (c) le héros la prend à l'enclos du campement, avec l'accord du hameau (T-0101, point 1).</li>
+    <li><strong>Moment du choix de l'élément</strong> (D-182 ne le fixe pas ; T-0101, point 6) : (a) au nid, avant le premier combat (écrit ici, proposition) ; (b) à la sortie des Gorges, juste après le grand sort ; (c) au nid, en plein combat, quand le héros est débordé.</li>
+    <li><strong>Répliques du premier souvenir</strong> (D-204 (3), hors de ce chantier, avec P3-13) : (a) un souvenir sans parole (images et sons) ; (b) une ou deux répliques des soldats, sans nom ni grade et sans rien sur le rituel.</li>
+    <li><strong>Seuil de la mémoire du nom</strong> : D-208 (1) dit « après un service rendu » ; il faut aussi que le hameau ait entendu le nom (CHF-02, ELV-02). La condition de PB-18 (le nom dit à un membre, puis un service) n'est pas reprise mot pour mot par D-208 (1), comme le relève T-0111 : à confirmer.</li>
+    <li><strong>Réponses de choix dites ou affichées</strong> (11 répliques du héros, ≈ 17 s) : D-208 (3) ne le dit pas. (a) Affichées seulement, comme dans l'essai ; (b) la réponse choisie est dite par la voix du héros.</li>
+    <li><strong>Le barrage dans CHF-25</strong> (correction 1) : D-204 (2) dit « sans parler des déserteurs », et la phrase « Ceux qui tiennent le pont ne laissent passer personne. » (remarque 5 du gardien) parlait d'eux. Elle est retirée (CHF-25 : 9,5 → 5,5 s). (a) Laisser la phrase retirée (écrit ici) ; (b) la remettre, si le directeur lit D-204 (2) comme « sans parler de leur insigne » (+4 s).</li>
+  </ol>
+  <h3>Propositions de ce texte, à valider</h3>
+  <ul class="liste lecture">
+    <li>Les règles d'adresse (vous puis tu selon l'humeur du hameau) et les mots en une seule prise.</li>
+    <li>Brutus indifférent à la magie ; l'indice « l'odeur du soufre » vers son repaire ; « un ermite ».</li>
+    <li>Le chef qui remet la monture au pont ; la pioche prêtée par le forgeron.</li>
+    <li>Le chemin du loup ; le père de l'éleveur ; la réaction du hameau au Choix B.</li>
+    <li>Les 7 répliques facultatives de l'entité.</li>
+    <li>Ajouts du 01/10/2026 : l'offre des trois récompenses et les répliques des issues 2 et 3 (ELV-38, deux réponses d'ELV-33, ELV-60, ELV-65) ; le texte du choix de l'élément (NID-01 à NID-06).</li>
+  </ul>
+  <h3>À définir, non tranché ici</h3>
+  <ul class="liste lecture">
+    <li>Comment le hameau hostile redevient méfiant ou amical, et si les quêtes restent possibles en attendant.</li>
+    <li>Comment l'état « Deuil/Colère » s'accorde avec les trois humeurs ; ce que devient le loup après l'échec ; si la quête du forgeron échoue aussi quand le héros meurt dans la mine.</li>
+    <li>La preuve de la mort du loup ; la conséquence d'un retour bruyant avec le loup ; de qui Brutus était l'esclave.</li>
+    <li>L'insigne du chef des déserteurs est « sur la poitrine » dans sa fiche (T-0084) : il faudrait le cacher pour que le hameau ne l'ait jamais vu.</li>
+    <li>Mise à jour du 01/10/2026 : les fiches T-0084 (hors de ce chantier) sont en retard sur trois décisions : § 2.1 (pas de nom à l'oral tant que la voix du nom n'est pas résolue : D-206 la résout ; « qui dit Capitaine » ouvert : D-207) ; § 3.1 et § 3.2 (le chef et le forgeron disent « étranger » quand ils se méfient : D-207) ; § 3.1 (« Terrifié (magie vue) » : hostile, la peur en variante, D-205 (2)). À signaler au Chef.</li>
+  </ul>
+</section>
+
+<section id="annexe">
+  <h2>Annexe : les versions avec le nom (D-206, D-208 (1) et (2))</h2>
+  <p class="lecture"><em>Titre et texte d'origine (30/09/2026) : « si PB-16 est tranché pour la voix du nom » ; ces versions ne devaient servir que si la voix du nom était retenue.</em> Depuis D-206, elles sont générées en entier, en direct, en tâche de fond, avec le nom saisi au reflet (D-206 réalise D-170 et D-172 pour le prototype). Pour les PNJ, elles remplacent la version sans nom quand leur conscience collective a retenu le nom : après un service rendu (D-208 (1)), le nom ayant été entendu (question 8). Le sous-titre écrit ce que dit la voix (D-208 (2)). Les deux répliques du héros (CHF-02, ELV-02) sont désormais les versions principales ; elles restent ici pour mémoire.</p>
+  <div class="script">
+    <div class="rep heros"><span class="id">CHF-02</span><div><p class="qui">Le héros<span class="duree">2 s</span></p><p class="texte">« Non, moi c'est <span class="var">[Nom du héros]</span>. »</p><p class="cond">Voix entière ; même texte pour ELV-02 ; version principale depuis D-206</p></div></div>
+    <div class="rep"><span class="id">CHF-15</span><div><p class="qui">Le chef<span class="duree">7 s</span></p><p class="texte">« <span class="var">[Nom du héros]</span>. On m'a parlé de toi. Il y a du travail, si ça te dit. »</p></div></div>
+    <div class="rep"><span class="id">CHF-21</span><div><p class="qui">Le chef<span class="duree">4 s</span></p><p class="texte">« Tiens, <span class="var">[Nom du héros]</span>. La prime. Compte, si tu veux. »</p></div></div>
+    <div class="rep"><span class="id">FOR-18</span><div><p class="qui">Le forgeron<span class="duree">3,5 s</span></p><p class="texte">« Reviens quand tu veux, <span class="var">[Nom du héros]</span>. La forge est ouverte. »</p></div></div>
+    <div class="rep"><span class="id">ELV-13</span><div><p class="qui">L'éleveur<span class="duree">4 s</span></p><p class="texte">« <span class="var">[Nom du héros]</span> ? On dit que vous aidez les gens, ici. Alors peut-être… »</p></div></div>
+    <div class="rep"><span class="id">ELV-23</span><div><p class="qui">L'éleveur<span class="duree">3 s</span></p><p class="texte">« Je n'oublierai pas, <span class="var">[Nom du héros]</span>. Le hameau non plus. »</p></div></div>
+    <div class="rep"><span class="id">ELV-36</span><div><p class="qui">L'éleveur<span class="duree">1,5 s</span></p><p class="texte">« Merci, <span class="var">[Nom du héros]</span>. Vraiment. »</p></div></div>
+    <div class="rep"><span class="id">VIL-13</span><div><p class="qui">Villageois V8<span class="duree">1,5 s</span></p><p class="texte">« Salut, <span class="var">[Nom du héros]</span> ! »</p></div></div>
+    <div class="rep"><span class="id">VIL-14</span><div><p class="qui">Villageoise V7<span class="duree">3 s</span></p><p class="texte">« <span class="var">[Nom du héros]</span>, tu passes à l'auberge, ce soir ? »</p></div></div>
+    <div class="rep"><span class="id">VIL-32</span><div><p class="qui">Villageois V6<span class="duree">1,5 s</span></p><p class="texte">« À toi, <span class="var">[Nom du héros]</span> ! »</p></div></div>
+  </div>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lecture">Documents de design : <em>Topographie de la Zone de Départ</em> ; <em>Structure - Quêtes Secondaires par Zone</em> ; <em>Guide Complet des Métiers</em> ; <em>IA Collective et Réactivité des PNJ</em> ; <em>Économie Évolutive et Réactive</em> ; <em>Matrice de Durabilité</em> ; <em>Repos, Réapparition et Conséquences de la Mort</em> ; <em>Lexique Diégétique</em> ; <em>Arbre de Compétences Global</em> ; <em>Exploration, Escalade et Montures</em> ; <em>Design du Didacticiel</em> ; <em>Quête Principale 4</em> ; <em>DA &amp; Script de Malak-Gath</em> ; <em>Lore Suprême</em>.</p>
+  <p class="lecture">Décisions : D-03, D-05, D-14, D-17, D-18, D-24, D-31, D-35, D-36, D-37, D-38, D-43, D-45, D-46, D-63, D-107, D-108, D-150, D-155, D-163, D-170, D-172, D-175 à D-178, D-180. Relecture du gardien du lore du 30/09/2026. Mise à jour du 01/10/2026 : D-10, D-182, D-184, D-188, D-190, D-192, D-194, D-204 à D-210 ; plan de la zone de départ (la monture offerte au pont) ; rapports de T-0101 et de T-0111 ; étude de la voix du nom (T-0070) ; ticket T-0113 (liste des objets, validé). Correction 1 : D-212 à D-215 ; avis du vérificateur de T-0112 (CHF-25).</p>
+  <p class="chemins">D:\aaa-game\.equipe\prototype\dialogues-provisoires.md (texte complet) · D:\aaa-game\.equipe\prototype\fiches-pnj.md (T-0084) · D:\aaa-game\.equipe\prototype\points-bloquants.md (T-0085) · D:\aaa-game\.equipe\etudes\cout-proto\inventaire.md (T-0077) · E:\aaa-proto\essai\CAHIER-DES-CHARGES.md</p>
+</section>
+</div>
+
+</body>
+</html>

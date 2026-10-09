@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Nuit de l'essai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Journal de nuit : une colonne de lecture, des pistes en cartes d'état, le tableau de décision en bas ; même identité sombre que « Nuit du prototype » */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.pistes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.piste .ticket{font:500 .72rem/1 var(--f-data);letter-spacing:.06em;color:var(--pierre)}
+.etat{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--pierre)}.encours{color:var(--acier)}.valide{color:var(--mousse)}.bloque{color:var(--braise)}.fait{color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+.ue{color:var(--aube)}.un{color:var(--acier)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.journal{display:grid;gap:.55rem}
+.entree{display:grid;grid-template-columns:4.2rem 1fr;gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre)}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · essai de départage, puis Unreal choisi · nuit du 30 septembre au 1er octobre 2026</div>
+  <h1>Nuit de <em>l'essai</em></h1>
+  <p class="lecture">Les deux moteurs se valent à l'essai en main. Cette nuit, les agents construisent dans chacun le même morceau du futur prototype : le forgeron du hameau qui parle, un écran d'inventaire complet, et une version installable du jeu. Le temps passé, la stabilité et la qualité du forgeron devaient décider du moteur (D-178). <strong>À 20:51, le directeur a choisi Unreal Engine 5.8, définitivement, pour le rendu (D-181)</strong> : la partie Unreal de l'essai devient le début de la production, la partie Unity s'arrête.</p>
+</header>
+
+<section id="pistes">
+  <h2>Les pistes de la nuit</h2>
+  <p class="lecture muted">Mise à jour au fil de la nuit. La carte graphique est réservée au directeur jusqu'à son feu vert ; ensuite, une seule piste à la fois l'utilise pour les travaux lourds.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">T-0078</span><h3>La voix du forgeron</h3><p class="muted">4 répliques en voix de synthèse Qwen3-TTS 1.7B, les mêmes dans les deux moteurs.</p><span class="etat valide">Validé : 4 répliques du forgeron (48 kHz, −16 LUFS), français et anglais, voix du domaine public</span></div>
+    <div class="piste"><span class="ticket">T-0079</span><h3>Le forgeron pour Unity</h3><p class="muted">Généré par IA sur ton PC, avec une bouche qu'on peut animer. Compté dans le temps d'Unity.</p><span class="etat bloque">Abandonné (D-181, moteur Unreal) : arrêté à 20:52, carte graphique jamais obtenue</span></div>
+    <div class="piste"><span class="ticket">T-0081</span><h3 class="ue">Essai Unreal</h3><p class="muted">Forgeron MetaHuman au visage piloté par la voix, inventaire, version installable.</p><span class="etat valide">Validé à 23:52 : forgeron MetaHuman qui parle, inventaire, paquet de 2,8 Go, stabilité tenue avec le son ; manette à essayer par le directeur</span></div>
+    <div class="piste"><span class="ticket">T-0082</span><h3 class="un">Essai Unity</h3><p class="muted">Forgeron généré avec synchronisation des lèvres, inventaire, build.</p><span class="etat bloque">Abandonné : Unreal choisi (D-181)</span></div>
+    <div class="piste"><span class="ticket">T-0080</span><h3>Le loup</h3><p class="muted">Une bête à quatre pattes : modèle, squelette, animations libres de droits. Priorité la plus basse.</p><span class="etat valide">Validé à 00:24 : loup généré en local, 12 animations, au-dessus du sol ; IK des pieds à prévoir dans Unreal</span></div>
+  </div>
+</section>
+
+<section id="chantiers">
+  <h2>Les chantiers de la nuit</h2>
+  <p class="lecture muted">En parallèle de l'essai, sans la carte graphique, pour le prototype des investisseurs. Chacun est livré dans sa propre page, rangée dans la page d'accueil du projet.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">T-0088</span><h3>Bible artistique</h3><p class="muted">Palettes, lumière, matières, silhouettes, style de l'interface.</p><span class="etat valide">Validé et publié</span></div>
+    <div class="piste"><span class="ticket">T-0085</span><h3>Points bloquants</h3><p class="muted">13 points de design, avec options et recommandation, prêts en questionnaires.</p><span class="etat valide">Validé et publié</span></div>
+    <div class="piste"><span class="ticket">T-0084</span><h3>Fiches des PNJ</h3><p class="muted">Les personnages qui parlent, chacun différent, avec image et réglages MetaHuman.</p><span class="etat valide">Validé et publié</span></div>
+    <div class="piste"><span class="ticket">T-0083</span><h3>Maquettes d'interface</h3><p class="muted">Tous les écrans du prototype, cliquables, dans le style du jeu.</p><span class="etat valide">Validées à 21:57 : toute l&#x27;interface du prototype, magie à un élément (D-182), textes ≥ 28 px en 1080p</span></div>
+    <div class="piste"><span class="ticket">T-0087</span><h3>Dialogues</h3><p class="muted">Premier jet des répliques non bloquées, relu par le gardien du lore.</p><span class="etat valide">Validé à 21:28 : 144 répliques (≈ 10 min 25 s), réplique CHF-28 corrigée</span></div>
+    <div class="piste"><span class="ticket">T-0089</span><h3>Bibliothèque sonore</h3><p class="muted">Sons et ambiances libres de droits, classés, avec page d'écoute.</p><span class="etat encours">Livré, en vérification</span></div>
+    <div class="piste"><span class="ticket">T-0090</span><h3>Plan de production</h3><p class="muted">Le prototype en tickets et jalons, pour chacun des deux moteurs.</p><span class="etat valide">Validé et publié</span></div>
+    <div class="piste"><span class="ticket">T-0086</span><h3>Présentation</h3><p class="muted">Brouillon pour les investisseurs, fait en dernier avec les images des autres chantiers.</p><span class="etat valide">Validée à 21:38 : 17 diapositives, budget et calendrier d&#x27;après T-0077 et T-0090</span></div>
+  </div>
+</section>
+
+<section id="mesures">
+  <h2>Les mesures</h2>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Mesure</th><th class="ue">Unreal</th><th class="un">Unity</th></tr></thead>
+      <tbody>
+        <tr><td>Temps d'agent : forgeron qui parle</td><td class="chiffre">à venir</td><td class="chiffre">à venir</td></tr>
+        <tr><td>Temps d'agent : inventaire</td><td class="chiffre">à venir</td><td class="chiffre">à venir</td></tr>
+        <tr><td>Temps d'agent : version installable</td><td class="chiffre">à venir</td><td class="chiffre">à venir</td></tr>
+        <tr><td>Stabilité (3 lancements, pire image, images au-delà de 50 ms)</td><td class="chiffre">à venir</td><td class="chiffre">à venir</td></tr>
+        <tr><td>Taille de la version installable</td><td class="chiffre">à venir</td><td class="chiffre">à venir</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lecture muted">Rapport des temps R = temps Unreal ÷ temps Unity, corrections comprises, jusqu'à la validation par le vérificateur.</p>
+</section>
+
+<section id="video">
+  <h2>Le forgeron, côte à côte</h2>
+  <div class="vide lecture">La vidéo côte à côte arrivera ici quand les deux versions installables seront faites. C'est toi qui juges la qualité du forgeron, en quatre niveaux : Unreal nettement meilleur, Unreal un peu meilleur, équivalents, Unity meilleur.</div>
+</section>
+
+<section id="decision">
+  <h2>Comment le moteur devait être choisi</h2>
+  <p class="lecture muted">Sans objet depuis D-181 : le directeur a choisi Unreal. Le tableau reste pour mémoire.</p>
+  <ul class="liste lecture">
+    <li><strong>D'abord la stabilité</strong> : si une seule version plante ou saccade après 4 h de corrections, l'autre moteur gagne.</li>
+    <li><strong>Ensuite ton jugement du forgeron, croisé avec R</strong> :</li>
+  </ul>
+  <div class="tableau">
+    <table>
+      <thead><tr><th>Qualité du forgeron</th><th>R ≤ 1,0</th><th>1,0 à 1,5</th><th>1,5 à 2</th><th>R &gt; 2</th></tr></thead>
+      <tbody>
+        <tr><td>Unreal nettement meilleur</td><td class="ue">Unreal</td><td class="ue">Unreal</td><td class="ue">Unreal</td><td>Unreal si le prototype recalculé ne dépasse pas Unity de plus de 25 %, sinon Unity</td></tr>
+        <tr><td>Unreal un peu meilleur</td><td class="ue">Unreal</td><td class="ue">Unreal</td><td class="un">Unity</td><td class="un">Unity</td></tr>
+        <tr><td>Équivalents</td><td class="ue">Unreal</td><td class="un">Unity</td><td class="un">Unity</td><td class="un">Unity</td></tr>
+        <tr><td>Unity meilleur</td><td class="un">Unity</td><td class="un">Unity</td><td class="un">Unity</td><td class="un">Unity</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal lecture">
+    <div class="entree"><time>soir</time><p>Préparation : cahier des charges commun, treize tickets, verrou de la carte graphique, chronométrage, page d'accueil du projet.</p></div>
+    <div class="entree"><time>19:19</time><p>Départ de la nuit en autonomie. La carte graphique reste réservée au directeur, qui joue : seuls démarrent les travaux sans carte graphique et légers pour le processeur. Lancés : bible artistique, points bloquants, fiches des PNJ, bibliothèque sonore, plan de production, et la partie « inventaire » des essais Unreal et Unity.</p></div>
+    <div class="entree"><time>19:46</time><p>Dossier des points bloquants livré (33 points, 6 thèmes) : renvoyé en correction (des recommandations contredisaient la QP2 et D-108 sans le dire), puis validé et publié à 20:08.</p></div>
+    <div class="entree"><time>19:53</time><p>Bible artistique livrée : 6 corrections demandées (image mal numérotée, couleurs attribuées à tort à des documents, une planche à refaire). Les maquettes d&#x27;interface démarrent sur son style d&#x27;interface.</p></div>
+    <div class="entree"><time>19:56</time><p>Plan de production livré (97 tickets, 7 jalons, environ 15 semaines avec Unreal et 16 avec Unity) : en vérification.</p></div>
+    <div class="entree"><time>20:11</time><p>Fiches des PNJ livrées : 13 personnages qui parlent, tous différents, 16 planches d&#x27;images par ChatGPT. En vérification ; les dialogues démarrent.</p></div>
+    <div class="entree"><time>20:13</time><p>Essai Unity : inventaire complet, dialogue du forgeron et synchronisation des lèvres prêts, 34 tests sur 34 et 8 sur 8 ; 51 min notées. Reste ce qui demande la carte graphique. Règle fixée pour les deux moteurs : le 1er lancement se mesure sur une version installable neuve, sans vider le cache de shaders du pilote, qui sert aux jeux du directeur.</p></div>
+    <div class="entree"><time>20:14</time><p>Plan de production : chiffres et calendrier confirmés ; 4 corrections demandées (éléments du périmètre oubliés, PNJ humains en MetaHuman dans la variante Unreal).</p></div>
+    <div class="entree"><time>20:15</time><p>Bible artistique validée après correction et publiée (10 planches). Contradictions à trancher : couleur de la plaine, bannières, croix sur les fiches de l&#x27;Ordre, turquoise du Culte.</p></div>
+    <div class="entree"><time>20:23</time><p>Plan de production validé après correction et publié : 98 tickets, environ 15 semaines avec Unreal et 17 avec Unity, première démo « Le Réveil » vers la 5e semaine. Fiches des PNJ renvoyées en correction (une image laissée sur C: par Codex, un villageois trop proche du héros).</p></div>
+    <div class="entree"><time>20:29</time><p>Bibliothèque sonore livrée : 236 sons libres de droits (CC0 ou domaine public) classés, 63 besoins couverts sur 79, page d&#x27;écoute prête ; en vérification. Incident de confidentialité mineur pendant ce chantier, signalé au directeur ; une règle a été ajoutée pour tous les agents.</p></div>
+    <div class="entree"><time>20:32</time><p>Fiches des PNJ validées après correction et publiées (13 personnages, chacun différent). Dialogues livrés (142 répliques provisoires) : relecture par le gardien du lore. Essai Unreal : inventaire (19 tests), dialogue du forgeron et visage piloté par la voix prêts sans carte graphique, 70 min notées. Les deux essais attendent le feu vert. La présentation pour les investisseurs démarre.</p></div>
+    <div class="entree"><time>20:45</time><p>Feu vert du directeur : la carte graphique est libérée. Lancés dans l&#x27;ordre du verrou : voix du forgeron, forgeron généré pour Unity, suite de l&#x27;essai Unreal ; l&#x27;essai Unity suit dès que sa voix et son forgeron sont prêts ; le loup en dernier. Toutes les pages du projet sont réunies sous le seul lien de la page d&#x27;accueil.</p></div>
+    <div class="entree"><time>20:46</time><p>Dossier des points bloquants complété : PB-17 (« Capitaine ») contredit le Lexique § 5, désormais signalé ; nouveau point PB-34 sur la réaction du hameau à la magie (34 points, 17 tensions).</p></div>
+    <div class="entree"><time>20:52</time><p>Décision du directeur : le moteur est Unreal Engine 5.8, choix définitif, pour le rendu visuel (D-181). La partie Unity de l&#x27;essai est arrêtée ; la partie Unreal (forgeron MetaHuman qui parle, inventaire, première version installable) devient le début de la production. Le plan de production suit sa variante Unreal.</p></div>
+    <div class="entree"><time>21:26</time><p>À la demande du directeur, le dernier test Unreal (parcours automatique en anglais de 21:21) est relancé. Ses sorties vont dans un dossier à part : les mesures de l&#x27;essai ne sont pas touchées.</p></div>
+    <div class="entree"><time>21:27</time><p>Lancement des plans préalables P0-02 (zone de départ, T-0091) et P0-03 (Oakhaven, T-0092), sans carte graphique ; la correction des dialogues (T-0087) repart en contre-vérification.</p></div>
+    <div class="entree"><time>21:29</time><p>Dialogues provisoires (T-0087) validés après la seconde correction ; la page est ajoutée aux Pages du projet. Le test relancé pour le directeur s&#x27;est fermé normalement à 21:28.</p></div>
+    <div class="entree"><time>21:30</time><p>Voix du forgeron (T-0078) validée : 4 répliques mesurées, textes identiques aux dialogues ; 4 remarques mineures notées pour le matin.</p></div>
+    <div class="entree"><time>21:32</time><p>Maquettes d&#x27;interface (T-0083) : deux petits réglages restent à faire (taille des libellés de la roue, invites sur téléphone), renvoyés à l&#x27;exécutant. T-0079 (forgeron Unity) est rangé dans les abandonnés (D-181).</p></div>
+    <div class="entree"><time>21:33</time><p>Présentation aux investisseurs (T-0086) renvoyée en correction : 7 remarques, dont le report de la décision sur la magie (D-182, prise après la séance) ; budget, calendrier et sources jugés exacts.</p></div>
+    <div class="entree"><time>21:38</time><p>Présentation aux investisseurs (T-0086) validée après correction ; ajoutée aux Pages du projet. La capture de la roue sera refaite après T-0083.</p></div>
+    <div class="entree"><time>21:57</time><p>Maquettes d&#x27;interface (T-0083) validées après la seconde correction (magie à un seul élément, D-182) ; ajoutées aux Pages du projet.</p></div>
+    <div class="entree"><time>22:04</time><p>Loup (T-0080) livré : modèle généré en local, 12 animations reprises d&#x27;un pack CC0, vidéo de 20 s ; en vérification. L&#x27;import dans Unreal reste à faire.</p></div>
+    <div class="entree"><time>22:07</time><p>Plan d&#x27;Oakhaven (T-0092) livré en proposition : plan minimal, trois voies courtes (A 969 m, B 359 m, C 511 m), PNJ placés ; en vérification.</p></div>
+    <div class="entree"><time>22:14</time><p>Plan de la zone de départ (T-0091) livré en proposition : ≈ 2,2 km², ravin et route d&#x27;≈ 1 km, ≈ 11 min de chemin obligatoire à la course ; en vérification.</p></div>
+    <div class="entree"><time>22:17</time><p>À la demande du directeur, la page d&#x27;accueil a maintenant une section « Échanges » : un fil d&#x27;idées partagé, que le Chef lit.</p></div>
+    <div class="entree"><time>22:22</time><p>Le loup (T-0080) et le plan d&#x27;Oakhaven (T-0092) repartent en correction (points mineurs) ; page « Pitch du jeu » lancée (T-0093) ; le fil des échanges propose maintenant au directeur de transformer une idée en ticket.</p></div>
+    <div class="entree"><time>22:25</time><p>Plan d&#x27;Oakhaven (T-0092) validé après correction ; ajouté aux Pages du projet.</p></div>
+    <div class="entree"><time>22:26</time><p>Essai Unreal (T-0081) livré : forgeron MetaHuman aux lèvres animées par sa voix, inventaire complet, version installable de 2,8 Go, vidéo de 30 s. Stabilité : 1re mesure hors limite au tout premier lancement (image de 118 ms), 2e mesure dans les limites ; en vérification.</p></div>
+    <div class="entree"><time>22:37</time><p>Page « Pitch du jeu » (T-0093) écrite (≈ 1 400 mots, sources en notes) ; en vérification. Le plan de la zone de départ (T-0091) repart en correction.</p></div>
+    <div class="entree"><time>22:45</time><p>Essai Unreal (T-0081) renvoyé en correction : mesure de stabilité à refaire avec le son, fichiers laissés sur C: à retirer, port 1985 à déclarer ; la manette attendra le directeur.</p></div>
+    <div class="entree"><time>22:51</time><p>Plan de la zone de départ (T-0091) validé après correction, avec une variante resserrée à ≈ 1,55 km² ; ajouté aux Pages du projet.</p></div>
+    <div class="entree"><time>23:06</time><p>Page « Pitch du jeu » (T-0093) validée après correction ; publiée en tête des Pages du projet, section « Le jeu ».</p></div>
+    <div class="entree"><time>23:46</time><p>Les 11 questions à trancher des plans (zone de départ, Oakhaven) sont posées dans le fil « Échanges », pour l&#x27;avis de l&#x27;ami du directeur ; le directeur peut retenir l&#x27;option recommandée d&#x27;un clic.</p></div>
+    <div class="entree"><time>23:52</time><p>Essai Unreal (T-0081) validé après correction : 3 lancements avec le son dans les limites (pire image 36,9 ms), fichiers de l&#x27;essai retirés de C:, port 1985 déclaré. Reste la manette, à brancher par le directeur.</p></div>
+    <div class="entree"><time>23:54</time><p>Bibliothèque sonore (T-0089) ajoutée aux Pages du projet : 236 sons à écouter, regroupés en 5 fichiers.</p></div>
+    <div class="entree"><time>00:24</time><p>Loup (T-0080) validé après deux corrections : pattes au-dessus du sol, défauts restants chiffrés (l&#x27;IK des pieds les corrigera dans Unreal). Tous les tickets de la nuit sont bouclés.</p></div>
+    <div class="entree"><time>00:26</time><p>Fin de nuit : commit unique du travail (sans push), bilan écrit, état du projet mis à jour. Le réveil continue de lire le fil des échanges.</p></div>
+  </div>
+</section>
+
+<section id="suite">
+  <h2>Au réveil</h2>
+  <ul class="liste lecture">
+    <li>Regarder la vidéo côte à côte du forgeron et donner ton jugement en un mot.</li>
+    <li>Le tableau ci-dessus donne alors le moteur ; je l'inscris au registre et je prépare les tickets du prototype.</li>
+  </ul>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai (cahier des charges, voix, forgeron, loup, paquets, vidéos, temps.csv) · D:\aaa-game\.equipe\taches</p>
+</section>
+</div>
+
+</body>
+</html>

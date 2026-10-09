@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Points de design bloquants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Dossier des points bloquants : une colonne de lecture, un point par carte, l'option recommandée soulignée d'or ; même identité sombre que les autres pages du projet */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.pistes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.piste .ticket{font:500 .72rem/1 var(--f-data);letter-spacing:.06em;color:var(--pierre)}
+.etat{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--pierre)}.encours{color:var(--acier)}.valide{color:var(--mousse)}.bloque{color:var(--braise)}.fait{color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre)}
+/* Ajouts propres à cette page */
+.points{display:grid;gap:1rem}
+.point{display:grid;gap:.65rem;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.point h3{display:flex;flex-wrap:wrap;gap:.35rem .6rem;align-items:baseline}
+.point .id{font:500 .78rem/1 var(--f-data);color:var(--aube);letter-spacing:.04em}
+.meta{font:400 .78rem/1.55 var(--f-data);color:var(--acier);overflow-wrap:anywhere}
+.contexte{color:var(--pierre);font-size:.92rem}
+.options{margin:0;padding:0;list-style:none;display:grid;gap:.45rem;counter-reset:opt}
+.options li{counter-increment:opt;position:relative;border:1px solid var(--roche);border-radius:4px;padding:.55rem .7rem .55rem 2.1rem;font-size:.93rem}
+.options li::before{content:counter(opt);position:absolute;left:.7rem;top:.55rem;font:500 .8rem/1.6 var(--f-data);color:var(--pierre)}
+.options li.reco{border-color:var(--aube);background:rgba(212,168,87,.08)}
+.options li.reco::before{color:var(--aube)}
+.badge{display:inline-block;font:500 .66rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--aube);border:1px solid currentColor;border-radius:3px;padding:.22rem .4rem;margin-right:.35rem;vertical-align:.1em}
+.options li.ecarte{opacity:.8}
+.options li.ecarte strong{color:var(--braise)}
+.cout{color:var(--acier);white-space:nowrap}
+.pourquoi{font-size:.93rem;border-left:2px solid var(--aube);padding-left:.7rem}
+.pourquoi b{color:var(--aube);font-weight:600}
+.second{color:var(--pierre)}
+.questionnaire{display:grid;gap:.6rem}
+.questionnaire h3{color:var(--aube)}
+.urgent{border-color:var(--aube)}
+.urgent .etat{color:var(--aube)}
+nav.themes{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.themes a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.themes a:hover,nav.themes a:focus-visible{border-color:var(--aube);color:var(--aube)}
+a{color:var(--aube)}
+/* Mise à jour du 01/10/2026 (T-0112) : les points tranchés */
+.tranche{font-size:.93rem;border-left:2px solid var(--mousse);padding-left:.7rem;max-width:46rem}
+.tranche b{color:var(--mousse);font-weight:600}
+.encore{font-size:.93rem;border-left:2px solid var(--acier);padding-left:.7rem;max-width:46rem}
+.encore b{color:var(--acier);font-weight:600}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier T-0085 · 30/09/2026 · mis à jour le 01/10/2026 (T-0112)</div>
+  <h1>Points de design <em>bloquants</em></h1>
+  <p class="lecture">Les questions de design qu'il faut trancher pour produire le prototype des investisseurs (D-175, D-177), rangées par thème et dans l'ordre où les trancher. Chaque point donne ses options ; l'option recommandée est soulignée d'or. Ce sont des <strong>propositions</strong> : rien n'est tranché, les documents de design ne sont pas modifiés.</p>
+  <p class="lecture tranche"><b>Mise à jour du 01/10/2026 (T-0112) :</b> le directeur a répondu aux six questionnaires (D-182, D-204 à D-210) et aux questions des plans de niveau (D-183 à D-185, D-187) ; d'autres décisions précisent ces réponses (D-188, D-190, D-192, D-194, D-196). <strong>25 points sont tranchés</strong> : chacun porte, sous son titre, une ligne « Tranché : D-xxx » avec l'option retenue ; le reste du texte, écrit avant les décisions, n'est pas réécrit. <strong>9 points restent ouverts</strong> (le second tour). Tensions levées : voir « Tensions relevées ». <b>Correction 1 (même jour)</b> : D-212 à D-215, qui précisent PB-08, PB-16, PB-22, PB-30 et PB-32, sont ajoutées à leurs lignes « Tranché » ; l'état des tensions est mis à jour.</p>
+  <nav class="themes" aria-label="Thèmes">
+    <a href="#ordre">Ordre</a><a href="#magie">1. Magie</a><a href="#scene">2. Mise en scène</a><a href="#monde">3. Monde</a><a href="#noms">4. Noms et voix</a><a href="#interface">5. Interface</a><a href="#economie">6. Économie</a><a href="#tensions">Tensions</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section>
+  <h2>En bref</h2>
+  <p class="lecture tranche"><b>État au 01/10/2026 :</b> 25 points tranchés sur 34 : PB-01 à PB-04 (D-182, D-188), PB-05 à PB-08 (D-204), PB-11 et PB-34 (D-205), PB-12 (D-185), PB-13 (D-183, D-184, D-194, D-196), PB-14 (D-183), PB-16 (D-206), PB-17 (D-207), PB-18, PB-19, PB-21 et PB-22 (D-208), PB-23, PB-24, PB-29 et PB-30 (D-209), PB-31 et PB-32 (D-210). Les 24 points des questionnaires sont tous tranchés ; PB-34, du second tour, l'est aussi. <strong>Restent ouverts les 9 points du second tour</strong> : PB-09 (taille des groupes d'ennemis), PB-10 (direction artistique), PB-15 (météo : en partie tranchée par D-187, qui donne au prototype un cycle du jour et de la nuit, une lune et des changements de météo ; durée, types et effets restent à proposer), PB-20 (surnoms de l'entité), PB-25 (titre du jeu), PB-26 (élision), PB-27 (place dans le journal), PB-28 (mini-carte, visibilité, barres de vie), PB-33 (ennemis de la mine). Les trois urgences (PB-01, PB-05, PB-11) sont tranchées. Sur les 17 tensions : 14 sont levées ou sans objet, 1 l'est en partie, 2 restent ouvertes (après la correction 1). Les cartes suivantes datent de la première version (30/09/2026).</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">POINTS</span><h3>34 points, 6 thèmes</h3><p class="muted">Les 13 points ouverts de l'inventaire du prototype (T-0077, § 5), le reste de ses limites (point 1), les points des bilans des Missions 5 et 6 qui touchent le prototype, et la réaction du hameau à la magie (PB-34, ajoutée après publication).</p></div>
+    <div class="piste"><span class="ticket">QUESTIONNAIRES</span><h3>24 questions</h3><p class="muted">Quatre par thème, l'option recommandée en premier. Dix autres points ont aussi leurs options, pour un second tour ou pendant la production.</p></div>
+    <div class="piste"><span class="ticket">SOLO</span><h3>Pas de coopération</h3><p class="muted">Le prototype est solo (D-177) : les questions propres à la coop sont hors de ce dossier.</p></div>
+  </div>
+  <h3>Les trois plus urgents pour produire</h3>
+  <div class="pistes">
+    <div class="piste urgent"><span class="etat">1 · PB-01 · tranché (D-182)</span><h3>Les éléments de magie</h3><p class="muted">Quels éléments, et comment le pouvoir se découvre au didacticiel puis se maîtrise au nid. Bloque la fin du didacticiel, première chose à produire après la mini-tranche.</p></div>
+    <div class="piste urgent"><span class="etat">2 · PB-05 · tranché (D-204)</span><h3>L'apparition de l'Ange</h3><p class="muted">La scène clé du didacticiel : « forme de l'apparition : à définir » (<em>Design du Didacticiel</em>, étape 3).</p></div>
+    <div class="piste urgent"><span class="etat">3 · PB-11 · tranché (D-205)</span><h3>Les voies B et C de la QP1</h3><p class="muted">Le point qui fait le plus varier le volume de décors et de PNJ à produire (plan de production T-0090).</p></div>
+  </div>
+</section>
+
+<section id="ordre">
+  <h2>Ordre proposé pour trancher</h2>
+  <p class="lecture">Principe (proposition) : d'abord ce qui bloque le <strong>premier jalon</strong> et n'a <strong>pas de règle d'attente</strong> ; à égalité, ce qui demande le plus long travail (les décors).</p>
+  <div class="tableau"><table>
+    <thead><tr><th>Rang</th><th>Thème</th><th>Points</th><th>Premier jalon bloqué</th><th>Pourquoi à ce rang</th></tr></thead>
+    <tbody>
+      <tr><td class="chiffre">1</td><td>Magie</td><td>PB-01 à 04</td><td>1 · fin du didacticiel</td><td>La suite directe de la mini-tranche ; un gros système dont rien n'existe.</td></tr>
+      <tr><td class="chiffre">2</td><td>Mise en scène</td><td>PB-05 à 10, 34</td><td>1 (Ange), puis 2, 3 et 5</td><td>L'Ange clôt le didacticiel ; le chef, le pont et les portes suivent la chaîne obligatoire.</td></tr>
+      <tr><td class="chiffre">3</td><td>Monde</td><td>PB-11 à 15</td><td>1 (relief), 3 (pont, route), 5 (Oakhaven)</td><td>Les décors sont les plus longs à produire ; aucune règle d'attente possible. PB-14 (ravin ou rivière) sert dès le relief de la zone : à poser tôt.</td></tr>
+      <tr><td class="chiffre">4</td><td>Noms et voix</td><td>PB-16 à 20</td><td>1 (reflet), 2 (dialogues)</td><td>Une règle d'attente existe : titres et surnoms à l'oral (D-155, D-170).</td></tr>
+      <tr><td class="chiffre">5</td><td>Interface</td><td>PB-21 à 28</td><td>2 (dialogue, sauvegarde), 6</td><td>Le dialogue et la sauvegarde servent dès le hameau ; le reste s'appuie sur les maquettes (T-0083).</td></tr>
+      <tr><td class="chiffre">6</td><td>Économie, métiers, progression</td><td>PB-29 à 33</td><td>4</td><td>Sert à la quête annexe et à la quête de métier.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted lecture">Jalons du plan de production (T-0090) : 0 préalables · 1 monde et héros · 2 hameau et PNJ · 3 nid et pont · 4 quête annexe et métier · 5 QP1 · 6 interface · 7 polissage. Le plan juge cet ordre et les trois urgences compatibles avec ses échéances.</p>
+  <p class="lecture tranche"><b>Premier tour fait (mise à jour du 01/10/2026) :</b> la magie a été tranchée le 30/09/2026 (D-182), puis le monde avec les plans de niveau (D-183 à D-185) et les autres thèmes le 01/10/2026 (D-204 à D-210).</p>
+</section>
+
+<!-- ============ 1. MAGIE ============ -->
+<section id="magie">
+  <h2>1. Magie</h2>
+  <p class="lecture muted">Jalon 1 : l'étape 3 du didacticiel (horde, Ange, pouvoir démesuré), puis la maîtrise au nid.</p>
+  <div class="points">
+
+    <article class="point" id="pb-01">
+      <h3><span class="id">PB-01</span>Combien d'éléments, et comment le pouvoir se découvre puis se maîtrise <span class="etat valide">Tranché · D-182</span></h3>
+      <p class="tranche"><b>Tranché : D-182 (1)</b> (30/09/2026), option 1 : la démesure, puis un seul élément maîtrisé. Au didacticiel, un grand sort de zone guidé par l'entité, que le joueur vise ; au nid, un seul élément (lame infusée, sort de zone, épée qui recharge le Mana) ; la roue ne montre que ce quadrant, les autres sont scellés. Ce premier élément est un don de l'entité, sans quête théorique (exception écrite dans <em>Combat Hybride</em> § 5.B : tension 1). Le grand sort ne compte pas dans la jauge (D-188).</p>
+      <p class="meta">Bloque : sorts, effets, animations, roue, jauge de Mana · Quand : avant la production · Inventaire § 5, point 3</p>
+      <p class="contexte">L'entité donne un pouvoir « volontairement démesuré » et guide « le premier lancement de sorts de zone » (<em>Design du Didacticiel</em>, étape 3 ; D-12) ; au nid, le joueur apprend à le maîtriser (D-98). La roue a 4 éléments, mais ils s'apprennent d'abord en théorie, par des quêtes (<em>Combat Hybride</em> § 5.B). Aucun document ne dit lesquels le héros possède au début.</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>La démesure, puis un seul élément maîtrisé.</strong> Au didacticiel, un grand sort de zone scripté que le joueur vise ; au nid, un élément : infusion de lame, sort de zone, l'épée qui recharge le Mana. La roue s'ouvre avec ce seul quadrant ; les trois autres sont scellés. Suit D-12 et D-98. <strong>Touche <em>Combat Hybride</em> § 5.B :</strong> ce premier élément vient du don de l'entité, sans quête théorique ; l'exception serait à écrire dans ce document si l'option est retenue. <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Les 4 éléments dès le didacticiel.</strong> Le plus spectaculaire ; tout coûte quatre fois plus ; même écart avec <em>Combat Hybride</em> § 5.B, pour les quatre éléments. <span class="cout">Coût : gros.</span></li>
+        <li><strong>Deux éléments au nid, et une fusion.</strong> Feu et Glace pour découvrir le Choc Thermique et le grimoire ; aucune quête du prototype n'enseigne leur théorie. <span class="cout">Coût : moyen à gros.</span></li>
+        <li><strong>Une magie sans éléments.</strong> Énergie brute, pas de roue : la roue fait pourtant partie de « toute l'interface » (D-175). <span class="cout">Coût : petit à moyen.</span></li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> les deux moments voulus par D-98 (le choc, puis la maîtrise) pour le prix d'un seul élément, la roue montrée, et un écart avec l'apprentissage par les quêtes limité à ce seul élément.</p>
+    </article>
+
+    <article class="point" id="pb-02">
+      <h3><span class="id">PB-02</span>Quel élément, s'il n'y en a qu'un <span class="etat valide">Tranché · D-182</span></h3>
+      <p class="tranche"><b>Tranché : D-182 (2)</b> (30/09/2026), aucune des quatre options telle quelle (idée du directeur) : <strong>le joueur choisit son élément</strong>, par un dialogue avec l'entité, qui le lui propose. Dans le prototype : <strong>le Feu ou la Glace</strong> ; dans le jeu complet : les quatre. La QP2 fait ensuite pratiquer l'élément choisi, puis enseigne son opposé sur la roue (Feu → Vide, Glace → Foudre ; D-190, D-192) : la tension 2 est levée.</p>
+      <p class="meta">Bloque : effets, sons, branche de l'arbre montrée · Quand : avant la production</p>
+      <p class="contexte">Feu, Glace, Foudre, Vide (<em>Roue des Magies</em> § 2 ; D-67). La QP2 suppose déjà le Feu puis la Glace (« Tutoriel de Feinte »).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Le Feu.</strong> « Sorts de zone dévastateurs » (Branche 5) ; infusion « Épée + Feu » déjà décrite (<em>Combat Hybride</em> § 3.A) ; le plus lisible ; cohérent avec la QP2. La démesure du didacticiel peut être un avant-goût de l'Ultime « tempête de météores de feu » (proposition).</li>
+        <li><strong>Le Vide.</strong> L'élément de l'entité, identité forte ; mais la QP2 attend le Feu et la Glace.</li>
+        <li><strong>La Glace.</strong> Son effet phare passe par un bouclier, que le héros n'a pas au réveil (D-163).</li>
+        <li><strong>La Foudre.</strong> Portée triplée sous la pluie : utile seulement avec de la pluie (PB-15).</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> l'élément le mieux décrit pour un début, et celui que la QP2 attend.</p>
+    </article>
+
+    <article class="point" id="pb-03">
+      <h3><span class="id">PB-03</span>Seuils et vitesse de la Jauge de Synchronicité <span class="etat valide">Tranché · D-182, D-188</span></h3>
+      <p class="tranche"><b>Tranché : D-182 (3)</b> (30/09/2026) et <b>D-188</b>, option 1 : échelle de 0 à 100, seuils provisoires réglés en jouant (Stade 2 à 35, Stade 3 à 70 ; sort +3, mort +5, aqueduc de la Voie C +10, −1 par minute sans magie). Le grand sort guidé du didacticiel ne compte pas ; la magie que le joueur lance ensuite fait monter la jauge, très vite s'il en abuse (D-12).</p>
+      <p class="meta">Bloque : équilibrage, voix de l'entité, effets de stade, Voie C · Quand : avant la production, réglage pendant</p>
+      <p class="contexte">La jauge suit les actes du joueur, pas l'histoire (D-10), peut redescendre (D-13), et monte « très vite » en cas d'abus (D-12). Seuils : « À DÉFINIR » (GDD) ; hausse de la Voie C : « à définir » (<em>QP1</em>).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Une échelle de 0 à 100, des seuils provisoires réglés en jouant.</strong> Par exemple Stade 2 à 35, Stade 3 à 70 ; chaque sort lancé par le joueur +3, mort +5, aqueduc de la Voie C (choisie par le joueur) +10 ; −1 par minute sans magie. Le pouvoir démesuré du didacticiel, imposé par le script, <strong>ne compte pas</strong> : c'est l'acte de l'entité, pas du joueur (D-10) (chiffres et règle : proposition). La prudence finit au Stade 1, l'abus voit le Stade 2. <span class="cout">Coût : petit.</span></li>
+        <li><strong>Figée au Stade 1.</strong> Le moins cher ; la corruption, cœur du pitch, ne se voit pas.</li>
+        <li class="ecarte"><strong>Montée scriptée par étapes.</strong> Facile en présentation, mais contredit D-10 : à écarter sauf décision.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> elle ne compte que les actes et les choix du joueur (D-10), montre le « très vite » de D-12 et reste réglable.</p>
+    </article>
+
+    <article class="point" id="pb-04">
+      <h3><span class="id">PB-04</span>Quels stades la démo montre <span class="etat valide">Tranché · D-182</span></h3>
+      <p class="tranche"><b>Tranché : D-182 (4)</b> (30/09/2026), option 1 : Stades 1 et 2 complets, Stade 3 réduit (roue corrompue, voix plus forte, journal qui tremble ; ni illusion ni prise de contrôle).</p>
+      <p class="meta">Bloque : effets d'écran, illusion, prise de contrôle des dialogues · Bilan Mission 5, point 10 (armure de l'illusion)</p>
+      <p class="contexte">Stade 2 : aberration violacée à Mana vide, roue qui grésille (<em>DA &amp; Script</em> § 1.B ; <em>Roue des Magies</em> § 3). Stade 3 : illusion en armure d'officier et six ailes, prise de contrôle de certains choix (« Mécanique : à définir », <em>Stades des Symptômes</em> ; D-10, D-60).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Stades 1 et 2 complets, Stade 3 réduit.</strong> Le Stade 3 est atteignable (D-12) mais se limite à la roue corrompue, la voix qui s'intensifie, l'écriture du journal qui tremble ; ni illusion ni prise de contrôle. <span class="cout">Coût : petit à moyen.</span></li>
+        <li><strong>Plus une scène d'illusion.</strong> Au Stade 3, l'illusion vient une fois négocier au feu de camp ; l'armure d'officier sera modelée de toute façon pour la QP1 ; reste à trancher son armure (bilan Mission 5). <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Les trois stades complets.</strong> Avec la prise de contrôle, entièrement à concevoir (D-10). <span class="cout">Coût : gros.</span></li>
+        <li><strong>Le Stade 1 seul.</strong> Aucune corruption visible.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> la corruption se voit sans ouvrir deux chantiers non conçus ; l'option 2 est la bonne montée en gamme.</p>
+    </article>
+
+  </div>
+  <div class="questionnaire">
+    <h3>Questionnaire 1 · Magie</h3>
+    <div class="tableau"><table>
+      <thead><tr><th>#</th><th>Question</th><th>Options (recommandée en premier)</th></tr></thead>
+      <tbody>
+        <tr><td>1.1</td><td>Combien d'éléments ? (PB-01)</td><td>La démesure, puis un élément · Les 4 · Deux et une fusion · Sans éléments</td></tr>
+        <tr><td>1.2</td><td>Lequel ? (PB-02)</td><td>Le Feu · Le Vide · La Glace · La Foudre</td></tr>
+        <tr><td>1.3</td><td>Comment monte la jauge ? (PB-03)</td><td>Seuils provisoires réglés en jouant · Figée au Stade 1 · Scriptée (contredit D-10)</td></tr>
+        <tr><td>1.4</td><td>Quels stades ? (PB-04)</td><td>1 et 2, 3 réduit · Plus une scène d'illusion · Les 3 complets · Le 1 seul</td></tr>
+      </tbody>
+    </table></div>
+    <p class="tranche"><b>Réponses (30/09/2026, D-182) :</b> 1.1, 1.3 et 1.4 : options recommandées ; 1.2 : aucune des quatre, le joueur choisit le Feu ou la Glace en dialoguant avec l'entité.</p>
+  </div>
+</section>
+
+<!-- ============ 2. MISE EN SCÈNE ============ -->
+<section id="scene">
+  <h2>2. Mise en scène</h2>
+  <p class="lecture muted">Jalon 1 pour l'Ange, puis le hameau (2), le pont (3) et les portes d'Oakhaven (5).</p>
+  <div class="points">
+
+    <article class="point" id="pb-05">
+      <h3><span class="id">PB-05</span>La forme de l'apparition de l'Ange Déchu <span class="etat valide">Tranché · D-204</span></h3>
+      <p class="tranche"><b>Tranché : D-204 (1)</b> (01/10/2026), option 1 : l'éclair derrière le héros (temps ralenti une seconde, yeux dorés dans la brume, silhouette dans la fumée noire puis cendres ; caméra du joueur ; D-59).</p>
+      <p class="meta">Bloque : la scène clé du didacticiel, les veines noires · Inventaire § 5, point 4</p>
+      <p class="contexte">« Sa silhouette (ailes d'ombre brisées, trois paires d'yeux dorés) n'apparaît qu'en un éclair (forme de l'apparition : à définir) » (<em>Design du Didacticiel</em>, étape 3 ; D-59) ; « sans vue imposée » (<em>DA &amp; Script</em> § 1.A). Existe : une silhouette 3D de 3,60 m prévue pour un éclair de 0,5 s (livrée, pas encore importée).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>L'éclair derrière le héros.</strong> Le temps ralentit une seconde ; les yeux dorés s'allument dans la brume, la silhouette se dresse dans la fumée noire puis se dissout en cendres ; les veines noircissent pendant que le sort part ; la caméra reste au joueur. <span class="cout">Coût : moyen.</span></li>
+        <li><strong>L'ombre projetée.</strong> Ailes et yeux dans l'ombre du héros sur la brume ; très dark fantasy, moins lisible, et c'est déjà le rendu prévu à l'approche du Stade 2. <span class="cout">Coût : petit.</span></li>
+        <li><strong>Une courte cinématique.</strong> La plus spectaculaire ; risque de trahir « un éclair » (D-59). <span class="cout">Coût : moyen à gros.</span></li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> l'Ange se voit en entier mais reste un éclair, le joueur garde la main, l'asset livré sert tel quel.</p>
+    </article>
+
+    <article class="point" id="pb-06">
+      <h3><span class="id">PB-06</span>Quand le chef oriente le héros vers Oakhaven <span class="etat valide">Tranché · D-204</span></h3>
+      <p class="tranche"><b>Tranché : D-204 (2)</b> (01/10/2026), option 1 : au retour du nid, le chef oriente le héros vers Oakhaven en remarquant l'insigne qu'il ne sait pas lire, sans parler des déserteurs (la découverte du pont reste un choc, <em>Topographie</em> § 5). Les tensions 3 et 14 sont sans objet.</p>
+      <p class="meta">Bloque : dialogue du chef, lancement de la QP1 · Inventaire § 5, point 7 · Bilan Mission 5, point 10</p>
+      <p class="contexte">« Avant que le héros quitte la zone de départ », le chef l'oriente vers Oakhaven « pour enquêter sur l'insigne » ; la quête « s'active une fois le pont franchi » ; « moment de cet échange : à définir » (D-150 ; <em>Design du Didacticiel</em> § 3).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Au retour du nid, avant le pont, sans parler des déserteurs.</strong> Le chef paie la prime, remarque un insigne militaire qu'il ne sait pas lire : la garnison d'Oakhaven saurait d'où il vient (proposition). La découverte de l'insigne identique sur le cadavre reste le « Choc Narratif » du pont (<em>Topographie</em> § 5). <span class="cout">Coût : une scène.</span></li>
+        <li><strong>À la première rencontre.</strong> Simple ; mais le hameau « a peur des étrangers » (<em>Topographie</em>), et l'insigne n'a encore aucun sens.</li>
+        <li><strong>Au retour du pont.</strong> Le plus fort (premier souvenir, deux insignes), et le Choix A ramène déjà au hameau (cheval, D-37) ; à vérifier avec la lettre de D-150.</li>
+        <li class="ecarte"><strong>Au retour du nid, en annonçant les déserteurs.</strong> Le chef dit qu'ils portent le même insigne (D-24) : accroche plus forte, mais la découverte du pont est annoncée d'avance. Modifie la mise en scène de la <em>Topographie</em> § 5.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> fidèle à D-150 sans trajet ajouté, et la découverte du pont reste entière.</p>
+    </article>
+
+    <article class="point" id="pb-07">
+      <h3><span class="id">PB-07</span>Le contenu du premier souvenir, au pont <span class="etat valide">Tranché · D-204</span></h3>
+      <p class="tranche"><b>Tranché : D-204 (3)</b> (01/10/2026), option 1 : un moment de la vie de l'unité, en vue subjective, avec le chef des déserteurs plus jeune ; ni nom ni grade, rien sur le rituel. Les tensions 8 et 15 sont sans objet.</p>
+      <p class="meta">Bloque : une scène, ses modèles, l'effet de souvenir · Inventaire § 5, point 9</p>
+      <p class="contexte">« Il comprend qu'il était l'un de ces soldats avant son réveil » (<em>Topographie</em> § 5 ; D-14). Un vrai souvenir, pas un symptôme ; l'insigne n'identifie personne (D-108) ; en solo, l'unité sacrifiée n'est jamais évoquée (D-33). La QP1 révèle ensuite l'officier, la QP2 le capitaine (« Le joueur sait désormais qu'il était capitaine »).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>La vie de l'unité, vue par les yeux du héros.</strong> Vue subjective : bivouac ou marche, des soldats de l'Ordre dont le chef des déserteurs, jeune et indemne, avec le même insigne ; on ne voit pas le héros ; ni nom ni grade (proposition). Compatible avec la <em>Topographie</em>, la QP1 et la QP2. <span class="cout">Coût : petit à moyen.</span></li>
+        <li><strong>Des éclats d'images et de sons.</strong> Bannière, insigne, ordre crié ; plans simples comme le prologue court (D-177). <span class="cout">Coût : petit.</span></li>
+        <li class="ecarte"><strong>Le héros vu de l'extérieur, salué « Capitaine ».</strong> Le plus émouvant, mais contredit la <em>QP2</em> (qui révèle le grade) et anticipe la <em>QP1</em> (l'officier) : documents à modifier si retenue.</li>
+        <li class="ecarte"><strong>La trahison.</strong> Dévoile trop tôt la QP1 et la QP2, et contredit D-33 en solo : à écarter.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> exactement ce que demande la <em>Topographie</em>, sans empiéter sur la QP1 ni sur la QP2, et sans modèle du héros à produire.</p>
+    </article>
+
+    <article class="point" id="pb-08">
+      <h3><span class="id">PB-08</span>Les conséquences du pont aux portes d'Oakhaven <span class="etat valide">Tranché · D-204</span></h3>
+      <p class="tranche"><b>Tranché : D-204 (4)</b> (01/10/2026), option 1 : trois signes lisibles de la méfiance au Choix A (fouille et questions du capitaine, garde qui suit du regard, prix majorés de +20 % chez les marchands de l'Ordre, proposition) ; refus sans laissez-passer au Choix B ; monture volée reconnue à sa marque ; pas de hausse de prime dans la démo (D-40). La monture est désormais offerte au pont et montée (PB-13). Correction 1 : le marchand de l'Ordre est un <strong>vivandier aux portes d'Oakhaven</strong>, près du checkpoint (D-214 (4)) ; l'<em>Économie</em> reçoit un palier « méfiance », taux réglé en jouant (+20 % proposé, D-212 (4)), qui vaut partout où l'on se méfie, le hameau à l'arrivée compris ; le Choix B compte neutre (D-215 (1)).</p>
+      <p class="meta">Bloque : capitaine des portes, IA de l'Ordre, les 4 états de fin · Inventaire § 5, point 10</p>
+      <p class="contexte">Choix A : l'Ordre est Méfiant, « réactions précises et différence avec l'empoisonnement : à définir » ; prime « plus tard » (<em>QP1</em> ; D-40). Cheval volé : « effets en jeu : à définir » (<em>Topographie</em> § 5 ; D-37). La Voie A lève la méfiance vers Neutre (D-139).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Trois signes lisibles.</strong> Choix A : fouille plus longue et questions sur le massacre ; un garde qui suit du regard ; prix majorés chez les marchands de l'Ordre (+20 % proposé). Choix B : simple refus sans laissez-passer. Le cheval volé, reconnu aux écuries, confirme la méfiance. Aucune hausse de prime dans la démo (D-40). <span class="cout">Coût : petit à moyen.</span></li>
+        <li><strong>Seulement par le dialogue.</strong> Le moins cher ; l'IA collective se voit peu.</li>
+        <li><strong>Méfiance systémique complète.</strong> Patrouilles qui filent le héros, boutiques fermées. <span class="cout">Coût : gros.</span></li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> la différence entre les deux choix se voit, pour un coût maîtrisé, sans toucher à la prime.</p>
+    </article>
+
+    <article class="point" id="pb-09">
+      <h3><span class="id">PB-09</span>La taille des groupes d'ennemis <span class="etat attente">Second tour · ouvert</span></h3>
+      <p class="meta">Bloque : rencontres, variantes, nombre de MetaHumans (D-179) · Inventaire § 5, points 4 et 9</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Moyen.</strong> Horde de 8 à 12 (les trois modèles existants, en variantes), nid 4 à 6, déserteurs 4 dont le chef, nid de la Voie A 3 à 5, esprits de l'aqueduc 4 à 6 (proposition).</li>
+        <li><strong>Petit.</strong> Horde de 5 ou 6, déserteurs 3 : la horde « impossible » convainc moins.</li>
+        <li><strong>Grand.</strong> Horde de 20 et plus, 6 à 8 déserteurs : performances à vérifier.</li>
+      </ol>
+      <p class="contexte"><strong>Nature des ennemis</strong>, quel que soit le paquet (proposition) : horde mêlée d'esprits et de morts-vivants ; nid du chef en morts-vivants plus résistants (la <em>Topographie</em> dit « esprits ou morts-vivants ») ; nid de la Voie A mêlé ; aqueduc en esprits (<em>QP1</em>).</p>
+    </article>
+
+    <article class="point" id="pb-10">
+      <h3><span class="id">PB-10</span>Direction artistique : bible et validations <span class="etat attente">Second tour, avec T-0088 · ouvert</span></h3>
+      <p class="meta">Bloque : tout personnage ou créature au-delà de la mini-tranche · Inventaire § 5, point 14</p>
+      <p class="contexte">Bible artistique « À DÉFINIR » (GDD) ; esprit v4 et tenue du possédé « à valider » ; déserteurs blessés non décrits. Déjà fixé : acier, or, ivoire, tenue selon le grade (D-166).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>La bible de T-0088 comme référence provisoire.</strong> Esprit v4 et possédé validés « pour le prototype » ; déserteurs : l'équipement du soldat de l'Ordre usé, tabard ivoire déchiré, bandages ; leur chef un peu plus orné (proposition).</li>
+        <li><strong>Attendre une bible complète</strong>, relue par un directeur artistique humain : bloque les personnages.</li>
+        <li><strong>Pas de bible</strong>, choix au cas par cas : risque d'incohérences.</li>
+      </ol>
+    </article>
+
+    <article class="point" id="pb-34">
+      <h3><span class="id">PB-34</span>La réaction du hameau à la magie <span class="etat valide">Tranché · D-205 · ajouté après publication</span></h3>
+      <p class="tranche"><b>Tranché : D-205 (2)</b> (01/10/2026), option 1 : le hameau qui voit la magie devient hostile (D-38) ; la peur est une variante de cet état (certains PNJ fuient, se cachent ou supplient au lieu d'attaquer). Le cas du Stade 3 reste à trancher plus tard (tension 17).</p>
+      <p class="meta">Bloque : états de l'IA collective du hameau, répliques, animations de fuite · Jalon 2 · Relecture du lore des dialogues (T-0087)</p>
+      <p class="contexte">La magie vue rend le hameau « hostile » (D-38 ; <em>Topographie</em> § 4) ou « hostile ou terrifié » (<em>Topographie</em> POI A ; <em>IA Collective</em> § 1). Ailleurs, « Terreur » est un mode distinct, pour d'autres causes : magie noire au Stade 3 (<em>Criminalité, Chasseurs de Primes</em> § 1), racket, stigmates d'un Ultime (<em>Arbre</em> § 4.B), ennemi public (<em>Factions et Jauges</em>).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Hostile par défaut, la peur comme variante</strong> (proposition du Chef). Un seul état, « hostile » (D-38) : refus de parler et de commercer, boutique fermée (<em>Économie</em> § 3) ; selon l'habitant, la peur (fuir, s'enfermer, faire rentrer les siens) ou la menace. Le « terrifié » de la <em>Topographie</em> POI A et de l'<em>IA Collective</em> § 1 devient un visage de l'hostilité : ces deux passages seraient à préciser. Cas du Stade 3 à trancher plus tard. <span class="cout">Coût : petit.</span></li>
+        <li class="ecarte"><strong>Le crime rend hostile, la magie terrifie.</strong> Deux états ; contredit D-38 et la <em>Topographie</em> § 4 (la magie rend « hostile »). <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Hostile pour la magie vue, Terreur pour la corruption visible</strong> (Stade 3, stigmates), comme dans les autres documents. La plus cohérente avec l'ensemble ; un second état, rarement atteint dans la démo ; fiche T-0084 § 3.1 à ajuster. <span class="cout">Coût : moyen.</span></li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> D-38 à la lettre, la terreur gardée, un seul état. Dans la démo, les options 1 et 3 se comportent presque pareil ; pour le jeu complet, l'option 3 mérite d'être reposée.</p>
+    </article>
+
+  </div>
+  <div class="questionnaire">
+    <h3>Questionnaire 2 · Mise en scène</h3>
+    <div class="tableau"><table>
+      <thead><tr><th>#</th><th>Question</th><th>Options (recommandée en premier)</th></tr></thead>
+      <tbody>
+        <tr><td>2.1</td><td>Forme de l'apparition de l'Ange ? (PB-05)</td><td>L'éclair derrière le héros · L'ombre projetée · Une courte cinématique</td></tr>
+        <tr><td>2.2</td><td>Quand le chef oriente-t-il le héros ? (PB-06)</td><td>Au retour du nid, sans parler des déserteurs · À la première rencontre · Au retour du pont · En annonçant les déserteurs (modifie la <em>Topographie</em>)</td></tr>
+        <tr><td>2.3</td><td>Que montre le premier souvenir ? (PB-07)</td><td>La vie de l'unité, en vue subjective · Des éclats d'images · Le héros salué « Capitaine » (contredit la <em>QP2</em>) · La trahison (contredit D-33)</td></tr>
+        <tr><td>2.4</td><td>Comment se voit la méfiance aux portes ? (PB-08)</td><td>Trois signes lisibles · Par le dialogue · Systémique complète</td></tr>
+      </tbody>
+    </table></div>
+    <p class="second">Second tour : PB-09 (réglable en jouant), PB-10 (avec la bible de T-0088), PB-34 (« Que devient le hameau qui voit la magie ? » : hostile, la peur en variante · hostile pour un crime, terrifié pour la magie · hostile, Terreur si la corruption se voit).</p>
+    <p class="tranche"><b>Réponses (01/10/2026) :</b> 2.1 à 2.4 : options recommandées (D-204) ; PB-34 : option recommandée (D-205 (2)). PB-09 et PB-10 restent au second tour.</p>
+  </div>
+</section>
+
+<!-- ============ 3. MONDE ============ -->
+<section id="monde">
+  <h2>3. Monde</h2>
+  <p class="lecture muted">Jalons 1 à 3 et 5 : le relief de la zone de départ, le pont, la route et Oakhaven.</p>
+  <div class="points">
+
+    <article class="point" id="pb-11">
+      <h3><span class="id">PB-11</span>Les voies B et C de la QP1 <span class="etat valide">Tranché · D-205</span></h3>
+      <p class="tranche"><b>Tranché : D-205 (1)</b> (01/10/2026), option 1 : les trois voies (A, B, C) dans le prototype, en version courte, chacune menant à la grand-place, comme le plan d'Oakhaven (T-0092). Voie B : le voleur corrompt le garde dans la version courte (D-185 (4)).</p>
+      <p class="meta">Bloque : décors (bas-fonds, aqueduc), 3 PNJ et le garde, états de fin · Inventaire § 5, point 1</p>
+      <p class="contexte">Trois voies pour entrer : A (sergent, nid), B (voleur, chariot de contrebande, bas-fonds), C (érudit, aqueduc d'esprits, catacombes) (<em>QP1</em> ; D-139). D-177 cite « portes et grand-place d'Oakhaven » sans nommer les voies.</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Les trois voies, en version courte.</strong> A : un petit nid ; B : le chariot en plan simple, puis une ruelle qui débouche sur la place ; C : un tronçon d'aqueduc, une salle d'esprits, une crypte vers la place (proposition). Les 4 états de fin existent. <span class="cout">Coût : 3 petits décors, 3 PNJ.</span></li>
+        <li><strong>A et C seulement.</strong> La C montre la magie et la Synchronicité ; les 4 états restent possibles ; perd le côté Cartel. <span class="cout">Coût : moyen.</span></li>
+        <li><strong>A seule.</strong> La liberté de la QP1 disparaît ; 2 états de fin sur 4.</li>
+        <li><strong>Les trois complètes.</strong> Le plus fidèle, le plus long. <span class="cout">Coût : gros.</span></li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> le choix de l'approche est un pilier de la QP1 ; en version courte, chaque voie coûte un couloir, pas un quartier.</p>
+    </article>
+
+    <article class="point" id="pb-12">
+      <h3><span class="id">PB-12</span>Oakhaven : ce qu'il faut dessiner <span class="etat valide">Tranché · D-185</span></h3>
+      <p class="tranche"><b>Tranché : D-185</b> (01/10/2026), option 1 : le plan minimal proposé par T-0092 (validé), avec les réponses du directeur (ville sur la rive sud, beffroi à l'ouest de la grand-place, noms de travail provisoires) ; foule à l'écran de <strong>12 à 20 PNJ</strong> (hypothèse H-P7 du plan de production), et non 30 à 50 ; la ville compte 1 000 habitants (haut de la fourchette de D-07).</p>
+      <p class="meta">Bloque : tout le décor de la QP1, les foules · Inventaire § 5, point 11</p>
+      <p class="contexte">World design d'Oakhaven : « grand manque » (GDD). Fixé : ville régionale de 300 à 1 000 habitants sur le fleuve central (D-06, D-07), remparts, checkpoint, campements, écuries extérieures, grand-place et cloche (<em>QP1</em>).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Un plan minimal, proposé puis validé.</strong> Porte et checkpoint, campements et écuries, grand-place, rues des entrées retenues ; le reste en décor lointain ; 30 à 50 PNJ à l'écran (proposition). <span class="cout">Coût : gros mais borné.</span></li>
+        <li><strong>Le world design complet d'abord.</strong> Le meilleur pour le jeu ; retarde la QP1.</li>
+        <li><strong>Oakhaven de façade.</strong> Portes jouables, la place atteinte par un fondu.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> on ne dessine que ce que la démo traverse, et ce morceau prendra place dans un plan complet.</p>
+    </article>
+
+    <article class="point" id="pb-13">
+      <h3><span class="id">PB-13</span>La route vers Oakhaven et le cheval du Choix A <span class="etat valide">Tranché · D-183, D-184</span></h3>
+      <p class="tranche"><b>Tranché : D-183 (5), D-184, D-194, D-196</b> (01/10/2026), ni l'option 1 ni l'option 3 telles quelles : la <strong>route courte</strong> du plan de la zone (≈ 1 km, T-0091 ; durée des trajets gardée), avec une <strong>monture montée</strong> : pas, trot et galop, barre d'Endurance propre à la monture (D-184) ; le pas est gratuit, le trot coûte, le galop coûte plus (valeurs à régler en jouant, D-194) ; allures à vitesse de jeu (D-196). La monture du Choix A est <strong>offerte au Pont des Déserteurs</strong>, au début de la route (D-184) ; qui la remet : à définir. Coût : celui de l'option 3 pour la monture (gros), sur la route de l'option 1.</p>
+      <p class="meta">Bloque : décor de la route, monture, quadrupèdes · Inventaire § 5, point 1</p>
+      <p class="contexte">Après le pont, la route se sépare vers la forêt et vers Oakhaven (D-36) ; le monde fait 50 km de rayon (D-132). Au Choix A, le hameau offre un cheval volé (D-37) ; aucun système de monture ni animation de quadrupède n'existe (essai du loup en cours, D-178).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Route courte jouable, cheval mené à la bride.</strong> Environ 1 km jusqu'aux campements, remparts visibles dès la fourche ; la branche du nord-est se ferme par un obstacle ; le cheval suit et reste aux écuries (proposition ; distance resserrée pour la démo seulement). <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Route courte puis ellipse.</strong> Moins cher ; le monde ouvert se sent moins.</li>
+        <li><strong>Route plus longue, cheval monté.</strong> Montre les montures. <span class="cout">Coût : gros.</span></li>
+        <li><strong>Ellipse complète.</strong> La route citée par D-177 disparaît presque.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> la route et le cheval restent visibles sans ouvrir le chantier des montures.</p>
+    </article>
+
+    <article class="point" id="pb-14">
+      <h3><span class="id">PB-14</span>Ce qui ferme la zone de départ, et sa disposition <span class="etat valide">Tranché · D-183</span></h3>
+      <p class="tranche"><b>Tranché : D-183 (1) à (3)</b> (01/10/2026), option 1 : un ravin. Zone en variante resserrée (≈ 1,55 km², Gorges comprises : dans la fourchette de 1 à 2 km²) ; limites à construire (≈ 2,8 km) : ravin prolongé à l'ouest et au sud-est, falaises relevées au sud ; parois non grimpables pour le prototype (règle du prototype, P1-05), à retirer une fois le prototype livré.</p>
+      <p class="meta">Bloque : terrain de la zone, pont · Inventaire § 5, point 9</p>
+      <p class="contexte">Une « rivière ou un ravin (à définir) », infranchissable en toute saison, que seul le pont franchit (<em>Topographie</em> § 1 ; D-36). Sans les boss (D-177), la zone se limite aux chemins, un morceau de nature et la Ferme : 1 à 2 km² (hypothèse de l'inventaire).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Un ravin.</strong> Infranchissable par nature (ni gué ni gel à justifier) ; prolonge les falaises des Gorges. <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Une rivière.</strong> Plus vivante ; il faut justifier qu'aucun gué ni gel ne l'ouvre.</li>
+        <li><strong>Un ravin avec un torrent.</strong> Le plus photogénique ; un peu plus cher.</li>
+      </ol>
+      <p class="pourquoi"><b>Disposition proposée :</b> un « Y » : des Gorges (sud) à la Ferme (centre), puis le hameau, le nid et le pont au nord-est, une branche vers les Mines à l'ouest.</p>
+    </article>
+
+    <article class="point" id="pb-15">
+      <h3><span class="id">PB-15</span>La météo <span class="etat encours">Second tour · en partie tranché (D-187)</span></h3>
+      <p class="encore"><b>En partie tranché : D-187</b> (01/10/2026) : le prototype a un cycle du jour et de la nuit, une lune et des changements de météo ; l'option 1 (beau temps fixe) n'est donc plus possible. Restent à proposer : la durée du cycle, les types de météo et leurs effets (propositions de départ dans <em>Météo Dynamique</em> § 1, T-0102), et l'heure du passage au belvédère, vu à contre-jour (D-183 (4) ; options du rapport de T-0102, point 4). Le point reste au second tour.</p>
+      <p class="meta">Plaine Royale : ciel azur et pluie battante (<em>Météo Dynamique</em> § 1.C) · non citée par D-177</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Beau temps fixe, à la lumière de l'image 13</strong> ; l'heure n'avance qu'à la mort et au repos. <span class="cout">Coût : petit.</span></li>
+        <li><strong>Une averse scriptée.</strong> Utile surtout si l'élément est la Foudre.</li>
+        <li><strong>Météo dynamique complète.</strong> Peu visible sur une démo.</li>
+      </ol>
+    </article>
+
+  </div>
+  <div class="questionnaire">
+    <h3>Questionnaire 3 · Monde</h3>
+    <div class="tableau"><table>
+      <thead><tr><th>#</th><th>Question</th><th>Options (recommandée en premier)</th></tr></thead>
+      <tbody>
+        <tr><td>3.1</td><td>Quelles voies d'entrée ? (PB-11)</td><td>Les trois, courtes · A et C · A seule · Les trois complètes</td></tr>
+        <tr><td>3.2</td><td>Que dessiner d'Oakhaven ? (PB-12)</td><td>Plan minimal validé · World design complet d'abord · De façade</td></tr>
+        <tr><td>3.3</td><td>Quelle route, et le cheval ? (PB-13)</td><td>Courte, cheval à la bride · Courte puis ellipse · Longue, cheval monté · Ellipse complète</td></tr>
+        <tr><td>3.4</td><td>Qu'est-ce qui ferme la zone ? (PB-14)</td><td>Un ravin · Une rivière · Un ravin avec un torrent</td></tr>
+      </tbody>
+    </table></div>
+    <p class="second">Second tour : PB-15 (météo).</p>
+    <p class="tranche"><b>Réponses (01/10/2026, avec les plans de niveau) :</b> 3.1 : option recommandée (D-205 (1)) ; 3.2 : option recommandée, foule de 12 à 20 PNJ (D-185) ; 3.3 : route courte et monture montée, offerte au pont (D-183 (5), D-184) ; 3.4 : option recommandée (D-183). PB-15 : en partie tranché par D-187.</p>
+  </div>
+</section>
+
+<!-- ============ 4. NOMS ET VOIX ============ -->
+<section id="noms">
+  <h2>4. Noms et voix</h2>
+  <p class="lecture muted">Le reflet (jalon 1), puis tous les dialogues. Une règle d'attente existe : titres et surnoms à l'oral, le nom à l'écrit (D-155, D-170).</p>
+  <div class="points">
+
+    <article class="point" id="pb-16">
+      <h3><span class="id">PB-16</span>La voix du nom dans le prototype <span class="etat valide">Tranché · D-206</span></h3>
+      <p class="tranche"><b>Tranché : D-206</b> (01/10/2026), option 1 : tout le prototype en voix de synthèse (modèle de l'essai) ; les répliques qui contiennent le nom choisi sont générées en entier, en direct, en tâche de fond (méthode (b)) ; une carte graphique sur le PC de démonstration. Réalise D-170 et D-172. Correction 1 : voix de base des PNJ du domaine public, licence vérifiée, une voix distincte par PNJ (D-214 (2) ; tension 11 levée) ; d'abord un essai chronométré dans Unreal, puis un ticket dédié (D-214 (1)) ; dans le jeu complet, les répliques avec le nom sont générées pendant les temps morts, puis gardées (D-212 (3)).</p>
+      <p class="meta">Bloque : chaîne des voix, reflet, réplique du héros, crédits · Inventaire § 5, point 5 · D-176</p>
+      <p class="contexte">Objectif : les voix disent le nom saisi librement (D-170) et le héros dit « Non, moi c'est [Nom du héros]. » (D-172). Le « nom seul inséré » est refusé ; reste la réplique entière générée, modèle non choisi (D-176). L'essai de cette nuit utilise la synthèse Qwen3-TTS 1.7B (D-178) avec des voix LibriVox réservées à l'essai (étude T-0070).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Tout en synthèse, le nom généré en direct.</strong> Le modèle de l'essai (sous réserve de l'écoute du directeur), avec des voix d'aucune personne réelle identifiable ou de comédiens qui signent pour le prototype ; après le reflet, les répliques qui contiennent le nom sont générées en tâche de fond, avec pré-écoute et repli sur les titres ; « voix générées » aux crédits (règlement européen sur l'IA, art. 50). <span class="cout">Coût : moyen à gros.</span></li>
+        <li><strong>Synthèse, noms préparés à l'avance</strong> (une vingtaine) ; sinon, titres. Sûr en présentation ; contredit l'esprit de D-170 (pas de liste) : un raccourci de démo à accepter comme tel.</li>
+        <li><strong>Aucun nom à l'oral.</strong> La réplique du héros s'affiche sans voix sur le nom ; D-172 ne se voit pas.</li>
+        <li><strong>Vrais comédiens avec avenant.</strong> Le plus proche du jeu final ; trop lourd pour le prototype.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> le prototype est le lieu où montrer la promesse de D-170 ; la chaîne est celle de l'essai ; le repli sur les titres couvre les échecs en direct.</p>
+    </article>
+
+    <article class="point" id="pb-17">
+      <h3><span class="id">PB-17</span>Qui appelle le héros « Capitaine » <span class="etat valide">Tranché · D-207</span></h3>
+      <p class="tranche"><b>Tranché : D-207</b> (01/10/2026), option 1 : « Capitaine » est un titre d'usage pour tout inconnu armé ; l'entité le dit aussi, par moquerie ; le « Non, moi c'est [Nom du héros]. » du héros (D-172) dément ce titre. Nuance à écrire dans le <em>Lexique</em> § 5 (tensions 5 et 16).</p>
+      <p class="meta">Bloque : toutes les premières rencontres, la mémoire du nom · Bilan Mission 6, point 1</p>
+      <p class="contexte">D-172, le <em>Design du Didacticiel</em> et le <em>Lore, Héros et Intrigue</em> font dire « Capitaine » aux PNJ dès le début. Mais personne ne reconnaît le héros (D-03), son insigne « désigne son unité, pas son porteur » (<em>QP2</em> ; D-108), c'est la QP2 qui révèle qu'il était capitaine, et le <em>Lexique</em> § 5 dit que les PNJ n'appellent les capitaines sacrifiés « Capitaine » « qu'une fois identifiés » (D-31, D-108). Le Général ne parle pas dans le prototype.</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Tout inconnu armé, par usage ; l'entité, par moquerie.</strong> « Capitaine » est une façon polie ou prudente d'appeler une personne en armes qu'on ne connaît pas (usage du monde : proposition) ; l'entité le dit en sachant, sans que le joueur puisse le distinguer. Après la QP2, la réplique prend un double sens. Vaut aussi pour une héroïne (D-163). Compatible avec D-172, la QP2 et D-108, <strong>mais en tension avec le <em>Lexique</em> § 5</strong> : l'usage donnerait ce titre aux capitaines avant leur identification. À modifier si retenue : <em>Lexique</em> § 5 (nuance), fiches T-0084 § 3.1 et 3.2 (« étranger »). <span class="cout">Coût : nul.</span></li>
+        <li class="ecarte"><strong>Personne avant la QP2.</strong> Protège le plus la révélation et respecte le <em>Lexique</em> § 5 ; mais la réplique de D-172 disparaît du prototype, et il faudrait modifier le <em>Design du Didacticiel</em> (étape 1) et le <em>Lore, Héros et Intrigue</em> (§ 1).</li>
+        <li class="ecarte"><strong>Ceux qui lisent l'insigne.</strong> L'insigne porterait le grade : contredit la <em>QP2</em> (étapes 1 et 3), la <em>Topographie</em> § 5 (insigne « identique »), D-108 et D-155 (2) ; à modifier si retenue.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> aucune option n'est compatible avec tous les documents, qui se contredisent entre eux (« Capitaine » dès le début d'un côté ; réservé à un capitaine identifié de l'autre). L'option 1 garde la réplique de D-172 et la révélation de la QP2 au prix d'une nuance du <em>Lexique</em> ; à trancher par le directeur.</p>
+    </article>
+
+    <article class="point" id="pb-18">
+      <h3><span class="id">PB-18</span>La mémoire du nom : seuil et portée <span class="etat valide">Tranché · D-208</span></h3>
+      <p class="tranche"><b>Tranché : D-208 (1)</b> (01/10/2026), option 1 : chaque conscience collective retient le nom du héros (tout le hameau ; à Oakhaven, la conscience concernée) après un service rendu.</p>
+      <p class="meta">Bloque : répliques en deux versions, IA collective · Bilan Mission 6, point 2</p>
+      <p class="contexte">« Plus les PNJ parlent au héros, plus ils se souviennent de lui (mémoire partagée par l'IA collective) » ; seuil et portée à définir (D-172 ; <em>IA Collective</em>). Le hameau a une seule conscience, une ville régionale en a cinq.</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>La conscience collective retient le nom.</strong> Après que le héros s'est présenté et a rendu un service au groupe (proposition) : le hameau après sa première quête ; à Oakhaven, la faction servie par la voie (Ordre pour A, Cartel pour B, Conclave pour C). Une seule conscience par faction (<em>IA Collective</em> § 3) : avec la Voie A, tout l'Ordre de la ville, gardes compris, emploie le nom ; avec B ou C, l'Ordre ne l'apprend pas. <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Chaque PNJ, après quelques échanges.</strong> Plus fin ; bien plus de répliques en double.</li>
+        <li><strong>Aussitôt dit, aussitôt su.</strong> Le plus simple ; perd le « au fur et à mesure ».</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> fidèle à l'IA collective décrite, un effet visible pour peu de répliques.</p>
+    </article>
+
+    <article class="point" id="pb-19">
+      <h3><span class="id">PB-19</span>Les sous-titres et le nom <span class="etat valide">Tranché · D-208</span></h3>
+      <p class="tranche"><b>Tranché : D-208 (2)</b> (01/10/2026), option 1 : le sous-titre écrit ce que dit la voix (un titre si la voix dit un titre). D-155 (3) est à préciser (tension 4).</p>
+      <p class="meta">Bloque : l'affichage de toutes les répliques · Bilan Mission 5, point 2</p>
+      <p class="contexte">D-155 : le nom s'affiche à l'écrit, « sous-titres » compris ; mais que montre le sous-titre quand la voix dit « Capitaine » ?</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Ce que dit la voix.</strong> Le nom s'affiche dans les textes non dits et dès que la voix le dit (PB-16). <strong>Contredit</strong> la lettre de D-155 (3), qui cite les sous-titres : à préciser si l'option est retenue.</li>
+        <li><strong>Le nom quand même.</strong> Texte et voix divergent, ce que les règles d'accessibilité déconseillent.</li>
+        <li><strong>Le titre, suivi du nom.</strong> Compromis lourd à lire.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> un sous-titre doit dire ce qu'on entend.</p>
+    </article>
+
+    <article class="point" id="pb-20">
+      <h3><span class="id">PB-20</span>Les surnoms moqueurs de l'entité <span class="etat attente">Second tour · ouvert</span></h3>
+      <p class="encore"><b>Toujours ouvert (mise à jour du 01/10/2026) :</b> D-207 confirme seulement que l'entité dit « Capitaine », par moquerie ; la liste des surnoms reste à proposer.</p>
+      <p class="meta">« Liste à définir » (<em>DA &amp; Script</em> § 3) · D-107 · Bilan Mission 5, point 9</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Un rédacteur propose 12 à 15 surnoms, le directeur choisit</strong> (comme pour D-66), rangés par stade.</li>
+        <li><strong>Seulement ceux déjà écrits</strong> (« Capitaine », « cadavre ambulant », « soldat ») : vite répétitif.</li>
+        <li><strong>Des surnoms nés des actes</strong> (« le boucher » après le pont…) : le plus drôle, plus de répliques.</li>
+      </ol>
+    </article>
+
+  </div>
+  <div class="questionnaire">
+    <h3>Questionnaire 4 · Noms et voix</h3>
+    <div class="tableau"><table>
+      <thead><tr><th>#</th><th>Question</th><th>Options (recommandée en premier)</th></tr></thead>
+      <tbody>
+        <tr><td>4.1</td><td>Comment dire le nom choisi ? (PB-16)</td><td>Synthèse, nom en direct · Noms préparés · Aucun nom à l'oral · Comédiens avec avenant</td></tr>
+        <tr><td>4.2</td><td>Qui dit « Capitaine » ? (PB-17)</td><td>Tout inconnu armé, par usage ; l'entité par moquerie (nuance du <em>Lexique</em> § 5) · Personne avant la QP2 (modifie le <em>Didacticiel</em>) · Ceux qui lisent l'insigne (contredit la <em>QP2</em>, D-108)</td></tr>
+        <tr><td>4.3</td><td>Qui retient le nom, et quand ? (PB-18)</td><td>La conscience, après un service · Chaque PNJ · Aussitôt dit</td></tr>
+        <tr><td>4.4</td><td>Que montre le sous-titre ? (PB-19)</td><td>Ce que dit la voix · Le nom quand même · Le titre suivi du nom</td></tr>
+      </tbody>
+    </table></div>
+    <p class="second">Second tour : PB-20 (surnoms de l'entité).</p>
+    <p class="tranche"><b>Réponses (01/10/2026) :</b> 4.1 à 4.4 : options recommandées (D-206, D-207, D-208 (1) et (2)). PB-20 reste au second tour.</p>
+  </div>
+</section>
+
+<!-- ============ 5. INTERFACE ============ -->
+<section id="interface">
+  <h2>5. Interface</h2>
+  <p class="lecture muted">Le dialogue sert dès le hameau (jalon 2) ; le reste au jalon 6, à partir des maquettes de T-0083.</p>
+  <div class="points">
+
+    <article class="point" id="pb-21">
+      <h3><span class="id">PB-21</span>La forme des dialogues <span class="etat valide">Tranché · D-208</span></h3>
+      <p class="tranche"><b>Tranché : D-208 (3)</b> (01/10/2026), option 1 : des scènes jouées, avec des choix seulement aux moments qui comptent.</p>
+      <p class="meta">Bloque : tous les PNJ parlants, le format d'écriture · Inventaire E11, § 5 point 13</p>
+      <p class="contexte">Le système de dialogue est absent des documents (GDD) ; le prototype demande des choix (pont, voies, loup) ; au Stade 3, l'entité pourra prendre le contrôle de certains choix (D-10).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Scènes jouées, choix aux moments clés.</strong> Les répliques se déroulent avec sous-titres ; aux décisions, 2 à 4 choix courts tracés comme des notes à l'encre (proposition). Laisse la place à la future prise de contrôle. <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Arbres de dialogue classiques.</strong> Familier ; deux à trois fois plus de répliques.</li>
+        <li><strong>Choix par les actes seulement.</strong> Le moins cher ; les voies de la QP1 deviennent peu lisibles.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> les choix qui comptent, une interface diégétique, le moins de texte.</p>
+    </article>
+
+    <article class="point" id="pb-22">
+      <h3><span class="id">PB-22</span>La sauvegarde <span class="etat valide">Tranché · D-208</span></h3>
+      <p class="tranche"><b>Tranché : D-208 (4)</b> (01/10/2026), option 1 : une seule sauvegarde automatique (points de repos, étapes de quête), plus des chapitres pour reprendre une présentation à un moment précis. Correction 1 : la sauvegarde automatique unique vaut aussi pour le jeu complet ; les chapitres restent propres au prototype (D-212 (1)).</p>
+      <p class="meta">Bloque : persistance des choix, écran titre, présentations · Inventaire A4</p>
+      <p class="contexte">Absente des documents ; mais la mort est diégétique : « Pas de rechargement de sauvegarde » (<em>Convoi Blindé</em>), réveil au dernier repos, quêtes secondaires échouées (<em>Repos</em>).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Automatique seulement</strong>, aux repos et aux étapes de quête, reprise par « Continuer » ; pour les présentations, un menu de chapitres (proposition). <span class="cout">Coût : petit à moyen.</span></li>
+        <li><strong>Manuelle libre en plus.</strong> Habituel ; vide la mort diégétique de son sens.</li>
+        <li><strong>Manuelle aux points de repos.</strong> Compromis.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> la seule qui ne contredit pas la mort décrite par les documents.</p>
+    </article>
+
+    <article class="point" id="pb-23">
+      <h3><span class="id">PB-23</span>Ce que couvre « toute l'interface » <span class="etat valide">Tranché · D-209</span></h3>
+      <p class="tranche"><b>Tranché : D-209 (1)</b> (01/10/2026), option 1 : les écrans du périmètre dans le jeu, les autres en maquettes cliquables (T-0083, T-0098) montrées pendant la présentation ; les écrans de dialogue des maquettes montrent des captures du jeu (D-211). À voir : l'issue « autre animal compagnon » de PB-32 (D-210 (2)) peut demander l'écran pour nommer un animal (E13), que l'option ne faisait entrer dans le jeu que « si PB-32 le demande ».</p>
+      <p class="meta">Bloque : volume du jalon 6, présentation (T-0086) · Inventaire § 3, § 5 point 1</p>
+      <p class="contexte">18 écrans décrits ou cités, dont 4 hors périmètre (primes, Pacte, voyages, héritier) et 3 à trancher (grimoire, nommer un animal, cartographie en coop), plus 3 mini-jeux.</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Le périmètre en jeu, le reste en maquettes cliquables</strong> (T-0083) montrées en présentation. <span class="cout">Coût : rien de plus.</span></li>
+        <li><strong>Tous les écrans en jeu</strong>, via une galerie : des écrans sans rien derrière. <span class="cout">Coût : gros.</span></li>
+        <li><strong>Le périmètre seul.</strong> « Toute l'interface » (D-175) n'est plus tenue.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> toute l'interface voulue par D-175, sans écrans vides.</p>
+    </article>
+
+    <article class="point" id="pb-24">
+      <h3><span class="id">PB-24</span>Les menus généraux <span class="etat valide">Tranché · D-209</span></h3>
+      <p class="tranche"><b>Tranché : D-209 (2)</b> (01/10/2026), option 1 : un socle de démo (écran titre, pause, options : volume par famille de sons, luminosité, sous-titres…), sous-titres en français et en anglais.</p>
+      <p class="meta">Bloque : jalon 6, présentation internationale · Inventaire A1 à A7</p>
+      <p class="contexte">Écran titre, options, difficulté, accessibilité, traduction : absents (GDD) ; commandes provisoires (D-67, D-68) ; le français d'abord, l'anglais ensuite (étude T-0070).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Un socle de démo.</strong> Titre, pause, options (sons, luminosité, caméra, taille des sous-titres), une difficulté, schéma des commandes affiché, voix française et sous-titres français et anglais (proposition). <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Un ensemble complet.</strong> Trois difficultés, réassignation des touches, daltonisme, voix anglaises. <span class="cout">Coût : gros.</span></li>
+        <li><strong>Le strict minimum</strong>, tout en français. <span class="cout">Coût : petit.</span></li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> l'essentiel d'un jeu fini, et l'anglais pour des investisseurs étrangers.</p>
+    </article>
+
+    <article class="point" id="pb-25">
+      <h3><span class="id">PB-25</span>Le titre du jeu <span class="etat attente">Second tour · ouvert</span></h3>
+      <p class="meta">« Le Crépuscule de l'Ombre », titre de travail, reporté par le directeur (bilan Mission 5, point 1)</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Le titre de travail, marqué « provisoire ».</strong></li>
+        <li><strong>Un nom de code neutre</strong> jusqu'au choix.</li>
+        <li><strong>Choisir avant la démo</strong> parmi 3 à 5 titres proposés, avec recherche de marques.</li>
+      </ol>
+    </article>
+
+    <article class="point" id="pb-26">
+      <h3><span class="id">PB-26</span>« de » ou « d' » devant le nom <span class="etat attente">Second tour · ouvert</span></h3>
+      <p class="meta">« Les Chroniques de [Nom du héros] » (<em>Interface des Quêtes</em> § 2) · Bilan Mission 5, point 9</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Une règle simple :</strong> « d' » devant une voyelle, un « y » ou un « h », « de » sinon.</li>
+        <li><strong>Une tournure sans article :</strong> « Chroniques — [Nom] » (change le texte du document).</li>
+        <li><strong>Le joueur choisit</strong> au reflet.</li>
+      </ol>
+    </article>
+
+    <article class="point" id="pb-27">
+      <h3><span class="id">PB-27</span>Le didacticiel et le pont dans le journal <span class="etat attente">Second tour · ouvert</span></h3>
+      <p class="meta">« Leur place dans le journal est à définir » (<em>Interface des Quêtes</em> § 2)</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Le pont dans l'onglet II</strong> avec les quêtes de la zone ; pas d'entrée pour le didacticiel.</li>
+        <li><strong>Une page « Avant les Chroniques »</strong>, hors des 4 intercalaires.</li>
+        <li class="ecarte"><strong>Dans l'onglet I.</strong> Contredit le document : à écarter.</li>
+      </ol>
+    </article>
+
+    <article class="point" id="pb-28">
+      <h3><span class="id">PB-28</span>Mini-carte, visibilité, barres de vie <span class="etat attente">Second tour · ouvert</span></h3>
+      <p class="meta">H8, H13, H14 « à trancher » (inventaire § 3.2) · carte volontairement fausse (<em>Brouillard de Guerre</em>)</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Un affichage discret :</strong> pas de mini-carte, un indice de visibilité sobre, une barre de vie sur la seule cible verrouillée. Pour le prototype seulement : la <em>Météo Dynamique</em> suppose une mini-carte dans le jeu complet.</li>
+        <li><strong>Un affichage classique complet.</strong> Une mini-carte exacte ôte son sens à la carte fausse.</li>
+        <li><strong>Rien de ces trois éléments.</strong> Immersif, dur à lire en quelques minutes.</li>
+      </ol>
+    </article>
+
+  </div>
+  <div class="questionnaire">
+    <h3>Questionnaire 5 · Interface</h3>
+    <div class="tableau"><table>
+      <thead><tr><th>#</th><th>Question</th><th>Options (recommandée en premier)</th></tr></thead>
+      <tbody>
+        <tr><td>5.1</td><td>Quelle forme pour les dialogues ? (PB-21)</td><td>Scènes jouées, choix clés · Arbres classiques · Choix par les actes</td></tr>
+        <tr><td>5.2</td><td>Comment sauvegarde-t-on ? (PB-22)</td><td>Automatique, chapitres pour les présentations · Manuelle libre · Manuelle aux repos</td></tr>
+        <tr><td>5.3</td><td>Que couvre « toute l'interface » ? (PB-23)</td><td>Périmètre en jeu, reste en maquettes · Tout en jeu · Le périmètre seul</td></tr>
+        <tr><td>5.4</td><td>Quels menus généraux ? (PB-24)</td><td>Socle de démo, sous-titres FR et EN · Complet · Minimum</td></tr>
+      </tbody>
+    </table></div>
+    <p class="second">Second tour : PB-25 à PB-28.</p>
+    <p class="tranche"><b>Réponses (01/10/2026) :</b> 5.1 à 5.4 : options recommandées (D-208 (3) et (4), D-209 (1) et (2)). PB-25 à PB-28 restent au second tour.</p>
+  </div>
+</section>
+
+<!-- ============ 6. ÉCONOMIE ============ -->
+<section id="economie">
+  <h2>6. Économie, métiers et progression</h2>
+  <p class="lecture muted">Jalon 4 : « L'Agneau et le Loup » et la quête du forgeron (D-177).</p>
+  <div class="points">
+
+    <article class="point" id="pb-29">
+      <h3><span class="id">PB-29</span>Jusqu'où monter les métiers <span class="etat valide">Tranché · D-209</span></h3>
+      <p class="tranche"><b>Tranché : D-209 (3)</b> (01/10/2026), option 1 : une montée courte et visible (Minage et Forge d'environ 1 à 5 pendant la quête du forgeron).</p>
+      <p class="meta">Bloque : rythme de la quête du forgeron, durée de la démo · Inventaire § 5, point 1</p>
+      <p class="contexte">Forge et Minage enseignés jusqu'au niveau 29 (D-43) ; +1 % de gemmes par niveau ; message de verrou (<em>Guide des Métiers</em> § 2.A et § 3.A).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Une montée courte et visible</strong> (environ 1 à 5), la jauge et les gemmes qui montent, le verrou montré une fois (proposition). <span class="cout">Coût : petit à moyen.</span></li>
+        <li><strong>Toute la montée de 1 à 29.</strong> Des heures de répétition.</li>
+        <li><strong>Un niveau fixe, une fabrication scriptée.</strong> Le système ne se voit pas.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> progression, gemmes et verrou en quelques minutes.</p>
+    </article>
+
+    <article class="point" id="pb-30">
+      <h3><span class="id">PB-30</span>Objets, recettes et prix <span class="etat valide">Tranché · D-209</span></h3>
+      <p class="tranche"><b>Tranché : D-209 (4)</b> (01/10/2026), option 1 : une liste courte d'objets, de recettes (environ six recettes de fer) et de prix, proposée par un rédacteur (T-0113, validé ; la liste attend la relecture du directeur, D-215) puis validée par le directeur. Correction 1 : l'option proposait un inventaire « sans poids » ; <strong>D-214 (3)</strong> donne un poids aux objets, avec une charge maximale, comme dans l'essai.</p>
+      <p class="meta">Bloque : forge, inventaire, commerce, modèles d'objets · Inventaire § 5, point 12</p>
+      <p class="contexte">Liste des objets, recettes, prix, inventaire : absents (GDD) ; pièces d'or et pièces du Cartel (D-136) ; troc et marchand « à sec » au hameau (<em>Économie</em> § 2) ; marché noir par le Choix B (D-39).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Une liste courte, proposée puis validée :</strong> environ six recettes de fer, une vingtaine d'objets, troc au hameau, boutique de l'agent du Cartel, inventaire en liste simple (proposition). <span class="cout">Coût : moyen.</span></li>
+        <li><strong>Seulement les objets de quête.</strong> L'économie « réactive » ne se voit pas. <span class="cout">Coût : petit.</span></li>
+        <li><strong>L'économie complète.</strong> La plupart des effets invisibles en une zone et une ville. <span class="cout">Coût : gros.</span></li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> assez pour que forge, inventaire et commerce aient un sens.</p>
+    </article>
+
+    <article class="point" id="pb-31">
+      <h3><span class="id">PB-31</span>Progression du personnage et palier de Branche 9 <span class="etat valide">Tranché · D-210</span></h3>
+      <p class="tranche"><b>Tranché : D-210 (1)</b> (01/10/2026), aucune option telle quelle : dans la démo, le personnage progresse <strong>comme dans le jeu complet</strong>, avec le même système que les documents (<em>Combat Hybride</em> § 5.B, <em>Arbre de Compétences Global</em>), sans version simplifiée propre au prototype. L'option 4 (niveau et points à l'ancienne) reste écartée, puisque ce système la refuse. Restent à définir, faute de texte dans les documents : le niveau du personnage (GDD : « À DÉFINIR »), le gain des points, le contenu des paliers, le palier exigé pour adopter le loup ; qui donne la théorie de la Branche 9 (l'éleveur, option 1, ou le trappeur, option 2) n'est pas tranché. Tension 13 sans objet.</p>
+      <p class="meta">Bloque : écran de l'arbre, quête annexe, magie · Inventaire § 5, points 2 et 12</p>
+      <p class="contexte">Aucun niveau du personnage (GDD) ; le joueur « n'achète pas ses compétences dans un simple menu » : théorie, puis pratique (<em>Combat Hybride</em> § 5.B) ; la zone offre la théorie des Branches 9 et 1 (<em>Structure</em> § 1).</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Ni niveau ni expérience : l'arbre avance par les quêtes.</strong> Branche 9 (l'éleveur raconte comment les anciens bergers calmaient un loup ; l'adopter est la pratique), Branche 1 (le forgeron), branche de l'élément (le nid) (proposition).</li>
+        <li><strong>Idem, théorie par le trappeur</strong> caché au hameau : un PNJ de plus.</li>
+        <li><strong>Aucun prérequis :</strong> l'adoption débloque le palier après coup ; risque de ne pas la découvrir.</li>
+        <li class="ecarte"><strong>Niveau et points à dépenser.</strong> Contredit <em>Combat Hybride</em> § 5.B.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> le principe propre au jeu (théorie puis pratique), avec les PNJ déjà prévus.</p>
+    </article>
+
+    <article class="point" id="pb-32">
+      <h3><span class="id">PB-32</span>La récompense de « L'Agneau et le Loup » <span class="etat valide">Tranché · D-210</span></h3>
+      <p class="tranche"><b>Tranché : D-210 (2)</b> (01/10/2026) : <strong>les trois issues</strong> sont possibles, et le joueur choisit (lecture du Chef) : le loup adopté garde le troupeau de l'éleveur (récompense matérielle, option 1), un autre animal compagnon (par exemple le chien de berger, option 2), ou de l'or et le loup repart dans la nature (option 3). Le coût de l'option 2 s'ajoute (gros : IA de compagnon, animations de quadrupède, écran E13 peut-être). Le loup n'est toujours pas un compagnon de route (tension 9 sans objet). Correction 1 : l'autre animal est le <strong>chien de berger</strong> de l'éleveur, avec sa propre jauge de loyauté ; il peut accompagner le héros en même temps que le Loup Nommé de la QP4 (D-213 (2)) ; à l'issue 2, le loup garde le troupeau (D-215 (2)).</p>
+      <p class="meta">Bloque : fin de la quête, écran pour nommer un animal · D-63 · Inventaire § 5, point 2</p>
+      <p class="contexte">Quête « sans compagnon (ou avec un autre animal, à définir) » (D-63) ; elle « n'offre pas le loup comme compagnon de route » ; adopter donne une « récompense double » (<em>Structure</em> § 1). D-177 la place au hameau.</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Le loup adopté garde le troupeau.</strong> Récompense matérielle double ; le loup reste à l'enclos, visible à chaque retour (proposition). <span class="cout">Coût : petit.</span></li>
+        <li><strong>Un autre animal compagnon</strong> (le chien de l'éleveur) : fait de l'ombre au loup de la QP4. <span class="cout">Coût : gros.</span></li>
+        <li><strong>De l'or seulement</strong>, le loup repart : la conséquence ne se voit plus.</li>
+      </ol>
+      <p class="pourquoi"><b>Pourquoi :</b> le choix se voit dans le monde, sans compagnon ni coût en plus.</p>
+    </article>
+
+    <article class="point" id="pb-33">
+      <h3><span class="id">PB-33</span>Les ennemis de la mine <span class="etat attente">Second tour · ouvert</span></h3>
+      <p class="meta">« Ennemis de la mine : à définir » (inventaire § 5, point 12)</p>
+      <ol class="options">
+        <li class="reco"><span class="badge">Recommandée</span><strong>Des morts-vivants de mineurs</strong>, variantes de ceux qui existent.</li>
+        <li><strong>Des bêtes des galeries</strong> : nouveaux squelettes, sans animation.</li>
+        <li><strong>Pas d'ennemis</strong> : éboulements et obscurité.</li>
+      </ol>
+    </article>
+
+  </div>
+  <div class="questionnaire">
+    <h3>Questionnaire 6 · Économie, métiers et progression</h3>
+    <div class="tableau"><table>
+      <thead><tr><th>#</th><th>Question</th><th>Options (recommandée en premier)</th></tr></thead>
+      <tbody>
+        <tr><td>6.1</td><td>Jusqu'où monter les métiers ? (PB-29)</td><td>Montée courte et visible · De 1 à 29 · Niveau fixe</td></tr>
+        <tr><td>6.2</td><td>Quels objets et prix ? (PB-30)</td><td>Liste courte validée · Objets de quête seuls · Économie complète</td></tr>
+        <tr><td>6.3</td><td>Comment progresse le personnage ? (PB-31)</td><td>L'arbre par les quêtes · Théorie par le trappeur · Sans prérequis · Niveau et points</td></tr>
+        <tr><td>6.4</td><td>Que gagne-t-on à adopter le loup ? (PB-32)</td><td>Le loup garde le troupeau · Un autre compagnon · De l'or seulement</td></tr>
+      </tbody>
+    </table></div>
+    <p class="second">Second tour : PB-33 (ennemis de la mine).</p>
+    <p class="tranche"><b>Réponses (01/10/2026) :</b> 6.1 et 6.2 : options recommandées (D-209 (3) et (4)) ; 6.3 : comme dans le jeu complet (D-210 (1)) ; 6.4 : les trois issues, au choix du joueur (D-210 (2)). PB-33 reste au second tour.</p>
+  </div>
+</section>
+
+<!-- ============ TENSIONS ============ -->
+<section id="tensions">
+  <h2>Tensions relevées</h2>
+  <p class="lecture">17 endroits où une option touche un document ou une décision. Elles sont signalées, pas tranchées : le directeur les tranche en répondant. <strong>(R)</strong> : l'option recommandée est concernée. Quatre recommandations touchent un document (PB-01, PB-17, PB-19, PB-34) ; les autres sont compatibles. Pour PB-17, les documents se contredisent entre eux : aucune option ne les respecte tous.</p>
+  <div class="tableau"><table>
+    <thead><tr><th>#</th><th>Tension</th><th>Options</th><th>À modifier si retenue</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Le pouvoir est <strong>donné par l'entité</strong> (D-12) ; un élément se débloque <strong>par une quête</strong> (<em>Combat Hybride</em> § 5.B)</td><td>PB-01, 1 (R) et 2</td><td><em>Combat Hybride</em> § 5.B</td></tr>
+      <tr><td>2</td><td>La QP2 suppose le <strong>Feu et la Glace</strong> déjà connus</td><td>PB-02, 2 à 4</td><td>Rien avec le Feu (R)</td></tr>
+      <tr><td>3</td><td>D-150 : orientation <strong>avant</strong> de quitter la zone</td><td>PB-06, 3</td><td>Lecture de D-150</td></tr>
+      <tr><td>4</td><td>D-155 cite les <strong>sous-titres</strong> parmi les textes qui affichent le nom</td><td>PB-19, 1 (R)</td><td>D-155 (3)</td></tr>
+      <tr><td>5</td><td>« Capitaine » dit <strong>dès le début</strong> (D-172, <em>Didacticiel</em>) ; grade révélé en <strong>QP2</strong> ; insigne sans porteur (D-108) ; titre réservé aux capitaines identifiés (<em>Lexique</em> § 5) : les documents se contredisent</td><td>PB-17, 1 (R), 2 et 3</td><td>1 : tension 16 · 2 : <em>Didacticiel</em>, <em>Lore, Héros</em> · 3 : <em>QP2</em>, <em>Topographie</em> § 5, D-108</td></tr>
+      <tr><td>6</td><td>Stade 2 à Mana vide : seuil ou condition ?</td><td>PB-03, PB-04</td><td><em>Stades des Symptômes</em></td></tr>
+      <tr><td>7</td><td>Route courte : l'échelle de D-132 resserrée</td><td>PB-13, 1 (R)</td><td>Rien (convention de démo)</td></tr>
+      <tr><td>8</td><td>D-33 : l'unité sacrifiée jamais évoquée en solo</td><td>PB-07, 4</td><td>D-33</td></tr>
+      <tr><td>9</td><td>La quête du loup « n'offre pas le loup comme compagnon »</td><td>PB-32 (aucune)</td><td><em>Structure</em> § 1, D-63</td></tr>
+      <tr><td>10</td><td>Le journal a <strong>4 intercalaires</strong> ; l'onglet I exclut le didacticiel et le pont</td><td>PB-27, 2 et 3</td><td><em>Interface des Quêtes</em> § 2</td></tr>
+      <tr><td>11</td><td>D-170 écarte une <strong>liste de noms</strong> ; voix LibriVox réservées à l'essai</td><td>PB-16, 1 (R) et 2</td><td>Aucun (raccourci de démo à accepter)</td></tr>
+      <tr><td>12</td><td>La jauge suit le joueur, pas l'histoire (D-10) ; le pouvoir scripté ne compte pas (R)</td><td>PB-03, 3</td><td>D-10</td></tr>
+      <tr><td>13</td><td>« En utilisant la Branche 9 » suppose un palier acquis</td><td>PB-31, 3</td><td><em>Structure</em> § 1</td></tr>
+      <tr><td>14</td><td>La découverte de l'insigne sur le cadavre est le « Choc Narratif » du pont</td><td>PB-06, 4</td><td><em>Topographie</em> § 5</td></tr>
+      <tr><td>15</td><td>La QP1 révèle l'officier, la QP2 le capitaine</td><td>PB-07, 3</td><td><em>QP2</em>, <em>QP1</em></td></tr>
+      <tr><td>16</td><td><em>Lexique</em> § 5 : les PNJ n'appellent les capitaines « Capitaine » « qu'une fois identifiés » (D-31, D-108)</td><td>PB-17, 1 (R)</td><td><em>Lexique</em> § 5 (nuance) ; fiches T-0084 § 3.1 et 3.2</td></tr>
+      <tr><td>17</td><td>Magie vue au hameau : « hostile » (D-38, <em>Topographie</em> § 4) ou « hostile ou terrifié » (<em>Topographie</em> POI A, <em>IA Collective</em> § 1) ; « Terreur », mode distinct ailleurs</td><td>PB-34, 1 (R), 2 et 3</td><td>1 : préciser <em>Topographie</em> POI A et <em>IA Collective</em> § 1 · 2 : D-38, <em>Topographie</em> § 4 · 3 : fiche T-0084 § 3.1</td></tr>
+    </tbody>
+  </table></div>
+  <h3>État des tensions au 01/10/2026 (mise à jour T-0112)</h3>
+  <p class="lecture tranche"><b>Levée</b> : l'option retenue touchait un document ou une décision, et la décision dit quoi faire (report fait ou à faire). <b>Sans objet</b> : l'option concernée n'est pas retenue. Bilan après la correction 1 (D-212 à D-215) : 8 levées, 6 sans objet, 1 en partie, 2 ouvertes.</p>
+  <div class="tableau"><table>
+    <thead><tr><th>#</th><th>État</th><th>Décision</th><th>Ce qui reste</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Levée</td><td>D-182 (1)</td><td>L'exception du premier élément, don de l'entité, est écrite dans <em>Combat Hybride</em> § 5.B</td></tr>
+      <tr><td>2</td><td>Levée</td><td>D-182 (2), D-190, D-192</td><td>La QP2 fait pratiquer l'élément choisi puis enseigne son opposé (Feu → Vide, Glace → Foudre) ; elle n'impose plus le Feu et la Glace</td></tr>
+      <tr><td>3</td><td>Sans objet</td><td>D-204 (2) (option 1)</td><td>—</td></tr>
+      <tr><td>4</td><td>Levée</td><td>D-208 (2)</td><td>Préciser D-155 (3) au registre (« sous-titres, quand la voix dit le nom »)</td></tr>
+      <tr><td>5</td><td>Levée</td><td>D-207 (option 1)</td><td>Voir la tension 16</td></tr>
+      <tr><td>6</td><td>Ouverte</td><td>—</td><td>D-182 (3) fixe le seuil du Stade 2 (35) ; le « mana totalement vide » des <em>Stades des Symptômes</em> reste à lire : déclencheur d'un effet du Stade 2, ou condition en plus du seuil</td></tr>
+      <tr><td>7</td><td>Levée</td><td>D-183 (5), D-196</td><td>La route d'≈ 1 km reste une convention de démo ; les allures sont à vitesse de jeu, par convention</td></tr>
+      <tr><td>8</td><td>Sans objet</td><td>D-204 (3) (option 1)</td><td>—</td></tr>
+      <tr><td>9</td><td>Sans objet</td><td>D-210 (2) ; D-213 (2), D-215 (2)</td><td>Le loup ne devient pas compagnon de route : à l'issue 2, il garde le troupeau, et l'autre animal compagnon est le chien de berger, avec sa propre jauge de loyauté</td></tr>
+      <tr><td>10</td><td>Ouverte</td><td>—</td><td>PB-27, au second tour</td></tr>
+      <tr><td>11</td><td>Levée</td><td>D-206 (option 1) ; D-214 (2)</td><td>La liste de noms est écartée ; voix de base du domaine public, licence vérifiée, une par PNJ (correction 1) : la voix du forgeron de l'essai (LibriVox, T-0078) y répond si sa licence est vérifiée</td></tr>
+      <tr><td>12</td><td>Levée</td><td>D-182 (3), D-188</td><td>Le grand sort guidé ne compte pas dans la jauge : D-10 est respectée</td></tr>
+      <tr><td>13</td><td>Sans objet</td><td>D-210 (1)</td><td>Le palier exigé pour l'adoption reste à définir dans les documents</td></tr>
+      <tr><td>14</td><td>Sans objet</td><td>D-204 (2) (option 1)</td><td>—</td></tr>
+      <tr><td>15</td><td>Sans objet</td><td>D-204 (3) (option 1)</td><td>—</td></tr>
+      <tr><td>16</td><td>Levée</td><td>D-207</td><td>Nuance du <em>Lexique</em> § 5 (reportée par T-0111, validé) ; fiches T-0084 § 3.1 et § 3.2 (« étranger » quand ils se méfient) à ajuster dans <code>fiches-pnj.md</code></td></tr>
+      <tr><td>17</td><td>En partie</td><td>D-205 (2) (option 1)</td><td><em>Topographie</em> POI A et <em>IA Collective</em> § 1 précisés (T-0111, validé) ; le cas du Stade 3 reste à trancher plus tard</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ CORRESPONDANCE ============ -->
+<section id="correspondance">
+  <h2>D'où viennent les points</h2>
+  <div class="tableau"><table>
+    <thead><tr><th>Source</th><th>Points</th></tr></thead>
+    <tbody>
+      <tr><td>Inventaire § 5, point 1 (reste après D-177)</td><td>PB-11, PB-13, PB-15, PB-23, PB-29</td></tr>
+      <tr><td>Points 2 et 12 (quête annexe, quête de métier)</td><td>PB-30, PB-31, PB-32, PB-33 ; le lieu (hameau) est tranché par D-177</td></tr>
+      <tr><td>Points 3 et 4 (magie, Ange, horde)</td><td>PB-01 à PB-05, PB-09</td></tr>
+      <tr><td>Points 5 et 6 (nom à l'oral, élision)</td><td>PB-16 à PB-18, PB-20, PB-26</td></tr>
+      <tr><td>Points 7 à 11 (chef, journal, zone, pont, Oakhaven)</td><td>PB-06, PB-27, PB-14, PB-09, PB-07, PB-08, PB-12</td></tr>
+      <tr><td>Points 13 et 14 (interface générale, direction artistique)</td><td>PB-21, PB-22, PB-24, PB-25, PB-10</td></tr>
+      <tr><td>Inventaire § 3.2, éléments « à trancher » : mini-carte (H8), visibilité (H13), barres de vie (H14), corruption de l'écran (H10)</td><td>PB-28 ; PB-04</td></tr>
+      <tr><td>Point 15 (faim)</td><td>Sans objet depuis D-177</td></tr>
+      <tr><td>Bilan Mission 5 (points 1, 2, 9, 10)</td><td>PB-25, PB-19, PB-20, PB-26, PB-06, PB-04</td></tr>
+      <tr><td>Bilan Mission 6 (points 1, 2) et D-176</td><td>PB-17, PB-18, PB-16</td></tr>
+      <tr><td>Relecture du lore des dialogues (T-0087, après publication) : réaction du hameau à la magie ; « Capitaine » face au <em>Lexique</em> § 5</td><td>PB-34 ; PB-17</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted lecture">Ne touchent pas le prototype : la Capitale et le quartier noble, le capitaine d'escorte de la QP4, les lanceurs des QP4 à QP7, la Visionnaire, le Dossier de Trahison, les noms du loup et de l'héritier.</p>
+</section>
+
+<!-- ============ SOURCES ============ -->
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lecture">Documents de design : <em>Design du Didacticiel</em>, <em>Topographie de la Zone de Départ</em>, <em>QP1</em>, <em>QP2</em>, <em>Structure - Quêtes Secondaires par Zone</em>, <em>Combat Hybride</em>, <em>Roue des Magies</em>, <em>Stades des Symptômes</em>, <em>Arbre de Compétences</em>, <em>IA Collective</em>, <em>Interface des Quêtes</em>, <em>Guide des Métiers</em>, <em>Économie</em>, <em>Exploration et Montures</em>, <em>Repos</em>, <em>Météo Dynamique</em>, <em>Convoi Blindé</em>, <em>DA &amp; Script</em>, <em>Lore Suprême</em>, <em>Lore &amp; Système</em>, GDD ; ajoutés par le complément 1 : <em>Lexique</em> (§ 5), <em>Lore, Héros et Intrigue</em>, <em>Criminalité, Chasseurs de Primes</em>, <em>Criminalité Avancée</em>, <em>Factions et Jauges</em>, fiches des PNJ (T-0084). Décisions du directeur : D-03 à D-180 (citées à chaque point). Mise à jour du 01/10/2026 (T-0112) : D-182 à D-185, D-187, D-188, D-190, D-192, D-194, D-196, D-204 à D-211 ; plans de niveau T-0091 et T-0092 (validés) ; rapports de T-0078 (voix de l'essai), T-0101 et T-0102 (Mission 7), T-0111 (report de D-204 à D-210 dans les documents), T-0114 et T-0115 (rattrapages de D-204, D-207, D-208 ; report de D-212 et D-213), tous trois validés ; ticket T-0113 (liste des objets, validé). Correction 1 : D-212 à D-215.</p>
+  <p class="chemins">D:\aaa-game\.equipe\prototype\points-bloquants.md (dossier complet)<br>D:\aaa-game\.equipe\etudes\cout-proto\inventaire.md (T-0077)<br>D:\aaa-game\.equipe\bilans\mission-5.md · mission-6.md<br>D:\aaa-game\.equipe\etudes\etude-voix-du-nom.md (T-0070)<br>D:\aaa-game\.equipe\decisions.md</p>
+</section>
+</div>
+
+</body>
+</html>

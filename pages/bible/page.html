@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<!-- Page du chantier T-0088 (bible artistique), d'après E:\aaa-proto\livrables\GABARIT-PAGE.html.
+Images : planches/*.jpg à côté de la page (10 fichiers, 2,6 Mo). Le dossier _scripts/ n'est pas à publier.
+Texte source : D:\aaa-game\.equipe\prototype\bible-artistique.md -->
+<title>Bible artistique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@400;600&family=Pinyon+Script&family=UnifrakturMaguntia&display=swap">
+<style>
+/* Bible artistique : une colonne de lecture, des planches pleine largeur, des nuanciers et des échantillons d'interface ; même identité sombre que les autres pages du projet */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --parchemin:#d8c8a4; --parchemin-ombre:#a8926a; --encre:#1f1a16; --encre-rouge:#8e2a1f; --vide:#8875bb;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte);margin:0}
+.page{max-width:72rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:44rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+.num{font:500 .8rem var(--f-data);color:var(--aube);margin-right:.5rem}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+section>*,header>*,figure.planche>*,.palette>*{min-width:0}
+section,header,figure.planche,.palette,.carte{grid-template-columns:minmax(0,1fr)}
+.etat{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--aube)}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.4rem .9rem;font-size:.9rem}
+nav.sommaire a{color:var(--pierre);text-decoration:none;border-bottom:1px solid var(--roche)}
+nav.sommaire a:hover{color:var(--aube);border-color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+ul.liste,ol.liste{margin:0;padding-left:1.2rem;display:grid;gap:.45rem;max-width:48rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+code{font:400 .85em var(--f-data);color:var(--lin);overflow-wrap:anywhere}
+.prop{font:500 .68rem/1 var(--f-data);letter-spacing:.04em;text-transform:uppercase;color:var(--aube);border:1px solid currentColor;border-radius:3px;padding:.12rem .3rem;margin-left:.3rem;white-space:nowrap}
+/* planches */
+img,video,canvas,svg{max-width:100%;height:auto}
+figure.planche{margin:0;display:grid;gap:.5rem}
+figure.planche img{display:block;width:100%;height:auto;border:1px solid var(--roche);border-radius:4px;background:var(--brume)}
+figure.planche figcaption{font-size:.85rem;color:var(--pierre)}
+/* piliers */
+.piliers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:1rem}
+.pilier{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;display:grid;gap:.4rem;align-content:start;min-width:0}
+.pilier h3{font:400 1.2rem/1.2 var(--f-titre)}
+/* nuanciers */
+.palette{display:grid;gap:.6rem}
+.palette h3 small{font-weight:400;color:var(--pierre);font-size:.82rem;margin-left:.4rem}
+.nuancier{display:grid;grid-template-columns:repeat(auto-fill,minmax(7.2rem,1fr));gap:.6rem}
+.sw{display:grid;gap:.25rem;font-size:.8rem;min-width:0}
+.sw i{display:block;height:2.8rem;border-radius:4px;border:1px solid var(--roche);background:var(--c)}
+.sw b{font-weight:500;color:var(--lin);line-height:1.2}
+.sw code{font-size:.75rem;color:var(--pierre)}
+.sw.p code::after{content:" prop.";color:var(--aube)}
+.remarque{border-left:3px solid var(--aube);padding:.4rem 0 .4rem .9rem;max-width:48rem}
+.alerte{border-left-color:var(--braise)}
+/* interface : échantillons */
+.demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1rem}
+.carte{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;display:grid;gap:.6rem;align-content:start;min-width:0}
+.carte .etiq{font:500 .7rem/1 var(--f-data);letter-spacing:.06em;text-transform:uppercase;color:var(--pierre)}
+.typo{display:grid;gap:.9rem}
+.typo div{display:grid;gap:.1rem}
+.t-fell{font:400 1.9rem/1.1 var(--f-titre)}
+.t-fellsc{font:400 1.3rem/1.2 "IM Fell English SC",var(--f-titre);letter-spacing:.04em}
+.t-fig{font:500 1.05rem/1.4 var(--f-texte)}
+.t-cav{font:400 1.6rem/1.1 "Caveat",cursive}
+.t-pin{font:400 1.8rem/1.1 "Pinyon Script",cursive}
+.t-fra{font:400 1.6rem/1.1 "UnifrakturMaguntia",serif}
+.typo small{font:400 .75rem var(--f-data);color:var(--pierre)}
+/* HUD */
+.hud{position:relative;min-height:15rem;border-radius:6px;overflow:hidden;border:1px solid var(--roche);
+  background:radial-gradient(120% 90% at 70% 0%,#6f6a60 0%,#3e4450 38%,#1b1d21 100%)}
+.hud .jauges{position:absolute;left:1rem;bottom:1rem;display:grid;gap:.35rem;width:min(13rem,60%)}
+.jauge{height:.42rem;border-radius:2px;background:rgba(21,24,28,.7);overflow:hidden;outline:1px solid rgba(228,225,217,.18)}
+.jauge span{display:block;height:100%}
+.hud .soustitre{position:absolute;left:50%;transform:translateX(-50%);bottom:3.9rem;width:max-content;max-width:92%;background:rgba(21,24,28,.7);padding:.35rem .7rem;border-radius:3px;font:500 .95rem/1.35 var(--f-texte);text-align:center}
+.hud .soustitre b{color:var(--vide);font-weight:600}
+.hud .message{position:absolute;right:1rem;bottom:1rem;font:500 .8rem var(--f-texte);color:var(--lin);opacity:.85}
+.hud .cible{position:absolute;left:62%;top:34%;width:1rem;height:1rem;border:2px solid var(--aube);transform:rotate(45deg)}
+.hud .lieu{position:absolute;left:1rem;top:.9rem;font:400 1.3rem var(--f-titre);color:var(--lin);text-shadow:0 1px 6px rgba(0,0,0,.6)}
+/* parchemin */
+.parchemin{background:
+  radial-gradient(130% 110% at 50% 40%,var(--parchemin) 55%,var(--parchemin-ombre) 100%);
+  color:var(--encre);border-radius:3px;padding:1.1rem 1.2rem;box-shadow:inset 0 0 0 1px rgba(31,26,22,.25),0 0 0 4px #3a2e25,0 0 0 5px #5a4838;display:grid;gap:.5rem}
+.parchemin h4{margin:0;font:400 1.35rem/1.1 var(--f-titre)}
+.parchemin .main{font:400 1.35rem/1.2 "Caveat",cursive}
+.parchemin .echec{text-decoration:line-through;text-decoration-color:var(--encre-rouge);text-decoration-thickness:2px}
+.parchemin .echec-note{font:600 1.1rem "Caveat",cursive;color:var(--encre-rouge)}
+.parchemin .vide{font:600 1.3rem/1.2 "Caveat",cursive;color:#0b0a10;text-shadow:0 0 1px #8875bb,0 0 6px rgba(136,117,187,.55);transform:rotate(-1.5deg)}
+.officiel{background:#e4d8bb;color:var(--encre);border:1px solid #8a7550;padding:.9rem 1rem;display:grid;gap:.3rem;text-align:center;border-radius:2px}
+.officiel .fra{font:400 1.7rem/1 "UnifrakturMaguntia",serif}
+.officiel small{font:400 .85rem var(--f-titre)}
+/* icônes */
+.icones{display:grid;grid-template-columns:repeat(auto-fill,minmax(4.6rem,1fr));gap:.7rem}
+.icone{display:grid;justify-items:center;gap:.3rem;font-size:.75rem;color:var(--pierre);text-align:center}
+.icone svg{width:2.4rem;height:2.4rem;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;color:var(--lin)}
+.icone.actif svg{color:var(--aube)} .icone.danger svg{color:var(--braise)}
+.roue svg{width:100%;max-width:17rem;height:auto;justify-self:center}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier T-0088 · nuit du 30/09/2026</div>
+  <h1>Bible <em>artistique</em></h1>
+  <p class="lecture">Les règles visuelles proposées pour le prototype des investisseurs : piliers, palettes par lieu et par camp, lumière, matières, silhouettes, magie, interface et interdits. Elles servent quel que soit le moteur retenu, et sont illustrées par les images du projet.</p>
+  <span class="etat attente">Proposition, à valider par le directeur</span>
+  <p class="muted lecture" style="font-size:.9rem">Ce qui vient des documents ou des décisions est cité (D-xx, <em>titre du document</em>) ; le reste porte la marque <span class="prop">prop.</span>. Aucune image n'a été générée : les planches sont des extraits annotés des images de concept, des fiches validées, des modèles 3D et des captures des deux prototypes.</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#piliers">Piliers</a><a href="#reference">Image 13</a><a href="#palettes">Palettes</a><a href="#lumiere">Lumière</a><a href="#matieres">Matières</a><a href="#silhouettes">Silhouettes</a><a href="#magie">Magie</a><a href="#interface">Interface</a><a href="#interdits">Interdits</a><a href="#ecarts">Écarts</a><a href="#valider">À valider</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section id="piliers">
+  <h2><span class="num">01</span>Cinq piliers visuels</h2>
+  <p class="lecture muted">Les images de concept sont beaucoup plus sourdes que les mots des documents : le « vert émeraude » et l'« or éclatant » de la Plaine Royale (<em>Worldbuilding</em>) sont, dans l'image 13, un vert sauge et un or de contre-jour pâle. Le prototype doit ressembler aux images (D-158) : la bible suit les images.</p>
+  <div class="piliers">
+    <div class="pilier"><h3>Photoréalisme sombre</h3><p class="muted">Matières vraies, proportions humaines, lumière physique. Le fantastique n'entre que par l'entité et le Vide (D-158 ; <em>Pitch</em>).</p></div>
+    <div class="pilier"><h3>Un monde sourd, des accents rares</h3><p class="muted">Gris, sauges, bruns, ivoires. L'or au pouvoir (l'Ordre, les yeux de l'Ange), le violet et le noir au Vide, le rouge au sang.</p></div>
+    <div class="pilier"><h3>Brume et lumière rasante</h3><p class="muted">Le fond des gorges est froid et bouché, le haut des falaises doré : sortir des gorges, c'est passer de l'ombre à la lumière <span class="prop">prop.</span></p></div>
+    <div class="pilier"><h3>Tout porte l'usure</h3><p class="muted">Rouille, boue, tissus déchirés, bois grisé. Seul l'Ordre, en ville et chez les gradés, est propre et poli : ce contraste dit sa puissance (D-166).</p></div>
+    <div class="pilier"><h3>Le corps est l'écran de la corruption</h3><p class="muted">Veines noires, yeux luisants, vieillissement : la corruption se voit d'abord sur le héros, puis sur l'écran (<em>Lore, Héros</em> ; <em>Stades des Symptômes</em>).</p></div>
+  </div>
+</section>
+
+<section id="reference">
+  <h2><span class="num">02</span>La référence : l'image 13</h2>
+  <p class="lecture">La zone de départ vue depuis les gorges : c'est la cible du prototype (D-158, D-161). Deux pistes y apparaissent : des entrées de mine étayées dans la falaise ouest (repère 9) et un pont à tours à l'est (repère 10).</p>
+  <figure class="planche">
+    <img src="planches/01-reference-image-13.jpg" width="1600" height="1100" loading="lazy" alt="Image de concept 13 annotée de dix repères : soleil bas en contre-jour, gorges de basalte dans la brume, hameau fumant, plaine vert sauge, eaux d'argent, montagnes enneigées, entrées de mine, pont à tours ; en dessous, neuf couleurs relevées.">
+    <figcaption>Planche 01 · <code>Documents/03_World_Design/02_Croquis_et_Concepts/13_zone_depart_plaine_royale.png</code></figcaption>
+  </figure>
+</section>
+
+<section id="palettes">
+  <h2><span class="num">03</span>Palettes par lieu et par camp</h2>
+  <p class="lecture muted">Valeurs relevées dans les images par un petit script (processeur seul), sauf celles marquées <span class="prop">prop.</span>. Règle proposée : dans un lieu, les accents couvrent moins de 5 % de l'image.</p>
+  <figure class="planche">
+    <img src="planches/02-palettes-lieux.jpg" width="1600" height="1470" loading="lazy" alt="Cinq extraits d'images de concept (gorges, plaine, hameau, mines, Oakhaven), chacun avec sa palette de sept ou huit couleurs.">
+    <figcaption>Planche 02 · images de concept 13, 03, 05 et 14</figcaption>
+  </figure>
+
+  <div class="palette"><h3>Gorges des Soupirs <small>image 13 · <em>Topographie</em> § 1</small></h3>
+  <div class="nuancier">
+    <div class="sw"><i style="--c:#141514"></i><b>Basalte, ombre</b><code>#141514</code></div>
+    <div class="sw"><i style="--c:#2A2A29"></i><b>Roche sombre</b><code>#2A2A29</code></div>
+    <div class="sw"><i style="--c:#464747"></i><b>Roche</b><code>#464747</code></div>
+    <div class="sw"><i style="--c:#5B5D5F"></i><b>Roche éclairée</b><code>#5B5D5F</code></div>
+    <div class="sw"><i style="--c:#8A8A92"></i><b>Brume dense</b><code>#8A8A92</code></div>
+    <div class="sw"><i style="--c:#ABA6A8"></i><b>Brume claire</b><code>#ABA6A8</code></div>
+    <div class="sw"><i style="--c:#554E38"></i><b>Mousse, lichen</b><code>#554E38</code></div>
+    <div class="sw"><i style="--c:#F1D4B5"></i><b>Or de contre-jour</b><code>#F1D4B5</code></div>
+  </div></div>
+
+  <div class="palette"><h3>Plaine Royale <small>images 13 et 03 · <em>Worldbuilding</em> § 1</small></h3>
+  <div class="nuancier">
+    <div class="sw"><i style="--c:#3B3F33"></i><b>Haie à l'ombre</b><code>#3B3F33</code></div>
+    <div class="sw"><i style="--c:#60614F"></i><b>Prairie sauge</b><code>#60614F</code></div>
+    <div class="sw"><i style="--c:#78785F"></i><b>Prairie au soleil</b><code>#78785F</code></div>
+    <div class="sw p"><i style="--c:#56673F"></i><b>Émeraude assourdie</b><code>#56673F</code></div>
+    <div class="sw"><i style="--c:#927549"></i><b>Blé</b><code>#927549</code></div>
+    <div class="sw"><i style="--c:#AE8B58"></i><b>Blé au soleil</b><code>#AE8B58</code></div>
+    <div class="sw"><i style="--c:#80868F"></i><b>Eau d'argent</b><code>#80868F</code></div>
+    <div class="sw"><i style="--c:#74798C"></i><b>Ciel gris bleu</b><code>#74798C</code></div>
+    <div class="sw"><i style="--c:#FBE5BF"></i><b>Soleil bas</b><code>#FBE5BF</code></div>
+  </div></div>
+
+  <div class="palette"><h3>Hameau de la Brume <small>images 13 et 03 · <em>Topographie</em> POI A</small></h3>
+  <div class="nuancier">
+    <div class="sw"><i style="--c:#34312C"></i><b>Toit sombre</b><code>#34312C</code></div>
+    <div class="sw"><i style="--c:#4E4940"></i><b>Bois grisé</b><code>#4E4940</code></div>
+    <div class="sw"><i style="--c:#5D5137"></i><b>Terre battue</b><code>#5D5137</code></div>
+    <div class="sw"><i style="--c:#696251"></i><b>Pierre sèche</b><code>#696251</code></div>
+    <div class="sw"><i style="--c:#9A7E54"></i><b>Chaume</b><code>#9A7E54</code></div>
+    <div class="sw"><i style="--c:#998D76"></i><b>Fumée</b><code>#998D76</code></div>
+    <div class="sw p"><i style="--c:#D98A3D"></i><b>Lueur de foyer</b><code>#D98A3D</code></div>
+  </div>
+  <p class="muted lecture" style="font-size:.9rem">Hameau pauvre : pas de teinture vive ; la seule couleur chaude est celle du feu (foyers, forge du forgeron).</p></div>
+
+  <div class="palette"><h3>Mines de Fer Oubliées <small>image 05 · <em>Topographie</em> POI B · intérieur sans image</small></h3>
+  <div class="nuancier">
+    <div class="sw p"><i style="--c:#1A1614"></i><b>Galerie</b><code>#1A1614</code></div>
+    <div class="sw"><i style="--c:#544B4B"></i><b>Fissure</b><code>#544B4B</code></div>
+    <div class="sw p"><i style="--c:#6E4A3A"></i><b>Veine de fer</b><code>#6E4A3A</code></div>
+    <div class="sw"><i style="--c:#725B4C"></i><b>Fer rouillé</b><code>#725B4C</code></div>
+    <div class="sw"><i style="--c:#856F5A"></i><b>Roche rousse</b><code>#856F5A</code></div>
+    <div class="sw"><i style="--c:#A3856E"></i><b>Sol qui jaunit</b><code>#A3856E</code></div>
+    <div class="sw"><i style="--c:#B29278"></i><b>Terre claire</b><code>#B29278</code></div>
+    <div class="sw p"><i style="--c:#E3A14A"></i><b>Lanterne</b><code>#E3A14A</code></div>
+  </div></div>
+
+  <div class="palette"><h3>Oakhaven <small>image 14 · <em>Worldbuilding</em> § 1 · <em>QP1</em></small></h3>
+  <div class="nuancier">
+    <div class="sw"><i style="--c:#3E3F3F"></i><b>Ardoise</b><code>#3E3F3F</code></div>
+    <div class="sw p"><i style="--c:#2F2D2A"></i><b>Fer des herses</b><code>#2F2D2A</code></div>
+    <div class="sw"><i style="--c:#716D64"></i><b>Pierre à l'ombre</b><code>#716D64</code></div>
+    <div class="sw"><i style="--c:#9E937F"></i><b>Calcaire</b><code>#9E937F</code></div>
+    <div class="sw"><i style="--c:#B5A998"></i><b>Calcaire clair</b><code>#B5A998</code></div>
+    <div class="sw"><i style="--c:#DCCFBC"></i><b>Ivoire des remparts</b><code>#DCCFBC</code></div>
+    <div class="sw"><i style="--c:#8E7743"></i><b>Or des bannières</b><code>#8E7743</code></div>
+    <div class="sw p"><i style="--c:#C9A13B"></i><b>Or au soleil</b><code>#C9A13B</code></div>
+  </div>
+  <p class="muted lecture" style="font-size:.9rem">Première pierre claire du jeu. Les bannières de l'image 14 portent un arbre, pas le sceptre : armoiries de la ville à côté de l'emblème de l'Ordre ? (à valider).</p></div>
+
+  <figure class="planche">
+    <img src="planches/03-palettes-camps.jpg" width="1600" height="936" loading="lazy" alt="Extraits des fiches du soldat et de l'officier de l'Ordre, d'une crypte turquoise de l'image 03, et des fiches de l'Ange, de l'esprit et du possédé, avec leurs palettes.">
+    <figcaption>Planche 03 · fiches <code>E:\aaa-proto\personnages\</code> et images 03, 12</figcaption>
+  </figure>
+
+  <div class="palette"><h3>L'Ordre du Sceptre d'Or <small>D-166 · fiches soldat et officier</small></h3>
+  <div class="nuancier">
+    <div class="sw"><i style="--c:#483E36"></i><b>Cuir</b><code>#483E36</code></div>
+    <div class="sw"><i style="--c:#5B544D"></i><b>Acier à l'ombre</b><code>#5B544D</code></div>
+    <div class="sw"><i style="--c:#7E6C58"></i><b>Maille</b><code>#7E6C58</code></div>
+    <div class="sw"><i style="--c:#AD8E63"></i><b>Or du galon</b><code>#AD8E63</code></div>
+    <div class="sw"><i style="--c:#C1A47A"></i><b>Or poli</b><code>#C1A47A</code></div>
+    <div class="sw"><i style="--c:#C7B9AA"></i><b>Acier poli</b><code>#C7B9AA</code></div>
+    <div class="sw"><i style="--c:#CCC2B8"></i><b>Ivoire sali</b><code>#CCC2B8</code></div>
+    <div class="sw"><i style="--c:#D9CEC3"></i><b>Ivoire</b><code>#D9CEC3</code></div>
+  </div>
+  <p class="muted lecture" style="font-size:.9rem">Plus le grade monte, plus il y a d'or et de poli (D-166). Les déserteurs gardent la tenue du soldat, arrachée, boueuse, sans or visible <span class="prop">prop.</span></p></div>
+
+  <div class="palette"><h3>Le Culte du Premier Sang <small>fiche de faction · <em>Lexique</em> · <em>Prologue</em> · images 03, 12</small></h3>
+  <div class="nuancier">
+    <div class="sw"><i style="--c:#0E0F0E"></i><b>Noir de crypte</b><code>#0E0F0E</code></div>
+    <div class="sw"><i style="--c:#111615"></i><b>Obsidienne</b><code>#111615</code></div>
+    <div class="sw"><i style="--c:#412426"></i><b>Sang séché</b><code>#412426</code></div>
+    <div class="sw p"><i style="--c:#7A1016"></i><b>Sang frais</b><code>#7A1016</code></div>
+    <div class="sw p"><i style="--c:#C8B89A"></i><b>Cire, os</b><code>#C8B89A</code></div>
+    <div class="sw"><i style="--c:#417B75"></i><b>Lueur de crypte</b><code>#417B75</code></div>
+    <div class="sw"><i style="--c:#5AA59E"></i><b>Cœur de la lueur</b><code>#5AA59E</code></div>
+  </div>
+  <p class="remarque alerte lecture" style="font-size:.92rem">À trancher : les images 03 et 12 éclairent les cryptes d'un vert-bleu qu'aucun document ne cite. Proposition : le garder pour les cryptes du Culte, c'est la « lueur spectrale » du prologue (acte III), et le prologue court est dans le prototype (D-177).</p></div>
+
+  <div class="palette"><h3>Le Vide et Malak-Gath <small><em>Design du Didacticiel</em> · <em>DA &amp; Script</em> § 1 · fiches</small></h3>
+  <div class="nuancier">
+    <div class="sw"><i style="--c:#0E0D0D"></i><b>Noir de fumée</b><code>#0E0D0D</code></div>
+    <div class="sw"><i style="--c:#1C1B18"></i><b>Veine noire</b><code>#1C1B18</code></div>
+    <div class="sw"><i style="--c:#292625"></i><b>Fumée grise</b><code>#292625</code></div>
+    <div class="sw"><i style="--c:#7F7B8E"></i><b>Violet spectral</b><code>#7F7B8E</code></div>
+    <div class="sw"><i style="--c:#8875BB"></i><b>Violet du Vide</b><code>#8875BB</code></div>
+    <div class="sw"><i style="--c:#A9A4BE"></i><b>Violet clair</b><code>#A9A4BE</code></div>
+    <div class="sw p"><i style="--c:#7B3FA0"></i><b>Aberration violacée</b><code>#7B3FA0</code></div>
+    <div class="sw p"><i style="--c:#FFD27A"></i><b>Or des yeux</b><code>#FFD27A</code></div>
+  </div>
+  <p class="muted lecture" style="font-size:.9rem">L'or lumineux des yeux est la signature de Malak-Gath : seuls l'Ange et son hôte ont des yeux dorés <span class="prop">prop.</span> Esprits et morts-vivants : lueur violette ; possédés : yeux blanc laiteux (fiche <code>possede</code>). Le « Violet du Vide » <code>#8875BB</code> a été relevé dans l'énergie des Pics Célestes (image 03, en bas à droite), c'est-à-dire la zone du point 4 à valider : si le cyan revient aux Pics, la valeur peut rester ou être reprise sur le violet de la Forêt Sauvage (image 12, <code>#8F81AB</code>).</p></div>
+
+  <div class="palette"><h3>Deux camps sans fiche <small>présents dans le prototype · <span class="prop">prop.</span></small></h3>
+  <div class="nuancier">
+    <div class="sw p"><i style="--c:#CFC6B4"></i><b>Veilleurs : lin</b><code>#CFC6B4</code></div>
+    <div class="sw p"><i style="--c:#8FA3B8"></i><b>Veilleurs : bleu d'aube</b><code>#8FA3B8</code></div>
+    <div class="sw p"><i style="--c:#4A4E55"></i><b>Cartel : gris fumée</b><code>#4A4E55</code></div>
+    <div class="sw p"><i style="--c:#3A2E25"></i><b>Cartel : brun sombre</b><code>#3A2E25</code></div>
+    <div class="sw p"><i style="--c:#9C6A3C"></i><b>Cartel : cuivre</b><code>#9C6A3C</code></div>
+  </div>
+  <p class="muted lecture" style="font-size:.9rem">Veilleurs de l'Aube (Ferme Fortifiée, D-177) : pas d'or, pour ne pas les confondre avec l'Ordre. Cartel de la Brume (agent de l'auberge, voie B) : vêtements de voyage discrets.</p></div>
+</section>
+
+<section id="lumiere">
+  <h2><span class="num">04</span>Lumière et heures</h2>
+  <ul class="liste">
+    <li><strong>La référence est l'image 13</strong> : soleil bas en contre-jour, brume dans les creux, arêtes dorées (D-161).</li>
+    <li><strong>Jamais de plein midi blanc et plat</strong> ; le ciel n'est jamais « brûlé » en blanc pur.</li>
+    <li><strong>La brume sépare les plans sans cacher un ennemi</strong> : à 25 m, une créature reste lisible <span class="prop">prop.</span></li>
+    <li><strong>Deux températures dans la même image</strong> : lumière chaude (soleil, feu), ombres froides gris-bleu. C'est ce contraste, plus que la saturation, qui donne l'or de l'image 13.</li>
+  </ul>
+  <figure class="planche">
+    <img src="planches/04-lumiere.jpg" width="1600" height="1492" loading="lazy" alt="Trois comparaisons entre la cible (images 13 et 14) et les captures actuelles d'Unreal et d'Unity, puis neuf dégradés de couleur pour les heures proposées des scènes.">
+    <figcaption>Planche 04 · captures <code>unreal-v2\captures\decor5</code> et <code>unity\captures\finales</code></figcaption>
+  </figure>
+  <div class="tableau"><table>
+    <thead><tr><th>Scène (D-177)</th><th>Heure proposée</th><th>Lumière et couleurs</th></tr></thead>
+    <tbody>
+      <tr><td>Prologue court</td><td>Nuit, crypte</td><td>Cierges. <em>Structure du Prologue</em> cite une « lueur spectrale » (acte III) et la « lueur divine/démoniaque » des yeux du héros (acte IV), sans couleur : turquoise si ce choix est retenu (point 3 à valider), or pour les yeux <span class="prop">prop.</span> (point 8)</td></tr>
+      <tr><td>Réveil, reflet, premier combat</td><td>Aube</td><td>Fond froid gris-bleu, brume dense, seul le haut des falaises est doré ; eau du reflet sombre et calme</td></tr>
+      <tr><td>Horde, apparition de l'Ange</td><td>Même heure</td><td>Pendant l'éclair, la lumière est aspirée : seuls restent les yeux dorés (<em>Lexique</em> : le Fléau du Silence absorbe « le son et la lumière »)</td></tr>
+      <tr><td>Sortie, panorama, patrouille</td><td>Lever du soleil</td><td>L'image 13 : contre-jour doré face au joueur</td></tr>
+      <tr><td>Hameau, nature, Ferme des Veilleurs</td><td>Matinée voilée</td><td>Ciel gris bleu, ombres douces, fumées ; pluie battante en variante (<em>Worldbuilding</em>)</td></tr>
+      <tr><td>Le nid</td><td>Fin d'après-midi</td><td>Lumière rasante orangée, ombres longues</td></tr>
+      <tr><td>Pont des Déserteurs, premier souvenir</td><td>Couchant chargé</td><td>Brume de rivière, braseros des déserteurs</td></tr>
+      <tr><td>Mines de Fer Oubliées</td><td>Intérieur</td><td>Vraie obscurité, lanternes chaudes ; on lit l'espace par les flaques de lumière</td></tr>
+      <tr><td>Route, portes, grand-place d'Oakhaven</td><td>Jour couvert à percées</td><td>L'image 14 : ciel lourd, rayons sur le calcaire, bannières or</td></tr>
+      <tr><td>Deuxième souvenir (médaille)</td><td>Plein soleil</td><td>Surexposé, doré, « rutilant » (<em>QP1</em>)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted lecture" style="font-size:.9rem">Toutes ces heures sont des propositions : le cycle jour-nuit et la météo du prototype ne sont pas tranchés.</p>
+</section>
+
+<section id="matieres">
+  <h2><span class="num">05</span>Matières</h2>
+  <p class="lecture">Matériaux physiques standard, textures d'abord libres de droits CC0 (Poly Haven, ambientCG ; D-160, D-161), lisibles par Unreal et par Unity (D-158). Dans les textures de couleur, ni noir pur ni blanc pur <span class="prop">prop.</span></p>
+  <figure class="planche">
+    <img src="planches/05-matieres.jpg" width="1600" height="1050" loading="lazy" alt="Douze extraits de matières : basalte moussu, roche rousse fissurée, calcaire taillé, ruines noircies, bois grisé et chaume, étais de mine, fer rouillé, acier poli et or, acier terne et maille, gambison, tabard ivoire, jute.">
+    <figcaption>Planche 05 · images 13, 05, 14, 03 et fiches validées</figcaption>
+  </figure>
+  <ul class="liste">
+    <li><strong>Pierre</strong> : basalte sombre des gorges ; roche rousse fissurée des mines ; calcaire ivoire d'Oakhaven ; ruines anciennes noircies et moussues ; obsidienne noire et vitreuse du Culte (<em>Lexique</em>).</li>
+    <li><strong>Bois</strong> : grisé par les intempéries au hameau, chaume ; étais de mine noircis et cerclés de fer <span class="prop">prop.</span> ; bois sombre entretenu en ville <span class="prop">prop.</span></li>
+    <li><strong>Fer</strong> : rouillé et ébréché (épée du héros, D-163) ; noirci (herses, ferrures) ; métal chaud orange à la forge <span class="prop">prop.</span> ; acier terne des soldats, acier poli et or des gradés (D-166).</li>
+    <li><strong>Tissu</strong> : gambison matelassé écru sali, coupé aux hanches (D-163) ; lin, laine brute et jute des villageois ; tabard et cape ivoire de l'Ordre.</li>
+    <li><strong>Usure</strong> : trois états, du propre (ville, gradés) à l'usé (zone de départ) puis au détruit (déserteurs, ruines) ; l'équipement du joueur s'use visiblement avec sa durabilité (<em>Matrice de Durabilité</em>) <span class="prop">prop.</span></li>
+  </ul>
+</section>
+
+<section id="silhouettes">
+  <h2><span class="num">06</span>Silhouettes</h2>
+  <p class="lecture">Test proposé : chaque personnage doit se reconnaître en silhouette noire, sans couleur, à la taille où on le voit en combat. Tous les PNJ humains passent par MetaHuman, chacun différent, dans des valeurs humaines plausibles (D-179).</p>
+  <figure class="planche">
+    <img src="planches/06-silhouettes-humains.jpg" width="1600" height="820" loading="lazy" alt="Silhouettes noires du héros au réveil, du soldat de l'Ordre, du gradé à cape et du possédé, chacune avec la fiche en couleur en encart.">
+    <figcaption>Planche 06 · fiches validées ; la tenue du possédé est à valider</figcaption>
+  </figure>
+  <div class="tableau"><table>
+    <thead><tr><th>Qui</th><th>Ce qui doit se lire</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Héros au réveil (homme ou femme)</td><td>Tête nue, gambison aux hanches, bords déchirés : vivant et vulnérable ; épée rouillée tenue bas <span class="prop">prop.</span> (posée à part sur la fiche)</td><td>D-163</td></tr>
+      <tr><td>Soldat de l'Ordre</td><td>Heaume en seau, spalières, grand tabard ivoire, arc ou bouclier rond</td><td>D-166</td></tr>
+      <tr><td>Gradé, Général</td><td>Cape jusqu'au sol, plaques polies ; plus le grade monte, plus la silhouette s'élargit ; le Général sur un destrier blanc</td><td>D-166 ; <em>QP1</em></td></tr>
+      <tr><td>Héros dans le souvenir</td><td>Armure d'officier, tête nue, visage choisi au reflet</td><td>D-167, D-171</td></tr>
+      <tr><td>Déserteurs</td><td>La silhouette du soldat cassée : heaume ôté, tabard arraché, bandages, boiterie</td><td><em>Topographie</em> § 5 ; <span class="prop">prop.</span></td></tr>
+      <tr><td>Villageois et PNJ qui parlent</td><td>Voûtés, laine, capuches ; un accessoire par métier : tablier et marteau du forgeron, houlette de l'éleveur, bâton du chef, pioche et marques de fers de Brutus le Brisé</td><td><em>Lexique</em> ; <span class="prop">prop.</span></td></tr>
+      <tr><td>Possédé</td><td>Villageois raidi, bras écartés, veines noires, yeux blanc laiteux</td><td>D-03 ; fiche à valider</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="planche">
+    <img src="planches/07-silhouettes-creatures.jpg" width="1600" height="990" loading="lazy" alt="Silhouettes à la même échelle : soldat de 1,80 m, mort-vivant, esprit et Ange Déchu de 3,60 m ; case vide pour les bêtes, sans image.">
+    <figcaption>Planche 07 · fiches et modèles 3D (<code>E:\aaa-proto\gen3d\rendus\</code>)</figcaption>
+  </figure>
+  <ul class="liste">
+    <li><strong>Morts-vivants</strong> : émaciés, cage thoracique visible, buste penché <span class="prop">prop.</span>, bras longs, pieds nus, haillons ; plus étroits qu'un vivant ; lueur violette très faible aux yeux.</li>
+    <li><strong>Esprits</strong> : taille humaine, sans pieds, le bas du corps se défait en brume ; doigts très longs ; corps translucide avec un cœur plus dense et lumineux (fiche validée ; l'esprit v4 en 3D est à valider).</li>
+    <li><strong>L'Ange Déchu</strong> : la seule silhouette plus grande que l'humain (≈ 3,60 m) ; ailes brisées en V, trois paires d'yeux dorés, bas du corps en fumée ; ni auréole, ni armure, ni chaînes à cette apparition du Stade 1 (fiche validée et son invite, <code>prompts.md</code> n° 5). Au Stade 3 : taille humaine, reflet du héros en armure d'officier carbonisée, six ailes de fumée, sans ombre ni bruit de pas (<em>DA &amp; Script</em> § 1.C ; D-60).</li>
+    <li><strong>Bêtes</strong> : naturalisme strict, aucune lueur ; ce qui brille a été touché par le Vide <span class="prop">prop.</span> Loup (essai T-0080), bétail, chevaux : aucune image dans le projet.</li>
+  </ul>
+</section>
+
+<section id="magie">
+  <h2><span class="num">07</span>Magie et corruption</h2>
+  <figure class="planche">
+    <img src="planches/08-magie-corruption.jpg" width="1600" height="1090" loading="lazy" alt="Détails des fiches (yeux et ailes de l'Ange, cœur de l'esprit, veines du possédé, mort-vivant), six dégradés pour le code couleur des éléments, puis trois panneaux : image normale, symptôme violet simulé, souvenir doré simulé.">
+    <figcaption>Planche 08 · le code couleur et les deux simulations sont des propositions</figcaption>
+  </figure>
+  <div class="tableau"><table>
+    <thead><tr><th>Élément</th><th>Cœur</th><th>Halo</th><th>Signe visuel <span class="prop">prop.</span></th></tr></thead>
+    <tbody>
+      <tr><td>Feu</td><td><code>#FFC46B</code></td><td><code>#E8742A</code></td><td>Flammes lourdes, fumée noire, braises (le soufre du <em>Lexique</em>)</td></tr>
+      <tr><td>Glace</td><td><code>#EAF4F8</code></td><td><code>#8FB9CF</code></td><td>Givre qui gagne la surface, buée</td></tr>
+      <tr><td>Foudre</td><td><code>#F4F1FF</code></td><td><code>#7FA2FF</code></td><td>Arcs brefs et ramifiés</td></tr>
+      <tr><td>Vide</td><td><code>#0B0A10</code></td><td><code>#8875BB</code></td><td>L'image se tord autour d'un point noir, la lumière baisse (« siphonnage », <em>Roue</em> § 2) ; sifflement strident (<em>Lexique</em>)</td></tr>
+      <tr><td>Sang (hors prototype)</td><td><code>#B3201F</code></td><td><code>#7A1016</code></td><td>L'acier se couvre de sang</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tableau"><table>
+    <thead><tr><th>Stade</th><th>Corps du héros</th><th>Monde et écran</th><th>Interface</th></tr></thead>
+    <tbody>
+      <tr><td>1 : Murmures</td><td>Veines noires quand l'entité fait canaliser l'énergie (<em>Design du Didacticiel</em>) ; qu'elles s'effacent ensuite, et les yeux dorés pendant le sort : <span class="prop">prop.</span></td><td>Voix seule ; l'Ange en éclairs</td><td>Propre, runes bleues (<em>Roue</em> § 3)</td></tr>
+      <tr><td>2 : Visions</td><td>Veines qui restent au cou et aux mains <span class="prop">prop.</span> ; cheveux gris, rides (<em>Vieillissement</em>)</td><td>Aberration chromatique violacée quand le Mana est vide ; reflets de l'acier qui montrent la Capitale détruite (<em>DA &amp; Script</em> § 1.B)</td><td>Icônes qui tremblent et grésillent</td></tr>
+      <tr><td>3 : Illusion</td><td>Yeux luisants (<em>Lore Suprême</em>)</td><td>L'Ange à taille humaine, sans ombre ni pas</td><td>Roue en veines noires coulantes ; journal couvert d'encre noire luisante (<em>Interface des Quêtes</em>)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="remarque lecture"><strong>Souvenir ou symptôme.</strong> Les flashs de souvenir sont de vrais souvenirs, à ne pas confondre avec les symptômes (<em>Stades des Symptômes</em> ; D-155). Proposition : le <strong>souvenir</strong> est chaud, doré, surexposé, flou sur les bords, sans aucun violet ; le <strong>symptôme</strong> est violet et noir, avec aberration chromatique.</p>
+</section>
+
+<section id="interface">
+  <h2><span class="num">08</span>Style de l'interface</h2>
+  <p class="lecture">Les documents veulent des <strong>interfaces diégétiques</strong> : carte en parchemin à l'encre, fausse tant qu'on n'a pas exploré (<em>Brouillard de Guerre</em>) ; journal en carnet de cuir écrit à la main (<em>Interface des Quêtes</em>) ; roue des magies radiale et transparente (<em>Roue</em>). Ils rejettent « les menus modernes rigides ». Proposition : les objets du monde sont dessinés comme de vrais objets ; le HUD est minimal, sans cadre, et s'efface hors combat. Les maquettes T-0083 partent de cette partie.</p>
+  <div class="demo">
+    <div class="carte">
+      <span class="etiq">HUD de combat · proposition</span>
+      <div class="hud" role="img" aria-label="Maquette de HUD : nom du lieu en haut à gauche, losange or de verrouillage, sous-titre de l'entité, trois jauges fines en bas à gauche, message système en bas à droite.">
+        <span class="lieu">Gorges des Soupirs</span>
+        <span class="cible"></span>
+        <span class="soustitre"><b>La voix :</b> « Regarde-toi... pathétique soldat. »</span>
+        <div class="jauges">
+          <div class="jauge"><span style="width:82%;background:#A33A2E"></span></div>
+          <div class="jauge"><span style="width:64%;background:#7FA36A"></span></div>
+          <div class="jauge"><span style="width:45%;background:#5F8FD6"></span></div>
+        </div>
+        <span class="message">Parade parfaite</span>
+      </div>
+      <p class="muted" style="font-size:.85rem">Points de vie <code>#A33A2E</code> · Endurance <code>#7FA36A</code> (vert 🟢, <em>Combat Hybride</em>) · Mana <code>#5F8FD6</code> (bleu 🔵) · verrouillage : le losange or des deux prototypes. Réplique : <em>Design du Didacticiel</em>.</p>
+    </div>
+    <div class="carte">
+      <span class="etiq">Journal · objet du monde</span>
+      <div class="parchemin">
+        <h4>Les Chroniques de [Nom du héros]</h4>
+        <p class="main">Trouver qui a porté cet insigne.</p>
+        <p class="main echec">Sauver la fille du trappeur des griffes du loup</p>
+        <p class="echec-note">[ÉCHEC - Le temps a manqué]</p>
+        <p class="vide">[Laisse le loup la dévorer. Son sang nourrira notre puissance.]</p>
+      </div>
+      <p class="muted" style="font-size:.85rem">Quête échouée barrée de rouge et annotation de l'entité en encre noire luisante au Stade 3 : exemples tirés de <em>Interface des Quêtes</em> § 2 et § 3 ; nom du héros à l'écrit (D-155).</p>
+    </div>
+    <div class="carte">
+      <span class="etiq">Roue des magies · Stade 1</span>
+      <div class="roue">
+        <svg viewBox="-26 0 252 200" role="img" aria-label="Roue radiale transparente à quatre quadrants : Feu en haut, Glace à droite, Foudre à gauche, Vide en bas, runes bleues.">
+          <circle cx="100" cy="100" r="92" fill="rgba(21,24,28,.35)" stroke="#5F8FD6" stroke-width="1.5"/>
+          <circle cx="100" cy="100" r="30" fill="none" stroke="#5F8FD6" stroke-opacity=".5" stroke-dasharray="3 4"/>
+          <path d="M35 35 L165 165 M165 35 L35 165" stroke="#5F8FD6" stroke-opacity=".45"/>
+          <path d="M100 18 A82 82 0 0 1 158 42 L121 79 A30 30 0 0 0 100 70 A30 30 0 0 0 79 79 L42 42 A82 82 0 0 1 100 18Z" fill="rgba(232,116,42,.18)" stroke="#E8742A"/>
+          <g fill="none" stroke="#CFE0FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M100 30c7 8 9 13 5 20 3-1 5-3 6-6 4 9-1 17-11 17s-15-8-11-16c1 3 3 5 5 6-3-7 1-14 6-21z"/>
+            <path d="M160 100h-24M148 88v24M140 92l16 16M156 92l-16 16"/>
+            <path d="M47 86l-8 13h9l-7 15 14-19h-9l7-9z"/>
+            <circle cx="100" cy="152" r="9"/><path d="M100 143a9 9 0 0 1 9 9M91 152a9 9 0 0 0 9 9" stroke-opacity=".6"/>
+          </g>
+          <g font-family="Figtree,sans-serif" font-size="9" fill="#e4e1d9" text-anchor="middle">
+            <text x="100" y="14">FEU</text><text x="186" y="103">GLACE</text><text x="15" y="103">FOUDRE</text><text x="100" y="196">VIDE</text>
+          </g>
+        </svg>
+      </div>
+      <p class="muted" style="font-size:.85rem">Quadrants et ralenti de 50 % en solo : <em>Roue</em> § 1 et 2. Runes bleues et nettes au Stade 1, tremblantes au Stade 2, veines noires au Stade 3 (<em>Roue</em> § 3). L'élément survolé prend sa couleur <span class="prop">prop.</span></p>
+    </div>
+  </div>
+
+  <h3>Typographies <span class="prop">prop.</span></h3>
+  <p class="muted lecture" style="font-size:.9rem">Toutes sous licence libre SIL Open Font License (Google Fonts) ; licences à revérifier avant la production. Tailles : pas de texte sous 28 px en 1080p ; sous-titres à 36 px au moins, sur bandeau semi-opaque, avec une option de taille.</p>
+  <div class="demo">
+    <div class="carte typo">
+      <div><span class="t-fell">Hameau de la Brume</span><small>IM Fell English · titres, intercalaires, noms des lieux</small></div>
+      <div><span class="t-fellsc">Onglet II · Rumeurs des Biomes</span><small>IM Fell English SC · intercalaires en petites capitales</small></div>
+      <div><span class="t-fig">Endurance 64 / 100 · Parade parfaite · Sous-titres</span><small>Figtree · HUD, menus, sous-titres, chiffres</small></div>
+    </div>
+    <div class="carte typo">
+      <div><span class="t-cav">Le chef m'envoie vers Oakhaven.</span><small>Caveat · écriture du journal (déformée au Stade 3)</small></div>
+      <div><span class="t-pin">Les Chroniques</span><small>Pinyon Script · écriture soignée (Diplomatie haute), titres seulement</small></div>
+      <div class="officiel"><span class="fra">Laissez-passer</span><small>Valable pour la seule ville d'Oakhaven (D-173)</small></div>
+      <small>UnifrakturMaguntia · documents officiels de l'Ordre, titres seulement</small>
+    </div>
+  </div>
+
+  <h3>Icônes <span class="prop">prop.</span></h3>
+  <p class="muted lecture" style="font-size:.9rem">Au trait d'encre, une seule couleur : ivoire au repos, or quand elles sont actives, rouge pour le danger ; lisibles à 32 px ; pas d'icônes plates colorées ni d'emoji.</p>
+  <div class="icones">
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M16 4c5 6 7 10 4 15 3-1 4-3 5-5 2 7-3 14-9 14s-11-6-9-13c1 3 2 4 4 5-3-6 0-11 5-16z"/></svg>Feu</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M16 3v26M5 9.5l22 13M27 9.5l-22 13M12 5l4 3 4-3M12 27l4-3 4 3"/></svg>Glace</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M19 3L8 18h7l-3 11 12-16h-7l2-10z"/></svg>Foudre</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="4"/><path d="M16 5a11 11 0 0 1 11 11M5 16A11 11 0 0 0 16 27M9 9a10 10 0 0 1 12-2M23 23a10 10 0 0 1-12 2"/></svg>Vide</div>
+    <div class="icone danger"><svg viewBox="0 0 32 32"><path d="M16 4c5 8 8 12 8 16a8 8 0 0 1-16 0c0-4 3-8 8-16z"/></svg>Sang</div>
+    <div class="icone actif"><svg viewBox="0 0 32 32"><path d="M24 4l4 0 0 4-13 13-4-4zM11 17l-3 3 4 4 3-3M8 20l-4 4 2 2 4-4M7 25l-2 3"/></svg>Épée</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M8 4c10 3 16 12 16 24M8 4v24h16M4 20l14-14M14 6h4v4"/></svg>Arc</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M5 11c6-5 16-5 22 0M16 8v20M14 28h4"/></svg>Pioche</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M7 7h12v7H7zM13 14v14M19 9l5 2"/></svg>Marteau</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M16 5c3 4 5 7 3 10 2 0 3-2 3-3 2 4 0 9-6 9s-8-5-6-9c0 1 1 3 3 3-2-3 0-6 3-10zM5 27l22-4M5 23l22 4"/></svg>Feu de camp</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M26 4C14 6 9 14 7 24l3-1c2-6 6-9 11-10-4-1-6 0-8 1 3-5 8-8 13-10zM7 24l-2 5"/></svg>Quête</div>
+    <div class="icone"><svg viewBox="0 0 32 32"><path d="M3 16c4-6 8-9 13-9s9 3 13 9c-4 6-8 9-13 9S7 22 3 16z"/><circle cx="16" cy="16" r="4"/></svg>Détection</div>
+  </div>
+
+  <h3>Couleurs de l'interface <span class="prop">prop.</span></h3>
+  <div class="nuancier">
+    <div class="sw p"><i style="--c:#15181C"></i><b>Ombre d'encre (70 %)</b><code>#15181C</code></div>
+    <div class="sw p"><i style="--c:#E4E1D9"></i><b>Texte ivoire</b><code>#E4E1D9</code></div>
+    <div class="sw p"><i style="--c:#8B929B"></i><b>Texte secondaire</b><code>#8B929B</code></div>
+    <div class="sw p"><i style="--c:#D4A857"></i><b>Sélection, objectif</b><code>#D4A857</code></div>
+    <div class="sw p"><i style="--c:#C7715C"></i><b>Danger, échec</b><code>#C7715C</code></div>
+    <div class="sw p"><i style="--c:#D8C8A4"></i><b>Parchemin</b><code>#D8C8A4</code></div>
+    <div class="sw p"><i style="--c:#1F1A16"></i><b>Encre</b><code>#1F1A16</code></div>
+    <div class="sw p"><i style="--c:#8E2A1F"></i><b>Encre rouge</b><code>#8E2A1F</code></div>
+  </div>
+</section>
+
+<section id="interdits">
+  <h2><span class="num">09</span>Ce qu'on s'interdit</h2>
+  <figure class="planche">
+    <img src="planches/09-interdits.jpg" width="1600" height="786" loading="lazy" alt="Huit exemples barrés : Ange à deux paires d'yeux, désert de dunes, croix sur le sceptre, croix d'épaulière, étoile sur le bouclier, esprit aux yeux jaunes, brume blanche uniforme, heaume fermé au souvenir.">
+    <figcaption>Planche 09 · exemples refusés, écartés ou à corriger, tirés du projet</figcaption>
+  </figure>
+  <ol class="liste">
+    <li>Tout rendu stylisé (dessin animé, contours, aplats) : le prototype est photoréaliste (D-158).</li>
+    <li>Les couleurs vives hors des codes : or = pouvoir et entité, violet et noir = Vide, rouge = sang, bleu = Mana et runes ; pas de néon.</li>
+    <li>Le désert de dunes : aucun biome n'est désertique (D-134) ; les images 17 et 18 (en haut à gauche) ne sont pas des références sur ce point.</li>
+    <li>Les symboles religieux réels, dont les croix que portent les fiches de l'Ordre (sceptre, épaulière) <span class="prop">prop.</span></li>
+    <li>Du texte, un nom ou un logo sur les insignes et dans les images générées (D-108, D-155).</li>
+    <li>Des yeux dorés ailleurs que chez l'entité et son hôte <span class="prop">prop.</span> ; un autre nombre d'yeux que trois paires pour l'Ange ; auréole, armure ou chaînes sur son apparition du Stade 1 (fiche validée ; au Stade 3, l'armure d'officier est voulue, D-60).</li>
+    <li>Des humains aux proportions non humaines ; deux PNJ au même visage (D-179).</li>
+    <li>Un héros propre, armé ou en armure au réveil (D-163).</li>
+    <li>La lumière de midi plate et la brume blanche uniforme qui efface le relief.</li>
+    <li>Les menus modernes rigides (<em>Interface des Quêtes</em>) : verre dépoli, néon, icônes plates.</li>
+    <li>Le gore complaisant : sang et plaies réalistes, sombres et brefs <span class="prop">prop.</span>, à revoir avec la classification d'âge (à définir, GDD).</li>
+    <li>Les assets réservés à un moteur (D-158, D-161) ou sans licence commerciale notée (D-160).</li>
+    <li>Copier une silhouette emblématique d'un autre jeu <span class="prop">prop.</span></li>
+  </ol>
+</section>
+
+<section id="ecarts">
+  <h2><span class="num">10</span>Écarts entre les prototypes et la bible</h2>
+  <p class="lecture muted">Des pistes pour les prochaines passes, pas des reproches : les deux mini-tranches visaient le jeu avant le décor (D-168).</p>
+  <figure class="planche">
+    <img src="planches/10-fiches-et-prototypes.jpg" width="1600" height="970" loading="lazy" alt="En haut, la fiche du héros au réveil et le héros dans Unreal puis dans Unity ; en bas, l'Ange, l'esprit et le mort-vivant, chacun en fiche puis en modèle 3D.">
+    <figcaption>Planche 10 · fiches, modèles 3D et captures</figcaption>
+  </figure>
+  <div class="tableau"><table>
+    <thead><tr><th>Écart</th><th>Où</th><th>Cible</th></tr></thead>
+    <tbody>
+      <tr><td>Roche du fond des gorges claire</td><td>Unreal et Unity</td><td>Basalte sombre <code>#2A2A29</code></td></tr>
+      <tr><td>Brume blanche surexposée, ciel brûlé</td><td>Unreal</td><td>Brume gris-violet, ciel avec dégradé</td></tr>
+      <tr><td>Lumière neutre de milieu de journée au belvédère</td><td>Unreal</td><td>Contre-jour doré de l'image 13</td></tr>
+      <tr><td>Ombres noires très dures, sans brume</td><td>Unity</td><td>Ombres froides adoucies par la brume</td></tr>
+      <tr><td>Gambison trop clair et trop long</td><td>Héros Unreal (Unity plus proche)</td><td>Écru sali, aux hanches (D-163)</td></tr>
+      <tr><td>Esprit en aplat lavande ; esprit v4 aux yeux jaunes</td><td>Unreal ; modèle 3D</td><td>Translucide, cœur lumineux, lueur violette</td></tr>
+      <tr><td>Ange gris-bleu, fumée solide</td><td>Modèle 3D</td><td>Noir de fumée, fumée en particules</td></tr>
+      <tr><td>Étoile sur le bouclier du soldat</td><td>Fiche et modèle 3D</td><td>Sceptre doré (D-166)</td></tr>
+      <tr><td>Barres rouge et vert vifs, pleine opacité</td><td>HUD des deux</td><td>Jauges fines de la partie 08</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="valider">
+  <h2><span class="num">11</span>À valider par le directeur</h2>
+  <p class="lecture muted">Contradictions signalées, non tranchées, et propositions de cette bible.</p>
+  <ol class="liste">
+    <li><strong>Texte ou image</strong> pour la Plaine : « émeraude, or éclatant » (<em>Worldbuilding</em>) ou vert sauge et or pâle (image 13) ? Proposition : l'image (D-158).</li>
+    <li><strong>Bannières</strong> : bleu nuit sur le pont de l'image 03, arbre sur celles de l'image 14, sceptre doré pour l'Ordre (D-166). Proposition : l'arbre pour la ville d'Oakhaven, le sceptre pour l'Ordre, pas de bleu.</li>
+    <li><strong>Turquoise des cryptes</strong> (images 03 et 12, absent des documents) : le garder pour le Culte ?</li>
+    <li><strong>Pics Célestes</strong> : « bleu cyan » (texte) ou violet (image 03) ? Hors prototype ; proposition : cyan, le violet étant au Vide. Le « Violet du Vide » <code>#8875BB</code> de cette bible a été relevé dans ce violet des Pics : à trancher avec ce point.</li>
+    <li><strong>Emblème sur les fiches</strong> : retirer les croix (sceptre, épaulière) et l'étoile du bouclier ?</li>
+    <li><strong>Validations en attente</strong> : esprit v4, tenue du possédé.</li>
+    <li><strong>À dessiner, sans aucune image</strong> : déserteurs, villageois, PNJ qui parlent, Veilleurs, Cartel, costumes du Culte, bêtes, intérieurs (auberge, forge, mine), Oakhaven de près, Ange au Stade 3.</li>
+    <li><strong>Propositions de la bible</strong> : code couleur des éléments ; yeux dorés du héros pendant la magie ; langage des souvenirs ; heures des scènes ; typographies et couleurs de l'interface ; limite du gore.</li>
+  </ol>
+</section>
+
+<section id="sources">
+  <h2><span class="num">12</span>Sources</h2>
+  <p class="lecture muted">Texte complet de la bible, avec toutes les citations : <code>D:\aaa-game\.equipe\prototype\bible-artistique.md</code>.</p>
+  <p class="chemins">Documents/03_World_Design/02_Croquis_et_Concepts/ (images 03, 05, 12, 13, 14, 17, 18)<br>E:\aaa-proto\personnages\ (fiches validées, D-163, D-166 ; LISEZMOI.md, prompts.md)<br>E:\aaa-proto\gen3d\rendus\ et RAPPORT.md (modèles 3D, D-164, D-165) ·E:\aaa-proto\echange\LISEZMOI.md<br>E:\aaa-proto\unreal-v2\captures\decor5\ et combat\ · E:\aaa-proto\unity\captures\finales\<br>.equipe/decisions.md (D-155 à D-180) · .equipe/etudes/cout-proto/inventaire.md</p>
+</section>
+</div>
+
+</body>
+</html>

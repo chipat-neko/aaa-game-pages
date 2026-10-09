@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Jour 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Semaine du 6 au 12 octobre</a></nav>
+
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de jour-2026-10-06.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · mardi 6 octobre 2026 · semaine du 6 au 12 octobre</div>
+  <h1>Jour <em>1</em></h1>
+  <p class="lecture">Reprise après la remise à zéro du quota de la semaine (mardi 1:00). Le directeur travaille avec le Chef : règles du quota, questions de la nuit 03 tranchées, gibier validé, puis une étude de qualité et le report des décisions dans les documents.</p>
+  <p class="ticket">Mise à jour : 06/10/2026 à 18:05</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-valide">13 validés</span></div>
+  <ul class="liste lecture">
+    <li><strong>Quota</strong> : il n&#x27;y a plus de réserve, le quota de la semaine devient une règle de travail (<span class="insec">D-231</span>). Un budget par jour d&#x27;environ 14 %, des paliers à 70, 85 et 95 %, un coût estimé dans chaque ticket, un agent neuf pour chaque correction, et un compteur affiché au démarrage.</li>
+    <li><strong>Le gibier est validé</strong> (<span class="insec">T-0135</span>) : sanglier, lapin et perdrix grise, après une correction faite par un agent neuf.</li>
+    <li><strong>Toutes les questions de la nuit 03 sont tranchées</strong> : brume et belvédère (<span class="insec">D-232</span>), quatre saisons (<span class="insec">D-233</span>), horde de 20 (<span class="insec">D-234</span>), bêtes et qualité des modèles (<span class="insec">D-235</span>), méfiance, « Paria », chien et loup, Tempête de Neige (<span class="insec">D-236</span>).</li>
+    <li><strong>Qualité AAA</strong> : le directeur juge le cheval trop pauvre en détails (poils en touffe collée). L&#x27;étude sur le cheval (<span class="insec">T-0142</span>, validée) propose des textures plus fines et des cartes de crins pour tous les modèles (≈ 4 à 7 % du quota).</li>
+    <li><strong>Documents</strong> : <span class="insec">D-232</span> à <span class="insec">D-249</span> sont reportés et validés (<span class="insec">T-0143</span>, <span class="insec">T-0144</span>, <span class="insec">T-0147</span>, <span class="insec">T-0150</span>, <span class="insec">T-0151</span>) ; le printemps s&#x27;appelle le Dégel et l&#x27;automne la Moisson (<span class="insec">D-237</span>).</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Chaque ticket a un exécutant et un vérificateur. Depuis <span class="insec">D-231</span>, une correction est confiée à un agent neuf, et chaque ticket porte son coût estimé, en part du quota de la semaine.</p>
+  <div class="files">
+<div class="file">
+  <h3>Modèles 3D</h3>
+  <p class="muted">Les bêtes du prototype, faites sur ce PC, sans Unreal.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0135</span> · <span class="insec">D-218</span> · <span class="insec">D-231</span></span><h3>Le gibier : sanglier, lapin, perdrix grise</h3><p class="muted">Trois bêtes de la nature libre autour du hameau, avec leurs animations.</p><span class="etat e-valide">Validé</span><p class="note">Correction 1 reprise par un agent neuf à 04:53 (arrêtée le 03/10 pour le quota), livrée à 05:09 : sabots du sanglier reposés au pas selon le pack, au plus 4 os par sommet, GLB et FBX identiques à 0,005 cm près. Vérifiée et validée à 05:25.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0142</span> · <span class="insec">D-235</span> (9)</span><h3>Étude : monter les modèles au niveau AAA, essai sur le cheval</h3><p class="muted">Diagnostic du cheval, au moins trois pistes (textures fines et relief, crinière et queue en vrais brins, meilleure génération, matériau de poil), images avant et après, coût de chacune, puis une chaîne recommandée pour tous les modèles.</p><span class="etat e-valide">Validé</span><p class="note">Lancée à 05:43, livrée à 06:41, corrigée par un agent neuf (rendus, crins noirs, coûts) et validée à 07:06. Recommandation : finir l&#x27;outil sur le cheval (≈ 1 %), le montrer au directeur, puis l&#x27;appliquer aux modèles existants (≈ 4 à 7 % en tout) ; meilleure génération pour les modèles à venir. De très près, le niveau AAA reste hors de portée en local.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0145</span> · <span class="insec">D-235</span> (9) · <span class="insec">D-240</span></span><h3>Qualité AAA, 1re partie : cheval, loup, chien</h3><p class="muted">Finir l&#x27;outil de l&#x27;étude sur le cheval, puis textures fines et cartes de crins et de poils sur les trois bêtes vues de plus près ; l&#x27;ancienne version est gardée.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:15, livré à 09:29, corrigé deux fois par des agents neufs (tapis du cheval, crinière, noirs, toupet, légende), validé à 12:28. Cheval, loup et chien en nouvelle version, l&#x27;ancienne gardée ; animations identiques. De très près, ce n&#x27;est pas encore du niveau AAA.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0149</span> · <span class="insec">D-240</span></span><h3>Qualité AAA, 2e partie : sanglier, lapin, perdrix, araignée, chauves-souris</h3><p class="muted">La même chaîne, avec l&#x27;outil fini dans <span class="insec">T-0145</span>.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 12:28, livré à 13:48, corrigé par un agent neuf (yeux et queue du sanglier, deux textes) et validé à 14:59. Détail de matière sur les cinq bêtes, soies du sanglier ; animations identiques. Les cinq bêtes sont sur la page « Modèles 3D » depuis 15:11.</p></div>
+  </div>
+  <p class="suite">Après l&#x27;étude de qualité : morts-vivants variés et meneur de la horde, défauts à corriger, vraies foulées, marches blessées, monte et descente du cheval, nuée suspendue, oiseaux, laies (<span class="insec">D-234</span>, <span class="insec">D-235</span>).</p>
+</div>
+<div class="file">
+  <h3>Unreal</h3>
+  <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0146</span> · <span class="insec">D-234</span> · <span class="insec">D-237</span> · <span class="insec">D-238</span></span><h3>La horde de 20</h3><p class="muted">Déclenchement après l&#x27;étape 2, 15 morts-vivants, 4 esprits et un meneur provisoire, éveil à 45 % des PV, sort sur toute l&#x27;aire, réplique puis rappel de la touche à 5 s, NavMesh et apparitions hors de vue.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:15, livré à 09:02, corrigé par un agent neuf (commit 1daebf0) avec <span class="insec">D-245</span> et <span class="insec">D-246</span>, validé à 10:55. 5 lancements verts sur le bon code : 0 créature replacée d&#x27;un coup, 0 apparition à vue ; la horde ralentit entre l&#x27;éclair et le sort (le héros garde au moins 28 PV) ; carte « [G] Libère » ; 140 à 148 images/s.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0131</span> · <span class="insec">P1-05</span> · <span class="insec">P1-19</span></span><h3>Limites de la zone et patrouille au-delà du ravin</h3><p class="muted">Les parois non grimpables aux limites (propres au prototype) et la patrouille de l&#x27;Ordre vue depuis la sortie.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 10:56, livré à 12:32, corrigé par un agent neuf (commit d97e379) et validé à 14:10. 807 murs des limites non grimpables (retirables par un réglage) ; 3 soldats bien différents et un possédé au-delà du ravin ; plan de caméra de 6 s, passable par Entrée. À reprendre : à la manette, la touche qui passe le plan est déjà prévue pour la pause dans les maquettes.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0132</span> · <span class="insec">D-223</span> à <span class="insec">D-227</span> · <span class="insec">D-247</span> · <span class="insec">D-249</span></span><h3>Le chien et le loup dans le jeu</h3><p class="muted">Le chien suit le héros (rôles à 35 et 70, pas de mort définitive, la patte qui boite suit la blessure), le loup à l&#x27;enclos, matériau commun des bêtes, l&#x27;entité qui garde son réceptacle, sous-titres à 36 px réglables.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 13:55, coupé deux fois par une surcharge des serveurs, livré à 16:12, corrigé par un agent neuf (yeux dorés, bilan remis) et validé à 17:25. Le chien suit le héros (rôles à 35 et 70, boiterie de la bonne patte, abri et retour) ; le loup à l&#x27;enclos ; matériau commun des bêtes ; grand sort bloqué avant l&#x27;éveil ; l&#x27;entité garde son réceptacle ; sous-titres de 28 à 48 px ; croix bas pour passer le plan de la patrouille.</p></div>
+  </div>
+  <p class="suite">Puis l&#x27;escalade (<span class="insec">P1-05</span>, <span class="insec">D-248</span> (4)), l&#x27;animation d&#x27;arc (<span class="insec">D-248</span> (2)), la saison et la météo (<span class="insec">D-232</span>, <span class="insec">D-233</span>, <span class="insec">D-236</span>).</p>
+</div>
+<div class="file">
+  <h3>Documents</h3>
+  <p class="muted">Reporter les décisions du directeur dans Documents/.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0143</span> · <span class="insec">D-232</span> · <span class="insec">D-233</span> · <span class="insec">D-234</span> · <span class="insec">D-235</span> · <span class="insec">D-236</span></span><h3>Reporter <span class="insec">D-232</span> à <span class="insec">D-236</span> dans Documents/</h3><p class="muted">Quatre saisons, brume, horde de 20, bêtes, méfiance progressive, « Paria », Tempête de Neige ; plus les petits restes de QP1 et de Combat Hybride.</p><span class="etat e-valide">Validé</span><p class="note">Livré à 05:57 (17 documents et 3 fichiers du prototype), renvoyé en correction à 06:03 pour de petites reprises, corrigé par un agent neuf et validé à 06:06. Documents/ est aligné jusqu&#x27;à <span class="insec">D-236</span>. Restent au directeur : les noms du printemps et de l&#x27;automne et les options ouvertes.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0144</span> · <span class="insec">D-237</span> · <span class="insec">D-238</span></span><h3>Reporter <span class="insec">D-237</span> dans Documents/</h3><p class="muted">Le Dégel et la Moisson, ce que change chaque saison, méfiance en 4 étapes, « Paria », horde de 20, pierres de lumière, chute du cavalier, champs sous la neige ; plus les passages restés hors de <span class="insec">T-0143</span>.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 06:16, livré à 06:37, renvoyé en correction à 06:45 (phrases sur les prédateurs, plan de production), corrigé par un agent neuf avec <span class="insec">D-238</span> et validé à 06:57. Documents/ est aligné jusqu&#x27;à <span class="insec">D-238</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0147</span> · <span class="insec">D-239</span> · <span class="insec">D-240</span></span><h3>Restes de documents</h3><p class="muted">Valeurs de départ de la méfiance, noirs des poils et crins dans la bible, l&#x27;invite « Visez la horde » des maquettes, QP1, Combat Hybride, introduction des points à arbitrer du GDD.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:15, livré à 07:20, validé à 07:27. Documents/ est aligné jusqu&#x27;à <span class="insec">D-240</span> ; <span class="insec">D-241</span> ira dans le prochain petit ticket.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0150</span> · <span class="insec">D-241</span> · <span class="insec">D-242</span> · <span class="insec">D-243</span></span><h3>Reporter <span class="insec">D-241</span> et <span class="insec">D-242</span></h3><p class="muted">Obsidienne, méfiance de l&#x27;Ordre par étapes, rappel « touche et mot », l&#x27;image 13 d&#x27;automne dans la bible et le plan de production, puce <span class="insec">D-240</span> du GDD.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 08:24, livré à 08:28, renvoyé en correction à 08:31, corrigé par un agent neuf avec <span class="insec">D-243</span> et validé à 08:58. Documents/ est aligné jusqu&#x27;à <span class="insec">D-243</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0151</span> · <span class="insec">D-244</span> à <span class="insec">D-249</span></span><h3>Reporter <span class="insec">D-244</span> à <span class="insec">D-248</span></h3><p class="muted">Écarts de la méfiance de l&#x27;Ordre, horde (ralenti, 45 m, réceptacle), sous-titres, patrouille et escalade ; deux fichiers qui disent encore « Neutre » trop tôt.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 14:00, livré à 14:20, corrigé par un agent neuf avec <span class="insec">D-249</span> et validé à 14:31. Documents/ est aligné jusqu&#x27;à <span class="insec">D-249</span>.</p></div>
+  </div>
+  <p class="suite">Une fois validé : choisir les noms du printemps et de l&#x27;automne, et les options laissées ouvertes.</p>
+</div>
+<div class="file">
+  <h3>Images</h3>
+  <p class="muted">Images de référence du prototype.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0148</span> · <span class="insec">D-238</span> (3)</span><h3>L&#x27;image 13 d&#x27;automne</h3><p class="muted">La référence du panorama refaite en fin d&#x27;automne, sous la première neige, avec la même composition et la même lumière ; 3 ou 4 variantes.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:15, livré à 07:36, corrigé (montage qui garde la lumière de l&#x27;image 13). Les variantes 1 et 2 sont vérifiées propres ; le directeur a choisi la variante 2 (<span class="insec">D-242</span>). Les variantes 3 et 4, qui gardaient des défauts, sont écartées. Clos à 08:22.</p></div>
+  </div>
+  <p class="suite">Le directeur choisira la variante ; la bible et le plan de production suivront.</p>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D du jour</h2>
+  <p class="lecture muted">Les modèles validés aujourd&#x27;hui. Le directeur a demandé de corriger leurs défauts connus (<span class="insec">D-235</span> (8)) après l&#x27;étude de qualité.</p>
+  <div class="galerie">
+<article class="modele" id="mod-sanglier">
+  <div class="tete"><h3>Sanglier</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0135</span> · <span class="insec">D-218</span> · <span class="insec">D-235</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-sanglier" title="Voir sa fiche dans « Modèles 3D »"><img src="images/sanglier.jpg" alt="Le sanglier, de trois quarts" width="900" height="675" loading="lazy"></a><figcaption>Le grand mâle, de trois quarts. (version validée le matin, avant la qualité améliorée.)</figcaption></figure>
+  <p>Un grand mâle de 0,92 m au garrot ; des laies d&#x27;environ 0,75 m viendront pour la compagnie (<span class="insec">D-235</span>). Il fuit d&#x27;habitude, mais charge s&#x27;il est menacé, et boitera quand il est blessé. Sa course sera refaite avec de vraies foulées.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-sanglier">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\gibier\sanglier\</p>
+</article>
+<article class="modele" id="mod-lapin">
+  <div class="tete"><h3>Lapin</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0135</span> · <span class="insec">D-218</span> · <span class="insec">D-235</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-lapin" title="Voir sa fiche dans « Modèles 3D »"><img src="images/lapin.jpg" alt="Le lapin, de trois quarts" width="900" height="675" loading="lazy"></a><figcaption>Le lapin, de trois quarts. (version validée le matin, avant la qualité améliorée.)</figcaption></figure>
+  <p>0,27 m. Ses pattes qui se recouvrent au saut seront corrigées (<span class="insec">D-235</span> (8)), et sa fuite refaite avec de vraies foulées.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-lapin">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\gibier\lapin\</p>
+</article>
+<article class="modele" id="mod-perdrix">
+  <div class="tete"><h3>Perdrix grise</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0135</span> · <span class="insec">D-218</span> · <span class="insec">D-235</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-perdrix" title="Voir sa fiche dans « Modèles 3D »"><img src="images/perdrix.jpg" alt="La perdrix grise posée, de trois quarts" width="900" height="675" loading="lazy"></a><figcaption>La perdrix posée, de trois quarts. (version validée le matin, avant la qualité améliorée.)</figcaption></figure>
+  <p>0,27 m pour 0,44 m d&#x27;envergure, pour les vols de la plaine. D&#x27;autres oiseaux viendront selon le danger, la saison, la météo et la présence des hommes (<span class="insec">D-235</span> (5)). Son changement de corps entre le sol et le vol sera corrigé.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-perdrix">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\gibier\perdrix\</p>
+</article>
+<article class="modele" id="mod-image-13-automne">
+  <div class="tete"><h3>Image 13 d&#x27;automne : la variante 2, « saupoudrage »</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0148</span> · <span class="insec">D-238</span> (3)</p>
+  <figure><img src="images/image-13-automne.jpg" alt="Le panorama du belvédère en fin d&#x27;automne, chaumes et première neige dans la plaine, à contre-jour" width="1280" height="548" loading="lazy"><figcaption>La variante 2 retenue : environ 16 % de la plaine sous la première neige.</figcaption></figure>
+  <p>La référence du panorama du belvédère en fin d&#x27;automne (<span class="insec">D-238</span> (3), <span class="insec">D-242</span>) : même composition et même contre-jour que l&#x27;image 13, chaumes et champs labourés sous une première neige, plaine sauge plus froide. Hors de la neige, tout est l&#x27;image d&#x27;origine au pixel près.</p>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\image13-automne\</p>
+</article>
+<article class="modele" id="mod-qualite-cheval">
+  <div class="tete"><h3>Cheval : qualité améliorée</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0145</span> · <span class="insec">D-235</span> (9) · <span class="insec">D-240</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-cheval" title="Voir sa fiche dans « Modèles 3D »"><img src="images/qualite-cheval.jpg" alt="Cheval : qualité améliorée, planche avant et après" width="1280" height="193" loading="lazy"></a><figcaption>Avant et après, de près : crinière, toupet, queue et fanons en cartes de crins, détail du poil.</figcaption></figure>
+  <p>Nouvelle version (<span class="insec">T-0145</span>) ; l&#x27;ancienne est gardée. Animations identiques à l&#x27;ancienne version. De très près, des cartes entrent un peu dans la peau.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-cheval">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\cheval\</p>
+</article>
+<article class="modele" id="mod-qualite-loup">
+  <div class="tete"><h3>Loup : qualité améliorée</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0145</span> · <span class="insec">D-235</span> (9) · <span class="insec">D-240</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-loup" title="Voir sa fiche dans « Modèles 3D »"><img src="images/qualite-loup.jpg" alt="Loup : qualité améliorée, planche avant et après" width="1280" height="272" loading="lazy"></a><figcaption>Avant et après, de près : queue et collerette en cartes de poils, détail du poil.</figcaption></figure>
+  <p>Nouvelle version (<span class="insec">T-0145</span>) ; l&#x27;ancienne est gardée. Animations identiques à l&#x27;ancienne version. De très près, des cartes entrent un peu dans la peau.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-loup">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\loup\</p>
+</article>
+<article class="modele" id="mod-qualite-chien">
+  <div class="tete"><h3>Chien de berger : qualité améliorée</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0145</span> · <span class="insec">D-235</span> (9) · <span class="insec">D-240</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-chien-berger" title="Voir sa fiche dans « Modèles 3D »"><img src="images/qualite-chien.jpg" alt="Chien de berger : qualité améliorée, planche avant et après" width="1280" height="272" loading="lazy"></a><figcaption>Avant et après, de près : queue et collerette en cartes de poils, détail du poil.</figcaption></figure>
+  <p>Nouvelle version (<span class="insec">T-0145</span>) ; l&#x27;ancienne est gardée. Animations identiques à l&#x27;ancienne version. De très près, des cartes entrent un peu dans la peau.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-chien-berger">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\chien\</p>
+</article>
+<article class="modele" id="mod-qualite-sanglier">
+  <div class="tete"><h3>Sanglier : qualité améliorée</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0149</span> · <span class="insec">D-235</span> (9) · <span class="insec">D-240</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-sanglier" title="Voir sa fiche dans « Modèles 3D »"><img src="images/qualite-sanglier.jpg" alt="Sanglier : qualité améliorée, planche avant et après" width="1280" height="239" loading="lazy"></a><figcaption>Avant et après, de près : 320 cartes de soies sur le dos, crête et franges ramenées à la teinte de la fiche.</figcaption></figure>
+  <p>Nouvelle version (<span class="insec">T-0149</span>) ; l&#x27;ancienne est gardée. Animations identiques. Le lapin, la perdrix et les chauves-souris ont aussi leur nouvelle version.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-sanglier">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\gibier\sanglier\</p>
+</article>
+<article class="modele" id="mod-qualite-araignee">
+  <div class="tete"><h3>Araignée : qualité améliorée</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0149</span> · <span class="insec">D-235</span> (9) · <span class="insec">D-240</span></p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-araignee" title="Voir sa fiche dans « Modèles 3D »"><img src="images/qualite-araignee.jpg" alt="Araignée : qualité améliorée, planche avant et après" width="1280" height="314" loading="lazy"></a><figcaption>Avant et après, de près : détail de la chitine et des pattes velues.</figcaption></figure>
+  <p>Nouvelle version (<span class="insec">T-0149</span>) ; l&#x27;ancienne est gardée. Animations identiques. Le lapin, la perdrix et les chauves-souris ont aussi leur nouvelle version.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-araignee">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\araignee\</p>
+</article>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>04:30</time><p>Début de la journée : état du projet pour le directeur.</p></div>
+    <div class="entree"><time>04:45</time><p>Décision <span class="insec">D-231</span> : règles du quota de la semaine, compteur calé sur la semaine du 29/09 (tous projets : aaa-game en avait pris 71 %).</p></div>
+    <div class="entree"><time>04:53</time><p>Correction 1 de <span class="insec">T-0135</span> confiée à un agent neuf (première application de <span class="insec">D-231</span>).</p></div>
+    <div class="entree"><time>05:09</time><p><span class="insec">T-0135</span> livré ; vérification lancée.</p></div>
+    <div class="entree"><time>05:10</time><p>Questionnaires du directeur : <span class="insec">D-232</span> (brume plus tardive, arrivée au belvédère acceptée, réglages d&#x27;image gardés) et <span class="insec">D-233</span> (quatre saisons de 30 jours ; le prototype montre la fin de l&#x27;automne, avec les premières neiges).</p></div>
+    <div class="entree"><time>05:20</time><p><span class="insec">D-234</span>, la horde : 20 créatures avec un meneur, éveil de l&#x27;entité à 45 % des PV, le grand sort balaie toute l&#x27;aire, NavMesh et apparitions hors de vue avant la vidéo des investisseurs.</p></div>
+    <div class="entree"><time>05:25</time><p><span class="insec">T-0135</span> validé (le gibier).</p></div>
+    <div class="entree"><time>05:35</time><p><span class="insec">D-235</span>, les bêtes (pierres de lumière dans la mine, cheval qui a peur des monstres, vraies foulées, aucun défaut accepté, étude de qualité AAA) et <span class="insec">D-236</span>, les règles (méfiance qui baisse peu à peu, « Paria » après plusieurs hameaux, Tempête de Neige tirée au hasard).</p></div>
+    <div class="entree"><time>05:43</time><p>Lancement de <span class="insec">T-0142</span> (étude de qualité sur le cheval), de <span class="insec">T-0143</span> (report de <span class="insec">D-232</span> à <span class="insec">D-236</span>) et de l&#x27;ajout du cheval et du gibier à la page « Modèles 3D ».</p></div>
+    <div class="entree"><time>05:57</time><p><span class="insec">T-0143</span> livré (<span class="insec">D-232</span> à <span class="insec">D-236</span> dans 17 documents) ; vérification lancée.</p></div>
+    <div class="entree"><time>06:10</time><p>Page « Modèles 3D » : cheval, sanglier, lapin et perdrix ajoutés ; loup et chien réallégés sans aucun écart d&#x27;animation ; fiches de l&#x27;araignée et de la chauve-souris à jour de <span class="insec">D-235</span> (20 modèles, 75 animations).</p></div>
+    <div class="entree"><time>06:03</time><p><span class="insec">T-0143</span> à corriger : le fond est bon (tout est reporté, aucun nom de saison inventé), mais une phrase fausse dans le Didacticiel, un repère perdu dans le GDD et deux petites reprises. Correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>06:15</time><p>Une page par semaine (choix du directeur) : les pages de jour et de nuit de cette semaine passent dans la page « Semaine du 6 au 12 octobre », reliée à « Pages du projet ».</p></div>
+    <div class="entree"><time>06:04</time><p>Correction de <span class="insec">T-0143</span> livrée (cinq points) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>06:06</time><p><span class="insec">T-0143</span> validé : Documents/ est aligné jusqu&#x27;à <span class="insec">D-236</span>.</p></div>
+    <div class="entree"><time>06:15</time><p><span class="insec">D-237</span> : le printemps s&#x27;appelle le Dégel et l&#x27;automne la Moisson ; les saisons changent aussi les prix et les quêtes ; méfiance en 4 étapes de 5 % ; « Paria » après 3 lieux hostiles ; horde de 15 morts-vivants, 4 esprits et un meneur ; pierres de lumière bleu-vert ; l&#x27;Ange reste la plus grande silhouette.</p></div>
+    <div class="entree"><time>06:26</time><p>Lancement de <span class="insec">T-0144</span> : report de <span class="insec">D-237</span> dans les documents.</p></div>
+    <div class="entree"><time>06:37</time><p><span class="insec">T-0144</span> livré (<span class="insec">D-237</span> dans 14 documents et 6 fichiers du prototype) ; vérification lancée.</p></div>
+    <div class="entree"><time>06:40</time><p><span class="insec">D-238</span> : un nom par espèce de prédateur trahi ; « Amical » dès que la méfiance tombe à 0 ; une image 13 d&#x27;automne pour le panorama ; le grand sort se vise, sauf dans la scène de la horde.</p></div>
+    <div class="entree"><time>06:42</time><p><span class="insec">T-0142</span> livré (étude de qualité AAA sur le cheval) ; vérification lancée.</p></div>
+    <div class="entree"><time>06:45</time><p><span class="insec">T-0144</span> à corriger (le fond est bon : lexique et calculs justes) ; correction confiée à un agent neuf, avec le report de <span class="insec">D-238</span>.</p></div>
+    <div class="entree"><time>06:51</time><p><span class="insec">T-0142</span> à corriger (base confirmée, mais deux rendus ratés, des coûts à refaire et des crins bruns) ; correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>06:52</time><p>Correction de <span class="insec">T-0144</span> livrée, avec <span class="insec">D-238</span> ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>06:57</time><p><span class="insec">T-0144</span> validé : Documents/ est aligné jusqu&#x27;à <span class="insec">D-238</span>.</p></div>
+    <div class="entree"><time>07:00</time><p><span class="insec">D-239</span> : les chiffres de la méfiance (+20 %, pas de 5 %, −10 %) sont des valeurs de départ, réglables après des parties d&#x27;essai ; les 4 étapes restent fixes.</p></div>
+    <div class="entree"><time>07:04</time><p>Correction de <span class="insec">T-0142</span> livrée ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>07:06</time><p><span class="insec">T-0142</span> validé (l&#x27;étude de qualité) : tous les chiffres refaits sont justes. Suite à choisir par le directeur.</p></div>
+    <div class="entree"><time>07:10</time><p><span class="insec">D-240</span> : les améliorations de l&#x27;étude s&#x27;appliquent tout de suite aux 8 modèles existants ; noir jusqu&#x27;à #0C0C0C pour les poils et crins ; pas d&#x27;appui extérieur pour l&#x27;instant.</p></div>
+    <div class="entree"><time>07:17</time><p>Lancement de quatre chantiers en parallèle : <span class="insec">T-0145</span> (qualité du cheval, du loup et du chien), <span class="insec">T-0146</span> (la horde de 20 dans Unreal), <span class="insec">T-0147</span> (restes de documents), <span class="insec">T-0148</span> (l&#x27;image 13 d&#x27;automne). <span class="insec">T-0131</span> suivra la horde, <span class="insec">T-0149</span> suivra <span class="insec">T-0145</span>.</p></div>
+    <div class="entree"><time>07:20</time><p><span class="insec">T-0147</span> livré (restes de documents) ; vérification lancée.</p></div>
+    <div class="entree"><time>07:25</time><p><span class="insec">D-241</span> : l&#x27;obsidienne est une exception nommée au noir du décor ; la méfiance de l&#x27;Ordre baisse aussi par étapes (la Voie A en fait passer plusieurs) ; le rappel du grand sort montre la touche et un mot court.</p></div>
+    <div class="entree"><time>07:27</time><p><span class="insec">T-0147</span> validé : Documents/ est aligné jusqu&#x27;à <span class="insec">D-240</span>.</p></div>
+    <div class="entree"><time>07:36</time><p><span class="insec">T-0148</span> livré : 4 variantes d&#x27;automne de l&#x27;image 13 ; vérification lancée.</p></div>
+    <div class="entree"><time>07:46</time><p><span class="insec">T-0148</span> à corriger (premier plan éclairci, brume perdue en variante 4) ; correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>08:07</time><p>Correction de <span class="insec">T-0148</span> livrée (variantes en montage, lumière de l&#x27;image 13 gardée) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>08:22</time><p><span class="insec">D-242</span> : le directeur choisit la variante 2 (« saupoudrage ») comme image 13 d&#x27;automne ; <span class="insec">T-0148</span> est clos.</p></div>
+    <div class="entree"><time>08:24</time><p>Lancement de <span class="insec">T-0150</span> : report de <span class="insec">D-241</span> et <span class="insec">D-242</span> dans les documents.</p></div>
+    <div class="entree"><time>08:28</time><p><span class="insec">T-0150</span> livré (<span class="insec">D-241</span> et <span class="insec">D-242</span> dans les documents) ; vérification lancée.</p></div>
+    <div class="entree"><time>08:32</time><p><span class="insec">D-243</span> : la méfiance de l&#x27;Ordre compte 6 étapes ; la Voie A en fait passer 2 ; l&#x27;Ordre ne devient Neutre qu&#x27;à 0 ; le mot du rappel du grand sort est « Libère ».</p></div>
+    <div class="entree"><time>08:31</time><p><span class="insec">T-0150</span> à corriger ; correction confiée à un agent neuf, avec le report de <span class="insec">D-243</span>.</p></div>
+    <div class="entree"><time>08:36</time><p>Correction de <span class="insec">T-0150</span> livrée, avec <span class="insec">D-243</span> ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>08:55</time><p><span class="insec">D-244</span> : les 6 étapes de la méfiance de l&#x27;Ordre ont des écarts plus grands au début (4, 4, 3, 3, 3, 3) ; après la Voie A, le remède du vivandier passe de 10 à 9.</p></div>
+    <div class="entree"><time>08:58</time><p><span class="insec">T-0150</span> validé : Documents/ est aligné jusqu&#x27;à <span class="insec">D-243</span>.</p></div>
+    <div class="entree"><time>09:02</time><p><span class="insec">T-0146</span> livré (la horde de 20 dans Unreal) ; vérification lancée.</p></div>
+    <div class="entree"><time>09:20</time><p><span class="insec">D-245</span> : entre l&#x27;éclair et le sort, la horde ralentit (attaques plus rares et moins fortes) ; sorties dans le dos à 10 m ; le grand sort reste libre avant l&#x27;éveil.</p></div>
+    <div class="entree"><time>09:29</time><p><span class="insec">T-0146</span> à corriger (preuves à refaire) ; correction confiée à un agent neuf, avec <span class="insec">D-245</span>. <span class="insec">T-0145</span> livré (qualité du cheval, du loup et du chien) ; vérification lancée.</p></div>
+    <div class="entree"><time>09:35</time><p><span class="insec">D-246</span> : dans la brume, les créatures de la horde qui sortent dans le champ de vision le font au-delà de 45 m.</p></div>
+    <div class="entree"><time>09:57</time><p><span class="insec">T-0145</span> à corriger (le tapis du cheval pris par le réglage des crins) ; correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>10:48</time><p>Correction de <span class="insec">T-0146</span> livrée (horde de 20 avec <span class="insec">D-245</span> et <span class="insec">D-246</span>) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>10:55</time><p><span class="insec">T-0146</span> validé : la horde de 20 est prête pour la vidéo des investisseurs (meneur encore provisoire).</p></div>
+    <div class="entree"><time>10:56</time><p>Lancement de <span class="insec">T-0131</span> (limites de la zone et patrouille au-delà du ravin) dans Unreal.</p></div>
+    <div class="entree"><time>11:05</time><p><span class="insec">D-247</span> : entre l&#x27;éclair et le sort, l&#x27;entité garde son réceptacle (les PV ne descendent pas sous un plancher, avec un effet visible) ; sous-titres à 36 px par défaut, réglables par le joueur.</p></div>
+    <div class="entree"><time>11:01</time><p>Correction de <span class="insec">T-0145</span> livrée (tapis du cheval, crinière, noirs) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>11:15</time><p>Pages : les jours et les nuits sont numérotés dans chaque semaine (Jour 1, Nuit 1…) ; la semaine va du mardi au lundi, et la nuit du lundi au mardi en est la dernière.</p></div>
+    <div class="entree"><time>11:20</time><p><span class="insec">T-0145</span> à corriger une 2e fois (toupet, reflet, légende) ; correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>11:48</time><p>2e correction de <span class="insec">T-0145</span> livrée ; vérification lancée.</p></div>
+    <div class="entree"><time>12:28</time><p><span class="insec">T-0145</span> validé : le cheval, le loup et le chien ont leur nouvelle qualité (planches ci-dessous).</p></div>
+    <div class="entree"><time>12:29</time><p>Lancement de <span class="insec">T-0149</span> (qualité du sanglier, du lapin, de la perdrix, de l&#x27;araignée et des chauves-souris) et de la mise à jour de « Modèles 3D » pour les trois premières bêtes.</p></div>
+    <div class="entree"><time>12:32</time><p><span class="insec">T-0131</span> livré (limites et patrouille) ; vérification lancée.</p></div>
+    <div class="entree"><time>12:45</time><p><span class="insec">D-248</span> : soldats générés pour l&#x27;instant (MetaHumans à revoir le 07/10) ; animation d&#x27;arc faite par programme ; plan de caméra de la patrouille de 6 s, passable ; un ticket d&#x27;escalade bientôt.</p></div>
+    <div class="entree"><time>12:49</time><p><span class="insec">T-0131</span> à corriger (soldats trop semblables) ; correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>13:01</time><p>Page « Modèles 3D » publiée avec les nouveaux cheval, loup et chien (cartes de poils, détail du poil, marque gardée) ; 20 modèles, 75 animations, aucune erreur.</p></div>
+    <div class="entree"><time>13:48</time><p><span class="insec">T-0149</span> livré (qualité des cinq autres bêtes) ; vérification lancée.</p></div>
+    <div class="entree"><time>14:04</time><p>Correction de <span class="insec">T-0131</span> livrée (soldats différents, plan de 6 s passable) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>14:10</time><p><span class="insec">T-0131</span> validé (limites de la zone et patrouille de l&#x27;Ordre).</p></div>
+    <div class="entree"><time>14:13</time><p>Lancement de <span class="insec">T-0132</span> (le chien et le loup dans Unreal) et de <span class="insec">T-0151</span> (report de <span class="insec">D-244</span> à <span class="insec">D-248</span>).</p></div>
+    <div class="entree"><time>14:15</time><p><span class="insec">T-0149</span> à corriger (yeux et queue du sanglier, deux phrases fausses) ; correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>14:20</time><p><span class="insec">T-0151</span> livré (<span class="insec">D-244</span> à <span class="insec">D-248</span> dans les documents) ; vérification lancée.</p></div>
+    <div class="entree"><time>14:22</time><p><span class="insec">D-249</span> : le grand sort est bloqué avant l&#x27;éveil (c&#x27;est l&#x27;entité qui donne le pouvoir) ; sous-titres réglables de 28 à 48 px ; quand les PV touchent le plancher, voile violet, yeux dorés, « Pas encore. » et un battement sourd. Transmis à <span class="insec">T-0132</span> en cours.</p></div>
+    <div class="entree"><time>14:25</time><p><span class="insec">T-0151</span> à corriger (une ligne) ; correction confiée à un agent neuf, avec le report de <span class="insec">D-249</span>.</p></div>
+    <div class="entree"><time>14:28</time><p>Correction de <span class="insec">T-0151</span> livrée, avec <span class="insec">D-249</span> ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>14:31</time><p><span class="insec">T-0151</span> validé : Documents/ est aligné jusqu&#x27;à <span class="insec">D-249</span>.</p></div>
+    <div class="entree"><time>14:41</time><p>Correction de <span class="insec">T-0149</span> livrée ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>14:59</time><p><span class="insec">T-0149</span> validé (qualité des cinq autres bêtes) ; mise à jour de « Modèles 3D » lancée pour elles.</p></div>
+    <div class="entree"><time>15:11</time><p>Page « Modèles 3D » publiée avec les nouvelles versions des cinq bêtes : les 8 modèles existants ont tous leur qualité améliorée (20 modèles, 75 animations, aucune erreur).</p></div>
+    <div class="entree"><time>15:54</time><p><span class="insec">T-0132</span> interrompu par une surcharge des serveurs d&#x27;Anthropic (erreur 529) pendant un parcours ; l&#x27;agent est repris là où il en était, rien n&#x27;est perdu.</p></div>
+    <div class="entree"><time>16:09</time><p><span class="insec">T-0132</span> livré (le chien et le loup dans le jeu, <span class="insec">D-247</span> et <span class="insec">D-249</span>) ; vérification lancée.</p></div>
+    <div class="entree"><time>16:23</time><p><span class="insec">T-0132</span> à corriger (yeux de l&#x27;effet, un bilan écrasé, le rapport) ; correction confiée à un agent neuf.</p></div>
+    <div class="entree"><time>17:20</time><p>Correction de <span class="insec">T-0132</span> livrée ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>17:25</time><p><span class="insec">T-0132</span> validé : tous les chantiers du jour sont finis.</p></div>
+    <div class="entree"><time>17:20</time><p>Fin de la journée, sur décision du directeur : 9,9 % du quota de la semaine utilisés ; le budget restant s&#x27;ajoute à demain.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Les questions de la nuit 03 ont été posées par questionnaires ce matin. Reste ouverte la liste des surnoms de l&#x27;entité, à choisir avec l&#x27;ami du directeur dans le fil « Échanges ».</p>
+  <p class="lecture muted">2 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0129</span></span><p>La brume revient au belvédère dans 5 à 8 % des parties : que faire ?</p><p class="reponse">Réponse du directeur : Première brume plus tardive : aucune nouvelle brume avant 8 h du jeu (<span class="insec">D-232</span>).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">D-230</span> (2)</span><p>La « saison moyenne » : point de passage ou intersaisons ?</p><p class="reponse">Réponse du directeur : Quatre saisons complètes, chacune avec ses particularités et des répercussions sur les PNJ (<span class="insec">D-233</span>).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0130</span></span><p>La horde : déclenchement, taille, battable ou non, défauts visibles ?</p><p class="reponse">Réponse du directeur : Après l&#x27;étape 2, 20 créatures avec un meneur, renforts, corrections avant la vidéo (<span class="insec">D-234</span>).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0133</span> à <span class="insec">T-0135</span></span><p>Les bêtes : tailles, combat de l&#x27;araignée, marque et peur du cheval, oiseaux, vitesses ?</p><p class="reponse">Réponse du directeur : Voir <span class="insec">D-235</span> ; et le directeur demande un niveau AAA pour tous les modèles.</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">D-215</span> · <span class="insec">D-230</span></span><p>Fin de la méfiance, « Paria », chien et loup, Tempête de Neige ?</p><p class="reponse">Réponse du directeur : Voir <span class="insec">D-236</span>.</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0143</span></span><p>Noms du printemps et de l&#x27;automne, étapes de la méfiance, « Paria », répartition de la horde, et quelques contradictions entre documents.</p><p class="reponse">Réponse du directeur : Le Dégel et la Moisson ; voir <span class="insec">D-237</span>.</p></div>
+    <div class="question"><span class="ticket">Échanges</span><p>Surnoms de l&#x27;entité : quelle liste ? (à choisir à deux, dans le fil « Échanges »)</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0149</span></span><p>Le sanglier : soies couchées et crête sombre (aujourd&#x27;hui), crête dressée, ou dressée seulement quand il charge ? À regarder sur la planche avant/après du sanglier quand le directeur pourra voir les images. Et ses yeux : l&#x27;œil pâle de l&#x27;ancienne version (aujourd&#x27;hui) ou l&#x27;œil sombre de l&#x27;image de départ ?</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:\aaa-proto\essai\gibier\ : sanglier, lapin et perdrix (modèles, vidéos, LISEZMOI) · E:\aaa-proto\essai\etude-qualite\ : l&#x27;étude de qualité (<span class="insec">T-0142</span>) · D:\aaa-game\.equipe\taches (les tickets) · D:\aaa-game\.equipe\decisions.md (<span class="insec">D-231</span> à <span class="insec">D-236</span>)</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

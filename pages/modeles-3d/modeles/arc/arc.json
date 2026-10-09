@@ -1,0 +1,195 @@
+{
+  "asset": {
+    "generator": "glTF-Transform v4.5.1",
+    "version": "2.0"
+  },
+  "accessors": [
+    {
+      "type": "SCALAR",
+      "componentType": 5123,
+      "count": 35328,
+      "bufferView": 0,
+      "byteOffset": 0
+    },
+    {
+      "type": "SCALAR",
+      "componentType": 5123,
+      "count": 60,
+      "bufferView": 0,
+      "byteOffset": 70656
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 8714,
+      "max": [
+        0.1265396922826767,
+        0.8749999403953552,
+        0.03447290137410164
+      ],
+      "min": [
+        -0.1265397071838379,
+        -0.8749999403953552,
+        -0.03447289764881134
+      ],
+      "bufferView": 1,
+      "byteOffset": 0
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 8714,
+      "bufferView": 1,
+      "byteOffset": 12
+    },
+    {
+      "type": "VEC2",
+      "componentType": 5126,
+      "count": 8714,
+      "bufferView": 1,
+      "byteOffset": 24
+    },
+    {
+      "type": "VEC3",
+      "componentType": 5126,
+      "count": 26,
+      "max": [
+        0.1065809428691864,
+        0.8750180006027222,
+        0.0032035931944847107
+      ],
+      "min": [
+        0.08484037220478058,
+        -0.8750180006027222,
+        -0.0007997713983058929
+      ],
+      "bufferView": 2,
+      "byteOffset": 0
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 70776,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 70776,
+      "byteLength": 278848,
+      "byteStride": 32,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 349624,
+      "byteLength": 312,
+      "byteStride": 12,
+      "target": 34962
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "sampler": 0
+    },
+    {
+      "source": 1,
+      "sampler": 0
+    }
+  ],
+  "images": [
+    {
+      "name": "arc_couleur",
+      "mimeType": "image/jpeg",
+      "uri": "arc_couleur.jpg"
+    },
+    {
+      "name": "arc_orm",
+      "mimeType": "image/jpeg",
+      "uri": "arc_orm.jpg"
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "arc.wasm",
+      "byteLength": 349936
+    }
+  ],
+  "materials": [
+    {
+      "name": "M_arc",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "name": "corde",
+      "doubleSided": true,
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.07999999821186066,
+          0.07000000029802322,
+          0.05999999865889549,
+          1
+        ],
+        "roughnessFactor": 0.800000011920929,
+        "metallicFactor": 0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "arc",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 2,
+            "NORMAL": 3,
+            "TEXCOORD_0": 4
+          },
+          "mode": 4,
+          "material": 0,
+          "indices": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 5
+          },
+          "mode": 4,
+          "material": 1,
+          "indices": 1
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "arc",
+      "mesh": 0
+    }
+  ],
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0
+}

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Jour 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Semaine du 6 au 12 octobre</a></nav>
+
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de jour-2026-10-08.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · jeudi 8 octobre 2026 · semaine du 6 au 12 octobre</div>
+  <h1>Jour <em>3</em></h1>
+  <p class="lecture">Troisième journée de la semaine. Le directeur a choisi la suite avant de partir au travail : les MetaHumans des soldats de la patrouille dans Unreal, les défauts connus de trois bêtes en modèles 3D, et le report des décisions de la veille dans les documents.</p>
+  <p class="ticket">Mise à jour : 08/10/2026 à 17:29</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-valide">6 validés</span></div>
+  <ul class="liste lecture">
+    <li><strong>Quota</strong> : 25,6 % de la semaine utilisés au début de la journée (estimation du compteur), environ 17 % disponibles aujourd&#x27;hui.</li>
+    <li><strong>Le travail du 7 octobre est enregistré</strong> (commit 0cadafed) : escalade, meneur, morts-vivants variés, œil du sanglier, page « Modèles 3D », décisions <span class="insec">D-250</span> à <span class="insec">D-252</span>.</li>
+    <li><strong>Décisions de l&#x27;après-midi</strong> (<span class="insec">D-253</span>) : le grand sort tue toute la horde et le réceptacle protège le héros jusqu&#x27;à la fin de la scène ; le lapin est gardé tel quel ; pour l&#x27;escalade, on s&#x27;accroche en sautant contre la paroi et on lâche par ○ / C. La nuit en autonomie se décidera plus tard.</li>
+    <li><strong>Fin de journée</strong> (<span class="insec">D-254</span>) : pas de nuit pour l&#x27;instant ; le quota restant est réparti à parts égales sur les journées du 9 au 12 octobre (environ 12 % par jour) ; la caméra qui traverse la horde est gardée ; se raccrocher en l&#x27;air coûte 10 d&#x27;Endurance ; à zéro d&#x27;Endurance hors combat, le héros arrête seulement de courir.</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Chaque ticket a un exécutant et un vérificateur ; une correction est confiée à un agent neuf (<span class="insec">D-231</span>). Un seul agent à la fois dans Unreal.</p>
+  <div class="files">
+<div class="file">
+  <h3>Unreal</h3>
+  <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0157</span> · <span class="insec">D-179</span> · <span class="insec">D-248</span> (1) · <span class="insec">D-250</span> (1)</span><h3>Les soldats de la patrouille en MetaHumans</h3><p class="muted">Trois MetaHumans différents (l&#x27;archer grand et mince, l&#x27;archer trapu, le chef de patrouille), avec leurs armures, à la place des modèles générés.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:26, livré à 08:17, renvoyé en correction à 08:44 (visages illisibles, casque en béret, armure incomplète). Corrigé par un agent neuf de 08:44 à 10:46 (commit a63babc) : la caméra s&#x27;ouvre à hauteur de visage, un bassinet ajusté avec un camail de mailles remplace la calotte, épaulières et brassards repris, plus aucune flèche devant un camarade. Nouvelle vérification lancée à 10:46. Validé à 11:05 : visages lisibles, casque ajusté, armure complète, retour arrière vérifié, parcours vert. Petits restes : la marge du visage du chef est faible (sa garde à l&#x27;épée), le cimier doré ne se lit pas comme de l&#x27;or, une flèche frôle un casque en passant derrière.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0160</span> · <span class="insec">D-234</span> (2) · <span class="insec">D-252</span></span><h3>La horde avec le meneur et les morts-vivants variés</h3><p class="muted">Le meneur « champion » à la place du meneur provisoire, et les 4 morts-vivants variés mêlés aux 15 de la horde ; pieds, métal et images par seconde mesurés.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 11:06, livré à 13:20 (commit dd4b64e) : le meneur « champion » et les 4 morts-vivants variés sont dans la horde ; pieds relevés après le reciblage d&#x27;Unreal ; 120 à 136 images par seconde avec 20 créatures ; préchargement des modèles ajouté (plus de gel de 0,9 s à la sortie de la horde). Un essai de la horde échoue 2 fois sur 5, comme avant ce ticket (le héros finit à 10 PV après l&#x27;essai du réceptacle) : ticket séparé à prévoir. Vérification lancée à 13:20. Validé à 13:37 : pieds remesurés par le vérificateur sur toutes les images, images par seconde suffisantes ; l&#x27;essai qui échoue 2 fois sur 5 vient bien d&#x27;avant (le héros à 10 PV meurt sous le coup d&#x27;une créature qui survit au grand sort) : une question au directeur, puis un ticket.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0161</span> · <span class="insec">D-253</span></span><h3>Fin de la horde, touches de l&#x27;escalade, fiabilité des essais</h3><p class="muted">Le sort tue toute la horde et le héros reste protégé jusqu&#x27;à la fin ; les nouvelles touches de l&#x27;escalade ; les contrôles du ciel de nuit et du visage du chef rendus stables.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 14:01, livré à 16:34 (commit 75674d5) : la série de la horde passe à 5 sur 5 (le sort tue toute la horde, le héros reste protégé jusqu&#x27;à la fin) ; on s&#x27;accroche en sautant contre la paroi et on lâche par ○ / C ; le contrôle du ciel de nuit et celui du visage du chef sont stables. Proposition à soumettre au directeur : la caméra traverse les créatures de la horde. Vérification lancée à 16:35, avec le parcours des 46 limites à rejouer. Validé à 17:13 : le vérificateur a relancé la série de la horde (5 sur 5), l&#x27;escalade avec les vraies touches et le refus aux limites. Restes notés : la caméra peut entrer dans une créature (effet de la caméra qui traverse la horde) ; se raccrocher en sautant reste gratuit, quelle que soit la hauteur de chute.</p></div>
+  </div>
+  <p class="suite">Demain : appliquer <span class="insec">D-254</span> (raccrochage payant, pas d&#x27;étourdissement hors combat) ; puis l&#x27;arc des archers (<span class="insec">D-248</span> (2)), la saison et la météo.</p>
+</div>
+<div class="file">
+  <h3>Modèles 3D</h3>
+  <p class="muted">Les modèles du prototype, faits sur ce PC, sans Unreal.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0158</span> · <span class="insec">D-235</span> (8)</span><h3>Défauts connus : araignée, perdrix, lapin</h3><p class="muted">Le moignon de l&#x27;araignée, la perdrix qui change de corps entre le sol et le vol, les pattes du lapin qui se recouvrent au saut.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:26, livré à 08:57, renvoyé en correction à 09:48 (ailes de la perdrix au sol, traversées du lapin mal mesurées). Corrigé par un agent neuf de 09:49 à 10:47 : au sol, les ailes de la perdrix se replient sous la peau (posée, elle est identique à avant) ; pour le lapin, les plis et la peau étirée sont déclarés exactement, avec la piste d&#x27;un nouveau lapin pattes tendues. Nouvelle vérification lancée à 10:47. Validé à 11:17. Restent soumis au directeur : la peau étirée et les petits plis du lapin (piste : un nouveau lapin généré pattes tendues, environ 1,5 %), les pattes de l&#x27;araignée qui se touchent (ticket d&#x27;animation).</p></div>
+  </div>
+  <p class="suite">Puis les oiseaux, les laies, les vraies foulées et les marches blessées (<span class="insec">D-235</span>).</p>
+</div>
+<div class="file">
+  <h3>Documents</h3>
+  <p class="muted">Reporter les décisions du directeur dans Documents/.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0159</span> · <span class="insec">D-250</span> · <span class="insec">D-251</span> · <span class="insec">D-252</span></span><h3>Reporter <span class="insec">D-250</span> à <span class="insec">D-252</span></h3><p class="muted">Les MetaHumans après l&#x27;escalade, le sanglier (crête et œil), le meneur « champion » à la peau mauve, les valeurs de départ de l&#x27;escalade, les défauts acceptés.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:26, livré à 07:31, renvoyé en correction vers 07:35 : les trois décisions sont bien reportées, mais quatre précisions manquaient (quel « déserteur », à quoi la teinte du meneur est comparée, une touche des maquettes en double, la crête du sanglier dans les groupes d&#x27;ennemis). Corrigé par un agent neuf de 07:36 à 07:38 ; nouvelle vérification lancée à 07:39. Validé à 07:41. Reste une ligne des maquettes à reprendre plus tard (à zéro d&#x27;Endurance : étourdi en combat, chute sur la paroi).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0162</span> · <span class="insec">D-253</span></span><h3>Reporter <span class="insec">D-253</span></h3><p class="muted">La fin de la horde, le lapin, les touches de l&#x27;escalade, et la ligne des maquettes sur l&#x27;Endurance à zéro.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 14:01, livré à 14:06 : <span class="insec">D-253</span> reportée dans 7 fichiers, et la ligne des maquettes sur l&#x27;Endurance à zéro corrigée. Le Chef a fait compléter quatre points avant la vérification (se raccrocher en l&#x27;air par le même geste, en proposition ; la horde « tuée par le grand sort » ; le sprint à zéro ; la horde de 20 dans le plan de la zone). Compléments faits ; vérification lancée à 14:08. Renvoyé en correction à 14:12 pour une ligne des maquettes (l&#x27;Endurance à zéro hors combat), corrigé par un agent neuf et validé à 14:14 : Documents/ est aligné jusqu&#x27;à <span class="insec">D-253</span>.</p></div>
+  </div>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D du jour</h2>
+  <p class="lecture muted">Ce qui a été livré ou validé aujourd&#x27;hui.</p>
+  <div class="galerie">
+<article class="modele" id="mod-metahumans-patrouille">
+  <div class="tete"><h3>Les soldats de la patrouille en MetaHumans</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0157</span> · <span class="insec">D-179</span> · <span class="insec">D-250</span> (1)</p>
+  <figure><img src="images/metahumans-patrouille.jpg" alt="Visages de l&#x27;archer 1, de l&#x27;archer 2 et du chef de patrouille sous leur casque à camail" width="1200" height="470" loading="lazy"><figcaption>Les trois visages tels qu&#x27;on les voit dans le plan de la patrouille, sous le bassinet et le camail de mailles.</figcaption></figure>
+  <p>L&#x27;archer grand et mince (1,90 m), l&#x27;archer trapu et barbu (1,70 m) et le chef de patrouille au bouc grisonnant (1,81 m), chacun différent des autres humains du jeu. Ils portent un bassinet ajusté avec un camail de mailles, les épaulières et les brassards de l&#x27;armure de l&#x27;Ordre.</p>
+  <p class="chemins">Sur le PC : E:/aaa-proto/unreal-v2/mesures/t0157/</p>
+</article>
+<article class="modele" id="mod-defaut-araignee">
+  <div class="tete"><h3>Araignée : le moignon corrigé</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0158</span> · <span class="insec">D-235</span> (8)</p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-araignee" title="Voir sa fiche dans « Modèles 3D »"><img src="images/defaut-araignee.jpg" alt="Araignée, moignon avant et après" width="1280" height="540" loading="lazy"></a><figcaption>Avant et après : le moignon aplati sur le flanc.</figcaption></figure>
+  <p>Le moignon est aplati sur le flanc ; le reste du modèle est identique à chaque image des 7 animations. Point réglé (vérifié), en attendant la validation du ticket.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-araignee">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:/aaa-proto/essai/araignee/</p>
+</article>
+<article class="modele" id="mod-defaut-perdrix">
+  <div class="tete"><h3>Perdrix : un seul corps du sol au vol</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0158</span> · <span class="insec">D-235</span> (8)</p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-perdrix" title="Voir sa fiche dans « Modèles 3D »"><img src="images/defaut-perdrix.jpg" alt="Perdrix, envol avant et après" width="1280" height="1563" loading="lazy"></a><figcaption>Avant et après : l&#x27;envol sans changement de corps.</figcaption></figure>
+  <p>La perdrix passe du sol au vol sans changer de corps : les ailes sortent de l&#x27;épaule pendant le bond, sans saut visible.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-perdrix">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:/aaa-proto/essai/gibier/perdrix/</p>
+</article>
+<article class="modele" id="mod-defaut-lapin">
+  <div class="tete"><h3>Lapin : les pattes qui ne se recouvrent plus</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0158</span> · <span class="insec">D-235</span> (8)</p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-lapin" title="Voir sa fiche dans « Modèles 3D »"><img src="images/defaut-lapin.jpg" alt="Lapin, pattes avant et après" width="1200" height="1731" loading="lazy"></a><figcaption>Avant et après, de profil et par-dessous, au saut, à la fuite et à la mort.</figcaption></figure>
+  <p>Les pattes ne se recouvrent plus au saut, à la fuite ni à la mort. En échange, la peau de l&#x27;intérieur des cuisses s&#x27;étire davantage (bande claire de profil).</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-lapin">« Modèles 3D », dans « Pages du projet »</a></div>
+  <p class="chemins">Sur le PC : E:/aaa-proto/essai/gibier/lapin/</p>
+</article>
+<article class="modele" id="mod-horde-variee">
+  <div class="tete"><h3>La horde avec son meneur et ses morts-vivants variés</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0160</span> · <span class="insec">D-234</span> (2) · <span class="insec">D-252</span></p>
+  <figure><img src="images/horde-variee.jpg" alt="Le héros face à la horde dans la brume des Gorges, avec le meneur couronné et les morts-vivants variés" width="1280" height="745" loading="lazy"><figcaption>Dans le jeu : le meneur couronné au centre, l&#x27;archer, le déserteur à la lance, le sergent aux deux épées, le soldat au bouclier, et les esprits.</figcaption></figure>
+  <p>La horde n&#x27;est plus faite de clones : le meneur « champion » la mène, et les morts-vivants mêlent l&#x27;original et les quatre variantes.</p>
+  <p class="chemins">Sur le PC : E:/aaa-proto/unreal-v2/mesures/t0160/vitrine/</p>
+</article>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>07:20</time><p>Début de la journée : choix du directeur avant son départ (MetaHumans, défauts connus, pas de décision sur la nuit avant ce soir).</p></div>
+    <div class="entree"><time>07:25</time><p>Commit du travail du 7 octobre (0cadafed).</p></div>
+    <div class="entree"><time>07:26</time><p>Lancement de <span class="insec">T-0157</span> (MetaHumans des soldats), <span class="insec">T-0158</span> (défauts connus des bêtes) et <span class="insec">T-0159</span> (report de <span class="insec">D-250</span> à <span class="insec">D-252</span>).</p></div>
+    <div class="entree"><time>07:31</time><p><span class="insec">T-0159</span> livré (<span class="insec">D-250</span> à <span class="insec">D-252</span> dans 9 fichiers) ; vérification lancée.</p></div>
+    <div class="entree"><time>07:35</time><p><span class="insec">T-0159</span> à corriger : quatre précisions de texte.</p></div>
+    <div class="entree"><time>07:36</time><p>Correction 1 de <span class="insec">T-0159</span> confiée à un agent neuf.</p></div>
+    <div class="entree"><time>07:38</time><p>Correction 1 de <span class="insec">T-0159</span> livrée ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>07:41</time><p><span class="insec">T-0159</span> validé : Documents/ est aligné jusqu&#x27;à <span class="insec">D-252</span>.</p></div>
+    <div class="entree"><time>08:17</time><p><span class="insec">T-0157</span> livré (les soldats de la patrouille en MetaHumans) ; vérification lancée.</p></div>
+    <div class="entree"><time>08:44</time><p><span class="insec">T-0157</span> à corriger : visages illisibles dans le plan, casque à refaire, armure incomplète.</p></div>
+    <div class="entree"><time>08:44</time><p>Correction 1 de <span class="insec">T-0157</span> confiée à un agent neuf.</p></div>
+    <div class="entree"><time>08:57</time><p><span class="insec">T-0158</span> livré (défauts de l&#x27;araignée, de la perdrix et du lapin) ; vérification lancée.</p></div>
+    <div class="entree"><time>09:48</time><p><span class="insec">T-0158</span> à corriger : morceaux d&#x27;aile de la perdrix au sol, traversées du lapin mal mesurées ; l&#x27;araignée est réglée.</p></div>
+    <div class="entree"><time>09:49</time><p>Correction 1 de <span class="insec">T-0158</span> confiée à un agent neuf.</p></div>
+    <div class="entree"><time>10:46</time><p>Correction 1 de <span class="insec">T-0157</span> livrée (visages lisibles, nouveau casque, armure complète) ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>10:47</time><p>Correction 1 de <span class="insec">T-0158</span> livrée ; nouvelle vérification lancée.</p></div>
+    <div class="entree"><time>11:05</time><p><span class="insec">T-0157</span> validé : les soldats de la patrouille sont des MetaHumans.</p></div>
+    <div class="entree"><time>11:06</time><p>Lancement de <span class="insec">T-0160</span> : le meneur et les morts-vivants variés dans la horde.</p></div>
+    <div class="entree"><time>11:17</time><p><span class="insec">T-0158</span> validé : l&#x27;araignée sans moignon, la perdrix d&#x27;un seul corps, le lapin aux pattes séparées.</p></div>
+    <div class="entree"><time>13:20</time><p><span class="insec">T-0160</span> livré (la horde avec le meneur et les morts-vivants variés) ; vérification lancée.</p></div>
+    <div class="entree"><time>13:37</time><p><span class="insec">T-0160</span> validé : la horde a son meneur et ses morts-vivants variés.</p></div>
+    <div class="entree"><time>14:01</time><p><span class="insec">D-253</span> : le grand sort tue toute la horde et le réceptacle protège jusqu&#x27;à la fin ; lapin gardé ; nouvelles touches de l&#x27;escalade (sauter contre la paroi, lâcher par ○ / C).</p></div>
+    <div class="entree"><time>14:02</time><p>Lancement de <span class="insec">T-0161</span> (fin de la horde, touches, fiabilité des essais) et de <span class="insec">T-0162</span> (report de <span class="insec">D-253</span>).</p></div>
+    <div class="entree"><time>14:07</time><p><span class="insec">T-0162</span> livré ; quatre compléments demandés à son agent avant la vérification. <span class="insec">T-0161</span> reçoit la précision pour se raccrocher en l&#x27;air.</p></div>
+    <div class="entree"><time>14:08</time><p>Compléments de <span class="insec">T-0162</span> faits ; vérification lancée.</p></div>
+    <div class="entree"><time>14:14</time><p><span class="insec">T-0162</span> validé : Documents/ est aligné jusqu&#x27;à <span class="insec">D-253</span>.</p></div>
+    <div class="entree"><time>16:34</time><p><span class="insec">T-0161</span> livré (fin de la horde, touches de l&#x27;escalade, essais fiables) ; vérification lancée.</p></div>
+    <div class="entree"><time>17:13</time><p><span class="insec">T-0161</span> validé : la horde se termine toujours bien, les nouvelles touches de l&#x27;escalade marchent, les essais sont stables.</p></div>
+    <div class="entree"><time>17:29</time><p><span class="insec">D-254</span> : quota réparti sur les journées du 9 au 12 octobre, sans nuit ; caméra gardée ; raccrochage en l&#x27;air au prix de 10 d&#x27;Endurance ; plus d&#x27;étourdissement hors combat. Fin du travail du jour.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Questions en attente du directeur.</p>
+  <p class="lecture muted">4 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question"><span class="ticket">Échanges</span><p>Surnoms de l&#x27;entité : quelle liste ? (à choisir à deux, dans le fil « Échanges »)</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0153</span></span><p>Le meneur : garder la démarche lourde proposée ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0149</span></span><p>Le sanglier : ses franges éclaircies sont-elles à garder ?</p></div>
+    <div class="question repondue"><span class="ticket">Nuit</span><p>Une nuit en autonomie ce soir ? (à décider ce soir, selon le budget restant)</p><p class="reponse">Réponse du directeur : Pas de nuit pour l&#x27;instant : le quota restant est divisé à parts égales sur les journées du 9 au 12 octobre, environ 12 % par jour (<span class="insec">D-254</span> (1)).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0159</span></span><p>Escalade : la touche □ / X sert déjà à « Interagir » dans les maquettes. Garder le doublon (prendre la paroi en interagissant avec elle), ou choisir une autre touche ?</p><p class="reponse">Réponse du directeur : Autre touche : on s&#x27;accroche en sautant contre la paroi, on lâche par ○ / C (<span class="insec">D-253</span> (3)).</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0159</span></span><p>Une chute d&#x27;escalade peut-elle laisser une blessure durable (Fracture Séquellaire, comme la chute de falaise du système de vieillissement) ? Et la bible dit encore qu&#x27;aucune image de bête n&#x27;existe : la mettre à jour ?</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0158</span></span><p>Le lapin : sa peau s&#x27;étire à l&#x27;intérieur des cuisses au saut (visible de près, à peine à 2 m). Le garder ainsi, ou générer un nouveau lapin pattes tendues (environ 1,5 %) ? Et les pattes de l&#x27;araignée qui se touchent : un ticket d&#x27;animation ?</p><p class="reponse">Réponse du directeur : Lapin gardé tel quel, défauts déclarés (<span class="insec">D-253</span> (2)) ; araignée : à voir avec un ticket d&#x27;animation.</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0160</span></span><p>La horde après le grand sort : une créature qui survit peut achever le héros.</p><p class="reponse">Réponse du directeur : Le sort tue toute la horde, et le réceptacle protège le héros jusqu&#x27;à la fin de la scène (<span class="insec">D-253</span> (1)).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0161</span>, <span class="insec">T-0162</span></span><p>Escalade : les nouvelles touches sont-elles réglables par le joueur ? Et se raccrocher en l&#x27;air après un lâcher par le même geste (sauter vers la paroi, dans les 6 premiers mètres), comme le propose le Chef ?</p><p class="reponse">Réponse du directeur : Se raccrocher en l&#x27;air par le même saut, dans les 6 premiers mètres, au prix de 10 d&#x27;Endurance (<span class="insec">D-254</span> (3)). Touches réglables : encore à trancher.</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0162</span></span><p>À zéro d&#x27;Endurance hors combat (en courant), le héros est étourdi 1,6 s dans le prototype : le garder, ou seulement arrêter le sprint ? (point 12 du § 7 des maquettes)</p><p class="reponse">Réponse du directeur : Seulement arrêter le sprint ; l&#x27;étourdissement reste réservé au combat (<span class="insec">D-254</span> (4)).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0161</span></span><p>La caméra traverse maintenant les créatures de la horde (sinon une créature dans le dos du héros la collait contre lui) : à garder ?</p><p class="reponse">Réponse du directeur : Gardée (<span class="insec">D-254</span> (2)).</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:/aaa-proto/unreal-v2 : le prototype Unreal (patrouille) · E:/aaa-proto/essai/ : araignée, gibier (perdrix, lapin) · D:/aaa-game/.equipe/taches (les tickets)</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Nuit 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de nuit-2026-10-03.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · nuit du 2 au 3 octobre 2026</div>
+  <h1>Nuit <em>03</em></h1>
+  <p class="lecture">Trois files de travail avancent en parallèle, avec l&#x27;accord du directeur (questionnaire du 02/10/2026). Le Chef lance le ticket suivant d&#x27;une file dès que le précédent est validé ; chaque ticket a un exécutant et un vérificateur. Cette page est mise à jour à chaque ticket validé.</p>
+  <p class="ticket">Mise à jour : 06/10/2026 à 05:54</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">2 à faire</span><span class="etat e-valide">13 validés</span></div>
+  <ul class="liste lecture">
+    <li><strong>Trois files</strong> : Unreal, modèles 3D sans Unreal, documents. Le chien entre dans le jeu cette nuit.</li>
+    <li><strong>Décisions de la nuit : <span class="insec">D-226</span> à <span class="insec">D-230</span>.</strong> <span class="insec">D-226</span>, le ciel ; <span class="insec">D-227</span>, la brume et le chien blessé ; <span class="insec">D-228</span>, le prototype est la base du jeu complet ; <span class="insec">D-229</span>, les consciences collectives ; <span class="insec">D-230</span>, la portée de <span class="insec">D-228</span> : toutes les règles du prototype valent pour le jeu complet, sauf exceptions.</li>
+    <li><strong>Unreal</strong> : le ciel, la lune et la météo, avec la brume de <span class="insec">D-227</span> (<span class="insec">T-0127</span>), puis la lumière des Gorges et l&#x27;aire de la horde (<span class="insec">T-0129</span>) sont validés. La horde (<span class="insec">T-0130</span>) est validée ; suivront les limites de la zone, puis le chien et le loup dans le jeu.</li>
+    <li><strong>Modèles 3D</strong> : le loup recuit, dont la vidéo a été refaite, et les quatre marches boiteuses du chien (<span class="insec">T-0128</span>) sont validés, comme l&#x27;araignée et la chauve-souris (<span class="insec">T-0133</span>) : tous sont dans « Modèles 3D ». Le chien a maintenant 21 animations. Le cheval (<span class="insec">T-0134</span>) est validé ; le gibier (<span class="insec">T-0135</span>) est en cours.</li>
+    <li><strong>Documents</strong> : la file est terminée. <span class="insec">T-0136</span>, <span class="insec">T-0137</span>, <span class="insec">T-0139</span>, <span class="insec">T-0140</span> et <span class="insec">T-0141</span> sont validés, et Documents/ est aligné jusqu&#x27;à <span class="insec">D-230</span>.</li>
+    <li><strong>15 questions</strong> attendent le directeur à son « bonjour », en bas de page.</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Chaque file avance dans l&#x27;ordre. Règles de la nuit : un seul agent à la fois dans Unreal ; le verrou est obligatoire pour tout gros calcul, sur la carte graphique comme sur le processeur ; rien sur C: ; jamais de push ; licences commerciales seulement.</p>
+  <div class="files">
+<div class="file">
+  <h3>File A : Unreal</h3>
+  <p class="muted">Dans E:\aaa-proto\unreal-v2. Le jeu se lance depuis paquets\lancement.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0127</span> · <span class="insec">P1-23</span> · <span class="insec">D-187</span> · <span class="insec">D-226</span> · <span class="insec">D-227</span></span><h3>Cycle du jour, lune et météo</h3><p class="muted">Le soleil, la lune et la nuit ; temps clair, brume et pluie, avec des transitions douces.</p><span class="etat e-valide">Validé</span><p class="note">Livré à 19:30 avec <span class="insec">D-226</span>, renvoyé en correction à 19:41, correction 2 livrée à 21:03 avec la brume de <span class="insec">D-227</span> (un ennemi lisible à 25 m ; la brume du réveil se lève quand le héros est monté de 15 m, ou au bout de 10 min). Validé à 21:19.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0129</span> · <span class="insec">P1-03</span> · <span class="insec">D-226</span></span><h3>Lumière des Gorges et du belvédère</h3><p class="muted">Accordée au ciel de <span class="insec">D-226</span> ; l&#x27;aire de la horde.</p><span class="etat e-valide">Validé</span><p class="note">Livré à 01:32, renvoyé en correction, validé à 03:04 : contre-jour du belvédère de 1,2 à 8 min de jeu ; aire de la horde, 12 places ; nuit des Gorges à 0,076, sol et héros visibles.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0130</span> · <span class="insec">P1-14</span> · <span class="insec">D-222</span></span><h3>La horde</h3><p class="muted">Une taille selon l&#x27;espèce, en partant des nombres « Moyen » : horde de 8 à 12, nid de 4 à 6.</p><span class="etat e-valide">Validé</span><p class="note">Livré à 06:34, renvoyé en correction (créatures sur l&#x27;eau), validé vers 08:30 : aire en (-249,5 ; -20,5), 12 places au sec ; 117 à 149 images/s.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0131</span> · <span class="insec">P1-05</span> · <span class="insec">P1-19</span></span><h3>Limites de la zone et patrouille</h3><p class="muted">Parois non grimpables aux limites (à retirer après la livraison) et patrouille au-delà du ravin.</p><span class="etat e-a-faire">À faire</span></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0132</span> · <span class="insec">P4-14</span> · <span class="insec">D-224</span> · <span class="insec">D-225</span> · <span class="insec">D-227</span></span><h3>Le chien et le loup dans le jeu</h3><p class="muted">Le loup recuit à l&#x27;enclos. Le chien suit le héros ; sa loyauté a trois rôles, à 35 et 70 : il aide sans attaquer, puis attaque et distrait, puis combat. Pas de mort définitive : blessé, il se met à l&#x27;abri et revient après un repos. La patte qui boite suit la blessure, deux pattes au plus.</p><span class="etat e-a-faire">À faire</span></div>
+  </div>
+  <p class="suite">Ensuite : le paquet de nuit, et le parcours lancé sur ce paquet.</p>
+</div>
+<div class="file">
+  <h3>File B : modèles 3D, sans Unreal</h3>
+  <p class="muted">Dans E:\aaa-proto\gen3d et E:\aaa-proto\essai. Chaque modèle validé s&#x27;ajoute à la page « Modèles 3D », puis à cette page.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0128</span> · <span class="insec">D-225</span> · <span class="insec">D-227</span></span><h3>Teinte du loup et marches boiteuses du chien</h3><p class="muted">Le loup recuit sans l&#x27;assombrissement de sa première cuisson ; des marches boiteuses pour le chien.</p><span class="etat e-valide">Validé</span><p class="note">Livré à 18:14, renvoyé en correction vers 19:45, livré de nouveau à 20:56 (vidéo du loup refaite, quatre boiteries), validé à 21:07. Page « Modèles 3D » republiée.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0133</span> · <span class="insec">D-220</span></span><h3>Araignée géante et chauves-souris</h3><p class="muted">L&#x27;araignée de la mine, qui combat ; la nuée de chauves-souris, qui s&#x27;envole sans combattre.</p><span class="etat e-valide">Validé</span><p class="note">Livré à 22:56, renvoyé en correction (textes), validé à 23:24. Publiés dans « Modèles 3D » à 23:43.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0134</span> · <span class="insec">D-184</span> · <span class="insec">D-194</span></span><h3>Le cheval de la monture</h3><p class="muted">Pas, trot et galop.</p><span class="etat e-valide">Validé</span><p class="note">Livré à 01:32, quatre corrections (sabots qui glissaient, appuis cassés, cadence et sabots posés comme dans le pack, galop). Validé vers 09:00. Défauts déclarés : glissement entre clés, à régler en calant les sabots au sol dans Unreal ; jambes qui se croisent au saut.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0135</span> · <span class="insec">D-218</span></span><h3>Le gibier</h3><p class="muted">Sanglier, lapin et oiseaux.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 01:32. Correction 1 reprise le 06/10/2026 par un agent neuf, puis validée à 05:25 (voir la page « Jour 06 »).</p></div>
+  </div>
+</div>
+<div class="file">
+  <h3>File C : documents, sans carte graphique</h3>
+  <p class="muted">Le rédacteur de design reporte les décisions dans Documents/, puis le gardien du lore vérifie la cohérence. La file est terminée : Documents/ est aligné jusqu&#x27;à <span class="insec">D-230</span>.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0136</span></span><h3>Décisions <span class="insec">D-175</span> à <span class="insec">D-199</span></h3><p class="muted">Reportées dans les documents de design qu&#x27;elles corrigent.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 19:39. La plupart de ces décisions étaient déjà reportées (Mission 7) ; la partie « prototype » est ajoutée au GDD. Six contradictions relevées.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0137</span></span><h3>Décisions <span class="insec">D-200</span> à <span class="insec">D-227</span></h3><p class="muted">Reportées dans les documents de design qu&#x27;elles corrigent.</p><span class="etat e-valide">Validé</span><p class="note">Renvoyé en correction à 19:56 (quatre petites erreurs), validé à 20:02. Treize points relevés.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0139</span> · <span class="insec">D-228</span> · <span class="insec">D-229</span></span><h3>Décisions <span class="insec">D-228</span> et <span class="insec">D-229</span></h3><p class="muted">Le prototype comme base du jeu complet ; les consciences collectives.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 20:29, après une correction.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0140</span> · <span class="insec">D-230</span></span><h3>Décision <span class="insec">D-230</span></h3><p class="muted">La portée de <span class="insec">D-228</span> et ses précisions.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 20:53, après une correction : <span class="insec">D-230</span> dans 13 documents.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0141</span> · <span class="insec">D-204</span> · <span class="insec">D-214</span> · <span class="insec">D-216</span> · <span class="insec">D-221</span> · <span class="insec">D-226</span></span><h3>Alignement des documents restés en dehors</h3><p class="muted">Mettre en accord les documents restés en dehors des reports, sans nouvelle décision.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 21:00 : 8 documents alignés. Restent des points mineurs pour un prochain ticket de documents.</p></div>
+  </div>
+</div>
+<div class="file">
+  <h3>Hors file : la page de la nuit</h3>
+  <p class="muted">Demandée par le directeur le 02/10 : une page par nuit et par jour dans « Pages du projet ».</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0138</span></span><h3>Pages de nuit et de jour</h3><p class="muted">Le générateur des pages de nuit et de jour, et cette page.</p><span class="etat e-valide">Validé</span><p class="note">Livré, renvoyé en correction (état des tickets en retard), validé à 06:44. Cette page en est le résultat.</p></div>
+  </div>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D de la nuit</h2>
+  <p class="lecture muted">Touchez l&#x27;image d&#x27;un modèle pour ouvrir sa fiche dans la page « Modèles 3D », où on peut le faire tourner et jouer ses animations. Un modèle pas encore validé porte l&#x27;état « En vérification » et n&#x27;a pas encore de fiche. Le gibier s&#x27;ajoute ici une fois livré.</p>
+  <div class="galerie">
+<article class="modele" id="mod-chien-berger">
+  <div class="tete"><h3>Chien de berger : les marches boiteuses</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0128</span> · <span class="insec">D-225</span> · <span class="insec">D-227</span></p>
+  <figure><a class="image" href="../modeles-3d/page.html#m-chien-berger" title="Voir sa fiche dans « Modèles 3D »"><img src="images/chien-berger.jpg" alt="Le chien de berger pendant la marche boiteuse, patte avant gauche levée" width="1280" height="720" loading="lazy"></a><figcaption>Image de la vidéo à 0:21 : la patte avant gauche, levée, est la patte blessée.</figcaption></figure>
+  <p>Quatre marches boiteuses, une par patte : avant gauche (Walk_Limp, <span class="insec">D-225</span>), arrière gauche, avant droite et arrière droite (<span class="insec">D-227</span>). Chacune fait 33 images (1,33 s) et boucle sans saut ; la patte blessée a un appui court et se lève plus haut. Dans le jeu, la patte qui boite suivra la blessure, deux pattes au plus (<span class="insec">D-227</span>). Le collier est gardé (<span class="insec">D-225</span>).</p>
+  <div class="liens"><a href="../modeles-3d/page.html#m-chien-berger">Sa fiche dans « Modèles 3D »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\chien\ (chien.glb, chien.fbx, chien-presentation.mp4, LISEZMOI.md)</p>
+</article>
+<article class="modele" id="mod-loup">
+  <div class="tete"><h3>Loup : la teinte corrigée</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0128</span> · <span class="insec">D-225</span></p>
+  <figure><a class="image" href="../modeles-3d/page.html#m-loup" title="Voir sa fiche dans « Modèles 3D »"><img src="images/loup.jpg" alt="Le loup avant et après la correction de teinte, de profil et de trois quarts" width="900" height="626" loading="lazy"></a><figcaption>En haut, le loup avant la correction ; en bas, le loup recuit.</figcaption></figure>
+  <p>Les textures du loup sont recuites sans l&#x27;assombrissement venu du métal de son modèle de départ. Sa teinte passe de 0,80 à 0,98 de l&#x27;image de départ. La forme, le squelette et les 12 animations validées ne changent pas.</p>
+  <div class="liens"><a href="../modeles-3d/page.html#m-loup">Sa fiche dans « Modèles 3D »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\loup\ (loup.glb, loup.fbx, loup-avant-apres.mp4, LISEZMOI.md ; l&#x27;ancienne version dans v2_avant_teinte\)</p>
+</article>
+<article class="modele" id="mod-araignee">
+  <div class="tete"><h3>Araignée géante de la mine</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0133</span> · <span class="insec">D-220</span></p>
+  <figure><a class="image" href="../modeles-3d/page.html#m-araignee" title="Voir sa fiche dans « Modèles 3D »"><img src="images/araignee.jpg" alt="L&#x27;araignée géante, de trois quarts" width="600" height="600" loading="lazy"></a><figcaption>Le corps fixe, de trois quarts.</figcaption></figure>
+  <p>Bête de combat des galeries de la mine (<span class="insec">D-220</span>). Taille proposée : 2,50 m de large, pattes comprises. Sept animations faites par programme, car aucune araignée animée libre de droits n&#x27;existe : attente, marche, course, attaque, bond, blessée, mort. Défauts déclarés : le moignon d&#x27;une 9e patte, des pattes qui se touchent à la course et à la mort, de la peau étirée.</p>
+  <div class="liens"><a href="../modeles-3d/page.html#m-araignee">Sa fiche dans « Modèles 3D »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\araignee\ (araignee.glb, araignee.fbx, araignee-presentation.mp4, LISEZMOI.md)</p>
+</article>
+<article class="modele" id="mod-chauve-souris">
+  <div class="tete"><h3>Chauve-souris de la nuée</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0133</span> · <span class="insec">D-220</span></p>
+  <figure><a class="image" href="../modeles-3d/page.html#m-chauve-souris" title="Voir sa fiche dans « Modèles 3D »"><img src="images/chauve-souris.jpg" alt="La chauve-souris, ailes ouvertes" width="500" height="500" loading="lazy"></a><figcaption>Le corps fixe, ailes ouvertes.</figcaption></figure>
+  <p>Dans les galeries de la mine, une nuée de chauves-souris s&#x27;envole sans combattre (<span class="insec">D-220</span>). Un modèle léger, avec un battement d&#x27;ailes en boucle, fait pour être répété en nombre. La nuée elle-même (nombre, trajectoires, déclenchement) se fera dans Unreal.</p>
+  <div class="liens"><a href="../modeles-3d/page.html#m-chauve-souris">Sa fiche dans « Modèles 3D »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\chauves-souris\ (chauve_souris.glb, chauve_souris.fbx, chauve-souris-presentation.mp4, LISEZMOI.md)</p>
+</article>
+<article class="modele" id="mod-cheval">
+  <div class="tete"><h3>Cheval de la monture</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0134</span> · <span class="insec">D-184</span> · <span class="insec">D-194</span></p>
+  <figure><img src="images/cheval.jpg" alt="Le cheval de la monture, sellé, de trois quarts" width="1000" height="750" loading="lazy"><figcaption>Le corps fixe, de trois quarts, sellé.</figcaption></figure>
+  <p>Le cheval que le hameau offre au héros, pris aux déserteurs de l&#x27;Ordre (<span class="insec">D-184</span>). Trois allures : pas, trot et galop (<span class="insec">D-194</span>) ; 14 animations. Marque proposée : un sceptre sans croix sur la cuisse arrière gauche (question pour le directeur). Sa fiche s&#x27;ajoutera à « Modèles 3D » prochainement (ticket validé).</p>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\cheval\ (cheval.glb, cheval.fbx, cheval-presentation.mp4, LISEZMOI.md)</p>
+</article>
+<article class="modele a-venir" id="mod-gibier">
+  <div class="tete"><h3>Gibier : sanglier, lapin et oiseaux</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0135</span> · <span class="insec">D-218</span></p>
+  <p class="muted">Livré pendant la nuit, corrigé et validé le 06/10/2026 : voir la page « Jour 06 », où sont le sanglier, le lapin et la perdrix grise.</p>
+</article>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>17:25</time><p>Décision <span class="insec">D-225</span> (le chien et la teinte du loup). Lancement de <span class="insec">T-0128</span> : teinte du loup et marche boiteuse du chien.</p></div>
+    <div class="entree"><time>18:14</time><p><span class="insec">T-0128</span> livré : loup recuit, marche boiteuse du chien, page « Modèles 3D » mise à jour sans être publiée. En vérification.</p></div>
+    <div class="entree"><time>19:15</time><p>Décision <span class="insec">D-226</span> (le ciel). <span class="insec">T-0127</span> reprend pour l&#x27;appliquer.</p></div>
+    <div class="entree"><time>19:25</time><p>Départ de la nuit en trois files, avec l&#x27;accord du directeur. Lancés : <span class="insec">T-0133</span> (araignée et chauves-souris) et <span class="insec">T-0136</span> (décisions <span class="insec">D-175</span> à <span class="insec">D-199</span>).</p></div>
+    <div class="entree"><time>19:29</time><p>Lancement de <span class="insec">T-0138</span> : le générateur des pages de nuit et de jour, et cette page.</p></div>
+    <div class="entree"><time>19:30</time><p><span class="insec">T-0127</span> livré avec <span class="insec">D-226</span> : journée de 72 min, lune à phases sur 15 journées, brume surtout le matin. En vérification.</p></div>
+    <div class="entree"><time>19:32</time><p><span class="insec">T-0136</span> livré : les décisions <span class="insec">D-175</span> à <span class="insec">D-199</span> étaient déjà presque toutes dans Documents/ ; trois manques comblés dans le GDD. En vérification.</p></div>
+    <div class="entree"><time>19:36</time><p>Décision <span class="insec">D-227</span> (brume et chien blessé), après le questionnaire du directeur. Elle tranche les questions du début de nuit.</p></div>
+    <div class="entree"><time>19:39</time><p><span class="insec">T-0136</span> validé. Lancement de <span class="insec">T-0137</span> : les décisions <span class="insec">D-200</span> à <span class="insec">D-227</span>.</p></div>
+    <div class="entree"><time>19:41</time><p><span class="insec">T-0127</span> renvoyé en correction : certaines captures du belvédère ne montrent pas le code livré (la lune a changé avec <span class="insec">D-226</span>). Sa correction 2 reçoit aussi la brume de <span class="insec">D-227</span>.</p></div>
+    <div class="entree"><time>19:45</time><p><span class="insec">T-0128</span> renvoyé en correction : la vidéo du loup est à refaire avec la caméra de la première moitié ; des LISEZMOI sont à remettre d&#x27;accord, avec <span class="insec">D-227</span>.</p></div>
+    <div class="entree"><time>19:56</time><p><span class="insec">T-0137</span> livré, puis renvoyé en correction : quatre petites erreurs dans Documents/ et un oubli dans le rapport.</p></div>
+    <div class="entree"><time>20:02</time><p><span class="insec">T-0137</span> validé après correction : les décisions <span class="insec">D-200</span> à <span class="insec">D-227</span> sont dans Documents/.</p></div>
+    <div class="entree"><time>20:09</time><p>Décisions <span class="insec">D-228</span> (le prototype est la base du jeu complet : ses règles valent aussi pour le jeu) et <span class="insec">D-229</span> (consciences collectives ; la pause en coop reste ouverte), après un questionnaire du directeur sur les points de <span class="insec">T-0136</span> et <span class="insec">T-0137</span>. Lancement de <span class="insec">T-0139</span> pour les reporter.</p></div>
+    <div class="entree"><time>20:22</time><p><span class="insec">T-0128</span> : la vidéo du loup est refaite avec la caméra de la première moitié.</p></div>
+    <div class="entree"><time>20:25</time><p>Décision <span class="insec">D-230</span> (portée de <span class="insec">D-228</span>) : toutes les règles du prototype valent pour le jeu, sauf exceptions ; partage du jour selon la saison ; lisibilité selon l&#x27;épaisseur de la brume ; méfiance dans tout hameau ; le Pont revient au checkpoint ; paliers nommés du chien, sans biome. <span class="insec">T-0139</span> livré, en vérification. <span class="insec">T-0138</span> livré, en vérification.</p></div>
+    <div class="entree"><time>20:29</time><p><span class="insec">T-0139</span> validé après une correction. Lancement de <span class="insec">T-0140</span> : la décision <span class="insec">D-230</span>.</p></div>
+    <div class="entree"><time>20:37</time><p><span class="insec">T-0128</span> : la vidéo du chien est refaite, avec 21 animations, dont une marche boiteuse par patte (<span class="insec">D-227</span>).</p></div>
+    <div class="entree"><time>20:53</time><p><span class="insec">T-0140</span> validé après une correction : <span class="insec">D-230</span> dans 13 documents. Lancement de <span class="insec">T-0141</span> : l&#x27;alignement des documents restés en dehors.</p></div>
+    <div class="entree"><time>20:56</time><p><span class="insec">T-0128</span> livré après sa correction 1. En vérification.</p></div>
+    <div class="entree"><time>21:00</time><p><span class="insec">T-0141</span> validé : la file des documents est terminée. Documents/ est aligné jusqu&#x27;à <span class="insec">D-230</span>.</p></div>
+    <div class="entree"><time>21:03</time><p><span class="insec">T-0127</span> livré après sa correction 2, avec la brume de <span class="insec">D-227</span>. En vérification.</p></div>
+    <div class="entree"><time>21:05</time><p><span class="insec">T-0138</span> renvoyé en correction : le contenu de cette page est à remettre à l&#x27;état réel.</p></div>
+    <div class="entree"><time>21:07</time><p><span class="insec">T-0128</span> validé après sa correction 1 : loup recuit (teinte à 0,98 de sa source), quatre boiteries du chien. Page « Modèles 3D » republiée.</p></div>
+    <div class="entree"><time>21:19</time><p><span class="insec">T-0127</span> validé (ciel, <span class="insec">D-226</span> et <span class="insec">D-227</span>). Lancement de <span class="insec">T-0129</span> : la lumière des Gorges et du belvédère, l&#x27;aire de la horde.</p></div>
+    <div class="entree"><time>22:56</time><p><span class="insec">T-0133</span> livré : l&#x27;araignée géante (7 animations faites par programme) et la chauve-souris (battement d&#x27;ailes en boucle). Lancement de <span class="insec">T-0134</span> : le cheval.</p></div>
+    <div class="entree"><time>23:15</time><p><span class="insec">T-0133</span> renvoyé en correction : des textes, et le contrôle de la chauve-souris à refaire depuis sa pose de repos.</p></div>
+    <div class="entree"><time>23:24</time><p><span class="insec">T-0133</span> validé.</p></div>
+    <div class="entree"><time>23:43</time><p>Araignée et chauve-souris publiées dans « Modèles 3D » : 16 modèles, 41 animations.</p></div>
+    <div class="entree"><time>01:32</time><p><span class="insec">T-0129</span> et <span class="insec">T-0134</span> livrés. Lancement de <span class="insec">T-0135</span> : le gibier.</p></div>
+    <div class="entree"><time>01:50</time><p><span class="insec">T-0134</span> renvoyé en correction : des sabots tenus à 6 mm du sol glissaient.</p></div>
+    <div class="entree"><time>03:00</time><p><span class="insec">T-0134</span> renvoyé en correction une 2e fois : des appuis cassés et un saut du sabot au pas.</p></div>
+    <div class="entree"><time>03:04</time><p><span class="insec">T-0129</span> validé après une correction : nuit des Gorges à 0,076, sol et héros visibles. Lancement de <span class="insec">T-0130</span> : la horde.</p></div>
+    <div class="entree"><time>06:22</time><p><span class="insec">T-0134</span> livré après sa correction 2. En vérification.</p></div>
+    <div class="entree"><time>06:30</time><p><span class="insec">T-0138</span> livré de nouveau, avec cette page à jour. En vérification.</p></div>
+    <div class="entree"><time>06:34</time><p><span class="insec">T-0130</span> (la horde) livré. En vérification.</p></div>
+    <div class="entree"><time>06:38</time><p><span class="insec">T-0134</span> (le cheval) renvoyé pour une 3e et dernière correction.</p></div>
+    <div class="entree"><time>06:45</time><p><span class="insec">T-0138</span> validé : cette page est publiée dans « Pages du projet ».</p></div>
+    <div class="entree"><time>08:30</time><p><span class="insec">T-0130</span> (la horde) validé.</p></div>
+    <div class="entree"><time>09:00</time><p><span class="insec">T-0134</span> (le cheval) validé après quatre corrections.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Posées au directeur par questionnaires le 06/10/2026 : les réponses sont les décisions <span class="insec">D-232</span> à <span class="insec">D-236</span>, résumées sur la page « Jour 06 ».</p>
+  <p class="lecture muted">15 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question"><p><strong>Saison moyenne</strong> (<span class="insec">D-230</span> (2)) : le jeu n&#x27;a que deux saisons (la Brûlure, le Grand Gel). Le partage 48/24 est-il le point de passage entre les deux, ou faut-il des intersaisons ?</p></div>
+    <div class="question"><span class="ticket">à confirmer</span><p>(Réglés par le Chef en lisant les décisions à la lettre, à confirmer en passant.) Règles non classées par <span class="insec">D-230</span> (1) : celles qui se disent « prototype » sont des exceptions ; les autres (visages des PNJ, +20 % et vivandier, surnoms par stade, modèle et IA du chien) valent pour le jeu. Meutes : les nombres de <span class="insec">D-222</span> valent pour la zone de départ, et les autres groupes se règlent espèce par espèce (meute de 6, meute de 5).</p></div>
+    <div class="question"><p><strong>Fin de la méfiance</strong> : « premier service rendu » (<span class="insec">D-230</span> (4)) ou « première quête réussie » (<span class="insec">D-215</span> (1)) ? « Paria » vaut-il seulement pour le hameau de départ, ou pour tout hameau ?</p></div>
+    <div class="question"><p><strong>Chien et loup</strong> : la terreur du Stade 3, les trois voies d&#x27;évolution et le Hurleur Trahi valent-ils aussi pour le chien, ou seulement pour le loup ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0141</span></span><p>La Tempête de Neige et sa meute de 6 peuvent-elles toucher la zone de départ ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0127</span></span><p>La brume couvre presque tout le belvédère (capture 6-brume) : est-ce gênant pour sa vue ? La brume du réveil qui se lève à la sortie des Gorges (+15 m) ou au bout de 10 min te convient-elle ? La lune suit maintenant l&#x27;ordre réel des phases.</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0127</span></span><p>La brume revient vers 12 à 16 min de jeu et cache toute la vue du belvédère (capture 6-brume au lieu de l&#x27;image 13). <span class="insec">T-0129</span> mesure les options.</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0133</span></span><p>La taille de l&#x27;araignée et des chauves-souris ; la lisibilité d&#x27;une araignée sombre dans les galeries ; une marche blessée pour l&#x27;araignée ; sa façon de combattre ; une pose suspendue et un envol pour la nuée.</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0129</span></span><p>La brume revient au belvédère dans environ 5 à 8 % des parties (3 options mesurées dans le rapport) ; l&#x27;heure d&#x27;arrivée prévue au belvédère ; 3 valeurs de <span class="insec">T-0127</span> changées (à confirmer).</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0134</span></span><p>La marque de la monture (proposée : un sceptre sans croix sur la cuisse arrière gauche) ; la vitesse des allures (<span class="insec">D-196</span>) ; aucune animation libre de monte ni de descente n&#x27;existe ; l&#x27;allure générale du cheval.</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0127</span> · <span class="insec">T-0128</span> · <span class="insec">D-227</span></span><p>La brume, le premier réveil, la mort du chien et sa patte qui boite.</p><p class="reponse">Réponse du directeur : Tranchées par <span class="insec">D-227</span> (questionnaire du 02/10) : un ennemi reste lisible jusqu&#x27;à 25 m dans la brume, puis devient de moins en moins visible ; la partie commence dans la brume du matin ; le chien ne meurt pas définitivement ; la patte qui boite suit la blessure, deux pattes au plus.</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0137</span> · <span class="insec">D-226</span> (2)</span><p>La journée de 72 min vaut-elle aussi pour le jeu complet, ou seulement pour le prototype ?</p><p class="reponse">Réponse du directeur : Pour le jeu complet aussi (<span class="insec">D-228</span> (1)) ; le partage du jour et de la nuit varie avec la saison (<span class="insec">D-230</span> (2)).</p></div>
+    <div class="question repondue"><span class="ticket"><span class="insec">T-0136</span> · <span class="insec">T-0137</span></span><p>Les contradictions relevées dans Documents/ : six par <span class="insec">T-0136</span>, treize par <span class="insec">T-0137</span>.</p><p class="reponse">Réponse du directeur : Présentées par questionnaires le 02/10 : <span class="insec">D-228</span> et <span class="insec">D-229</span>, puis <span class="insec">D-230</span> pour la portée de <span class="insec">D-228</span>.</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0130</span></span><p>La horde : à quel moment se déclenche-t-elle ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0130</span></span><p>La horde : 12 créatures, est-ce la bonne taille ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0130</span></span><p>La horde doit-elle pouvoir être battue, ou être impossible à battre, comme le scénario de l&#x27;Ange le laisse entendre ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0130</span></span><p>La horde a été resserrée pour tenir dans le grand sort : cela vous convient-il ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0130</span></span><p>Environ 5 créatures bloquées par combat sont replacées, et cela se voit : est-ce acceptable pour la démo ?</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:\aaa-proto\essai\ : dossiers chien, loup, araignee, chauves-souris et cheval (modèles, vidéos, LISEZMOI) · E:\aaa-proto\unreal-v2 (le jeu) · D:\aaa-game\.equipe\taches (les tickets) · D:\aaa-game\.equipe\bilans\nuit-03.md (le bilan de la nuit)</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

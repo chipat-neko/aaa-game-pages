@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Objets, recettes, prix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Objets, recettes et prix : une colonne de lecture, des cartes en bref, les listes en tableaux défilants ; même identité sombre que les autres pages du projet */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:60rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche)}
+.pistes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.piste .ticket{font:500 .72rem/1 var(--f-data);letter-spacing:.06em;color:var(--pierre)}
+.etat{justify-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor}
+.attente{color:var(--pierre)}.encours{color:var(--acier)}.valide{color:var(--mousse)}.bloque{color:var(--braise)}.fait{color:var(--aube)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .72rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+ul.liste,ol.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+a{color:var(--aube)}
+/* Ajouts propres à cette page */
+nav.parties{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.parties a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.parties a:hover,nav.parties a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.provisoire{justify-self:start;font:500 .72rem/1 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--braise);border:1px solid currentColor;border-radius:3px;padding:.38rem .6rem}
+.large table{min-width:50rem}
+.moyen table{min-width:40rem}
+td code,.id{font:400 .78rem/1.4 var(--f-data);color:var(--pierre)}
+.pr,.mq,.es,.dc{display:inline-block;font:500 .64rem/1 var(--f-data);letter-spacing:.04em;border-radius:3px;padding:.16rem .3rem;vertical-align:.12em;white-space:nowrap}
+.pr{color:var(--aube);border:1px dashed var(--aube)}
+.mq{color:var(--acier);border:1px solid var(--acier)}
+.es{color:var(--mousse);border:1px solid var(--mousse)}
+.dc{color:var(--nuit);background:var(--mousse);border:1px solid var(--mousse)}
+.nom{font-weight:600}
+.legende{display:grid;gap:.45rem;font-size:.92rem;max-width:44rem}
+.note{font-size:.92rem;border-left:2px solid var(--aube);padding-left:.7rem;max-width:42rem}
+.note b{color:var(--aube);font-weight:600}
+h3.sous{font:500 .78rem/1.3 var(--f-data);letter-spacing:.07em;text-transform:uppercase;color:var(--acier);margin-top:.4rem}
+.reco{color:var(--mousse);font-weight:600}
+ol.points{margin:0;padding-left:1.2rem;display:grid;gap:.8rem;max-width:44rem}
+ol.points li b{color:var(--lin)}
+tr.fin td{border-top:1px solid var(--aube)}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · chantier T-0113 · 01/10/2026 · complément 1 (D-214, D-215)</div>
+  <h1>Objets, recettes <em>et prix</em></h1>
+  <span class="provisoire">Proposition · jusqu'à la relecture du directeur (D-209, D-215)</span>
+  <p class="lecture">La liste courte du prototype pour les investisseurs : les objets des quêtes, les recettes de fer de la quête du forgeron, les prix chez les marchands du hameau et d'Oakhaven, et les récompenses, dont les trois issues de « L'Agneau et le Loup ». Le directeur a tranché les points ouverts (D-214, D-215) ; chaque chiffre dit d'où il vient, et ce qui n'a pas de source est marqué « proposition ». Les documents de design ne sont pas modifiés.</p>
+  <nav class="parties" aria-label="Parties">
+    <a href="#regles">Règles</a><a href="#objets">Objets</a><a href="#recettes">Recettes</a><a href="#marchands">Marchands</a><a href="#bilan">Bilan des pièces</a><a href="#recompenses">Récompenses</a><a href="#forgeron">Quête du forgeron</a><a href="#coherence">Cohérence</a><a href="#ouverts">Décisions</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section>
+  <h2>En bref</h2>
+  <div class="pistes">
+    <div class="piste"><span class="ticket">OBJETS</span><h3>23 lignes, charge maximale 30 kg</h3><p class="muted">Les quatre objets de l'essai gardent leur nom et leur poids ; une charge maximale (D-214), 30 kg proposés.</p></div>
+    <div class="piste"><span class="ticket">RECETTES</span><h3>6 recettes de fer, 2 gestes</h3><p class="muted">Lingot, marteau de voyage, dague, épée courte, épée longue, hache d'armes ; améliorer et réparer. Une arme sort au rang de la Forge du moment (D-215).</p></div>
+    <div class="piste"><span class="ticket">MÉTIERS</span><h3>Minage 5 et Forge 5 à la fin de la quête</h3><p class="muted">12 minerais, la fonte, une dague, une épée courte et l'épée rouillée remise d'aplomb (D-209). Une veine sûre près de Brutus donne une gemme (D-215).</p></div>
+    <div class="piste"><span class="ticket">PRIX</span><h3>Méfiance +20 %, « Amical » −10 %</h3><p class="muted">Le hameau se méfie à l'arrivée, puis fait un rabais ; l'Ordre se méfie au Choix A ; le Cartel prend 30 % à tous (D-215).</p></div>
+    <div class="piste"><span class="ticket">DÉCISIONS</span><h3>8 points tranchés, 1 nouveau</h3><p class="muted">Restent à valider : la charge (valeur et effet) et quelques chiffres ; un point nouveau sur l'Ordre « Favorable ».</p></div>
+  </div>
+  <div class="legende">
+    <p><span class="pr">prop.</span> proposition de cette page, sans source.</p>
+    <p><span class="mq">maq.</span> chiffre déjà montré en exemple par les maquettes d'interface (T-0098) : une proposition aussi, reprise pour ne pas les contredire.</p>
+    <p><span class="es">essai</span> donnée réelle de l'essai Unreal (T-0081, <code>textes.json</code>).</p>
+  </div>
+</section>
+
+<section id="regles">
+  <h2>1. Règles communes</h2>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Règle</th><th>Contenu</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Monnaie</td><td>Pièces d'or seulement ; pas de « pièces du Cartel » dans la démo (elles restent à détailler)</td><td>D-136 ; absence <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Valeur</td><td>Chaque objet a une valeur en pièces d'or : son prix de vente dans la Plaine Royale, pour une conscience neutre</td><td><em>Économie</em> § 1 ; chiffres <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Hameau</td><td>Troc à valeur égale (« 3 minerais contre 3 pains, 6 de chaque côté ») ; un marchand qui paie en pièces le fait dans la limite de sa bourse ; à 0, il est à sec et n'achète plus rien pendant 2 jours de jeu ; l'humeur du hameau change ses prix de vente, pas ses prix de rachat</td><td><em>Économie</em> § 2 ; <span class="mq">maq.</span> E9 ; durée et rachat <span class="pr">prop.</span> (D-187)</td></tr>
+      <tr><td class="nom">Ville (Oakhaven)</td><td>Vend à la valeur, rachète à la moitié (arrondi en dessous)</td><td><em>Économie</em> § 2 ; taux <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Palier « méfiance »</td><td>+20 %, arrondi au-dessus, partout où l'on se méfie : l'Ordre au Choix A jusqu'à ce que la Voie A lève la méfiance (D-139), et le hameau à l'arrivée, jusqu'à la première quête réussie ; le Choix B compte neutre</td><td><span class="dc">D-215 (1)</span> ; D-212 (4) ; <em>Économie</em> § 3 (« Le Palier de Méfiance ») ; taux : D-204 (4), « proposition du prototype » ; arrondi <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Rabais « Amical »</td><td>−10 % chez les marchands du hameau « Amical » (marchand, aubergiste, et l'agent du Cartel, qui suit le hameau), arrondi au plus proche, la moitié vers le haut</td><td><span class="dc">D-215 (4)</span> (taux proposé, réglé en jouant) ; <em>IA Collective</em> § 1 (« les prix baissent partout ») ; D-195 ; arrondi <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Marché noir</td><td>+30 % de commission pour tout le monde, calculée sur le prix du moment (après méfiance ou rabais) et arrondie au-dessus (12 + 4 = 16) ; quand l'agent rachète, il retient 30 %</td><td><span class="dc">D-215 (3)</span> ; <em>Économie</em> § 3 ; <span class="mq">maq.</span> E9 ; ordre du calcul <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Hostilité</td><td>Si la conscience du lieu est hostile, la boutique est fermée à clé (la variante « +200 % » n'est pas utilisée)</td><td><em>Économie</em> § 3 ; D-38, D-205 ; <span class="mq">maq.</span> E9</td></tr>
+      <tr><td class="nom">Poids</td><td>En kg, comme l'essai ; la charge = le sac et l'arme en main (l'essai : 8,6 kg) ; charge maximale : 30 kg <span class="pr">prop.</span> ; effet au-delà : point 1 ; les pièces ne pèsent rien</td><td><span class="dc">D-214 (3)</span> ; <span class="es">essai</span> ; valeur <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Durabilité</td><td>0 à 100 : Intact (100-51), Ébréché (50-11, −25 %), Émoussé (10-0) ; toute pièce forgée sort à 100</td><td><em>Matrice</em> § 1 ; « sort à 100 » <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Objets de quête</td><td>Ne se jettent pas et ne se vendent pas</td><td><span class="es">essai</span> ; <span class="mq">maq.</span> E9</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Pourquoi 30 kg</b> <span class="pr">prop.</span> : la charge la plus lourde que demande la démo est la sortie de la mine, 17,1 kg (section 6) ; une descente complète (20 minerais) monte à 25,1 kg ; avec 30 kg, la limite ne gêne pas la quête, mais le joueur qui mine tout ce qu'il trouve la rencontre (12 veines = 24 minerais : 29,1 kg, presque plein). La tenue portée ne compte pas dans la charge (comme l'essai) ; tenue et arme restent « Léger » (moins de 10 kg, <em>Infiltration Avancée</em> § 1).</p>
+</section>
+
+<section id="objets">
+  <h2>2. Les objets</h2>
+  <p class="lecture muted">Types de l'essai (Arme, Ressource, Nourriture, Quête), plus Outil, Soin et Tenue <span class="pr">prop.</span>. L'identifiant suit l'usage de la table <code>DT_Objets</code> de l'essai. Valeur en pièces d'or.</p>
+
+  <h3 class="sous">2.1 Départ (didacticiel)</h3>
+  <div class="tableau large"><table>
+    <thead><tr><th>Objet</th><th>Rôle</th><th>Poids</th><th>Valeur</th><th>Où</th><th>Recette</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td><span class="nom">Épée rouillée</span><br><span class="id">EpeeRouillee · Arme</span></td><td>Arme de départ, rang 1 ; ébréchée au réveil (40) <span class="pr">prop.</span> ; ne se vend pas tant qu'elle est en main</td><td class="chiffre">2,5 kg <span class="es">essai</span></td><td class="chiffre">4 <span class="pr">prop.</span></td><td>Ruines des Gorges, au réveil</td><td>A1, A2</td><td><em>Design du Didacticiel</em> (D-163) ; <span class="mq">maq.</span> E9</td></tr>
+      <tr><td><span class="nom">Tenue du réveil</span> : gambison matelassé, pantalon, bottes<br><span class="id">Gambison, Pantalon, Bottes · Tenue</span></td><td>Portée ; ne se vend pas <span class="pr">prop.</span></td><td class="chiffre">3,0 + 0,8 + 1,2 kg <span class="pr">prop.</span></td><td class="chiffre">—</td><td>Portée au réveil</td><td>—</td><td><em>Design du Didacticiel</em> (D-163)</td></tr>
+      <tr><td><span class="nom">Insigne d'unité, sans nom</span><br><span class="id">InsigneUnite · Quête</span></td><td>Le chef le remarque et oriente le héros vers Oakhaven</td><td class="chiffre">0,05 kg <span class="pr">prop.</span></td><td class="chiffre">—</td><td>Porté au réveil</td><td>—</td><td>D-108 ; D-204 (2)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sous">2.2 Mine, forge et outils</h3>
+  <div class="tableau large"><table>
+    <thead><tr><th>Objet</th><th>Rôle</th><th>Poids</th><th>Valeur</th><th>Où</th><th>Recette</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td><span class="nom">Minerai de fer</span><br><span class="id">MineraiFer · Ressource</span></td><td>Fondu en lingots ; objectif de la quête du forgeron (12) <span class="pr">prop.</span> ; troc</td><td class="chiffre">1,0 kg <span class="es">essai</span></td><td class="chiffre">2 <span class="mq">maq.</span></td><td>Veines des Mines de Fer Oubliées : 2 par veine <span class="mq">maq.</span></td><td>—</td><td><em>Guide</em> § 2.A ; <em>Topographie</em> POI B</td></tr>
+      <tr><td><span class="nom">Lingot de fer</span><br><span class="id">LingotFer · Ressource</span></td><td>Matière de toutes les recettes ; répare ; « Garde des lingots sur toi » (FOR-16)</td><td class="chiffre">1,0 kg <span class="pr">prop.</span></td><td class="chiffre">5 <span class="pr">prop.</span></td><td>Fonte à la forge du hameau</td><td>R1</td><td><em>Guide</em> § 3.A ; <em>Matrice</em> § 3 (D-45)</td></tr>
+      <tr><td><span class="nom">Gemme brute</span><br><span class="id">GemmeBrute · Ressource rare</span></td><td>Objet précieux à vendre : il met le marchand du hameau à sec</td><td class="chiffre">0,1 kg <span class="mq">maq.</span></td><td class="chiffre">25 <span class="pr">prop.</span></td><td>Veines de fer : +1 % par niveau de Minage, plus une veine sûre au fond de la mine, près de Brutus</td><td>—</td><td><span class="dc">D-215 (5)</span> ; <em>Guide</em> § 2.A ; <em>Économie</em> § 2</td></tr>
+      <tr><td><span class="nom">Pioche</span><br><span class="id">Pioche · Outil</span></td><td>Sert à miner</td><td class="chiffre">2,5 kg <span class="pr">prop.</span></td><td class="chiffre">12 <span class="mq">maq.</span></td><td>Donnée par le forgeron (FOR-06) <span class="pr">prop.</span> ; marchand du hameau</td><td>—</td><td>FOR-06, MIN-02 ; <em>Économie</em> § 2</td></tr>
+      <tr><td><span class="nom">Marteau de voyage</span><br><span class="id">MarteauVoyage · Outil</span></td><td>Permet de réparer au feu de camp (forge de fortune)</td><td class="chiffre">1,0 kg <span class="pr">prop.</span></td><td class="chiffre">14 <span class="mq">maq.</span></td><td>Marchand du hameau ; ou forgé</td><td>R2</td><td><em>Matrice</em> § 3</td></tr>
+      <tr><td><span class="nom">Bois sec</span><br><span class="id">BoisSec · Ressource</span></td><td>Feu de camp ; manche du marteau et de la hache</td><td class="chiffre">1,0 kg <span class="pr">prop.</span></td><td class="chiffre">1 <span class="mq">maq.</span></td><td>Marchand du hameau ; nature libre <span class="pr">prop.</span></td><td>—</td><td><em>Repos</em> § 1</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sous">2.3 Armes forgées et butin</h3>
+  <p class="lecture muted">Le rang d'une arme forgée est le niveau de Forge au moment de la forge (<span class="dc">D-215 (6)</span> ; <em>Guide</em> § 3.A). La valeur indiquée est celle du rang requis par la recette, +1 pièce par rang au-dessus <span class="pr">prop.</span> ; les armes vendues par le vivandier sont au rang requis <span class="pr">prop.</span>.</p>
+  <div class="tableau large"><table>
+    <thead><tr><th>Objet</th><th>Rôle</th><th>Poids</th><th>Valeur</th><th>Où</th><th>Recette</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td><span class="nom">Dague de fer</span><br><span class="id">DagueFer · Arme</span></td><td>La « première lame » de la quête (FOR-17) ; arme rapide</td><td class="chiffre">0,5 kg <span class="pr">prop.</span></td><td class="chiffre">8 au rang 2 <span class="pr">prop.</span></td><td>Forgée</td><td>R3</td><td><em>Guide</em> § 3.A ; <span class="mq">maq.</span> E8</td></tr>
+      <tr><td><span class="nom">Épée courte de fer</span><br><span class="id">EpeeCourteFer · Arme</span></td><td>Épée à une main, plus légère que l'épée rouillée ; deuxième pièce de la quête <span class="pr">prop.</span></td><td class="chiffre">1,5 kg <span class="pr">prop.</span></td><td class="chiffre">15 au rang 3 <span class="pr">prop.</span></td><td>Forgée</td><td>R4</td><td>PB-30 option 1</td></tr>
+      <tr><td><span class="nom">Épée longue de fer</span><br><span class="id">EpeeLongueFer · Arme</span></td><td>Remplace l'épée rouillée (même gabarit)</td><td class="chiffre">2,5 kg <span class="pr">prop.</span></td><td class="chiffre">22 au rang 4 <span class="pr">prop.</span></td><td>Forgée ; vivandier de l'Ordre</td><td>R5</td><td>PB-30 ; <span class="mq">maq.</span> E8 (« Épée de fer »)</td></tr>
+      <tr><td><span class="nom">Hache d'armes de fer</span><br><span class="id">HacheArmesFer · Arme</span></td><td>Arme lourde à deux mains, qui brise la garde</td><td class="chiffre">3,0 kg <span class="pr">prop.</span></td><td class="chiffre">24 au rang 5 <span class="pr">prop.</span></td><td>Forgée</td><td>R6</td><td>PB-30 ; <em>Arbre</em> § 3 (Branche 1 : « haches, bris de garde ») ; FOR-14</td></tr>
+      <tr><td><span class="nom">Épée d'un déserteur</span><br><span class="id">EpeeDeserteur · Arme</span></td><td>Rang 10 : plus forte, mais ébréchée (30) <span class="pr">prop.</span> ; ni réparable ni améliorable avant Forge 10 : c'est là que le verrou se montre</td><td class="chiffre">2,0 kg <span class="pr">prop.</span></td><td class="chiffre">40 <span class="pr">prop.</span></td><td>Butin du Pont des Déserteurs (choix A ou B)</td><td>—</td><td>PB-29 option 1 (D-209) ; <em>Guide</em> § 3.A ; <em>Matrice</em> § 3 ; <span class="mq">maq.</span> E8</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sous">2.4 Nourriture, soins et troc</h3>
+  <div class="tableau large"><table>
+    <thead><tr><th>Objet</th><th>Rôle</th><th>Poids</th><th>Valeur</th><th>Où</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td><span class="nom">Viande</span><br><span class="id">Viande · Nourriture</span></td><td>Calmer le loup (arme rangée, sans bruit, viande en main) ; troc</td><td class="chiffre">0,5 kg <span class="es">essai</span></td><td class="chiffre">1 <span class="mq">maq.</span></td><td>Marchand du hameau ; l'éleveur en donne un morceau (ELV-08) <span class="pr">prop.</span> ; récompense</td><td>QP4 ; <em>Structure</em> § 1</td></tr>
+      <tr><td><span class="nom">Pain de seigle</span><br><span class="id">PainSeigle · Nourriture</span></td><td>Rend un peu de vie hors combat (pas de faim dans la démo) <span class="pr">prop.</span> ; troc</td><td class="chiffre">0,5 kg <span class="pr">prop.</span></td><td class="chiffre">2 <span class="mq">maq.</span></td><td>Hameau ; Veilleuse <span class="pr">prop.</span> ; vivandier <span class="pr">prop.</span></td><td><em>Économie</em> § 2</td></tr>
+      <tr><td><span class="nom">Remède artisanal</span><br><span class="id">RemedeArtisanal · Soin</span></td><td>Soigne (quantité à régler en jouant)</td><td class="chiffre">0,2 kg <span class="pr">prop.</span></td><td class="chiffre">8 <span class="mq">maq.</span></td><td>Hameau, Veilleuse, agent du Cartel, vivandier</td><td><em>Économie</em> § 2 ; <em>Topographie</em> POI C</td></tr>
+      <tr><td><span class="nom">Nourriture frelatée</span><br><span class="id">NourritureFrelatee · Quête</span></td><td>Empoisonne les déserteurs (Choix B) ; un paquet suffit <span class="pr">prop.</span></td><td class="chiffre">0,5 kg <span class="pr">prop.</span></td><td class="chiffre">12 <span class="mq">maq.</span></td><td>Agent du Cartel, à l'auberge ; prix payé en 4.1</td><td><em>Topographie</em> § 5 (D-41) ; <em>Guide</em> § 3.B</td></tr>
+      <tr><td><span class="nom">Laine brute</span><br><span class="id">LaineBrute · Ressource</span></td><td>Récompense de l'éleveur ; troc</td><td class="chiffre">1,0 kg <span class="pr">prop.</span></td><td class="chiffre">3 <span class="pr">prop.</span></td><td>Éleveur</td><td>ELV-22, ELV-35</td></tr>
+      <tr><td><span class="nom">Cuir</span><br><span class="id">Cuir · Ressource</span></td><td>Récompenses (« des peaux » du chef, « du cuir » de l'éleveur) ; troc</td><td class="chiffre">1,0 kg <span class="pr">prop.</span></td><td class="chiffre">4 <span class="pr">prop.</span></td><td>Chef, éleveur</td><td>CHF-09 ; ELV-22</td></tr>
+      <tr><td><span class="nom">Mesure de seigle</span><br><span class="id">MesureSeigle · Ressource</span></td><td>Prime du nid (« du grain ») ; troc</td><td class="chiffre">1,0 kg <span class="pr">prop.</span></td><td class="chiffre">1 <span class="pr">prop.</span></td><td>Chef</td><td>CHF-09</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sous">2.5 Quête</h3>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Objet</th><th>Rôle</th><th>Poids</th><th>Où</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td><span class="nom">Insigne du chef des déserteurs</span><br><span class="id">InsigneDeserteur · Quête</span></td><td>Identique à celui du héros ; déclenche le premier souvenir</td><td class="chiffre">0,05 kg <span class="pr">prop.</span></td><td>Sur le cadavre du chef des déserteurs</td><td><em>Topographie</em> § 5 (D-108) ; D-204 (3)</td></tr>
+      <tr><td><span class="nom">Laissez-passer d'Oakhaven</span><br><span class="id">LaissezPasserOakhaven · Quête</span></td><td>Ouvre la Porte du Sud ; ne vaut que pour Oakhaven</td><td class="chiffre">0,1 kg <span class="es">essai</span></td><td>Récompense du sergent recruteur (Voie A)</td><td>QP1 Voie A (D-173)</td></tr>
+    </tbody>
+  </table></div>
+
+  <p class="note"><b>Hors du sac :</b> le cheval volé du Choix A est une monture, pas un objet (D-37, D-184) ; le chien de berger de l'issue 2 du loup est un compagnon (D-213 (2)).</p>
+  <p class="note"><b>Laissés hors de la liste</b> <span class="pr">prop.</span> : l'os (QP4 : la viande suffit) ; les clous de réparation (<em>Matrice</em> § 3 : le lingot suffit) ; toute armure (une armure de fer ferait passer l'équipement en « Moyen » ou « Lourd », <em>Infiltration Avancée</em> § 1, et gênerait l'approche sans bruit du loup) ; les parchemins d'Apprentissage Théorique des villes (<em>Économie</em> § 2 : contenu des paliers à définir) ; les huiles de lame toxiques (coopération seulement, D-120 ; démo en solo, D-177) ; le pot-de-vin de la Voie B (version complète seulement, D-185).</p>
+</section>
+
+<section id="recettes">
+  <h2>3. Les recettes de fer</h2>
+  <div class="tableau large"><table>
+    <thead><tr><th>#</th><th>Recette</th><th>Coût</th><th>Forge requise</th><th>Expérience</th><th>Où</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>R1</td><td class="nom">Fondre un lingot de fer</td><td>2 minerais → 1 lingot</td><td class="chiffre">1</td><td class="chiffre">+40</td><td>Four de la forge du hameau</td><td><span class="mq">maq.</span> E8 ; <em>Guide</em> § 3.A</td></tr>
+      <tr><td>R2</td><td class="nom">Marteau de voyage</td><td>1 lingot + 1 bois sec</td><td class="chiffre">2</td><td class="chiffre">+40</td><td>Enclume du hameau</td><td><em>Matrice</em> § 3 ; niveau et coût <span class="pr">prop.</span></td></tr>
+      <tr><td>R3</td><td class="nom">Dague de fer</td><td>1 lingot</td><td class="chiffre">2</td><td class="chiffre">+40</td><td>Enclume</td><td><span class="mq">maq.</span> E8 ; <em>Guide</em> § 3.A</td></tr>
+      <tr><td>R4</td><td class="nom">Épée courte de fer</td><td>2 lingots</td><td class="chiffre">3</td><td class="chiffre">+80</td><td>Enclume</td><td>PB-30 ; chiffres <span class="pr">prop.</span></td></tr>
+      <tr><td>R5</td><td class="nom">Épée longue de fer</td><td>3 lingots</td><td class="chiffre">4</td><td class="chiffre">+120</td><td>Enclume</td><td><span class="mq">maq.</span> E8 (« Épée de fer », 3 lingots, niveau 4)</td></tr>
+      <tr><td>R6</td><td class="nom">Hache d'armes de fer</td><td>3 lingots + 1 bois sec</td><td class="chiffre">5</td><td class="chiffre">+120</td><td>Enclume</td><td>PB-30 ; <em>Arbre</em> § 3 ; chiffres <span class="pr">prop.</span></td></tr>
+      <tr><td>A1</td><td class="nom">Améliorer une arme (+1 rang)</td><td>1 lingot</td><td class="chiffre">≥ rang actuel de l'arme</td><td class="chiffre">+40</td><td>Enclume</td><td><em>Guide</em> § 3.A (60 → 65 demande Forge 60) ; <span class="mq">maq.</span> E8 (épée rouillée 1 → 2)</td></tr>
+      <tr><td>A2</td><td class="nom">Réparer</td><td>1 lingot = +30 de durabilité</td><td class="chiffre">≥ rang de l'arme</td><td class="chiffre">+10</td><td>Enclume, ou feu de camp avec le marteau de voyage</td><td><em>Matrice</em> § 3 ; chiffres <span class="pr">prop.</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Rang :</b> « Forge requise » est le niveau qui ouvre la recette ; la pièce sort au niveau de Forge du moment (<span class="dc">D-215 (6)</span>) : une dague forgée à Forge 4 est de rang 4.</p>
+  <p class="note"><b>Le verrou :</b> forger, améliorer ou réparer une arme d'un rang plus haut que son niveau de Forge affiche le message exact du <em>Guide</em> § 3.A : « Vous n'avez pas l'expérience requise pour manipuler un acier de ce rang. Forgez d'abord des armes de votre niveau. » Dans la démo, il apparaît sur l'épée d'un déserteur (rang 10).</p>
+  <p class="note"><b>Règle d'expérience : 40 par unité de fer travaillée</b> <span class="pr">prop.</span>. Minage : +40 par minerai (+80 par veine de 2 minerais). Forge : +40 par lingot fondu, et +40 par lingot forgé dans une pièce (une amélioration compte comme un lingot forgé) ; la réparation donne +10. La même règle vaut pour tout le jeu (D-210 (1)).</p>
+  <h3 class="sous">3.1 Niveaux de 1 à 5 (Minage et Forge, même courbe)</h3>
+  <div class="tableau"><table>
+    <thead><tr><th>Niveau</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>Suite</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Expérience cumulée <span class="pr">prop.</span></td><td class="chiffre">0</td><td class="chiffre">40</td><td class="chiffre">120</td><td class="chiffre">240</td><td class="chiffre">400</td><td>40 × n pour passer du niveau n au suivant, jusqu'à 99</td></tr>
+      <tr><td class="nom">Gemmes (Minage)</td><td class="chiffre">+1 %</td><td class="chiffre">+2 %</td><td class="chiffre">+3 %</td><td class="chiffre">+4 %</td><td class="chiffre">+5 %</td><td>+1 % par niveau (<em>Guide</em> § 2.A ; D-215 (5))</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="marchands">
+  <h2>4. Les marchands et leurs valeurs</h2>
+  <p class="lecture muted">Les valeurs sont celles d'une conscience neutre ; les prix payés selon l'humeur (méfiance, « Amical », commission) sont en 4.1.</p>
+  <div class="tableau large"><table>
+    <thead><tr><th>Marchand</th><th>Lieu · conscience</th><th>Vend (valeur)</th><th>Achète</th><th>Bourse</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Marchand du hameau<br><span class="muted" style="font-weight:400">l'aubergiste ou un PNJ à part (fiches § 3.6, à trancher)</span></td><td>Auberge · hameau</td><td>Pain ×6 (2) ; viande ×4 (1) <span class="pr">prop.</span> ; remède ×2 (8) ; bois sec ×9 (1) ; pioche ×1 (12) ; marteau de voyage ×1 (14). Ni arme ni armure</td><td>Tout, à la valeur : troc, ou pièces de sa bourse</td><td class="chiffre">30 <span class="pr">prop.</span></td><td><em>Économie</em> § 2 ; <span class="mq">maq.</span> E9</td></tr>
+      <tr><td class="nom">Forgeron du hameau</td><td>Forge · hameau</td><td>Rien : « il me faut du fer »</td><td>Minerai, lingots, armes de fer, à la valeur</td><td class="chiffre">20 <span class="pr">prop.</span></td><td>FOR-01, FOR-15 ; <em>Topographie</em> § 4</td></tr>
+      <tr><td class="nom">Aubergiste</td><td>Auberge · hameau</td><td>Un lit (5)</td><td>—</td><td>—</td><td><em>Repos</em> § 1 ; <span class="mq">maq.</span> E10</td></tr>
+      <tr><td class="nom">Agent du Cartel<br><span class="muted" style="font-weight:400">marché noir ouvert par le Choix B</span></td><td>Auberge · suit le hameau, rapporte au Cartel</td><td>Nourriture frelatée ×1 (12) ; remède ×3 (8)</td><td>Gemme brute, épée d'un déserteur, « sans questions », valeur −30 %</td><td class="chiffre">60 <span class="pr">prop.</span></td><td><em>Économie</em> § 3 ; D-39, D-41, D-195, D-215 (3) ; <span class="mq">maq.</span> E9</td></tr>
+      <tr><td class="nom">Veilleuse</td><td>Ferme Fortifiée · Veilleurs (conscience à part, neutre <span class="pr">prop.</span>)</td><td>Remède ×4 (6) <span class="pr">prop.</span> ; pain ×4 (2) <span class="pr">prop.</span> : <em>Topographie</em> POI C ne cite que des remèdes</td><td>Rien <span class="pr">prop.</span></td><td>—</td><td><em>Topographie</em> POI C ; D-186, D-193</td></tr>
+      <tr><td class="nom">Vivandier de l'Ordre</td><td>Aux portes d'Oakhaven, près du checkpoint · Ordre</td><td>Stock <span class="pr">prop.</span> : pain (2) ; remède (8) ; lingot (5) ; dague, rang 2 (8) ; épée longue, rang 4 (22) ; marteau de voyage (14)</td><td>À la moitié de la valeur ; refuse l'épée d'un déserteur, où il reconnaît l'acier de l'Ordre <span class="pr">prop.</span>, comme la monture « reconnue à sa marque » (D-204)</td><td class="chiffre">200 <span class="pr">prop.</span></td><td><span class="dc">D-214 (4)</span> ; D-204 (4), D-212 (4) ; l'étal mixte d'un vivandier diffère du stock d'une ville « divisé par métiers » (<em>Économie</em> § 2)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Hameau hostile</b> (magie ou crime vus) : le marchand, le forgeron, l'aubergiste et l'agent ferment (D-38, D-195, D-205 ; FOR-20, FOR-21) ; la Veilleuse vend toujours, sa faction a sa propre conscience (D-186, D-193).</p>
+  <p class="note"><b>Choix B aux portes :</b> refus sans laissez-passer (D-204 (4)) ; le vivandier vend au prix neutre (D-215 (1)).</p>
+
+  <h3 class="sous">4.1 Prix payés selon l'humeur</h3>
+  <p class="lecture muted">Hameau : méfiant à l'arrivée (+20 %, arrondi au-dessus), « Amical » dès la première quête réussie (−10 %, arrondi au plus proche) (D-215 (1) et (4)). Le hameau n'est jamais neutre dans la démo.</p>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Chez qui</th><th>Objet</th><th>Valeur</th><th>Hameau méfiant</th><th>Hameau « Amical »</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="6" class="nom">Marchand du hameau</td><td>Pain de seigle</td><td class="chiffre">2</td><td class="chiffre">3</td><td class="chiffre">2</td></tr>
+      <tr><td>Viande</td><td class="chiffre">1</td><td class="chiffre">2</td><td class="chiffre">1</td></tr>
+      <tr><td>Remède artisanal</td><td class="chiffre">8</td><td class="chiffre">10</td><td class="chiffre">7</td></tr>
+      <tr><td>Bois sec</td><td class="chiffre">1</td><td class="chiffre">2</td><td class="chiffre">1</td></tr>
+      <tr><td>Pioche</td><td class="chiffre">12</td><td class="chiffre">15</td><td class="chiffre">11</td></tr>
+      <tr><td>Marteau de voyage</td><td class="chiffre">14</td><td class="chiffre">17</td><td class="chiffre">13</td></tr>
+      <tr><td class="nom">Aubergiste</td><td>Un lit</td><td class="chiffre">5</td><td class="chiffre">6</td><td class="chiffre">5</td></tr>
+      <tr><td rowspan="2" class="nom">Agent du Cartel<br><span class="muted" style="font-weight:400">+30 % sur le prix du moment</span></td><td>Nourriture frelatée</td><td class="chiffre">12</td><td class="chiffre">15 + 5 = 20</td><td class="chiffre">11 + 4 = 15</td></tr>
+      <tr><td>Remède</td><td class="chiffre">8</td><td class="chiffre">10 + 3 = 13</td><td class="chiffre">7 + 3 = 10</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lecture muted">Oakhaven (vivandier) : neutre au Choix B et après la Voie A (D-139) ; méfiance au Choix A avant la Voie A (D-215 (1)). Veilleuse : prix neutres (remède 6, pain 2).</p>
+  <div class="tableau"><table>
+    <thead><tr><th>Objet</th><th>Valeur (neutre)</th><th>Méfiance (Choix A)</th></tr></thead>
+    <tbody>
+      <tr><td>Pain de seigle</td><td class="chiffre">2</td><td class="chiffre">3</td></tr>
+      <tr><td>Remède artisanal</td><td class="chiffre">8</td><td class="chiffre">10</td></tr>
+      <tr><td>Lingot de fer</td><td class="chiffre">5</td><td class="chiffre">6</td></tr>
+      <tr><td>Dague de fer (rang 2)</td><td class="chiffre">8</td><td class="chiffre">10</td></tr>
+      <tr><td>Épée longue de fer (rang 4)</td><td class="chiffre">22</td><td class="chiffre">27</td></tr>
+      <tr><td>Marteau de voyage</td><td class="chiffre">14</td><td class="chiffre">17</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="bilan">
+  <h2>4.2 Pièces d'or : le bilan avec la méfiance et le rabais</h2>
+  <div class="tableau large"><table>
+    <thead><tr><th>Entrées</th><th>Pièces</th><th>Dépenses (méfiant → « Amical » au hameau)</th><th>Pièces</th></tr></thead>
+    <tbody>
+      <tr><td>Au réveil</td><td class="chiffre">0 <span class="mq">maq.</span></td><td>Nourriture frelatée (Choix B), chez l'agent</td><td class="chiffre">20 → 15</td></tr>
+      <tr><td>Prime du nid (le hameau devient « Amical »)</td><td class="chiffre">10 <span class="pr">prop.</span></td><td>Lit à l'auberge</td><td class="chiffre">6 → 5</td></tr>
+      <tr><td>Ventes au hameau, à la valeur</td><td>50 par remplissage des bourses (marchand 30 + forgeron 20, tous les 2 jours de jeu), sans compter l'agent du Cartel (60, valeur −30 %)</td><td>Remède</td><td>hameau 10 → 7 ; agent 13 → 10 ; Veilleuse 6 ; vivandier 8 (10 en méfiance)</td></tr>
+      <tr><td>Bourse des déserteurs, au pont</td><td class="chiffre">15 <span class="pr">prop.</span></td><td>Marteau de voyage (ou le forger : R2)</td><td class="chiffre">17 → 13</td></tr>
+      <tr><td>« L'Agneau et le Loup », issue 3</td><td class="chiffre">20 <span class="pr">prop.</span></td><td>Pioche de rechange</td><td class="chiffre">15 → 11</td></tr>
+    </tbody>
+  </table></div>
+  <h3 class="sous">Deux parcours <span class="pr">prop.</span></h3>
+  <ul class="liste lecture">
+    <li><b>Choix B.</b> Arrivée (0, hameau méfiant) → nid : +10, le hameau devient « Amical » → la frelatée coûte 15 : il manque 5 ; le joueur vend les 2 cuirs de la prime (+8, à la valeur) : 18 → frelatée −15 : 3 → pont : +15 : 18 → portes d'Oakhaven, prix neutres (Choix B) : un remède à 8 laisse 10. Acheter la frelatée avant le nid (hameau méfiant) coûterait 20, avec 0 pièce en poche : le joueur apprend vite que le hameau se gagne.</li>
+    <li><b>Choix A.</b> Arrivée (0) → nid : +10 → pont : +15 : 25 → portes, méfiance : un remède à 10 laisse 15 ; après la Voie A, la méfiance est levée (D-139) et le remède revient à 8.</li>
+  </ul>
+  <p class="note"><b>En somme :</b> la méfiance du hameau ne pèse qu'avant la première quête, quand le joueur n'a presque rien ; le rabais vaut pour tout le reste de la démo. Le seul achat de quête (la frelatée) passe de 16 au neutre à 15 : le commerce reste nécessaire au Choix B.</p>
+</section>
+
+<section id="recompenses">
+  <h2>5. Récompenses des quêtes</h2>
+  <div class="tableau large"><table>
+    <thead><tr><th>Quête</th><th>Issue</th><th>Récompense</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="nom">Didacticiel</td><td>—</td><td>Épée rouillée, tenue, insigne ; aucune pièce</td><td><em>Design du Didacticiel</em> (D-163, D-108) ; <span class="mq">maq.</span> E9</td></tr>
+      <tr><td class="nom">Nid (prime du chef)</td><td>Nid vidé</td><td>10 pièces + 2 mesures de seigle + 2 cuirs (valeur 20) <span class="pr">prop.</span> ; hameau « Amical »</td><td>CHF-09 (« Du grain, des peaux, quelques pièces »), CHF-21 ; <em>Structure</em> § 1</td></tr>
+      <tr><td class="nom">Quête du forgeron</td><td>Les trois pièces forgées (section 6)</td><td>Minage 5 et Forge 5 à la fin de la quête (calcul en section 6) ; la pioche gardée <span class="pr">prop.</span> ; la dague (rang 4, valeur 10), l'épée courte (rang 4, valeur 16), l'épée rouillée au rang 2 ; la gemme de la veine sûre ; 2 lingots ; hameau « Amical »</td><td><em>Topographie</em> § 4 ; D-209 (3) ; D-215 (5), (6) ; <em>Structure</em> § 1 ; étapes et valeurs <span class="pr">prop.</span></td></tr>
+      <tr><td class="nom">Pont des Déserteurs</td><td>Choix A ou B</td><td>Insigne du chef, épée d'un déserteur, 15 pièces <span class="pr">prop.</span> ; au Choix A, en plus, le cheval volé (hors du sac)</td><td><em>Topographie</em> § 5 (D-37, D-108, D-184)</td></tr>
+      <tr><td class="nom">QP1</td><td>Voie A</td><td>Laissez-passer d'Oakhaven</td><td>QP1 Voie A (D-173)</td></tr>
+      <tr><td class="nom">QP1</td><td>Voies B et C</td><td>Aucun objet : l'entrée dans la ville (bas-fonds, catacombes)</td><td>QP1</td></tr>
+      <tr><td class="nom">L'Agneau et le Loup</td><td>Fin 1 : le loup est tué</td><td>Récompense simple : 2 laines brutes + 1 cuir (valeur 10) <span class="pr">prop.</span></td><td>ELV-22 ; <em>Structure</em> § 1</td></tr>
+      <tr><td class="nom">L'Agneau et le Loup</td><td>Adoption, issue 1 : le loup garde le troupeau</td><td>Récompense double, matérielle : 4 laines brutes + 2 cuirs + 2 viandes (valeur 22) <span class="pr">prop.</span> ; le loup reste couché à l'enclos</td><td>D-210 (2) ; ELV-33 à ELV-35</td></tr>
+      <tr><td class="nom">L'Agneau et le Loup</td><td>Adoption, issue 2 : un autre animal compagnon</td><td>Le chien de berger de l'éleveur part avec le héros, avec sa propre jauge de loyauté, et peut le suivre en même temps que le Loup Nommé de la QP4 ; le loup garde le troupeau ; plus la récompense simple (2 laines + 1 cuir) <span class="pr">prop.</span></td><td><span class="dc">D-215 (2)</span> ; <span class="dc">D-213 (2)</span> ; D-210 (2)</td></tr>
+      <tr><td class="nom">L'Agneau et le Loup</td><td>Adoption, issue 3 : de l'or</td><td>20 pièces d'or, le double de la récompense simple <span class="pr">prop.</span> ; le loup repart dans la nature</td><td>D-210 (2) ; PB-32 option 3</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lecture muted">Après les trois issues d'adoption et après la fin 1, le hameau passe « Amical » (<em>Structure</em> § 1) : ses prix baissent (D-215 (4)). Le joueur choisit l'issue au moment de rendre le loup (D-210 (2) ; choix aux moments clés, D-208 (3)).</p>
+</section>
+
+<section id="forgeron">
+  <h2>6. La quête du forgeron, en chiffres</h2>
+  <p class="lecture">Minage 5 et Forge 5 à la fin de la quête. Étapes exigées par la quête <span class="pr">prop.</span>, avec la règle « 40 par unité de fer » (section 3) et la courbe 40 × n (3.1).</p>
+  <div class="tableau large"><table>
+    <thead><tr><th>Étape exigée</th><th>Gain</th><th>Total</th><th>Niveau atteint</th><th>Lingots</th></tr></thead>
+    <tbody>
+      <tr><td>1. Le forgeron donne la pioche et demande 12 minerais (FOR-04, FOR-06)</td><td class="chiffre">—</td><td class="chiffre">—</td><td>—</td><td class="chiffre">—</td></tr>
+      <tr><td>2. Brutus, au fond des Mines, débloque le Minage par son épreuve (MIN-04 à MIN-07 ; D-17)</td><td class="chiffre">—</td><td class="chiffre">0</td><td>Minage 1</td><td class="chiffre">—</td></tr>
+      <tr><td>3. 6 veines minées au retour (2 minerais chacune, 12 minerais × 40), dont la veine sûre près de Brutus, qui donne aussi 1 gemme brute (D-215 (5))</td><td class="chiffre">+480</td><td class="chiffre">480</td><td><b>Minage 5</b> (400 atteint à la 5e veine)</td><td class="chiffre">—</td></tr>
+      <tr><td>4. Retour à la forge (FOR-10, FOR-11) : la Forge est débloquée</td><td class="chiffre">—</td><td class="chiffre">0</td><td>Forge 1</td><td class="chiffre">—</td></tr>
+      <tr><td>5. Fondre les 12 minerais : 6 lingots × 40</td><td class="chiffre">+240</td><td class="chiffre">240</td><td>Forge 2 au 1er lingot, 3 au 3e, 4 au 6e</td><td class="chiffre">6</td></tr>
+      <tr><td>6. Forger une dague (R3, Forge 2 requise) : rang 4 (D-215 (6))</td><td class="chiffre">+40</td><td class="chiffre">280</td><td>Forge 4</td><td class="chiffre">5</td></tr>
+      <tr><td>7. Forger une épée courte (R4, Forge 3 requise) : rang 4</td><td class="chiffre">+80</td><td class="chiffre">360</td><td>Forge 4</td><td class="chiffre">3</td></tr>
+      <tr><td>8. Remettre l'épée rouillée d'aplomb : rang 1 → 2 (A1, Forge ≥ 1), réponse à FOR-01 (« Cette lame rouillée ne te sauvera pas »)</td><td class="chiffre">+40</td><td class="chiffre">400</td><td><b>Forge 5</b></td><td class="chiffre">2</td></tr>
+      <tr class="fin"><td>9. FOR-17 : fin de la quête ; il reste 2 lingots pour réparer (FOR-16)</td><td class="chiffre">—</td><td class="chiffre">—</td><td>—</td><td class="chiffre">2</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="liste lecture">
+    <li><b>Calcul :</b> Minage = 12 × 40 = 480 ≥ 400, niveau 5. Forge = 6 × 40 (fonte) + (1 + 2 + 1) × 40 (dague, épée courte, amélioration) = 240 + 160 = 400, niveau 5. Lingots : 6 − 1 − 2 − 1 = 2.</li>
+    <li><b>Pendant la quête :</b> la maquette E8 montre un moment intermédiaire (Minage 3 après 2 veines ; Forge 2 au premier lingot) : compatible.</li>
+    <li><b>Charge à la sortie de la mine :</b> 12 (minerais) + 2,5 (pioche) + 2,5 (épée) + 0,1 (gemme) = 17,1 kg sur 30.</li>
+    <li><b>Après la quête (libre) :</b> marteau de voyage (+40), épée longue (Forge 4, 3 lingots), hache d'armes (Forge 5, 3 lingots) : il faut redescendre à la mine, ce qui montre la montée « seul » jusqu'à 29 ; les 12 veines des galeries se reforment après une nuit <span class="pr">prop.</span> ; la veine sûre ne donne sa gemme qu'une fois <span class="pr">prop.</span>.</li>
+    <li><b>Le verrou :</b> améliorer ou réparer l'épée d'un déserteur (rang 10) à Forge 5 (PB-29 option 1 ; <span class="mq">maq.</span> E8).</li>
+    <li><b>Pour les dialogues (T-0087, T-0112) :</b> FOR-17 (« Ta première lame. Laide, mais droite. ») vient après les trois pièces ; la phrase reste juste, elle parle de la dague. MIN-08 (« Un jour, une pierre qui brille. Pas souvent. ») reste vrai : la veine sûre est la seule gemme promise. Aucune réplique n'est changée ici.</li>
+  </ul>
+  <p class="note"><b>C'est la « montée courte et visible » de D-209 (3), atteinte pendant la quête,</b> sans changer la courbe du jeu complet.</p>
+</section>
+
+<section id="coherence">
+  <h2>7. Cohérence avec les documents et le jeu complet</h2>
+  <ul class="liste lecture">
+    <li><b>Guide Complet des Métiers :</b> niveaux 1 à 99 (D-16) ; fer de 1 à 29 (D-43), appris au hameau ; Brutus débloque le Minage (D-17) ; +1 % de gemmes par niveau (D-215 (5)) ; verrou et son message exact ; armes « de son rang » (D-215 (6)) ; entraînement avec le métal de son palier (D-45) ; palier 30 : Maître Forgeron d'Oakhaven (D-46). La liste reste dans le fer et sous le rang 10.</li>
+    <li><b>Progression du jeu complet (D-210 (1)) :</b> aucune règle propre à la démo. La courbe (40 × n) et la règle « 40 par unité de fer » continuent jusqu'à 99 ; la démo montre seulement les niveaux 1 à 5. Une dague tirée du minerai rapporte 80 à la Forge (fonte et forge) ; du niveau 20 au 29, il faut 800 à 1 120 par niveau, soit 10 à 14 dagues par niveau, environ 110 en tout : les « dizaines de dagues et de lames de son rang » du <em>Guide</em> § 3.A. Valeurs à régler en jouant.</li>
+    <li><b>Économie Évolutive et Réactive :</b> troc au hameau, outils de base, nourriture et remèdes, sans arme ; marchand à sec ; marché corporatif en ville, bourse modérée ; boutique fermée si la conscience est hostile ; palier « méfiance » partout où l'on se méfie (§ 3 ; D-212 (4), D-215 (1)) ; 30 % au Cartel pour tous (D-215 (3)). Valeurs de la Plaine Royale ; dans le jeu complet, le fer vaudrait 3 fois plus dans la forêt (§ 1). Le vivandier aux portes (D-214 (4)) a un étal mixte, différent du stock « divisé par métiers » d'une ville (§ 2) : c'est un marchand de camp, pas une boutique de la ville.</li>
+    <li><b>IA Collective § 1 :</b> « les prix baissent partout » quand le hameau devient amical : appliqué, −10 % (D-215 (4)).</li>
+    <li><b>Matrice de Durabilité :</b> 0 à 100 en 3 états ; réparation avec le métal de son palier et un marteau de voyage ; réparation verrouillée par le rang (§ 3). La pluie oxyde les armures de fer (§ 2.C) : le héros porte un gambison, la météo du prototype (D-187) ne l'use donc pas.</li>
+    <li><b>Infiltration Avancée § 1 :</b> tenue (5 kg) et arme (0,5 à 3 kg) restent sous 10 kg, catégorie « Léger » : l'approche sans bruit du loup reste possible avec toute arme de la liste.</li>
+    <li><b>Essai Unreal :</b> les quatre objets gardent nom, type et poids ; poids et charge maximale, comme le demande D-214 (3). Ses quantités de départ (5 minerais, 2 viandes, le laissez-passer) étaient des valeurs de test : le héros du prototype se réveille avec l'épée, la tenue et l'insigne <span class="pr">prop.</span>.</li>
+  </ul>
+  <h3 class="sous">7.1 Écarts avec les maquettes (T-0098, à reprendre par son rédacteur)</h3>
+  <div class="tableau moyen"><table>
+    <thead><tr><th>Où</th><th>Montre</th><th>Cette liste</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td>E7</td><td>« Charge totale : 8,6 kg »</td><td>« Charge : 8,6 / 30 kg » <span class="pr">prop.</span></td><td>Charge maximale (D-214 (3)) ; le texte <code>Fiche.Charge</code> de l'essai est à revoir dans le moteur</td></tr>
+      <tr><td>E8</td><td>« Épée de fer » (3 lingots, niveau 4)</td><td>« Épée longue de fer », même coût et même niveau</td><td>Nom seulement</td></tr>
+      <tr><td>E9</td><td>Prix du hameau au neutre : pain 2, remède 8, pioche 12, marteau 14</td><td>Le hameau n'est jamais neutre : méfiant (3, 10, 15, 17) ou « Amical » (2, 7, 11, 13)</td><td>D-215 (1), (4) ; l'écran peut montrer l'un des deux états</td></tr>
+      <tr><td>E9</td><td>Nourriture frelatée « 12 + 4 » ; « Il vous manque 16 pièces d'or »</td><td>11 + 4 = 15 (hameau « Amical ») ; 15 + 5 = 20 (méfiant)</td><td>Même forme d'affichage, prix du moment + commission</td></tr>
+      <tr><td>E9</td><td>Remède de l'agent du Cartel : 10, avant commission</td><td>Valeur 8 : 7 + 3 = 10 (« Amical ») ; 10 + 3 = 13 (méfiant)</td><td>Une seule valeur par objet (section 1)</td></tr>
+      <tr><td>E10</td><td>Réparation de l'épée rouillée 38 → 70 (+32) pour 1 lingot</td><td>+30 par lingot (38 → 68)</td><td>L'arme passe toujours d'Ébréché à Intact</td></tr>
+      <tr><td>E10</td><td>« 1 lingot de fer (3) »</td><td>Lu comme le nombre de lingots dans le sac</td><td>Si c'est un prix, il devient 5</td></tr>
+      <tr><td>E10</td><td>Lit à 5 pièces d'or</td><td>6 (méfiant) ; 5 (« Amical »)</td><td>Compatible avec l'état « Amical »</td></tr>
+      <tr><td>E9</td><td>Bourse du marchand : 11</td><td>Bourse de départ 30</td><td>Compatible : 11 = un moment plus tard</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="ouverts">
+  <h2>8. Points ouverts et décisions</h2>
+  <p class="lecture muted">Tranchés par le directeur (D-214, D-215) ; la liste reste une proposition jusqu'à sa relecture (D-209 (4), D-215). Un point nouveau, le 9 ; la recommandation est en vert.</p>
+  <ol class="points">
+    <li><b>Poids et charge : tranché, <span class="dc">D-214 (3)</span></b> : des poids, avec une charge maximale. Reste à valider : la valeur, 30 kg <span class="pr">prop.</span> (section 1), et l'effet au-delà : <span class="reco">(a) le héros ne peut plus rien ramasser (« Trop lourd. ») tant qu'il ne pose pas quelque chose</span> : la règle la plus simple, aucune animation ni vitesse nouvelles · (b) il ramasse, mais ne peut plus courir ni esquiver en roulade · (c) il ramasse, et le bruit de ses pas monte d'une catégorie (<em>Infiltration Avancée</em> § 1).</li>
+    <li><b>Chance de gemme : tranché, <span class="dc">D-215 (5)</span></b> : +1 % par niveau de Minage, plus une veine sûre au fond de la mine, près de Brutus. Proposé ici : la veine sûre compte parmi les 6 veines de la quête et ne donne sa gemme qu'une fois.</li>
+    <li><b>Marchand de l'Ordre : tranché, <span class="dc">D-214 (4)</span></b> : un vivandier aux portes d'Oakhaven, près du checkpoint. Son stock mixte reste une proposition (section 4).</li>
+    <li><b>Palier « méfiance » : tranché, <span class="dc">D-215 (1)</span></b> : partout où l'on se méfie : l'Ordre au Choix A jusqu'à la Voie A (D-139), le hameau à l'arrivée jusqu'à la première quête réussie ; le Choix B compte neutre.</li>
+    <li><b>Rang d'une arme forgée : tranché, <span class="dc">D-215 (6)</span></b> : le niveau de Forge au moment de la forge. Reste à valider : +1 pièce de valeur par rang au-dessus du rang requis <span class="pr">prop.</span>.</li>
+    <li><b>Issue 2 du loup : tranché, <span class="dc">D-215 (2)</span></b> (et D-213 (2)) : le chien de berger part avec le héros, le loup garde le troupeau.</li>
+    <li><b>Commission du Cartel : tranché, <span class="dc">D-215 (3)</span></b> : 30 % pour tout le monde. Proposé ici : calculée sur le prix du moment (après méfiance ou rabais).</li>
+    <li><b>Prix du hameau « Amical » : tranché, <span class="dc">D-215 (4)</span></b> : un petit rabais, comme le dit <em>IA Collective</em> § 1 ; −10 % proposé, réglé en jouant.</li>
+    <li><b>Nouveau : l'Ordre « Favorable »</b> (Voie A sans massacre au pont, QP1, D-139). D-215 (4) ne vise que le hameau. <span class="reco">(a) Pas de rabais chez le vivandier</span> : la liste reste courte, et D-215 ne le demande pas · (b) le même −10 % quand l'Ordre est Favorable, pour que la Voie A se voie aussi dans les prix.</li>
+  </ol>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lecture">Décisions D-204, D-209, D-210, D-212 à D-215 (et celles citées) ; dossier des points bloquants, PB-29 à PB-33 ; essai Unreal T-0081 ; <em>Guide Complet des Métiers</em>, <em>Économie Évolutive et Réactive</em>, <em>Matrice de Durabilité</em>, <em>IA Collective et Réactivité des PNJ</em> § 1, <em>Topographie de la Zone de Départ</em>, <em>Design du Didacticiel</em>, <em>Structure - Quêtes Secondaires</em> § 1, QP1, QP4, <em>Repos</em> § 1, <em>Infiltration Avancée</em> § 1, <em>Arbre de Compétences</em> § 3 ; maquettes d'interface (T-0098), dialogues provisoires (T-0087), fiches des PNJ (T-0084), plans de niveau (T-0091, T-0092).</p>
+  <p class="chemins">D:\aaa-game\.equipe\prototype\objets-recettes-prix.md<br>E:\aaa-proto\unreal-v2\essai\textes.json</p>
+</section>
+</div>
+
+</body>
+</html>
