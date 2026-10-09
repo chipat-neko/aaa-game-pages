@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · vendredi 9 octobre 2026 · semaine du 6 au 12 octobre</div>
   <h1>Jour <em>4</em></h1>
   <p class="lecture">Quatrième journée de la semaine. Les pages du projet déménagent sur un site GitHub Pages à adresse fixe, pour que tout le monde puisse les ouvrir.</p>
-  <p class="ticket">Mise à jour : 09/10/2026 à 19:12</p>
+  <p class="ticket">Mise à jour : 09/10/2026 à 19:26</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">3 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-en-cours">2 en cours</span><span class="etat e-valide">3 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 37 % de la semaine utilisés au début de la journée (relevé /usage de 08:25) ; 12 % disponibles par jour jusqu&#x27;au 12 octobre (<span class="insec">D-254</span>).</li>
     <li><strong>Nouveau site</strong> (<span class="insec">D-256</span>) : toutes les pages du projet sont maintenant sur https://chipat-neko.github.io/aaa-game-pages/, une adresse qui ne change plus. Les anciennes pages claude.ai restent en archive.</li>
@@ -113,6 +113,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <li><strong><span class="insec">D-257</span></strong> : les voix générées restent hors du site ; les anciennes pages claude.ai seront supprimées par le directeur ; la suite de la journée attend que la carte graphique soit libre.</li>
     <li><strong><span class="insec">D-258</span></strong> (carte graphique libre) : écran « Commandes » pour changer les touches, puis la saison et la météo (fin de l&#x27;automne, premières neiges), et trois petits restes (Modèles 3D, pattes de l&#x27;araignée, cimier et pied tourné).</li>
     <li><strong><span class="insec">D-259</span></strong> : la nouvelle pose de mort de l&#x27;araignée (pattes en étoile, sans contact) est gardée.</li>
+    <li><strong><span class="insec">D-260</span></strong> : la saison et la météo partent ce soir, juste après <span class="insec">T-0164</span> ; ce qui finit tard reste dans la page du jour. <strong><span class="insec">D-261</span></strong> : la horde ne dépasse plus son meneur, plus lent avec sa démarche lourde.</li>
   </ul>
 </section>
 
@@ -124,7 +125,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>Unreal</h3>
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0164</span> · <span class="insec">D-254</span> · <span class="insec">D-255</span> · <span class="insec">D-258</span> (1)</span><h3>Raccrochage payant, Endurance hors combat, écran « Commandes »</h3><p class="muted">Se raccrocher en l&#x27;air coûte 10 d&#x27;Endurance ; à zéro hors combat, le héros arrête seulement de courir ; un écran pour changer les touches au clavier et à la manette ; la démarche lourde du meneur vérifiée.</p><span class="etat e-verification">En vérification</span><p class="note">Lancé à 10:58. Livré (commit 53ac09d à 19:10) : raccrochage possible dès 10 d&#x27;Endurance et refusé à 9 ; à zéro hors combat, la course s&#x27;arrête sans étourdissement (« en combat » = un ennemi vivant à moins de 22 m) ; écran « Commandes » ouvert depuis la pause, 12 actions sur 17 réglables au clavier et à la manette, choix gardés ; la démarche lourde du meneur, qui n&#x27;était pas jouée, l&#x27;est maintenant. Vérification lancée à 19:12.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0164</span> · <span class="insec">D-254</span> · <span class="insec">D-255</span> · <span class="insec">D-258</span> (1)</span><h3>Raccrochage payant, Endurance hors combat, écran « Commandes »</h3><p class="muted">Se raccrocher en l&#x27;air coûte 10 d&#x27;Endurance ; à zéro hors combat, le héros arrête seulement de courir ; un écran pour changer les touches au clavier et à la manette ; la démarche lourde du meneur vérifiée.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 10:58. Livré (commit 53ac09d à 19:10) : raccrochage possible dès 10 d&#x27;Endurance et refusé à 9 ; à zéro hors combat, la course s&#x27;arrête sans étourdissement (« en combat » = un ennemi vivant à moins de 22 m) ; écran « Commandes » ouvert depuis la pause, 12 actions sur 17 réglables au clavier et à la manette, choix gardés ; la démarche lourde du meneur, qui n&#x27;était pas jouée, l&#x27;est maintenant. Vérification lancée à 19:12. Renvoyé en correction à 19:26 : l&#x27;essai de l&#x27;étourdissement en combat échouait dans le parcours, la commande « Parler » restait active partout après le forgeron, et l&#x27;invite du forgeron ne suivait pas la touche choisie. Correction confiée à un agent neuf, avec <span class="insec">D-261</span>.</p></div>
   </div>
   <p class="suite">Après <span class="insec">T-0164</span> : la saison et la météo (<span class="insec">T-0168</span>), puis le cimier et le pied tourné (<span class="insec">T-0169</span>). L&#x27;araignée entrera dans le jeu avec la mine.</p>
 </div>
@@ -180,6 +181,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>11:34</time><p><span class="insec">T-0166</span> livré (pattes de l&#x27;araignée), vérification lancée.</p></div>
     <div class="entree"><time>19:11</time><p><span class="insec">D-259</span> : pose de mort de l&#x27;araignée gardée. Correction de <span class="insec">T-0166</span> livrée, vérification lancée.</p></div>
     <div class="entree"><time>19:12</time><p><span class="insec">T-0166</span> validé. <span class="insec">T-0164</span> livré, vérification lancée ; <span class="insec">T-0167</span> (Modèles 3D) lancé en même temps.</p></div>
+    <div class="entree"><time>19:14</time><p><span class="insec">D-260</span> : <span class="insec">T-0168</span> (saison et météo) lancé dès la validation de <span class="insec">T-0164</span>, compté dans la journée.</p></div>
+    <div class="entree"><time>19:26</time><p><span class="insec">T-0164</span> renvoyé en correction (3 points) ; <span class="insec">D-261</span> : la horde règle son pas sur le meneur. Agent neuf lancé.</p></div>
   </div>
 </section>
 
