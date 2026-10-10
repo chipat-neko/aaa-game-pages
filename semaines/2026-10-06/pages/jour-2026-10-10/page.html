@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · samedi 10 octobre 2026 · semaine du 6 au 12 octobre</div>
   <h1>Jour <em>5</em></h1>
   <p class="lecture">Cinquième journée de la semaine, ouverte à 5 h. Au programme : la saison et la météo dans le jeu, la nouvelle perdrix en ligne, et les pages « Maquettes » et « Plan » à jour.</p>
-  <p class="ticket">Mise à jour : 10/10/2026 à 12:00</p>
+  <p class="ticket">Mise à jour : 10/10/2026 à 20:17</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,13 +104,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">1 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-valide">4 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">2 à faire</span><span class="etat e-en-cours">5 en cours</span><span class="etat e-valide">4 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 44 % de la semaine utilisés au début de la journée (estimation du compteur) ; budget cumulé du jour : 61 %, soit environ 17 % disponibles.</li>
     <li><strong>Repris du Jour 4</strong> : la saison et la météo (<span class="insec">T-0168</span>) tournent ; la nouvelle perdrix en ligne (<span class="insec">T-0171</span>) et le report de <span class="insec">D-261</span> (<span class="insec">T-0172</span>) sont en vérification.</li>
     <li><strong><span class="insec">D-265</span></strong> : travail du Jour 4 enregistré ; questionnaires avec images ce matin (morts-vivants variés, chauve-souris et cheval) ; l&#x27;arc des archers est le chantier du reste de la journée.</li>
     <li><strong><span class="insec">D-266</span></strong> (questionnaires avec images) : les quatre morts-vivants variés et le sergent sont gardés, armes au dos pour le prototype, une lueur violette très faible dans leurs orbites ; la nuée de chauves-souris bat 8 fois par seconde ; le museau de la chauve-souris et le cheval qui broute seront corrigés plus tard ; la ruade est gardée.</li>
     <li><strong><span class="insec">D-267</span></strong> : chances de la météo gardées (clair 30 %, couvert 20 %, pluie 25 %, premières neiges 15 %, tempête 5 %), la neige du matin fond avant le belvédère, la meute de 6 viendra après l&#x27;arc, et le grand sort se lance avec G ou L3 + R3.</li>
+    <li><strong><span class="insec">D-268</span></strong> : le directeur garde la carte graphique ; tous les tickets sans elle sont lancés (documents, vraies foulées, nuée, marches blessées), sans limite de budget par jour jusqu&#x27;à la remise à zéro du 13/10.</li>
   </ul>
 </section>
 
@@ -130,11 +131,16 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 </div>
 <div class="file">
   <h3>Documents et modèles 3D</h3>
-  <p class="muted">Les documents de design, les bêtes et le site, hors du projet Unreal.</p>
+  <p class="muted">Les documents de design, les bêtes et le site, hors du projet Unreal ; ce soir, sur le processeur seulement.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0171</span> · <span class="insec">D-262</span> · <span class="insec">D-263</span></span><h3>La nouvelle perdrix en ligne, textes du site à jour</h3><p class="muted">La perdrix aux nouvelles ailes dans « Modèles 3D » ; les questions déjà tranchées retirées des fiches (meneur, morts-vivants variés, « Codex »…).</p><span class="etat e-valide">Validé</span><p class="note">Repris du Jour 4 (en vérification). Renvoyé une fois en correction (la page « Jour 1 » présentait encore la question du sanglier, tranchée par <span class="insec">D-251</span>) ; corrigé avec la fiche du meneur (<span class="insec">D-264</span> (1)), nouvelle vérification lancée à 05:18. Validé à 05:28.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0172</span> · <span class="insec">D-258</span> (1) · <span class="insec">D-261</span></span><h3><span class="insec">D-261</span> et le coût de l&#x27;écran « Commandes » dans les documents</h3><p class="muted">La horde qui règle son pas sur le meneur ; le coût mesuré de l&#x27;écran (environ 0,7 %) dans le plan de production.</p><span class="etat e-valide">Validé</span><p class="note">Repris du Jour 4 (en vérification). Validé à 05:03 : <span class="insec">D-261</span> et le coût de l&#x27;écran « Commandes » sont dans les documents.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0173</span> · <span class="insec">D-258</span> (1) · <span class="insec">D-264</span></span><h3>Pages « Maquettes » et « Plan » à jour, licence MetaHuman</h3><p class="muted">Les deux pages du site refaites depuis les documents à jour (touches réglables) ; la licence MetaHuman vérifiée, sources citées.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 05:28 ; avec les fiches des morts-vivants variés, de la chauve-souris et du cheval (<span class="insec">D-266</span>) et les cartes des jours 1 à 3. Livré (commit 7584097) : pages « Maquettes » et « Plan » à jour ; licence MetaHuman vérifiée (jeu et images publiques : oui ; fichiers : non ; deux points encore douteux) ; fiches de <span class="insec">D-266</span> et cartes des jours 1 à 3 à jour. Vérification lancée à 06:41. Renvoyé en correction à 06:56 : suites mal placées dans quatre cartes des jours 1 à 3, et une carte de maquette qui fait encore lancer le sort par l&#x27;entité ; ajout d&#x27;une ligne sur le doute de licence « UE-Only ». Correction publiée (commit bc86b02), nouvelle vérification lancée à 07:16. Validé après correction.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0175</span> · <span class="insec">D-256</span> à <span class="insec">D-267</span></span><h3>Les décisions récentes dans les documents</h3><p class="muted">Morts-vivants variés, météo, touche du grand sort, ailes de la perdrix, araignée, meneur.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:17, sur le processeur (<span class="insec">D-268</span>).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0176</span> · <span class="insec">D-235</span> (6) · <span class="insec">D-266</span> (7), (8)</span><h3>Vraies foulées du cheval, du sanglier et du lapin</h3><p class="muted">Courses refaites avec les pieds posés au sol ; le cheval broute les genoux droits ; la tache du flanc corrigée.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:17, sur le processeur (<span class="insec">D-268</span>).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0177</span> · <span class="insec">D-235</span> (2) · <span class="insec">D-266</span> (5), (6)</span><h3>La nuée de chauves-souris</h3><p class="muted">Pendues au plafond, elles s&#x27;envolent ; 8 battements par seconde, museau redressé.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:17, sur le processeur (<span class="insec">D-268</span>).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0178</span> · <span class="insec">D-235</span> (7)</span><h3>Le chien et le loup boitent</h3><p class="muted">Marche et course blessées.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:17, sur le processeur (<span class="insec">D-268</span>).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0179</span> · <span class="insec">D-235</span> (7)</span><h3>Le cheval et le sanglier boitent</h3><p class="muted">Après les vraies foulées.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0176</span>.</p></div>
   </div>
   <p class="suite">Après <span class="insec">T-0171</span> et <span class="insec">T-0172</span> : les pages « Maquettes » et « Plan » et la licence MetaHuman (<span class="insec">T-0173</span>).</p>
 </div>
@@ -179,6 +185,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>09:27</time><p>Correction de <span class="insec">T-0168</span> livrée, vérification lancée.</p></div>
     <div class="entree"><time>10:02</time><p><span class="insec">T-0168</span> validé (saison et météo). Lancement de <span class="insec">T-0169</span> ; <span class="insec">T-0174</span> (arc des archers) écrit.</p></div>
     <div class="entree"><time>12:00</time><p>Le directeur reprend la carte graphique : <span class="insec">T-0169</span> arrêté proprement (rien de forcé, rien de commité), l&#x27;arc attend.</p></div>
+    <div class="entree"><time>20:17</time><p><span class="insec">D-268</span> : lancement de <span class="insec">T-0175</span> à <span class="insec">T-0178</span> sur le processeur ; <span class="insec">T-0179</span> après les foulées.</p></div>
   </div>
 </section>
 
