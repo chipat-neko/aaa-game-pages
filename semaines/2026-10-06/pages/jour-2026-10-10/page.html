@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · samedi 10 octobre 2026 · semaine du 6 au 12 octobre</div>
   <h1>Jour <em>5</em></h1>
   <p class="lecture">Cinquième journée de la semaine, ouverte à 5 h. Au programme : la saison et la météo dans le jeu, la nouvelle perdrix en ligne, et les pages « Maquettes » et « Plan » à jour.</p>
-  <p class="ticket">Mise à jour : 10/10/2026 à 08:28</p>
+  <p class="ticket">Mise à jour : 10/10/2026 à 09:27</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">1 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-valide">3 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">1 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">3 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 44 % de la semaine utilisés au début de la journée (estimation du compteur) ; budget cumulé du jour : 61 %, soit environ 17 % disponibles.</li>
     <li><strong>Repris du Jour 4</strong> : la saison et la météo (<span class="insec">T-0168</span>) tournent ; la nouvelle perdrix en ligne (<span class="insec">T-0171</span>) et le report de <span class="insec">D-261</span> (<span class="insec">T-0172</span>) sont en vérification.</li>
@@ -122,7 +122,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>Unreal</h3>
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0168</span> · <span class="insec">D-232</span> · <span class="insec">D-233</span> · <span class="insec">D-236</span> · <span class="insec">D-237</span> · <span class="insec">D-258</span> (2)</span><h3>La saison et la météo</h3><p class="muted">Fin de la Moisson (48 min de jour, 24 de nuit), feuilles rousses ; météo tirée au hasard parmi six temps, dont la Tempête de Neige ; neige qui tombe et fond ; gibier caché pendant la tempête.</p><span class="etat e-en-cours">En cours</span><p class="note">Repris du Jour 4. Livré (commit d7faf12) : décor de fin d&#x27;automne, six météos tirées au hasard avec passages doux, neige qui tombe et fond, tempête qui cache le gibier ; brume de <span class="insec">D-232</span> (1) enfin appliquée ; images par seconde quasi inchangées (pire baisse 2,4 %). Meute de 6 proposée. Vérification lancée à 06:37. Renvoyé en correction : fougères restées vertes, sols réchauffés au lieu de refroidis, flocons et vent peu visibles, valeurs encore dans le code. Correction lancée à 08:28, avec les valeurs choisies par le directeur (<span class="insec">D-267</span>).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0168</span> · <span class="insec">D-232</span> · <span class="insec">D-233</span> · <span class="insec">D-236</span> · <span class="insec">D-237</span> · <span class="insec">D-258</span> (2)</span><h3>La saison et la météo</h3><p class="muted">Fin de la Moisson (48 min de jour, 24 de nuit), feuilles rousses ; météo tirée au hasard parmi six temps, dont la Tempête de Neige ; neige qui tombe et fond ; gibier caché pendant la tempête.</p><span class="etat e-verification">En vérification</span><p class="note">Repris du Jour 4. Livré (commit d7faf12) : décor de fin d&#x27;automne, six météos tirées au hasard avec passages doux, neige qui tombe et fond, tempête qui cache le gibier ; brume de <span class="insec">D-232</span> (1) enfin appliquée ; images par seconde quasi inchangées (pire baisse 2,4 %). Meute de 6 proposée. Vérification lancée à 06:37. Renvoyé en correction : fougères restées vertes, sols réchauffés au lieu de refroidis, flocons et vent peu visibles, valeurs encore dans le code. Correction lancée à 08:28, avec les valeurs choisies par le directeur (<span class="insec">D-267</span>). Correction livrée (commit 8ec21ca) : fougères rousses, sauge refroidie, flocons et vent bien visibles (pire baisse d&#x27;images par seconde 2,2 %), valeurs sorties du code. Nouvelle vérification lancée à 09:27.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0169</span> · <span class="insec">D-258</span> (3)</span><h3>Cimier doré, pied tourné, scripts d&#x27;essai</h3><p class="muted">Le cimier du chef de patrouille lisible comme de l&#x27;or ; les pieds des créatures dans l&#x27;axe à l&#x27;attente ; les scripts d&#x27;essai qui rendent le verrou de la carte graphique pendant leurs attentes.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0168</span>.</p></div>
   </div>
   <p class="suite">Après <span class="insec">T-0168</span> : le cimier, le pied tourné et les scripts d&#x27;essai (<span class="insec">T-0169</span>), puis l&#x27;arc des archers (<span class="insec">D-265</span>).</p>
@@ -160,6 +160,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>06:56</time><p><span class="insec">T-0173</span> renvoyé en correction (2 points et un ajout), agent neuf lancé.</p></div>
     <div class="entree"><time>07:16</time><p>Correction de <span class="insec">T-0173</span> publiée, vérification lancée.</p></div>
     <div class="entree"><time>08:28</time><p><span class="insec">T-0173</span> validé. <span class="insec">T-0168</span> renvoyé en correction ; <span class="insec">D-267</span> (valeurs de la météo, touche du grand sort) ; correction lancée.</p></div>
+    <div class="entree"><time>09:27</time><p>Correction de <span class="insec">T-0168</span> livrée, vérification lancée.</p></div>
   </div>
 </section>
 
