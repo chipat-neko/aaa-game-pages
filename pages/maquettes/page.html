@@ -7,7 +7,8 @@
 <link rel="icon" href="data:,">
 <!-- Page du chantier T-0083 (maquettes cliquables de l'interface), d'après E:\aaa-proto\livrables\GABARIT-PAGE.html.
 Images : images/*.jpg à côté de la page (8 fonds : captures de l'essai Unreal sans leur ancien HUD, visage du héros traité en reflet, forgeron recadré et étalonné ; 5 gravures dessinées forme par forme et rendues au processeur : hameau, auberge, portes d'Oakhaven, feu de camp, souvenir de la médaille ; plus aucune image de concept ni image générée par IA) et images/avant-apres/*.jpg (23 planches avant / après : 7 de la reprise T-0098, 7 de sa correction 1, 4 de sa correction 2, 2 de sa correction 3, 1 de sa correction 4, 2 de T-0117). T-0117 : fond-forgeron, fond-chef, fond-auberge et fond-portes sont les plans de dialogue validés (T-0094, T-0110). Correction 4 : souvenir-medaille.jpg et cadre-a-venir.jpg sont des cadres d'attente. Correction 3 (D-211) : dialogues en captures du jeu ; fond-chef, fond-auberge et fond-portes sont des cadres d'attente, à remplacer sous le même nom par les captures de T-0110 ; decor-*.jpg : les décors gravés pour les autres écrans.
-Texte source : D:\aaa-game\.equipe\prototype\maquettes-interface.md. Style : bible artistique proposée (T-0088), partie 8. -->
+Texte source : D:\aaa-game\.equipe\prototype\maquettes-interface.md. Style : bible artistique proposée (T-0088), partie 8.
+Mise à jour T-0173 (10/10/2026) : textes, fiches, commandes et options alignés sur maquettes-interface.md à jour (D-233 à D-258 reportées par T-0144, T-0162 et T-0165) ; dessin des écrans inchangé ; images inchangées. -->
 <title>Maquettes d'interface</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -697,19 +698,18 @@ figure.planche figcaption{font-size:.88rem;color:var(--pierre)}
 .titre-orn{top:36%}
 .etiq-carte text{paint-order:stroke;stroke:rgba(221,205,170,.95);stroke-width:8px;stroke-linejoin:round}
 </style>
-<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
 </head>
 <body>
 <nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
-
-
 <div class="page">
 <header>
-  <div class="surtitre">Projet AAA · chantier T-0083 · reprise visuelle T-0098 du 01/10/2026</div>
+  <div class="surtitre">Projet AAA · chantier T-0083 · reprise visuelle T-0098 du 01/10/2026 · textes mis à jour le 10/10/2026 (T-0173)</div>
   <h1>Maquettes <em>d'interface</em></h1>
   <p class="lecture">Toute l'interface du prototype pour les investisseurs, dessinée écran par écran au format 16:9 : les 11 écrans du périmètre, les 10 éléments en jeu et les 8 menus généraux. On clique dans les maquettes pour passer d'un écran à l'autre ; les boutons sous chaque écran montrent ses états principaux, et chaque fiche dit d'où vient chaque élément.</p>
   <span class="etat attente">Proposition, à valider par le directeur</span>
   <p class="muted lecture" style="font-size:.9rem">Ce qui vient des documents ou des décisions est cité (D-xx, <em>titre du document</em>) ; tout le reste est une <strong>proposition</strong>, marquée en pointillés or dans les maquettes. Style : bible artistique proposée (T-0088, partie 8), encore en vérification. Les maquettes servent quel que soit le moteur (D-178).</p>
+  <p class="muted lecture" style="font-size:.9rem"><strong>Mise à jour du 10/10/2026 (T-0173)</strong>, d'après <code>maquettes-interface.md</code> à jour : les touches sont <strong>réglables par le joueur</strong>, dans un petit écran « Commandes » (D-255 (1), D-258 (1)) ; touches de l'escalade (D-253 (3), D-254 (3)) ; Endurance à zéro hors combat (D-254 (4)) ; taille des sous-titres réglable (D-247 (2), D-249 (2)) ; grand sort de la horde sans invite à l'écran (D-234 (6), D-237 (7), D-241 (3), D-243 (4)) ; neige dans le prototype (D-233 (5), D-236 (4), D-237 (3)). Le dessin des écrans ne change pas, sauf les lignes des options.</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#maquettes">Les maquettes</a><a href="#liste">Liste des écrans et sources</a><a href="#commandes">Commandes</a><a href="#valider">À valider</a><a href="#reprise">Avant / après</a><a href="#sources">Sources et limites</a>
   </nav>
@@ -1675,11 +1675,11 @@ figure.planche figcaption{font-size:.88rem;color:var(--pierre)}
     <div class="opts-corps" data-montre="commandes">
       <div class="cmd-t" id="opt-cmd-g"></div>
       <div class="cmd-t" id="opt-cmd-d"></div>
-      <p class="opt-note">Schéma de la démo, affiché pour la manette et pour le clavier ; les touches ne se réassignent pas (D-209).</p>
+      <p class="opt-note">Schéma de départ, pour la manette et le clavier ; chaque touche se change (D-255 (1), D-258 (1)).</p>
     </div>
     <div class="opts-corps" data-montre="acces">
       <div>
-        <div class="opt-l sel"><span>Taille des sous-titres</span><em>Grande</em></div>
+        <div class="opt-l sel"><span>Taille des sous-titres</span><span class="curs"><i style="left:40%"></i></span></div>
         <div class="opt-l"><span>Fond des sous-titres</span><span class="curs"><i style="left:70%"></i></span></div>
         <div class="opt-l"><span>Nom de celui qui parle</span><em>Affiché</em></div>
         <div class="opt-l complet"><span>Taille de l'interface</span><em>100 %</em></div>
@@ -1691,7 +1691,7 @@ figure.planche figcaption{font-size:.88rem;color:var(--pierre)}
         <div class="opt-l complet"><span>Roue des magies</span><em>Maintenir</em></div>
         <div class="opt-l complet"><span>Parade</span><em>Maintenir</em></div>
       </div>
-      <p class="opt-note">Démo : taille et fond des sous-titres (D-209). Les réglages en grisé valent pour le jeu complet.</p>
+      <p class="opt-note">Démo : taille (36 px, de 28 à 48 px) et fond des sous-titres (D-209, D-249 (2)). Les réglages en grisé valent pour le jeu complet.</p>
     </div>
     <div class="opts-corps" data-montre="langue">
       <div>
@@ -1769,7 +1769,7 @@ figure.planche figcaption{font-size:.88rem;color:var(--pierre)}
 
 <section id="commandes">
   <h2><span class="num">03</span>Commandes</h2>
-  <p class="lecture">Seules la roue des magies, <code>R3</code>, le journal et la parade sont fixées par les documents, et de façon provisoire (D-67, D-68). Le reste reprend les deux essais (Unreal et Unity, mêmes touches) ou est proposé. Le choix « Commandes » en haut de la page change toutes les touches affichées dans les maquettes.</p>
+  <p class="lecture">Seules la roue des magies, <code>R3</code>, le journal et la parade sont fixées par les documents, et de façon provisoire (D-67, D-68) ; les touches de l'escalade viennent de D-253 (3), qui revient sur celles de l'essai T-0152 gardées par D-252 (3), et de D-254 (3). Le reste reprend les deux essais (Unreal et Unity, mêmes touches) ou est proposé. Toutes ces touches sont des valeurs de départ, <strong>réglables par le joueur</strong> dans les options (D-255 (1)) : écran « Commandes » (A3, D-258 (1)). Le choix « Commandes » en haut de la page change toutes les touches affichées dans les maquettes.</p>
   <div class="legende"><span class="src doc">doc</span> documents ou décisions <span class="src essai">essai</span> mini-tranches Unreal et Unity <span class="src prop2">prop.</span> proposition</div>
   <div class="tableau"><table id="table-commandes"><thead><tr><th>Action</th><th>Clavier et souris</th><th>PlayStation</th><th>Xbox</th><th>Source</th><th>Remarque</th></tr></thead><tbody></tbody></table></div>
 </section>
@@ -1788,6 +1788,8 @@ figure.planche figcaption{font-size:.88rem;color:var(--pierre)}
     <li><strong>Jauges rouge et verte côte à côte</strong> (PV et Endurance, bible § 8.3) : difficiles à distinguer pour les daltoniens. Proposition : ordre fixe (PV, Endurance, Mana) et option « forme en plus de la couleur » (A5).</li>
     <li><strong>Touche <code>A</code> de la roue</strong> (<em>Roue</em> § 1, clavier AZERTY) : c'est <code>Q</code> sur un clavier QWERTY ; proposition : garder la position de la touche, pas la lettre.</li>
     <li><strong>Titre du jeu</strong> : « Le Crépuscule de l'Ombre » reste provisoire (GDD ; bilan de la Mission 5).</li>
+    <li><strong>Escalade et « Interagir » sur la même touche de manette</strong> (relevé par T-0159) : « prendre et lâcher la paroi » était sur <code>□</code> (<code>X</code> sur Xbox), touches de l'essai Unreal T-0152 gardées comme valeurs de départ (D-252 (3)), alors que « Interagir » est proposé sur ces mêmes touches. <strong>Tranché</strong> par D-253 (3) : on s'accroche en sautant contre une paroi grimpable (<code>✕</code> / <code>Espace</code> / <code>A</code>), <code>○</code> / <code>C</code> / <code>B</code> lâche la prise sur la paroi (au sol, la même touche reste l'esquive), le bond reste <code>✕</code> / <code>Espace</code> / <code>A</code>, et <code>□</code> / <code>X</code> / <code>E</code> n'est plus utilisé par l'escalade (il reste « Interagir »).</li>
+    <li><strong>Endurance à zéro hors combat (H1)</strong> (relevé par la correction 1 de T-0162) : <em>Combat Hybride</em> § 2 dit seulement que le joueur est étourdi à zéro, pour une jauge consommée par les coups, les tirs, les esquives et les parades ; or, dans le prototype, un sprint qui vide la jauge étourdit aussi le héros 1,6 s, même hors combat. <strong>Tranché</strong> par D-254 (4) : à zéro hors combat, le héros arrête seulement de courir, sans être étourdi ; l'étourdissement reste réservé au combat ; le prototype est à changer.</li>
   </ol>
   <div class="remarque lecture"><h3>Propositions à valider par le directeur</h3></div>
   <ul class="liste">
@@ -1837,7 +1839,7 @@ figure.planche figcaption{font-size:.88rem;color:var(--pierre)}
     <figure class="planche"><img src="images/avant-apres/13-c1-icones.jpg" alt="Planche des icônes avant et après, et HUD de combat" loading="lazy"><figcaption>Icônes en gravure.</figcaption></figure>
     <figure class="planche"><img src="images/avant-apres/14-c1-roue-journal-souvenir.jpg" alt="Roue jeu complet, journal au Stade 3 et souvenir de la médaille, avant et après" loading="lazy"><figcaption>Roue « jeu complet », journal au Stade 3 réduit, souvenir.</figcaption></figure>
   </div>
-  <p class="lecture" style="margin-top:1.4em"><strong>Correction 2 (01/10/2026).</strong> Les maquettes suivent les décisions prises pendant la correction 1. Une seule sauvegarde automatique, reprise par « Continuer », et un menu de chapitres pour les présentations, à la place de « Charger » et des parties (D-208). Des scènes jouées, avec des choix aux seules décisions : le capitaine n'a plus de menu de questions, et « [Partir] » disparaît (D-208). Métiers d'environ 1 à 5 (D-209). Socle de démo : sous-titres en français et en anglais, sans réassignation des touches ni réglage de difficulté ; ce qui relève du jeu complet est grisé (D-209). Premier souvenir défini (D-204). Progression du jeu complet (D-210). Pour la direction artistique, les quatre dialogues partagent les décors gravés et un même étalonnage ; le chef, l'agent et le capitaine, qui n'ont pas de modèle, sont des silhouettes sans visage, à contre-jour ou dans l'ombre. Enfin, trois icônes sont redessinées : la paralysie, la feinte et la lumière siphonnée.</p>
+  <p class="lecture" style="margin-top:1.4em"><strong>Correction 2 (01/10/2026).</strong> Les maquettes suivent les décisions prises pendant la correction 1. Une seule sauvegarde automatique, reprise par « Continuer », et un menu de chapitres pour les présentations, à la place de « Charger » et des parties (D-208). Des scènes jouées, avec des choix aux seules décisions : le capitaine n'a plus de menu de questions, et « [Partir] » disparaît (D-208). Métiers d'environ 1 à 5 (D-209). Socle de démo : sous-titres en français et en anglais, ni réglage de difficulté ni changement des touches (ce dernier point est revu depuis : touches réglables, D-255 (1), D-258 (1)) ; ce qui relève du jeu complet est grisé (D-209). Premier souvenir défini (D-204). Progression du jeu complet (D-210). Pour la direction artistique, les quatre dialogues partagent les décors gravés et un même étalonnage ; le chef, l'agent et le capitaine, qui n'ont pas de modèle, sont des silhouettes sans visage, à contre-jour ou dans l'ombre. Enfin, trois icônes sont redessinées : la paralysie, la feinte et la lumière siphonnée.</p>
   <div class="planches">
     <figure class="planche"><img src="images/avant-apres/15-c2-dialogues.jpg" alt="Quatre dialogues avant et après la correction 2 : un même étalonnage, des silhouettes sans visage" loading="lazy"><figcaption>Dialogues : une seule direction artistique ; le capitaine sans menu de questions.</figcaption></figure>
     <figure class="planche"><img src="images/avant-apres/16-c2-sauvegarde-menus.jpg" alt="Titre, pause et chapitres, avant et après la correction 2" loading="lazy"><figcaption>Sauvegarde automatique et chapitres (D-208).</figcaption></figure>
@@ -1864,7 +1866,7 @@ figure.planche figcaption{font-size:.88rem;color:var(--pierre)}
   <h2><span class="num">06</span>Sources et limites</h2>
   <ul class="liste">
     <li><strong>Documents</strong> : <em>Le Système d'Interface des Quêtes</em>, <em>L'Interface de la Roue des Magies</em>, <em>Brouillard de Guerre Erroné et Cartographie</em>, <em>Design du Didacticiel</em>, <em>Combat Hybride</em>, <em>Guide Complet des Métiers</em>, <em>Matrice de Durabilité</em>, <em>Économie Évolutive</em>, <em>Repos, Réapparition</em>, <em>Arbre de Compétences Global</em>, <em>Les Stades des Symptômes</em>, <em>Infiltration, Furtivité</em>, <em>Topographie de la Zone de Départ</em>, <em>Quête Principale 1</em>, <em>Structure - Quêtes Secondaires par Zone</em>, <em>Worldbuilding - Les 5 Grandes Villes</em>, GDD.</li>
-    <li><strong>Décisions</strong> : D-03, D-12, D-35, D-38, D-63, D-67, D-68, D-98, D-107, D-108, D-136, D-146, D-155, D-158, D-163, D-167, D-170, D-171, D-172, D-173, D-174, D-175, D-176, D-177, D-179.</li>
+    <li><strong>Décisions</strong> : D-03, D-12, D-35, D-38, D-63, D-67, D-68, D-98, D-107, D-108, D-136, D-146, D-155, D-158, D-163, D-167, D-170, D-171, D-172, D-173, D-174, D-175, D-176, D-177, D-179 ; mise à jour du 10/10/2026 (T-0173) : D-233, D-234, D-236, D-237, D-238, D-241, D-243, D-247, D-249, D-252, D-253, D-254, D-255, D-258.</li>
     <li><strong>Travaux du projet</strong> : inventaire du prototype (T-0077, § 3) ; bible artistique proposée (T-0088, § 3, 7 et 8) ; touches des deux essais (<code>E:\aaa-proto\unity\LISEZMOI.md</code>, <code>unreal-v2\LISEZMOI.md</code>).</li>
     <li><strong>Images de fond</strong> (reprise T-0098) : uniquement des captures de l'essai Unreal (<code>E:\aaa-proto\unreal-v2\captures\</code> : <code>decor5\c_belvedere</code>, <code>a_reveil</code>, <code>b_parois</code>, <code>d_personnage</code>, <code>combat\combat_1_verrouillage</code>, <code>essai\tenue\00_depart</code> et <code>02_dialogue_r1</code>), dont l'ancien HUD de l'essai a été effacé, et le visage du héros de l'essai traité en reflet d'eau ; plus aucune image de concept. Correction 1 : la capture du forgeron est recadrée et étalonnée vers la bible ; le hameau, l'auberge, les portes d'Oakhaven, le feu de camp et les souvenirs sont des gravures dessinées forme par forme, rendues au processeur, sans génération par IA. Correction 2 : le premier souvenir (<code>souvenir-pont.jpg</code>) suit D-204 ; ses silhouettes viennent des bustes MetaHuman des captures. Correction 3 (D-211) : les dialogues montrent des captures du jeu, toutes passées par la même chaîne (recadrage, profondeur de champ, étalonnage commun) ; le chef, l'agent et le capitaine ont un cadre d'attente (<code>fond-chef.jpg</code>, <code>fond-auberge.jpg</code>, <code>fond-portes.jpg</code>) que leurs captures remplaceront sous le même nom ; leurs décors gravés servent ailleurs (<code>decor-hameau.jpg</code>, <code>decor-auberge.jpg</code>, <code>decor-portes.jpg</code>) ; Correction 4 : le deuxième souvenir (armure d'officier, Général, médaille : rien de cela n'existe encore dans le jeu) et la vignette du pont deviennent des cadres d'attente (<code>souvenir-medaille.jpg</code>, <code>cadre-a-venir.jpg</code>). T-0117 : les quatre fonds de dialogue sont les plans validés du forgeron (T-0094, <code>captures\forgeron\dialogue\02_dialogue_r1</code>) et du chef, de l'agente et du capitaine (T-0110, <code>captures\pnj\*_dialogue</code>), passés par la même chaîne. Ce ne sont pas des images du jeu final : les captures sont plus claires que la cible de la bible (§ 10).</li>
     <li><strong>Données de l'essai Unreal</strong> (T-0081) : <code>unreal-v2\essai\textes.json</code> (objets, poids, actions et messages de l'inventaire) ; répliques du forgeron. <strong>Dialogues provisoires</strong> (T-0087) ; <strong>plan de la zone de départ</strong> (T-0091, variante resserrée retenue par D-183).</li>
@@ -1973,10 +1975,13 @@ const T={
   camera:['Caméra','Souris','Stick D','Stick D','essai'],
   sprint:['Sprint','Maj','L3','L3','essai'],
   saut:['Saut','Espace','✕','A','essai'],
+  accrocher:['Escalade : s\'accrocher en sautant contre une paroi grimpable ; bond sur la paroi','Espace','✕','A','doc','D-253 (3), qui revient sur les touches de l\'essai Unreal T-0152 gardées par D-252 (3)'],
+  lacher:['Lâcher la prise (paroi)','C','○','B','doc','Escalade : sur la paroi, la touche de l\'esquive lâche la prise (D-253 (3))'],
+  raccrocher:['Escalade : se raccrocher en l\'air après un lâcher volontaire (6 premiers mètres de chute, 10 d\'Endurance)','Espace','✕','A','doc','D-254 (3) : le même saut que pour s\'accrocher'],
   rapide:['Attaque rapide','Clic G','R1','RB','essai','R1 : <em>Combat Hybride</em> § 6'],
   lourde:['Attaque lourde','F','R2','RT','essai'],
   parade:['Parer (maintenir)','Clic D','L1','LB','doc','<em>Matrice de Durabilité</em> § 1 ; même touche dans les essais'],
-  esquive:['Esquiver','C','○','B','essai'],
+  esquive:['Esquiver','C','○','B','essai','Sur la paroi, la même touche lâche la prise : pas d\'esquive en grimpant (D-253 (3))'],
   verrou:['Verrouiller la cible','Tab','△','Y','essai'],
   cible:['Cible suivante','Molette','Croix','Croix','essai'],
   vue:['Vue TPS / FPS','V','R3','R3','doc','R3 : D-68 (doc). Clavier : V, proposition reprise de l\'essai Unity ; le document donne le bouton central de la souris (<em>Infiltration, Furtivité</em> § 1), qui verrouille la cible dans les essais (point 2 de « À valider »)','prop'],
@@ -1987,7 +1992,7 @@ const T={
   foudre:['Foudre à la volée','3','L2 + □','LT + X','doc','D-67'],
   vide:['Vide à la volée','4','L2 + ✕','LT + A','doc','D-67'],
   noyau:['Noyau de Sang (roue ouverte)','Clic molette','R3','R3','doc','D-68 ; hors prototype'],
-  interagir:['Interagir','E','□','X','prop'],
+  interagir:['Interagir','E','□','X','prop','Ces touches ne servent plus à l\'escalade : elles restent « Interagir » (D-253 (3))'],
   journal:['Journal','J','Tactile','Affichage','doc','« Tactile/Options » (<em>Interface des Quêtes</em> § 1) ; Affichage (Xbox) proposé'],
   carte:['Carte','M','Tactile puis R2','Affichage puis RT','prop'],
   page:['Passer du journal à la carte','Clic sur la page','L2 / R2','LT / RT','prop'],
@@ -2112,8 +2117,8 @@ const ECRANS={
   prop:['Planche de bois, notes épinglées avec un dessin (hameau pauvre : peu de mots).','Notes et textes ; prendre une note l\'ajoute à l\'onglet II du journal.'],
   court:'Écran entier ; notes'},
  H1:{g:'jeu',n:'Jauges : PV, Endurance, Mana (H1 à H3)',v:'hud',e:'eveil',p:'oui',
-  src:['<em>Combat Hybride</em> § 2','<em>Design du Didacticiel</em>, étape 3','<em>Roue des Magies</em> § 2','Capture de combat, essai Unreal'],
-  doc:['Endurance en vert : coups, tirs, esquives, parades, sprint, escalade ; à zéro, étourdi.','Mana en bleu : déverrouillé à l\'étape 3 du didacticiel ; les coups d\'épée le régénèrent.','PV : implicites, affichage non décrit.'],
+  src:['<em>Combat Hybride</em> § 2','<em>Design du Didacticiel</em>, étape 3','<em>Roue des Magies</em> § 2','D-252 (3), D-254 (4)','Capture de combat, essai Unreal'],
+  doc:['Endurance en vert : coups, tirs, esquives, parades, sprint, escalade ; à zéro, étourdi en combat (<em>Combat Hybride</em> § 2) ; sur la paroi, le héros chute (D-252 (3)).','Hors combat, à zéro, le héros arrête seulement de courir, sans être étourdi : l\'étourdissement reste réservé au combat (D-254 (4)) ; le prototype, qui étourdit 1,6 s même hors combat, est à changer.','Mana en bleu : déverrouillé à l\'étape 3 du didacticiel ; les coups d\'épée le régénèrent.','PV : implicites, affichage non décrit.'],
   prop:['Trois jauges fines sans chiffres (reprise T-0098) : une icône dessinée pour chacune (cœur, souffle, rune), embouts de fer, crans au quart, longueurs différentes (PV plus longue : lisible sans la couleur), perte récente des PV en clair.','Pas de Mana avant l\'étape 3, puis la jauge apparaît cerclée d\'or.','Les jauges s\'effacent hors combat.'],
   court:'Icônes, crans, embouts, perte récente'},
  H4:{g:'jeu',n:'Verrouillage (H4), barres de vie des ennemis (H14) et barre de boss',v:'hud',e:'combat',p:'oui',
@@ -2124,7 +2129,7 @@ const ECRANS={
  H8:{g:'jeu',n:'Mini-carte (H8)',v:'hud',e:'explo',p:'oui',
   src:['D-216 (7) ; D-219 ; dossier des points bloquants, PB-28 option 2','Plan de niveau de la zone de départ T-0091, variante resserrée (D-183)','<em>Brouillard de Guerre Erroné et Cartographie</em> § 1','<em>Météo Dynamique</em> § 1.A'],
   doc:['Affichage classique complet : une mini-carte (D-216 (7)) ; elle montre le terrain réel (D-219).','Seule la grande carte en parchemin garde ses erreurs volontaires (<em>Brouillard de Guerre</em> § 1 ; D-219) ; une tempête de neige désactive la mini-carte (<em>Météo Dynamique</em> § 1.A).'],
-  prop:['Un disque de parchemin cerclé de fer, en haut à droite, tourné avec le héros ; le N sur l\'anneau donne le nord ; le héros en losange or au centre.','Le tracé exact du plan de niveau (variante resserrée de D-183) : les Gorges et leurs parois, le plateau hachuré, les chemins en tirets, le torrent, le ravin et les falaises à dents, les lieux ; dans le dessin de la carte, pour garder la direction artistique (correction 1 de T-0117).','La quête suivie : une flèche d\'or sur l\'anneau vers l\'objectif (ici le hameau).','Présente partout en jeu, sauf en vue FPS ; absente pendant une tempête de neige (pas de neige dans le prototype).'],
+  prop:['Un disque de parchemin cerclé de fer, en haut à droite, tourné avec le héros ; le N sur l\'anneau donne le nord ; le héros en losange or au centre.','Le tracé exact du plan de niveau (variante resserrée de D-183) : les Gorges et leurs parois, le plateau hachuré, les chemins en tirets, le torrent, le ravin et les falaises à dents, les lieux ; dans le dessin de la carte, pour garder la direction artistique (correction 1 de T-0117).','La quête suivie : une flèche d\'or sur l\'anneau vers l\'objectif (ici le hameau).','Présente partout en jeu, sauf en vue FPS ; absente pendant une tempête de neige. Le prototype a de la neige : il se place vers le 20e jour de l\'automne, avec les premières neiges (D-233 (5), D-237 (3)), et la Tempête de Neige, tirée au hasard, peut y arriver (D-236 (4)) : la mini-carte désactivée doit donc pouvoir se montrer dans la démo.'],
   court:'Disque de parchemin, tracé exact (D-219)'},
  H5:{g:'jeu',n:'Visée en vue FPS',v:'hud',e:'fps',p:'oui',
   src:['<em>Combat Hybride</em> § 1 et 6','D-68'],
@@ -2132,9 +2137,9 @@ const ECRANS={
   prop:['Réticule : un point ivoire et un cercle fin ; bords de l\'écran assombris ; jauges gardées.'],
   court:'Réticule'},
  H6:{g:'jeu',n:'Tutoriels à l\'écran',v:'hud',e:'combat',p:'oui',
-  src:['<em>Design du Didacticiel</em>, étapes 2 et 3'],
-  doc:['Étape 2 : esquive, parade, attaques rapide et lourde.','Étape 3 : jauge de magie, premier ciblage, premiers sorts de zone ; un grand sort de zone guidé par l\'entité, que le joueur vise (D-182).'],
-  prop:['Carte à gauche, liseré or, touche du périphérique en cours ; elle disparaît quand le geste est réussi.','Parade parfaite « au dernier moment » (0,25 s dans les essais).'],
+  src:['<em>Design du Didacticiel</em>, étapes 2 et 3','D-182, D-234 (5) et (6), D-237 (7), D-238 (4), D-241 (3), D-243 (4)'],
+  doc:['Étape 2 : esquive, parade, attaques rapide et lourde.','Étape 3 : jauge de magie, premier ciblage, premiers sorts de zone ; un grand sort de zone guidé par l\'entité, que le joueur vise (D-182) ; dans la scène écrite de la horde, il balaie toute l\'aire à son premier lancer (D-234 (5), D-238 (4)).','Aucune invite à l\'écran pour ce grand sort : l\'entité pousse le joueur à le lâcher par une réplique (D-234 (6)), puis la touche est rappelée 5 s après (D-237 (7)), avec un mot court (D-241 (3)) : « Libère » (D-243 (4)).'],
+  prop:['Carte à gauche, liseré or, touche du périphérique en cours ; elle disparaît quand le geste est réussi.','Étape 3, grand sort : rien à l\'écran pendant la réplique de l\'entité (sous-titre seulement), puis, 5 s après, la carte avec la touche du sort et « Libère ».','Parade parfaite « au dernier moment » (0,25 s dans les essais).'],
   court:'Carte d\'aide'},
  H7:{g:'jeu',n:'Messages système',v:'hud',e:'message',p:'oui',
   src:['<em>Guide des Métiers</em> § 3.A et 5','Inventaire § 3.2 (H7)'],
@@ -2144,7 +2149,7 @@ const ECRANS={
  H9:{g:'jeu',n:'Sous-titres',v:'hud',e:'soustitre',p:'oui',
   src:['D-155, D-170, D-172','Bible § 8.4'],
   doc:['Le nom choisi s\'affiche à l\'écrit, dont les sous-titres (D-155).','Réplique : « Non, moi c\'est [Nom du héros]. » (D-172).'],
-  prop:['Bandeau d\'encre semi-opaque, 36 px au moins en 1080p, nom de celui qui parle ; l\'entité est « La voix », en violet clair.','Essayez un nom au reflet (E1) : il apparaît ici.'],
+  prop:['Bandeau d\'encre semi-opaque, 36 px par défaut en 1080p, réglable par un curseur de 28 à 48 px (D-247 (2), D-249 (2) ; écran A5), nom de celui qui parle ; l\'entité est « La voix », en violet clair.','Essayez un nom au reflet (E1) : il apparaît ici.'],
   court:'Bandeau, nom du locuteur, « La voix »'},
  H10:{g:'jeu',n:'Corruption de l\'écran (Stade 2)',v:'hud',e:'manavide',p:'oui',
   src:['<em>DA & Script - Malak-Gath</em> § 1.B','<em>Stades des Symptômes</em> § 2','D-12','D-182'],
@@ -2172,9 +2177,9 @@ const ECRANS={
   prop:['Liste à gauche (reprendre, journal, carte, sac, compétences, options, chapitres, quitter) ; lieu, moment, nom et dernière sauvegarde automatique à droite (D-208).'],
   court:'Écran entier'},
  A3:{g:'menus',n:'Options : image, son, commandes',v:'options',e:'image',p:'absent',
-  src:['Inventaire § 3.4 (A3)','D-67, D-68, D-209 (2) ; PB-24 option 1','<em>DA & Script - Malak-Gath</em> § 2'],
-  doc:['Schéma de commandes provisoire et incomplet (D-67, D-68).','Voix de l\'entité traitée en audio 3D au casque.'],
-  prop:['Onglets ; socle de démo : luminosité, sensibilité et inversion de la caméra, volume par famille de sons (général, musique, voix, voix de l\'entité, bruitages) ; son 3D recommandé.','Commandes : le schéma de la démo est affiché pour la manette et le clavier, sans réassignation des touches (D-209).'],
+  src:['Inventaire § 3.4 (A3)','D-67, D-68, D-209 (2) ; PB-24 option 1','D-255 (1), D-258 (1)','<em>DA & Script - Malak-Gath</em> § 2'],
+  doc:['Schéma de commandes provisoire et incomplet (D-67, D-68).','Les touches sont des valeurs de départ, réglables par le joueur comme les autres commandes (D-255 (1)), dans un petit écran d\'options « Commandes » du prototype, au clavier et à la manette, au moins celles de l\'escalade (D-258 (1)) ; le socle de démo prévoyait un schéma affiché, sans changement des touches (PB-24, D-209 (2)) : revu par D-258 (1).','Voix de l\'entité traitée en audio 3D au casque.'],
+  prop:['Onglets ; socle de démo : luminosité, sensibilité et inversion de la caméra, volume par famille de sons (général, musique, voix, voix de l\'entité, bruitages) ; son 3D recommandé.','Commandes : le schéma de départ est affiché pour la manette et le clavier, et chaque touche se change (D-255 (1), D-258 (1)) ; dans la maquette, l\'escalade a sa ligne « Lâcher la prise ».'],
   court:'Écran entier'},
  A4:{g:'menus',n:'Chapitres (sauvegarde automatique)',v:'sauve',e:'liste',p:'absent',
   src:['Inventaire § 3.4 (A4)','D-208 (4) ; dossier des points bloquants, PB-22 option 1','<em>Repos, Réapparition</em> § 2','<em>Le Convoi Blindé</em> (mort « sans rechargement de sauvegarde »)'],
@@ -2182,9 +2187,9 @@ const ECRANS={
   prop:['Quatre chapitres (le réveil, le hameau, le pont, les portes d\'Oakhaven : liste proposée par PB-22) avec une vignette ; reprendre un chapitre demande confirmation et ne touche pas la partie en cours.','Vignettes : la capture du réveil, les décors gravés du hameau et des portes ; le pont n\'a pas encore de capture : cadre d\'attente (correction 4 de T-0098).','Le signe de la sauvegarde automatique (la plume) s\'affiche un instant à chaque enregistrement.','Correction 2 de T-0098 : l\'ancien écran « Parties » (plusieurs héros, charger, effacer) est retiré.'],
   court:'Chapitres, sauvegarde automatique'},
  A5:{g:'menus',n:'Accessibilité',v:'options',e:'acces',p:'absent',
-  src:['GDD (« Absents »)','Bible § 8.4','D-209 (2)'],
-  doc:['Absente des documents.'],
-  prop:['Démo : taille et fond des sous-titres, nom de celui qui parle (D-209).','En grisé, pour le jeu complet : taille de l\'interface, forme des jauges, effets de corruption et flashs atténués, maintenir ou basculer (roue, parade).'],
+  src:['GDD (« Absents »)','Bible § 8.4','D-209 (2)','D-247 (2), D-249 (2)'],
+  doc:['Absente des documents (GDD) ; sous-titres à 36 px par défaut, taille réglable par le joueur (D-247 (2)).'],
+  prop:['Démo : taille des sous-titres (36 px par défaut, réglable par le joueur, D-247 (2), par un curseur de 28 à 48 px, D-249 (2)) et fond des sous-titres, nom de celui qui parle (D-209).','En grisé, pour le jeu complet : taille de l\'interface, forme des jauges, effets de corruption et flashs atténués, maintenir ou basculer (roue, parade).'],
   court:'Liste de réglages'},
  A6:{g:'menus',n:'Langue et sous-titres',v:'options',e:'langue',p:'absent',
   src:['GDD (« Absents »)','Inventaire § 4.6','D-209 (2)'],
@@ -2253,7 +2258,7 @@ function rendreTouches(){
   const box=$('#invites'); box.innerHTML=inv.map(([a,l])=>`<span class="inv" data-inv="${a}">${kc(a)}${esc(l)}</span>`).join('');
   box.classList.toggle('clair',false);
   // options > commandes
-  const G=['deplacer','sprint','saut','rapide','lourde','parade','esquive','verrou'], D=['vue','roue','feu','glace','foudre','vide','interagir','journal','pause'];
+  const G=['deplacer','sprint','saut','lacher','rapide','lourde','parade','esquive','verrou'], D=['vue','roue','feu','glace','foudre','vide','interagir','journal','pause'];
   const ligne=a=>`<div><span>${esc(T[a][0])}</span><span>${kc(a)}</span></div>`;
   const g=$('#opt-cmd-g'), d=$('#opt-cmd-d'); if(g){g.innerHTML=G.map(ligne).join(''); d.innerHTML=D.map(ligne).join('');}
 }
@@ -2409,6 +2414,5 @@ majNom();
 aller('A1');
 })();
 </script>
-
 </body>
 </html>
