@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · nuit du week-end, du samedi 10 au dimanche 11 octobre 2026</div>
   <h1>Nuit <em>1</em></h1>
   <p class="lecture">Première nuit en autonomie de la semaine (<span class="insec">D-279</span>), la nuit du week-end : le Chef enchaîne seul les tickets déjà décidés, sans prendre de décision de design ; les questions attendent le matin.</p>
-  <p class="ticket">Mise à jour : 11/10/2026 à 08:03</p>
+  <p class="ticket">Mise à jour : 11/10/2026 à 09:56</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-valide">4 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">4 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 60,3 % de la semaine au début de la nuit (estimation) ; pas de limite par jour jusqu&#x27;à la remise à zéro du 13/10 (<span class="insec">D-268</span>) ; à 85 %, plus aucun nouvel agent.</li>
     <li><strong>Au programme</strong> : finir <span class="insec">T-0169</span> dans Unreal, puis l&#x27;arc des archers (<span class="insec">T-0174</span>) ; les foulées corrigées (<span class="insec">T-0176</span>), puis la boiterie du cheval et du sanglier (<span class="insec">T-0179</span>) et la monte (<span class="insec">T-0181</span>) ; les documents (<span class="insec">T-0188</span>, <span class="insec">D-278</span>) ; les nouvelles animations sur le site (<span class="insec">T-0182</span>).</li>
@@ -120,7 +120,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0169</span> · <span class="insec">D-258</span> (3)</span><h3>Cimier doré, pied tourné, scripts d&#x27;essai</h3><p class="muted">Le cimier du chef de patrouille lisible comme de l&#x27;or ; les pieds des créatures dans l&#x27;axe à l&#x27;attente ; les scripts d&#x27;essai qui rendent le verrou de la carte graphique pendant leurs attentes.</p><span class="etat e-valide">Validé</span><p class="note">Repris du Jour 5 (en cours). Livré (commit d2c0286) : cimier doré, pieds des créatures remis dans l&#x27;axe (l&#x27;IK des pieds du mannequin les tournait), lueur violette des orbites, grand sort G / L3 + R3, scripts qui rendent le verrou ; parcours vert. Vérification lancée. Renvoyé en correction à 05:28 : la nuit, les yeux brillent en disques blanc bleuté au lieu d&#x27;une lueur violette très faible ; des fichiers de travail restés sur C: ; trois commentaires faux. Correction lancée. Corrigé (commit 559c491) : la nuit, une lueur violette faible ; rien sur C: ; nouvelle vérification lancée. Validé à 08:03 (parcours vert, lueur violette très faible la nuit).</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0174</span> · <span class="insec">D-248</span> (2) · <span class="insec">D-265</span> (3)</span><h3>L&#x27;arc des archers, animé par le code</h3><p class="muted">Les archers de la patrouille tiennent l&#x27;arc, prennent une flèche, bandent l&#x27;arc jusqu&#x27;à la joue et décochent ; la corde suit la main.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 08:03.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0174</span> · <span class="insec">D-248</span> (2) · <span class="insec">D-265</span> (3)</span><h3>L&#x27;arc des archers, animé par le code</h3><p class="muted">Les archers de la patrouille tiennent l&#x27;arc, prennent une flèche, bandent l&#x27;arc jusqu&#x27;à la joue et décochent ; la corde suit la main.</p><span class="etat e-verification">En vérification</span><p class="note">Lancé à 08:03. Livré (commit 9ab5a1a) : les archers prennent une flèche, l&#x27;encochent, bandent jusqu&#x27;à la joue et décochent aux moments des volées ; aucune traversée de l&#x27;arc ou de la corde ; parcours vert. Vérification lancée à 09:56.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4) · <span class="insec">D-267</span> (3)</span><h3>La meute de 6 loups pendant la tempête</h3><p class="muted">Six loups rôdent près du hameau pendant la Tempête de Neige ; ce qui n&#x27;est pas décidé reste une proposition.</p><span class="etat e-a-faire">À faire</span><p class="note">Après l&#x27;arc des archers (<span class="insec">T-0174</span>).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0190</span> · <span class="insec">T-0152</span> · <span class="insec">T-0161</span></span><h3>Rendre fiable l&#x27;essai de l&#x27;escalade</h3><p class="muted">L&#x27;essai de l&#x27;escalade du parcours échoue environ une fois sur cinq depuis le 07/10 : trouver pourquoi et le fiabiliser, sans changer les règles de l&#x27;escalade.</p><span class="etat e-a-faire">À faire</span><p class="note">Après la meute de 6 (<span class="insec">T-0189</span>).</p></div>
   </div>
@@ -161,18 +161,20 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>05:28</time><p><span class="insec">T-0169</span> renvoyé en correction (yeux de nuit, fichiers sur C:, commentaires) ; agent neuf lancé.</p></div>
     <div class="entree"><time>06:58</time><p>Correction de <span class="insec">T-0169</span> livrée, vérification lancée (avec l&#x27;essai de l&#x27;escalade à surveiller).</p></div>
     <div class="entree"><time>08:03</time><p><span class="insec">T-0169</span> validé. Lancement de l&#x27;arc des archers (<span class="insec">T-0174</span>). <span class="insec">T-0190</span> (essai de l&#x27;escalade instable) ajouté après la meute.</p></div>
+    <div class="entree"><time>09:56</time><p>L&#x27;arc des archers (<span class="insec">T-0174</span>) est livré, vérification lancée.</p></div>
   </div>
 </section>
 
 <section id="questions">
   <h2>Questions pour le directeur</h2>
   <p class="lecture muted">Questions en attente du directeur (pour le matin).</p>
-  <p class="lecture muted">4 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <p class="lecture muted">5 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
   <div class="questions">
     <div class="question"><span class="ticket">Échanges</span><p>Installer giscus sur le dépôt du site (un clic) pour ouvrir le fil Échanges ; supprimer les deux anciennes pages claude.ai.</p></div>
     <div class="question"><span class="ticket"><span class="insec">D-278</span></span><p>Les vitesses du pas et du trot ne sont fixées par aucune décision ; seuls existent ≈ 1,5 et 3,5 m/s dans le plan de la zone de départ, et le trot des vraies foulées fait 2,35 m/s : à confirmer.</p></div>
     <div class="question"><span class="ticket"><span class="insec">T-0169</span></span><p>Le cimier doré du chef paraît pâle la nuit (réglage de nuit global) : acceptable ? Et une IK des pieds qui s&#x27;adapte aux pentes, coupée pour les créatures : un ticket à part ?</p></div>
     <div class="question"><span class="ticket"><span class="insec">T-0169</span></span><p>De jour et de près, les yeux des morts-vivants paraissent lavande presque blancs (réglage du premier passage) : à garder ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0174</span></span><p>Arc des archers : un carquois de ceinture a été ajouté à l&#x27;archer 1 (proposition) ; les volées sont très rapides pour un arc long ; quelques frôlements avec le corps (flèche près du cou, arc contre la cuisse) : à garder ou à reprendre ?</p></div>
   </div>
 </section>
 
