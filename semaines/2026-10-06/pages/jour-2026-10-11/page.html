@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · dimanche 11 octobre 2026 · semaine du 6 au 12 octobre</div>
   <h1>Jour <em>6</em></h1>
   <p class="lecture">Sixième journée de la semaine, après la nuit du week-end : les corrections de l&#x27;arc des archers et des foulées, avec la vérification ciblée (<span class="insec">D-281</span>).</p>
-  <p class="ticket">Mise à jour : 11/10/2026 à 12:40</p>
+  <p class="ticket">Mise à jour : 11/10/2026 à 12:41</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,13 +104,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">1 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-a-corriger">1 à corriger</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">1 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-a-corriger">1 à corriger</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 66,3 % de la semaine au début de la journée (estimation) ; pas de limite par jour jusqu&#x27;à la remise à zéro du 13/10 (<span class="insec">D-268</span>).</li>
     <li><strong><span class="insec">D-282</span></strong> : le travail du Jour 5 et de la Nuit 1 est enregistré ; le pas et le trot de la monture passent à leurs vraies vitesses ; le carquois de ceinture et la cadence des volées de l&#x27;arc sont gardés.</li>
     <li><strong><span class="insec">D-281</span></strong> : une vérification ne porte plus que sur ce qui change ; la vérification longue se fait le mardi.</li>
     <li><strong><span class="insec">D-283</span></strong> : le cimier pâle la nuit et les yeux lavande de jour sont gardés ; les pieds des créatures sur les pentes auront un ticket à part (<span class="insec">T-0191</span>).</li>
     <li><strong><span class="insec">D-284</span></strong> : Unreal ne doit plus voler le focus du directeur quand il joue ; ticket prioritaire <span class="insec">T-0192</span>.</li>
+    <li><strong><span class="insec">D-285</span></strong> : la correction 2 de l&#x27;arc reprend aussi sa place au repos (il entrait dans le genou) ; les petits contacts restants (1 à 3 images) sont gardés.</li>
   </ul>
 </section>
 
@@ -122,7 +123,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>Unreal</h3>
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0174</span> · <span class="insec">D-248</span> (2) · <span class="insec">D-282</span> (4)</span><h3>L&#x27;arc des archers (correction)</h3><p class="muted">La flèche de l&#x27;archer 2 ne traverse plus sa tête ni son torse, l&#x27;arc de l&#x27;archer 1 ne traverse plus sa cuisse ; les valeurs sortent du code.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Correction lancée à 11:27. Interrompu par la fin de session vers 12 h, repris à 12:09 là où il en était. Correction livrée (commit 0ba298a) : la flèche ne traverse plus le corps de l&#x27;archer 2, l&#x27;arc ne traverse plus la cuisse de l&#x27;archer 1 au lever, plus de valeur dans le code. Vérification ciblée, hors écran, lancée à 12:24. Vérification finie vers 12:45 : à corriger. Ce que la correction devait régler l&#x27;est, mais la main qui tient la corde se retourne d&#x27;une image à l&#x27;autre (la flèche passe alors dans l&#x27;avant-bras) et la flèche s&#x27;écarte jusqu&#x27;à 17 cm des doigts à la sortie du carquois. Correction 2 après <span class="insec">T-0192</span>, pour que sa vidéo soit refaite sans voler le focus.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0174</span> · <span class="insec">D-248</span> (2) · <span class="insec">D-282</span> (4)</span><h3>L&#x27;arc des archers (correction)</h3><p class="muted">La flèche de l&#x27;archer 2 ne traverse plus sa tête ni son torse, l&#x27;arc de l&#x27;archer 1 ne traverse plus sa cuisse ; les valeurs sortent du code.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Correction lancée à 11:27. Interrompu par la fin de session vers 12 h, repris à 12:09 là où il en était. Correction livrée (commit 0ba298a) : la flèche ne traverse plus le corps de l&#x27;archer 2, l&#x27;arc ne traverse plus la cuisse de l&#x27;archer 1 au lever, plus de valeur dans le code. Vérification ciblée, hors écran, lancée à 12:24. Vérification finie vers 12:45 : à corriger. Ce que la correction devait régler l&#x27;est, mais la main qui tient la corde se retourne d&#x27;une image à l&#x27;autre (la flèche passe alors dans l&#x27;avant-bras) et la flèche s&#x27;écarte jusqu&#x27;à 17 cm des doigts à la sortie du carquois. Correction 2 après <span class="insec">T-0192</span>, pour que sa vidéo soit refaite sans voler le focus. <span class="insec">D-285</span> : la correction 2 reprend aussi la place de l&#x27;arc au repos (au genou) ; les petits contacts restants sont gardés.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0192</span> · <span class="insec">D-284</span></span><h3>Unreal sans voler le focus</h3><p class="muted">Tous les lancements d&#x27;Unreal hors écran ou dans une fenêtre qui ne s&#x27;active pas ; un essai automatique le prouve.</p><span class="etat e-en-cours">En cours</span><p class="note">Prioritaire. Lancé à 12:40, hors écran : fonction de lancement commune, puis essai du focus pour chaque type de lancement.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures : pieds posés sur la pente, sans les tourner.</p><span class="etat e-a-faire">À faire</span><p class="note">Plus tard, après la meute de 6 et l&#x27;essai de l&#x27;escalade.</p></div>
   </div>
@@ -132,7 +133,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>Bêtes</h3>
   <p class="muted">Les modèles et animations des bêtes, sur le processeur.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0176</span> · <span class="insec">D-235</span> (6) · <span class="insec">D-277</span> · <span class="insec">D-282</span> (3)</span><h3>Les vraies foulées (correction 2)</h3><p class="muted">Sabots du galop qui ne s&#x27;enfoncent plus, robe dans les bornes de couleur, pas et trot aux vraies vitesses.</p><span class="etat e-en-cours">En cours</span><p class="note">Correction lancée à 11:27. Interrompu par la fin de session vers 12 h, repris à 12:09 là où il en était.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0176</span> · <span class="insec">D-235</span> (6) · <span class="insec">D-277</span> · <span class="insec">D-282</span> (3)</span><h3>Les vraies foulées (correction 2)</h3><p class="muted">Sabots du galop qui ne s&#x27;enfoncent plus, robe dans les bornes de couleur, pas et trot aux vraies vitesses.</p><span class="etat e-verification">En vérification</span><p class="note">Correction lancée à 11:27. Interrompu par la fin de session vers 12 h, repris à 12:09 là où il en était. Correction livrée : pas à 1,5 m/s, trot à 3,75 m/s, sabots du galop hors du sol, robe dans les bornes. Vérification lancée vers 12:25, sur le processeur seulement.</p></div>
   </div>
   <p class="suite">Ensuite : la boiterie du cheval et du sanglier (<span class="insec">T-0179</span>), la monte (<span class="insec">T-0181</span>).</p>
 </div>
@@ -155,6 +156,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>12:10</time><p><span class="insec">D-284</span> : <span class="insec">T-0192</span> (Unreal sans focus) écrit, prioritaire ; l&#x27;agent de l&#x27;arc lance hors écran en attendant.</p></div>
     <div class="entree"><time>12:24</time><p>Correction de l&#x27;arc livrée ; vérification lancée hors écran (<span class="insec">D-284</span>). Ensuite : <span class="insec">T-0192</span> (Unreal sans focus).</p></div>
     <div class="entree"><time>12:40</time><p>Arc (<span class="insec">T-0174</span>) : à corriger (main de corde qui se retourne, flèche qui quitte les doigts). <span class="insec">T-0192</span> (Unreal sans focus) lancé hors écran ; la correction 2 de l&#x27;arc suivra.</p></div>
+    <div class="entree"><time>12:41</time><p><span class="insec">D-285</span> : arc au repos repris dans la correction 2, petits contacts gardés.</p></div>
   </div>
 </section>
 
