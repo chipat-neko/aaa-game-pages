@@ -92,10 +92,10 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <div class="page">
 <header>
-  <div class="surtitre">Projet AAA · suivi · nuit du week-end, du samedi 10 au dimanche 11 octobre 2026</div>
+  <div class="surtitre">Projet AAA · suivi · nuit du week-end, du 11 octobre 4 h 32 au 11 octobre 11 h 09 (D-279, D-280)</div>
   <h1>Nuit <em>1</em></h1>
   <p class="lecture">Première nuit en autonomie de la semaine (<span class="insec">D-279</span>), la nuit du week-end : le Chef enchaîne seul les tickets déjà décidés, sans prendre de décision de design ; les questions attendent le matin.</p>
-  <p class="ticket">Mise à jour : 11/10/2026 à 10:10</p>
+  <p class="ticket">Mise à jour : 11/10/2026 à 11:09</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,10 +104,11 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-verification">2 en vérification</span><span class="etat e-valide">4 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-valide">4 validés</span><span class="etat e-a-corriger">2 à corriger</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 60,3 % de la semaine au début de la nuit (estimation) ; pas de limite par jour jusqu&#x27;à la remise à zéro du 13/10 (<span class="insec">D-268</span>) ; à 85 %, plus aucun nouvel agent.</li>
     <li><strong>Au programme</strong> : finir <span class="insec">T-0169</span> dans Unreal, puis l&#x27;arc des archers (<span class="insec">T-0174</span>) ; les foulées corrigées (<span class="insec">T-0176</span>), puis la boiterie du cheval et du sanglier (<span class="insec">T-0179</span>) et la monte (<span class="insec">T-0181</span>) ; les documents (<span class="insec">T-0188</span>, <span class="insec">D-278</span>) ; les nouvelles animations sur le site (<span class="insec">T-0182</span>).</li>
+    <li><strong>Fin de la nuit</strong> (<span class="insec">D-280</span>, 10:04) : les agents en cours ont fini ; <span class="insec">T-0169</span>, <span class="insec">T-0180</span>, <span class="insec">T-0182</span> et <span class="insec">T-0188</span> validés ; l&#x27;arc (<span class="insec">T-0174</span>) et les foulées (<span class="insec">T-0176</span>) attendent une correction. <strong><span class="insec">D-281</span></strong> : désormais, une vérification ne porte que sur ce qui change ; vérification longue le mardi.</li>
   </ul>
 </section>
 
@@ -120,7 +121,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0169</span> · <span class="insec">D-258</span> (3)</span><h3>Cimier doré, pied tourné, scripts d&#x27;essai</h3><p class="muted">Le cimier du chef de patrouille lisible comme de l&#x27;or ; les pieds des créatures dans l&#x27;axe à l&#x27;attente ; les scripts d&#x27;essai qui rendent le verrou de la carte graphique pendant leurs attentes.</p><span class="etat e-valide">Validé</span><p class="note">Repris du Jour 5 (en cours). Livré (commit d2c0286) : cimier doré, pieds des créatures remis dans l&#x27;axe (l&#x27;IK des pieds du mannequin les tournait), lueur violette des orbites, grand sort G / L3 + R3, scripts qui rendent le verrou ; parcours vert. Vérification lancée. Renvoyé en correction à 05:28 : la nuit, les yeux brillent en disques blanc bleuté au lieu d&#x27;une lueur violette très faible ; des fichiers de travail restés sur C: ; trois commentaires faux. Correction lancée. Corrigé (commit 559c491) : la nuit, une lueur violette faible ; rien sur C: ; nouvelle vérification lancée. Validé à 08:03 (parcours vert, lueur violette très faible la nuit).</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0174</span> · <span class="insec">D-248</span> (2) · <span class="insec">D-265</span> (3)</span><h3>L&#x27;arc des archers, animé par le code</h3><p class="muted">Les archers de la patrouille tiennent l&#x27;arc, prennent une flèche, bandent l&#x27;arc jusqu&#x27;à la joue et décochent ; la corde suit la main.</p><span class="etat e-verification">En vérification</span><p class="note">Lancé à 08:03. Livré (commit 9ab5a1a) : les archers prennent une flèche, l&#x27;encochent, bandent jusqu&#x27;à la joue et décochent aux moments des volées ; aucune traversée de l&#x27;arc ou de la corde ; parcours vert. Vérification lancée à 09:56.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0174</span> · <span class="insec">D-248</span> (2) · <span class="insec">D-265</span> (3)</span><h3>L&#x27;arc des archers, animé par le code</h3><p class="muted">Les archers de la patrouille tiennent l&#x27;arc, prennent une flèche, bandent l&#x27;arc jusqu&#x27;à la joue et décochent ; la corde suit la main.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Lancé à 08:03. Livré (commit 9ab5a1a) : les archers prennent une flèche, l&#x27;encochent, bandent jusqu&#x27;à la joue et décochent aux moments des volées ; aucune traversée de l&#x27;arc ou de la corde ; parcours vert. Vérification lancée à 09:56. Renvoyé en correction : la flèche de l&#x27;archer 2 traverse sa tête et son torse à chaque tir, l&#x27;arc de l&#x27;archer 1 traverse sa cuisse, des valeurs restent dans le code. Non relancé (nuit finie).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4) · <span class="insec">D-267</span> (3)</span><h3>La meute de 6 loups pendant la tempête</h3><p class="muted">Six loups rôdent près du hameau pendant la Tempête de Neige ; ce qui n&#x27;est pas décidé reste une proposition.</p><span class="etat e-a-faire">À faire</span><p class="note">Après l&#x27;arc des archers (<span class="insec">T-0174</span>).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0190</span> · <span class="insec">T-0152</span> · <span class="insec">T-0161</span></span><h3>Rendre fiable l&#x27;essai de l&#x27;escalade</h3><p class="muted">L&#x27;essai de l&#x27;escalade du parcours échoue environ une fois sur cinq depuis le 07/10 : trouver pourquoi et le fiabiliser, sans changer les règles de l&#x27;escalade.</p><span class="etat e-a-faire">À faire</span><p class="note">Après la meute de 6 (<span class="insec">T-0189</span>).</p></div>
   </div>
@@ -130,7 +131,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>Documents et modèles 3D</h3>
   <p class="muted">Les documents de design, les bêtes et le site.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0176</span> · <span class="insec">D-235</span> (6) · <span class="insec">D-266</span> (7), (8)</span><h3>Vraies foulées du cheval, du sanglier et du lapin</h3><p class="muted">Courses refaites avec les pieds posés au sol ; le cheval broute les genoux droits ; la tache du flanc corrigée.</p><span class="etat e-verification">En vérification</span><p class="note">Repris du Jour 5 (en cours). Correction livrée : galop à 13 m/s à 4 temps, broute sans traversée, pli du sanglier et glissement du lapin corrigés, tache du flanc de la couleur de la peau ; vérification lancée à 10:10.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0176</span> · <span class="insec">D-235</span> (6) · <span class="insec">D-266</span> (7), (8)</span><h3>Vraies foulées du cheval, du sanglier et du lapin</h3><p class="muted">Courses refaites avec les pieds posés au sol ; le cheval broute les genoux droits ; la tache du flanc corrigée.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Repris du Jour 5 (en cours). Correction livrée : galop à 13 m/s à 4 temps, broute sans traversée, pli du sanglier et glissement du lapin corrigés, tache du flanc de la couleur de la peau ; vérification lancée à 10:10. Renvoyé en correction : sabots arrière qui s&#x27;enfoncent sous le sol entre deux clés du galop, quelques texels trop sombres ; pas et trot sous les vraies vitesses (<span class="insec">D-278</span>). Non relancé (nuit finie).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0179</span> · <span class="insec">D-235</span> (7)</span><h3>Le cheval et le sanglier boitent</h3><p class="muted">Après les vraies foulées.</p><span class="etat e-a-faire">À faire</span><p class="note">Repris du Jour 5 (à faire).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0180</span> · <span class="insec">D-235</span> (1) · <span class="insec">D-269</span></span><h3>L&#x27;araignée : morsure, toile, saut</h3><p class="muted">Les attaques de l&#x27;araignée de la mine, au sol.</p><span class="etat e-valide">Validé</span><p class="note">Repris du Jour 5 (en vérification). Seconde correction de texte faite (pose de vol, part du crochet, <span class="insec">D-275</span> citée) ; vérification lancée. Validé à 04:44.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0181</span> · <span class="insec">D-235</span> (3) · <span class="insec">D-269</span></span><h3>Monte et descente du cheval</h3><p class="muted">Le cavalier monte et descend, animé par le code.</p><span class="etat e-a-faire">À faire</span><p class="note">Repris du Jour 5 (à faire).</p></div>
@@ -164,19 +165,22 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>09:56</time><p>L&#x27;arc des archers (<span class="insec">T-0174</span>) est livré, vérification lancée.</p></div>
     <div class="entree"><time>10:04</time><p>Le directeur arrête la nuit (<span class="insec">D-280</span>) : les agents en cours finissent, aucun nouveau ticket.</p></div>
     <div class="entree"><time>10:10</time><p>Correction des foulées (<span class="insec">T-0176</span>) livrée, vérification lancée.</p></div>
+    <div class="entree"><time>10:56</time><p><span class="insec">D-281</span> : vérification ciblée, vérification longue le mardi.</p></div>
+    <div class="entree"><time>11:09</time><p>Clôture de la nuit : <span class="insec">T-0174</span> et <span class="insec">T-0176</span> en attente de correction. Bilan : .equipe/bilans/nuit-01-2026-10-11.md.</p></div>
   </div>
 </section>
 
 <section id="questions">
   <h2>Questions pour le directeur</h2>
   <p class="lecture muted">Questions en attente du directeur (pour le matin).</p>
-  <p class="lecture muted">5 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <p class="lecture muted">6 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
   <div class="questions">
     <div class="question"><span class="ticket">Échanges</span><p>Installer giscus sur le dépôt du site (un clic) pour ouvrir le fil Échanges ; supprimer les deux anciennes pages claude.ai.</p></div>
-    <div class="question"><span class="ticket"><span class="insec">D-278</span></span><p>Les vitesses du pas et du trot ne sont fixées par aucune décision ; seuls existent ≈ 1,5 et 3,5 m/s dans le plan de la zone de départ, et le trot des vraies foulées fait 2,35 m/s : à confirmer.</p></div>
     <div class="question"><span class="ticket"><span class="insec">T-0169</span></span><p>Le cimier doré du chef paraît pâle la nuit (réglage de nuit global) : acceptable ? Et une IK des pieds qui s&#x27;adapte aux pentes, coupée pour les créatures : un ticket à part ?</p></div>
     <div class="question"><span class="ticket"><span class="insec">T-0169</span></span><p>De jour et de près, les yeux des morts-vivants paraissent lavande presque blancs (réglage du premier passage) : à garder ?</p></div>
     <div class="question"><span class="ticket"><span class="insec">T-0174</span></span><p>Arc des archers : un carquois de ceinture a été ajouté à l&#x27;archer 1 (proposition) ; les volées sont très rapides pour un arc long ; quelques frôlements avec le corps (flèche près du cou, arc contre la cuisse) : à garder ou à reprendre ?</p></div>
+    <div class="question"><span class="ticket"><span class="insec">D-278</span></span><p>Vitesses du pas et du trot : les foulées font 1 m/s et 2,35 m/s, sous les vraies vitesses demandées ; aucune décision ne les chiffre (le plan de zone dit ≈ 1,5 et 3,5 m/s).</p></div>
+    <div class="question"><span class="ticket"><span class="insec">T-0176</span></span><p>La peau du cou du cheval s&#x27;étire davantage au broute (acceptable selon le vérificateur) : à garder ?</p></div>
   </div>
 </section>
 
