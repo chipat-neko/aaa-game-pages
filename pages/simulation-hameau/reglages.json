@@ -1,0 +1,1709 @@
+{
+ "titre": "Réglages de la simulation du hameau (T-0202)",
+ "source": ".equipe/prototype/quetes-des-besoins.md, § 8 (T-0201, validé ; règle encore à valider par le directeur, D-295)",
+ "note": "« prop. » : proposition du rédacteur de T-0201, à valider ; les autres lignes citent un document ou une décision. Noms des villageois : provisoires (T-0202), sauf les PNJ nommés désignés par leur titre.",
+ "nb_reglages": 77,
+ "nb_prop": 68,
+ "groupes": [
+  {
+   "nom": "Temps et saisons",
+   "lignes": [
+    {
+     "reglage": "Durée d'une heure du monde",
+     "unite": "min réelles",
+     "texte": "3",
+     "source": "*Météo Dynamique* § 1 ; D-226 (2)",
+     "id": "heure_monde",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "minutes_reelles": 3
+     }
+    },
+    {
+     "reglage": "Début de la partie ; durée",
+     "unite": "jour, h ; journées",
+     "texte": "Moisson, jour 20, 4 h ; 1 à 15",
+     "source": "D-237 (3) (jour) ; heure prop. ; T-0202",
+     "id": "debut",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "saison": "Moisson",
+      "jour": 20,
+      "heure": 4,
+      "journees_min": 1,
+      "journees_max": 15
+     }
+    },
+    {
+     "reglage": "Durée d'une saison ; ordre",
+     "unite": "jours",
+     "texte": "30 ; Dégel → Brûlure → Moisson → Grand Gel → Dégel",
+     "source": "D-233 (3), D-237 (1)",
+     "id": "saisons",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "jours": 30,
+      "ordre": [
+       "Dégel",
+       "Brûlure",
+       "Moisson",
+       "Grand Gel"
+      ]
+     }
+    },
+    {
+     "reglage": "Glissement vers la saison suivante",
+     "unite": "jours",
+     "texte": "les 10 derniers (jours 21 à 30)",
+     "source": "D-237 (3)",
+     "id": "glissement",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "premier_jour": 21,
+      "dernier_jour": 30
+     }
+    },
+    {
+     "reglage": "Calcul du glissement",
+     "unite": "—",
+     "texte": "valeur = saison + (suivante − saison) × (jour − 20) / 10 ; vaut pour chiffres, facteurs, chances de la météo et heures (arrondies à l'heure)",
+     "source": "prop.",
+     "id": "calcul_glissement",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "jour_base": 20,
+      "longueur": 10,
+      "heures_arrondies": true
+     }
+    },
+    {
+     "reglage": "Partie de 15 journées",
+     "unite": "jours",
+     "texte": "Moisson jour 20 ; jours 21 à 30 : glissement ; Grand Gel jours 1 à 4",
+     "source": "D-237 (3) ; calcul",
+     "id": "partie_15",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "calendrier": [
+       "Moisson 20",
+       "Moisson 21 à 30 (glissement)",
+       "Grand Gel 1 à 4"
+      ]
+     }
+    },
+    {
+     "reglage": "Mode de saison",
+     "unite": "—",
+     "texte": "« glissement » (défaut) ; option « figée » : tout reste au jour 20 de la Moisson",
+     "source": "prop.",
+     "id": "mode_saison",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "glissement",
+       "figee"
+      ],
+      "defaut": "glissement",
+      "figee_saison": "Moisson",
+      "figee_jour": 20
+     }
+    },
+    {
+     "reglage": "Forcer un changement de saison",
+     "unite": "—",
+     "texte": "jour 1 de la saison suivante, valeurs pleines, sans glissement",
+     "source": "prop.",
+     "id": "forcer_saison",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "jour": 1,
+      "glissement": false
+     }
+    },
+    {
+     "reglage": "Jour / nuit (sur 72 min)",
+     "unite": "min réelles",
+     "texte": "Dégel et Moisson 48/24 ; Brûlure 56/16 ; Grand Gel 36/36",
+     "source": "D-233 (4)",
+     "id": "jour_nuit",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "Dégel": [
+       48,
+       24
+      ],
+      "Brûlure": [
+       56,
+       16
+      ],
+      "Moisson": [
+       48,
+       24
+      ],
+      "Grand Gel": [
+       36,
+       36
+      ]
+     }
+    },
+    {
+     "reglage": "Heures de jour (centrées sur midi)",
+     "unite": "h",
+     "texte": "Dégel et Moisson 4 h – 20 h ; Brûlure 2 h 40 – 21 h 20 ; Grand Gel 6 h – 18 h",
+     "source": "déduit de D-226 (1), (2), D-233 (4) ; centrage prop.",
+     "id": "heures_jour",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "minutes": {
+       "Dégel": [
+        240,
+        1200
+       ],
+       "Moisson": [
+        240,
+        1200
+       ],
+       "Brûlure": [
+        160,
+        1280
+       ],
+       "Grand Gel": [
+        360,
+        1080
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "nom": "Météo et bêtes",
+   "lignes": [
+    {
+     "reglage": "Chances, Moisson jour 20 (fin de la Moisson ; départ du glissement)",
+     "unite": "%",
+     "texte": "clair 35, couvert 20, pluie 25, neige 15, Tempête de Neige 5 (total 100)",
+     "source": "D-267 (1), D-270 (3), D-271 ; D-267 (1) fait 95 % sans la brume : les 5 % restants vont au clair (prop.)",
+     "id": "meteo_moisson_20",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chances": {
+       "clair": 35,
+       "couvert": 20,
+       "pluie": 25,
+       "neige": 15,
+       "tempete": 5
+      },
+      "a_partir_du_jour": 20
+     }
+    },
+    {
+     "reglage": "Chances, Moisson jours 1 à 19",
+     "unite": "%",
+     "texte": "clair 35, couvert 20, pluie 45, neige 0, Tempête de Neige 0 (la neige et la tempête du jour 20 tombent en pluie) ; au jour 20, la ligne du jour 20 d'un coup",
+     "source": "prop. (premières neiges à la fin seulement : D-237 (2), (3))",
+     "id": "meteo_moisson_1_19",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chances": {
+       "clair": 35,
+       "couvert": 20,
+       "pluie": 45,
+       "neige": 0,
+       "tempete": 0
+      },
+      "jusqu_au_jour": 19
+     }
+    },
+    {
+     "reglage": "Chances, Grand Gel",
+     "unite": "%",
+     "texte": "clair 25, couvert 25, pluie 0, neige 35, Tempête de Neige 15",
+     "source": "prop. (à définir, D-270 (3) ; plus de tempêtes : *Météo Étendue* § 1)",
+     "id": "meteo_gel",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chances": {
+       "clair": 25,
+       "couvert": 25,
+       "pluie": 0,
+       "neige": 35,
+       "tempete": 15
+      }
+     }
+    },
+    {
+     "reglage": "Chances, Dégel ; Brûlure",
+     "unite": "%",
+     "texte": "30, 25, 40, 5, 0 ; 60, 25, 15, 0, 0 (même ordre)",
+     "source": "prop. (pluie : D-237 (2) ; moins de pluie : *Météo Étendue* § 1)",
+     "id": "meteo_degel_brulure",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "Dégel": {
+       "clair": 30,
+       "couvert": 25,
+       "pluie": 40,
+       "neige": 5,
+       "tempete": 0
+      },
+      "Brûlure": {
+       "clair": 60,
+       "couvert": 25,
+       "pluie": 15,
+       "neige": 0,
+       "tempete": 0
+      }
+     }
+    },
+    {
+     "reglage": "Brume",
+     "unite": "—",
+     "texte": "non simulée (aucun effet sur les besoins)",
+     "source": "prop. (chances : D-267 (1))",
+     "id": "brume",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "simulee": false
+     }
+    },
+    {
+     "reglage": "Durée d'un événement météo ; « forcer une tempête »",
+     "unite": "h",
+     "texte": "2 à 6, tirée au début ; la tempête forcée commence aussitôt",
+     "source": "*Météo Dynamique* § 1 (proposition du document) ; tirage prop.",
+     "id": "meteo_duree",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "min_h": 2,
+      "max_h": 6,
+      "tempete_forcee_aussitot": true
+     }
+    },
+    {
+     "reglage": "Pluie",
+     "unite": "%",
+     "texte": "travail −15 ; chance de réussite −10",
+     "source": "prop. (d'après *Météo Dynamique* § 1.C : vitesse)",
+     "id": "pluie",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "travail_pct": -15,
+      "reussite_pct": -10
+     }
+    },
+    {
+     "reglage": "Tempête de Neige : villageois",
+     "unite": "—",
+     "texte": "tous à l'abri (maison ou auberge) ; tâches en pause",
+     "source": "D-305 (4)",
+     "id": "tempete_villageois",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "abri": true,
+      "taches_en_pause": true
+     }
+    },
+    {
+     "reglage": "Retour du gibier après la tempête",
+     "unite": "h",
+     "texte": "0,5",
+     "source": "D-267 (3)",
+     "id": "retour_gibier",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "heures": 0.5
+     }
+    },
+    {
+     "reglage": "Meute qui rôde (3 à 4 loups)",
+     "unite": "%/j ; pts",
+     "texte": "15, au coucher du soleil ; B2 +20, B5 +10 ; « forcer une meute » : même effet",
+     "source": "prop. (taille : D-222)",
+     "id": "meute",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chance_pct": 15,
+      "taille": [
+       3,
+       4
+      ],
+      "hausse": {
+       "B2": 20,
+       "B5": 10
+      }
+     }
+    },
+    {
+     "reglage": "Morts-vivants rôdeurs (2 ou 3)",
+     "unite": "%/j ; pts",
+     "texte": "10, au coucher du soleil ; B5 +25",
+     "source": "prop. (D-218 (2))",
+     "id": "rodeurs",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chance_pct": 10,
+      "nombre": [
+       2,
+       3
+      ],
+      "hausse": {
+       "B5": 25
+      }
+     }
+    }
+   ]
+  },
+  {
+   "nom": "Besoins",
+   "lignes": [
+    {
+     "reglage": "Bornes ; départ B1 à B6",
+     "unite": "pts",
+     "texte": "0 à 100 ; 30, 10, 25, 20, 10, 0",
+     "source": "prop.",
+     "id": "besoins_depart",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "min": 0,
+      "max": 100,
+      "depart": {
+       "B1": 30,
+       "B2": 10,
+       "B3": 25,
+       "B4": 20,
+       "B5": 10,
+       "B6": 0
+      }
+     }
+    },
+    {
+     "reglage": "Valeurs « par jour »",
+     "unite": "—",
+     "texte": "montées et autres valeurs « /j » (repos de B6, humeur) : 1/24 par heure ; travail : 1/13 de la valeur par jour pour chaque heure de travail faite (emploi du temps, hors tâche, blessure ou abri), **en toute saison** (13 h = journée de travail de la Moisson) : une journée plus courte donne moins de travail (Brûlure 11/13, Grand Gel 9/13 ; glissement : heures du jour), en plus des facteurs de saison (chasse × 0,5) ; option : 1/(heures de travail de la saison), même travail par jour en toute saison",
+     "source": "prop.",
+     "id": "par_jour",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "heures_par_jour": 24,
+      "heures_travail_reference": 13,
+      "options": [
+       "reference",
+       "saison"
+      ],
+      "defaut": "reference"
+     }
+    },
+    {
+     "reglage": "B1 : montée ; chasseur",
+     "unite": "pts/j",
+     "texte": "+15 ; −4 chacun",
+     "source": "prop.",
+     "id": "b1",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "montee_j": 15,
+      "travail_j": {
+       "chasseur": -4
+      }
+     }
+    },
+    {
+     "reglage": "B1 : saison",
+     "unite": "pts/j ; facteur",
+     "texte": "Grand Gel +5 en plus, chasse × 0,5 ; Moisson jours 1 à 19 : paysan −2 chacun, puis 0 ; Dégel, Brûlure : rien",
+     "source": "prop. (blé moissonné : D-237 (12))",
+     "id": "b1_saison",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "Grand Gel": {
+       "montee_j_en_plus": 5,
+       "chasse_facteur": 0.5
+      },
+      "Moisson": {
+       "paysan_j": -2,
+       "jusqu_au_jour": 19
+      },
+      "sans_effet": [
+       "Dégel",
+       "Brûlure"
+      ]
+     }
+    },
+    {
+     "reglage": "B1 : Tempête de Neige",
+     "unite": "h",
+     "texte": "chasse arrêtée pendant la tempête et 0,5 h après",
+     "source": "D-236 (4), D-267 (3)",
+     "id": "b1_tempete",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "chasse_arretee": true,
+      "reprise_apres_h": 0.5
+     }
+    },
+    {
+     "reglage": "B2 : montée jour / nuit ; éleveur, berger",
+     "unite": "pts/h ; pts/j",
+     "texte": "+0,2 / +0,4 ; −2 chacun",
+     "source": "prop.",
+     "id": "b2",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "montee_jour_h": 0.2,
+      "montee_nuit_h": 0.4,
+      "travail_j": {
+       "eleveur": -2,
+       "berger": -2
+      }
+     }
+    },
+    {
+     "reglage": "B2 : Tempête de Neige ; loup qui garde le troupeau",
+     "unite": "pts ; facteur",
+     "texte": "+25 au début ; montée × 0,5",
+     "source": "D-236 (4), D-215 (2) ; valeurs prop.",
+     "id": "b2_tempete_loup",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "tempete_debut": 25,
+      "loup_facteur": 0.5
+     }
+    },
+    {
+     "reglage": "B3 : montée ; bûcheron",
+     "unite": "pts/j",
+     "texte": "+12 ; −4 chacun",
+     "source": "prop.",
+     "id": "b3",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "montee_j": 12,
+      "travail_j": {
+       "bucheron": -4
+      }
+     }
+    },
+    {
+     "reglage": "B3 : météo ; saison",
+     "unite": "pts/h ; facteur",
+     "texte": "neige +1, Tempête de Neige +2 ; montée de base × 1,5 au Grand Gel, × 0,3 à la Brûlure",
+     "source": "prop.",
+     "id": "b3_meteo_saison",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "neige_h": 1,
+      "tempete_h": 2,
+      "facteur_montee": {
+       "Grand Gel": 1.5,
+       "Brûlure": 0.3
+      }
+     }
+    },
+    {
+     "reglage": "B4 : montée ; forgeron ; outil perdu (échec)",
+     "unite": "pts",
+     "texte": "+5/j ; −2/j ; +5",
+     "source": "prop.",
+     "id": "b4",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "montee_j": 5,
+      "travail_j": {
+       "forgeron": -2
+      },
+      "outil_perdu": 5
+     }
+    },
+    {
+     "reglage": "B5 : montée jour / nuit ; guetteur ; Tempête de Neige",
+     "unite": "pts",
+     "texte": "+0,1/h / +0,2/h ; −1/j chacun ; +10 au début",
+     "source": "prop.",
+     "id": "b5",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "montee_jour_h": 0.1,
+      "montee_nuit_h": 0.2,
+      "travail_j": {
+       "guetteur": -1
+      },
+      "tempete_debut": 10
+     }
+    },
+    {
+     "reglage": "B6 : blessé ; repos",
+     "unite": "pts",
+     "texte": "+20 par blessé ; −5/j",
+     "source": "prop.",
+     "id": "b6",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "par_blesse": 20,
+      "repos_j": -5
+     }
+    },
+    {
+     "reglage": "Objets du héros hors demande",
+     "unite": "pts",
+     "texte": "lapin ou oiseau −3, sanglier −10 (B1) ; fagot −5 (B3) ; remède −20 (B6)",
+     "source": "prop. (le héros simulé ne donne rien hors demande)",
+     "id": "objets_hors_demande",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "B1": {
+       "lapin ou oiseau": -3,
+       "sanglier": -10
+      },
+      "B3": {
+       "fagot": -5
+      },
+      "B6": {
+       "remède": -20
+      },
+      "heros_simule_donne": false
+     }
+    }
+   ]
+  },
+  {
+   "nom": "Demandes et héros",
+   "lignes": [
+    {
+     "reglage": "Paliers rumeur / demande / urgence / crise",
+     "unite": "pts",
+     "texte": "40 / 60 / 80 / 100",
+     "source": "prop.",
+     "id": "paliers",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "rumeur": 40,
+      "demande": 60,
+      "urgence": 80,
+      "crise": 100
+     }
+    },
+    {
+     "reglage": "Rumeur à l'auberge",
+     "unite": "—",
+     "texte": "chaque soir, par besoin à 40 ou plus ; aucune le soir qui suit une mort, ni humeur sous 30",
+     "source": "prop. (rumeurs : fiche § 3.6)",
+     "id": "rumeur",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chaque_soir": true,
+      "humeur_min": 30,
+      "silence_apres_mort": true
+     }
+    },
+    {
+     "reglage": "Demandeur",
+     "unite": "rôle",
+     "texte": "B1 chasseur, B2 éleveur, B3 bûcheron, B4 forgeron, B5 guetteur, B6 villageois valide tiré au sort ; jamais le chef",
+     "source": "prop. (chef : D-150)",
+     "id": "demandeur",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "B1": "chasseur",
+      "B2": "eleveur",
+      "B3": "bucheron",
+      "B4": "forgeron",
+      "B5": "guetteur",
+      "B6": "tirage",
+      "jamais": [
+       "chef"
+      ]
+     }
+    },
+    {
+     "reglage": "Changement de demandeur",
+     "unite": "—",
+     "texte": "pas le même deux fois de suite si le rôle compte plusieurs villageois ; sinon le même",
+     "source": "prop.",
+     "id": "changement_demandeur",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "pas_deux_fois_de_suite": true
+     }
+    },
+    {
+     "reglage": "Délai pour répondre (normal / urgence) ; pour accomplir",
+     "unite": "h",
+     "texte": "12 / 6 ; 24",
+     "source": "prop.",
+     "id": "delais",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "repondre_h": 12,
+      "repondre_urgence_h": 6,
+      "accomplir_h": 24
+     }
+    },
+    {
+     "reglage": "Demandes ouvertes au plus ; par besoin ; par jour ; recharge d'un besoin",
+     "unite": "nombre ; h",
+     "texte": "2 ; 1 ; 3 ; 24",
+     "source": "prop.",
+     "id": "limites",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "ouvertes": 2,
+      "par_besoin": 1,
+      "par_jour": 3,
+      "recharge_h": 24
+     }
+    },
+    {
+     "reglage": "Appel d'un PNJ méfiant ; « Amical » (jeu)",
+     "unite": "m",
+     "texte": "10 ; il vient au héros",
+     "source": "prop. (méfiance : D-228 (7))",
+     "id": "appel",
+     "prop": true,
+     "jeu": true,
+     "valeurs": {
+      "jeu": true,
+      "metres": 10
+     }
+    },
+    {
+     "reglage": "Quantités demandées au héros",
+     "unite": "objets",
+     "texte": "B1 3 pièces de gibier (sanglier = 3) ; B2 tuer la meute ou garder l'enclos une nuit ; B3 5 fagots ; B4 5 minerais de fer ; B5 tuer les rôdeurs du dernier tirage, sinon ronde de 2 h ; B6 1 remède par blessé",
+     "source": "prop. (Mines : POI B ; remèdes : POI C)",
+     "id": "quantites",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "B1": "rapporter 3 pièces de gibier (un sanglier en vaut 3)",
+      "B2": "tuer la meute ou garder l'enclos une nuit",
+      "B3": "rapporter 5 fagots",
+      "B4": "rapporter 5 minerais de fer des Mines",
+      "B5": "tuer les rôdeurs du dernier tirage, sinon faire une ronde de 2 h",
+      "B6": "apporter 1 remède par blessé"
+     }
+    },
+    {
+     "reglage": "Demande réglée par le héros",
+     "unite": "pts",
+     "texte": "−50 en tout ; objets en plus de la quantité : baisse par objet",
+     "source": "prop.",
+     "id": "demande_reglee",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "baisse": -50
+     }
+    },
+    {
+     "reglage": "Quêtes écrites au départ (sinon B2, B4 figés)",
+     "unite": "—",
+     "texte": "agneau : faite, issue 1 (défaut) ; options : pas faite, issue 2 (loup) ; forgeron : faite (défaut) ; option : pas faite",
+     "source": "prop. (D-305 (3), D-215 (2))",
+     "id": "quetes_ecrites",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "agneau": {
+       "options": [
+        "faite-1",
+        "faite-2",
+        "pas-faite"
+       ],
+       "defaut": "faite-1",
+       "fige": "B2"
+      },
+      "forgeron": {
+       "options": [
+        "faite",
+        "pas-faite"
+       ],
+       "defaut": "faite",
+       "fige": "B4"
+      }
+     }
+    },
+    {
+     "reglage": "État du hameau au départ",
+     "unite": "—",
+     "texte": "méfiant (défaut) ; options : « Amical », hostile, apeuré",
+     "source": "D-228 (7), D-238 (2), D-38, D-205 ; options prop.",
+     "id": "etat_depart",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "mefiant",
+       "amical",
+       "hostile",
+       "apeure"
+      ],
+      "defaut": "mefiant",
+      "sans_demande": [
+       "hostile",
+       "apeure"
+      ]
+     }
+    },
+    {
+     "reglage": "Héros simulé « répond à tout »",
+     "unite": "h",
+     "texte": "accepte 1 h après l'ouverture ; finit en B1 4, B2 8, B3 3, B4 6, B5 3, B6 4 ; réussit toujours ; une demande à la fois",
+     "source": "prop. (simulation)",
+     "id": "heros_tout",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "accepte_apres_h": 1,
+      "duree_h": {
+       "B1": 4,
+       "B2": 8,
+       "B3": 3,
+       "B4": 6,
+       "B5": 3,
+       "B6": 4
+      },
+      "reussite_pct": 100,
+      "une_a_la_fois": true
+     }
+    },
+    {
+     "reglage": "Héros simulé « répond parfois » ; mort en route",
+     "unite": "% ; —",
+     "texte": "accepte 50 % des demandes (tirage à l'ouverture) ; mort non simulée (jeu : échec définitif, *Repos* § 3.A)",
+     "source": "prop. (simulation)",
+     "id": "heros_parfois",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "accepte_pct": 50,
+      "mort_simulee": false
+     }
+    }
+   ]
+  },
+  {
+   "nom": "Conscience et conséquences",
+   "lignes": [
+    {
+     "reglage": "Quand elle agit",
+     "unite": "—",
+     "texte": "délai passé ; besoin à 100 ; besoin à 80 si aucune demande ne peut s'ouvrir",
+     "source": "prop.",
+     "id": "conscience_quand",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "delai_passe": true,
+      "besoin_a": 100,
+      "sans_demande_possible_a": 80
+     }
+    },
+    {
+     "reglage": "Quand elle peut envoyer",
+     "unite": "—",
+     "texte": "de jour, hors Tempête de Neige, si la tâche finit avant la nuit, même en crise",
+     "source": "D-305 (4) ; détail prop.",
+     "id": "conscience_envoi",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "de_jour": true,
+      "hors_tempete": true,
+      "finir_avant_la_nuit": true,
+      "meme_en_crise": true
+     }
+    },
+    {
+     "reglage": "Villageois envoyés (60-79 / 80-99 / 100) ; durée d'une tâche",
+     "unite": "nombre ; h",
+     "texte": "1 / 2 / 3 ; 4",
+     "source": "prop.",
+     "id": "envoyes",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "paliers": [
+       [
+        60,
+        1
+       ],
+       [
+        80,
+        2
+       ],
+       [
+        100,
+        3
+       ]
+      ],
+      "duree_h": 4
+     }
+    },
+    {
+     "reglage": "Ordre de choix",
+     "unite": "—",
+     "texte": "rôle du besoin, puis paysans ; disponibles ; besoin propre le plus bas ; à égalité, tirage",
+     "source": "prop.",
+     "id": "ordre_choix",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "ordre": [
+       "role",
+       "paysan"
+      ],
+      "besoin_propre_le_plus_bas": true,
+      "egalite": "tirage"
+     }
+    },
+    {
+     "reglage": "Jamais envoyés",
+     "unite": "PNJ",
+     "texte": "chef, forgeron, éleveur, aubergiste, agente du Cartel",
+     "source": "prop. (`fiches-pnj.md` ; *IA Collective* § 1, D-195)",
+     "id": "jamais_envoyes",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "roles": [
+       "chef",
+       "forgeron",
+       "eleveur",
+       "aubergiste",
+       "agente"
+      ]
+     }
+    },
+    {
+     "reglage": "Réussite : rôle / paysan ; villageois en plus ; bornes",
+     "unite": "%",
+     "texte": "60 / 40 ; +10 ; 10 à 90",
+     "source": "prop.",
+     "id": "reussite",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "role_pct": 60,
+      "paysan_pct": 40,
+      "par_villageois_en_plus_pct": 10,
+      "min_pct": 10,
+      "max_pct": 90
+     }
+    },
+    {
+     "reglage": "Baisse : réussite / échec",
+     "unite": "pts",
+     "texte": "−35 / −10",
+     "source": "prop.",
+     "id": "baisse_tache",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "reussite": -35,
+      "echec": -10
+     }
+    },
+    {
+     "reglage": "Échec : blessé / mort (B1, B3, B4, B6) ; (B2, B5)",
+     "unite": "% par villageois",
+     "texte": "25 / 5 ; 35 / 10",
+     "source": "prop.",
+     "id": "echec_sort",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "travail": {
+       "blesse_pct": 25,
+       "mort_pct": 5
+      },
+      "combat": {
+       "blesse_pct": 35,
+       "mort_pct": 10
+      },
+      "besoins_combat": [
+       "B2",
+       "B5"
+      ]
+     }
+    },
+    {
+     "reglage": "Morts possibles",
+     "unite": "—",
+     "texte": "oui (défaut) ; option : non (blessés seulement)",
+     "source": "prop. (question 3)",
+     "id": "morts_possibles",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "oui",
+       "non"
+      ],
+      "defaut": "oui"
+     }
+    },
+    {
+     "reglage": "Blessé hors travail ; remplacement d'un mort",
+     "unite": "h",
+     "texte": "48 ; 72 (par un paysan, s'il en reste)",
+     "source": "prop.",
+     "id": "blessure",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "hors_travail_h": 48,
+      "remplacement_h": 72
+     }
+    },
+    {
+     "reglage": "Remède donné à un blessé (dans une demande ou hors demande)",
+     "unite": "h",
+     "texte": "il reprend le travail 12 h après le remède (ou à la fin de ses 48 h, si elle vient avant) et ne tire plus la mort de la crise de B6 ; options : aussitôt ; aucun effet sur la durée",
+     "source": "prop.",
+     "id": "remede",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "reprise_apres_h": 12,
+      "options": [
+       "apres-delai",
+       "aussitot",
+       "aucun-effet"
+      ],
+      "defaut": "apres-delai",
+      "protege_de_la_mort_b6": true
+     }
+    },
+    {
+     "reglage": "Troupeau de départ ; bête perdue sur échec B2",
+     "unite": "bêtes",
+     "texte": "12 ; 1 (à 0 bête, B2 ne monte plus)",
+     "source": "prop. (nombre de vaches à définir, D-278 (3))",
+     "id": "troupeau",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "depart": 12,
+      "perte_echec": 1,
+      "zero_bete_b2_fige": true
+     }
+    },
+    {
+     "reglage": "Pertes de crise (à 100, puis toutes les 24 h)",
+     "unite": "—",
+     "texte": "B1 +10 sur B1 24 h après ; B2 2 bêtes ; B3 1 blessé ; B4 travail de tous −10 % jusqu'au retour sous 60 ; B5 1 blessé ; B6 chaque blessé : mort 10 %",
+     "source": "prop.",
+     "id": "pertes_crise",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "repetition_h": 24,
+      "B1": {
+       "hausse": 10,
+       "apres_h": 24
+      },
+      "B2": {
+       "betes": 2
+      },
+      "B3": {
+       "blesses": 1
+      },
+      "B4": {
+       "travail_pct": -10,
+       "jusqu_a_moins_de": 60
+      },
+      "B5": {
+       "blesses": 1
+      },
+      "B6": {
+       "mort_pct": 10
+      }
+     }
+    },
+    {
+     "reglage": "Hausse de prix à 80 et plus",
+     "unite": "%",
+     "texte": "+25 (B1 nourriture, B3 bois et fourrures, B4 outils), jusqu'au retour sous 60",
+     "source": "prop. (*Économie* § 1)",
+     "id": "prix",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "hausse_pct": 25,
+      "a_partir_de": 80,
+      "retour_sous": 60,
+      "biens": {
+       "B1": "nourriture",
+       "B3": "bois et fourrures",
+       "B4": "outils"
+      }
+     }
+    },
+    {
+     "reglage": "Humeur : bornes, départ ; hausses",
+     "unite": "pts",
+     "texte": "0 à 100, départ 60 ; +5 par besoin réglé, par le héros (demande réglée) **ou** par la conscience (tâche réussie) ; B6 réglé par le héros : +10 **à la place** des +5",
+     "source": "prop.",
+     "id": "humeur",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "min": 0,
+      "max": 100,
+      "depart": 60,
+      "besoin_regle": 5,
+      "b6_regle_par_le_heros": 10
+     }
+    },
+    {
+     "reglage": "Humeur : baisses",
+     "unite": "pts",
+     "texte": "−5 par blessé, −15 par mort (une fois, au moment) ; −5/j **pour chaque** besoin à 80 ou plus (−5/24 par heure et par besoin, tant qu'il y reste)",
+     "source": "prop.",
+     "id": "humeur_baisses",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "par_blesse": -5,
+      "par_mort": -15,
+      "par_besoin_urgent_j": -5
+     }
+    },
+    {
+     "reglage": "Humeur : abattu / confiant",
+     "unite": "seuil ; effet",
+     "texte": "sous 30 : travail −20 %, soirée à la maison ; au-dessus de 80 : travail +10 %",
+     "source": "prop.",
+     "id": "humeur_seuils",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "abattu_sous": 30,
+      "abattu_travail_pct": -20,
+      "abattu_soiree_maison": true,
+      "confiant_au_dessus": 80,
+      "confiant_travail_pct": 10
+     }
+    }
+   ]
+  },
+  {
+   "nom": "Récompenses et réputation",
+   "lignes": [
+    {
+     "reglage": "Méfiance de départ ; étapes",
+     "unite": "%",
+     "texte": "+20, +15, +10, +5, 0",
+     "source": "D-237 (4), D-239",
+     "id": "mefiance",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "etapes_pct": [
+       20,
+       15,
+       10,
+       5,
+       0
+      ]
+     }
+    },
+    {
+     "reglage": "Étapes par demande réglée",
+     "unite": "étapes",
+     "texte": "1 (service rendu)",
+     "source": "prop. (question 2 ; D-237 (4) : 1 ou 2)",
+     "id": "etapes_par_demande",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "etapes": 1
+     }
+    },
+    {
+     "reglage": "« Amical » ; services après « Amical »",
+     "unite": "% ; —",
+     "texte": "−10 dès la méfiance à 0 ; comptés, sans effet",
+     "source": "D-238 (2), D-215 (4) ; compte prop.",
+     "id": "amical",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "prix_pct": -10,
+      "services_comptes": true
+     }
+    },
+    {
+     "reglage": "Méfiance : demande ignorée ; acceptée puis délai filé",
+     "unite": "étapes",
+     "texte": "0 ; 0 (réplique de déception)",
+     "source": "prop. (question 4)",
+     "id": "mefiance_remontee",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "ignoree": 0,
+      "delai_file": 0
+     }
+    },
+    {
+     "reglage": "Expérience par demande réglée",
+     "unite": "points",
+     "texte": "10 ; 20 si acceptée à 80 ou plus ; au métier (Chasse : B1, B2 ; Minage : B4), sinon au compteur d'attente",
+     "source": "prop. (question 6 ; métiers : GDD)",
+     "id": "experience",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "points": 10,
+      "points_urgence": 20,
+      "urgence_a_partir_de": 80,
+      "metier": {
+       "B1": "Chasse",
+       "B2": "Chasse",
+       "B4": "Minage"
+      },
+      "sinon": "compteur d'attente"
+     }
+    },
+    {
+     "reglage": "Objets en nature",
+     "unite": "objet",
+     "texte": "B1 viande séchée ; B2 laine ou fromage ; B3 nuit d'auberge ; B4 réparation ; B5 vieille pièce d'équipement ; B6 rien",
+     "source": "prop. (auberge payante : *Repos* § 1)",
+     "id": "objets_nature",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "B1": "viande séchée",
+      "B2": "laine ou fromage",
+      "B3": "nuit d'auberge",
+      "B4": "réparation",
+      "B5": "vieille pièce d'équipement",
+      "B6": null
+     }
+    },
+    {
+     "reglage": "Or par demande",
+     "unite": "pièces",
+     "texte": "B1 2, B2 3, B3 1, B4 2, B5 5, B6 0",
+     "source": "prop. (à aligner sur `objets-recettes-prix.md`)",
+     "id": "or",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "B1": 2,
+      "B2": 3,
+      "B3": 1,
+      "B4": 2,
+      "B5": 5,
+      "B6": 0
+     }
+    }
+   ]
+  },
+  {
+   "nom": "Villageois et emploi du temps",
+   "lignes": [
+    {
+     "reglage": "Habitants ; villageois suivis",
+     "unite": "nombre",
+     "texte": "80 ; 16",
+     "source": "*Topographie* POI A ; prop. (P2-06 : 12 à 20)",
+     "id": "habitants",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "habitants": 80,
+      "suivis": 16
+     }
+    },
+    {
+     "reglage": "Rôles",
+     "unite": "nombre",
+     "texte": "chef 1, forgeron 1, éleveur 1, aubergiste 1, berger 1, chasseurs 2, bûcherons 2, guetteurs 2, paysans 4, agente 1",
+     "source": "prop. ; fiches",
+     "id": "roles",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chef": 1,
+      "forgeron": 1,
+      "eleveur": 1,
+      "aubergiste": 1,
+      "berger": 1,
+      "chasseur": 2,
+      "bucheron": 2,
+      "guetteur": 2,
+      "paysan": 4,
+      "agente": 1
+     }
+    },
+    {
+     "reglage": "Dégel et Moisson",
+     "unite": "h",
+     "texte": "maison 22 h – 4 h ; lever 4 h – 5 h ; travail 5 h – 12 h, 13 h – 19 h ; auberge 19 h – 22 h",
+     "source": "D-305 (4) ; heures prop.",
+     "id": "horaire_degel_moisson",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "saisons": [
+       "Dégel",
+       "Moisson"
+      ],
+      "lever": 4,
+      "travail": [
+       [
+        5,
+        12
+       ],
+       [
+        13,
+        19
+       ]
+      ],
+      "auberge": [
+       19,
+       22
+      ]
+     }
+    },
+    {
+     "reglage": "Brûlure",
+     "unite": "h",
+     "texte": "maison 22 h – 4 h ; lever 4 h – 5 h ; travail 5 h – 11 h, 14 h – 19 h ; auberge 19 h – 22 h",
+     "source": "D-305 (4), D-237 (2) (ombre à midi) ; heures prop.",
+     "id": "horaire_brulure",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "saisons": [
+       "Brûlure"
+      ],
+      "lever": 4,
+      "travail": [
+       [
+        5,
+        11
+       ],
+       [
+        14,
+        19
+       ]
+      ],
+      "auberge": [
+       19,
+       22
+      ]
+     }
+    },
+    {
+     "reglage": "Grand Gel",
+     "unite": "h",
+     "texte": "maison 21 h – 5 h ; lever 5 h – 6 h ; travail 6 h – 12 h, 13 h – 16 h ; auberge 16 h – 21 h",
+     "source": "D-305 (4), D-237 (2) (fermé plus tôt) ; heures prop.",
+     "id": "horaire_gel",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "saisons": [
+       "Grand Gel"
+      ],
+      "lever": 5,
+      "travail": [
+       [
+        6,
+        12
+       ],
+       [
+        13,
+        16
+       ]
+      ],
+      "auberge": [
+       16,
+       21
+      ]
+     }
+    },
+    {
+     "reglage": "Aubergiste ; éleveur et berger",
+     "unite": "h",
+     "texte": "auberge de 10 h à la fin du soir (22 h ; 21 h au Grand Gel) ; bêtes rentrées à la fin du travail",
+     "source": "prop.",
+     "id": "aubergiste",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "debut": 10,
+      "fin": "fin du soir",
+      "betes_rentrees_fin_travail": true
+     }
+    }
+   ]
+  }
+ ],
+ "besoins": [
+  {
+   "id": "B1",
+   "nom": "Nourriture",
+   "manque": "la viande manque",
+   "le": "la faim",
+   "accord": "e",
+   "tache": "chasser",
+   "tache_nom": "la chasse",
+   "heros_fait": "le héros rapporte le gibier"
+  },
+  {
+   "id": "B2",
+   "nom": "Bétail",
+   "manque": "le bétail est menacé",
+   "le": "la menace sur le bétail",
+   "accord": "e",
+   "tache": "garder le troupeau",
+   "tache_nom": "la garde du troupeau",
+   "heros_fait": "le héros a protégé le troupeau"
+  },
+  {
+   "id": "B3",
+   "nom": "Bois et froid",
+   "manque": "le bois manque",
+   "le": "le manque de bois",
+   "accord": "",
+   "tache": "couper du bois",
+   "tache_nom": "la coupe du bois",
+   "heros_fait": "le héros rapporte les fagots"
+  },
+  {
+   "id": "B4",
+   "nom": "Outils et forge",
+   "manque": "les outils s'usent",
+   "le": "l'usure des outils",
+   "accord": "e",
+   "tache": "réparer les outils",
+   "tache_nom": "la réparation des outils",
+   "heros_fait": "le héros rapporte le minerai de fer"
+  },
+  {
+   "id": "B5",
+   "nom": "Sécurité",
+   "manque": "le hameau a peur",
+   "le": "la peur",
+   "accord": "e",
+   "tache": "faire une ronde",
+   "tache_nom": "la ronde",
+   "heros_fait": "le héros a chassé les rôdeurs"
+  },
+  {
+   "id": "B6",
+   "nom": "Soins",
+   "manque": "les blessés manquent de soins",
+   "le": "le besoin de soins",
+   "accord": "",
+   "tache": "soigner les blessés",
+   "tache_nom": "le soin des blessés",
+   "heros_fait": "le héros apporte les remèdes"
+  }
+ ],
+ "roles": {
+  "chef": {
+   "nom": "chef du hameau",
+   "lieu": "place",
+   "besoin": null,
+   "nomme": true,
+   "activite": "veille sur la place"
+  },
+  "forgeron": {
+   "nom": "forgeron",
+   "nom_f": "forgeronne",
+   "lieu": "forge",
+   "besoin": "B4",
+   "nomme": true,
+   "activite": "travaille à la forge"
+  },
+  "eleveur": {
+   "nom": "éleveur",
+   "nom_f": "éleveuse",
+   "lieu": "enclos",
+   "besoin": "B2",
+   "nomme": true,
+   "activite": "soigne les bêtes"
+  },
+  "aubergiste": {
+   "nom": "aubergiste",
+   "lieu": "auberge",
+   "besoin": null,
+   "nomme": true,
+   "activite": "tient l'auberge"
+  },
+  "berger": {
+   "nom": "berger",
+   "nom_f": "bergère",
+   "lieu": "pature",
+   "besoin": "B2",
+   "nomme": false,
+   "activite": "garde les bêtes"
+  },
+  "chasseur": {
+   "nom": "chasseur",
+   "nom_f": "chasseuse",
+   "lieu": "plaine",
+   "besoin": "B1",
+   "nomme": false,
+   "activite": "chasse"
+  },
+  "bucheron": {
+   "nom": "bûcheron",
+   "nom_f": "bûcheronne",
+   "lieu": "foret",
+   "besoin": "B3",
+   "nomme": false,
+   "activite": "coupe du bois"
+  },
+  "guetteur": {
+   "nom": "guetteur",
+   "nom_f": "guetteuse",
+   "lieu": "palissade",
+   "besoin": "B5",
+   "nomme": false,
+   "activite": "monte la garde"
+  },
+  "paysan": {
+   "nom": "paysan",
+   "nom_f": "paysanne",
+   "lieu": "champs",
+   "besoin": "B1",
+   "nomme": false,
+   "activite": "travaille aux champs"
+  },
+  "agente": {
+   "nom": "agente du Cartel",
+   "lieu": "auberge",
+   "besoin": null,
+   "nomme": true,
+   "activite": "observe, à l'auberge"
+  }
+ },
+ "lieux": [
+  {
+   "id": "maisons",
+   "nom": "Maisons"
+  },
+  {
+   "id": "place",
+   "nom": "Place du hameau"
+  },
+  {
+   "id": "auberge",
+   "nom": "Auberge"
+  },
+  {
+   "id": "forge",
+   "nom": "Forge"
+  },
+  {
+   "id": "enclos",
+   "nom": "Enclos"
+  },
+  {
+   "id": "pature",
+   "nom": "Pâture"
+  },
+  {
+   "id": "champs",
+   "nom": "Champs"
+  },
+  {
+   "id": "plaine",
+   "nom": "Plaine et lisière"
+  },
+  {
+   "id": "foret",
+   "nom": "Lisière de la forêt"
+  },
+  {
+   "id": "palissade",
+   "nom": "Palissade et chemins"
+  },
+  {
+   "id": "tache",
+   "nom": "En tâche (envoyés par la conscience)"
+  },
+  {
+   "id": "blesses",
+   "nom": "Blessés (chez eux)"
+  },
+  {
+   "id": "morts",
+   "nom": "Morts"
+  }
+ ],
+ "villageois": [
+  {
+   "id": "chef",
+   "nom": "le chef",
+   "role": "chef",
+   "genre": "m",
+   "provisoire": false
+  },
+  {
+   "id": "forgeron",
+   "nom": "le forgeron",
+   "role": "forgeron",
+   "genre": "m",
+   "provisoire": false
+  },
+  {
+   "id": "eleveur",
+   "nom": "l'éleveur",
+   "role": "eleveur",
+   "genre": "m",
+   "provisoire": false
+  },
+  {
+   "id": "aubergiste",
+   "nom": "l'aubergiste",
+   "role": "aubergiste",
+   "genre": "f",
+   "provisoire": false
+  },
+  {
+   "id": "odon",
+   "nom": "Odon",
+   "role": "berger",
+   "genre": "m",
+   "provisoire": true
+  },
+  {
+   "id": "garin",
+   "nom": "Garin",
+   "role": "chasseur",
+   "genre": "m",
+   "provisoire": true
+  },
+  {
+   "id": "mahaut",
+   "nom": "Mahaut",
+   "role": "chasseur",
+   "genre": "f",
+   "provisoire": true
+  },
+  {
+   "id": "thibaut",
+   "nom": "Thibaut",
+   "role": "bucheron",
+   "genre": "m",
+   "provisoire": true
+  },
+  {
+   "id": "renaud",
+   "nom": "Renaud",
+   "role": "bucheron",
+   "genre": "m",
+   "provisoire": true
+  },
+  {
+   "id": "ysolde",
+   "nom": "Ysolde",
+   "role": "guetteur",
+   "genre": "f",
+   "provisoire": true
+  },
+  {
+   "id": "hugues",
+   "nom": "Hugues",
+   "role": "guetteur",
+   "genre": "m",
+   "provisoire": true
+  },
+  {
+   "id": "berthe",
+   "nom": "Berthe",
+   "role": "paysan",
+   "genre": "f",
+   "provisoire": true
+  },
+  {
+   "id": "aldric",
+   "nom": "Aldric",
+   "role": "paysan",
+   "genre": "m",
+   "provisoire": true
+  },
+  {
+   "id": "agnes",
+   "nom": "Agnès",
+   "role": "paysan",
+   "genre": "f",
+   "provisoire": true
+  },
+  {
+   "id": "colin",
+   "nom": "Colin",
+   "role": "paysan",
+   "genre": "m",
+   "provisoire": true
+  },
+  {
+   "id": "agente",
+   "nom": "l'agente du Cartel",
+   "role": "agente",
+   "genre": "f",
+   "provisoire": false
+  }
+ ],
+ "interface": {
+  "vitesses_heures_par_seconde": [
+   1,
+   3,
+   6,
+   12,
+   24
+  ],
+  "vitesse_defaut": 6,
+  "graine_defaut": 2026,
+  "journees_defaut": 15
+ }
+}

@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>Simulation du hameau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Simulation du hameau (T-0202, D-305) : la règle de T-0201 jouée heure par heure ; même identité sombre que les autres pages */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --b1:#d4a857; --b2:#86a37a; --b3:#c7715c; --b4:#b59bd6; --b5:#7f9bb5; --b6:#d98ca6;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(12px,4vw,40px);padding-block:clamp(24px,5vw,56px)}
+.lecture{max-width:44rem}
+header{display:grid;gap:.75rem;margin-bottom:1.6rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.3rem,7vw,3.6rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.4rem,4.5vw,2rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+.muted{color:var(--pierre)}
+section{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;padding-block:1.6rem;border-top:1px solid var(--roche);min-width:0}
+button,select,input{font:500 .9rem/1.2 var(--f-texte);color:var(--lin);background:var(--brume);border:1px solid var(--roche);border-radius:5px;padding:.5rem .7rem;max-width:100%}
+button{cursor:pointer}
+button:hover{border-color:var(--pierre)}
+button:disabled{opacity:.45;cursor:default}
+button.principal{background:var(--aube);color:#1a1712;border-color:var(--aube);font-weight:600}
+input[type=number]{width:7.5rem}
+.rangee{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.champs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:.6rem .9rem}
+.champs label{display:grid;gap:.25rem;font-size:.82rem;color:var(--pierre);min-width:0}
+.champs select{width:100%}
+details{min-width:0;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.6rem .8rem}
+summary{cursor:pointer;font-weight:500}
+details[open] summary{margin-bottom:.6rem}
+.prop,.src{font:500 .66rem/1 var(--f-data);letter-spacing:.04em;padding:.22rem .38rem;border-radius:3px;vertical-align:.12em;margin-left:.3rem}
+.prop{color:var(--aube);background:transparent;border:1px dashed var(--aube)}
+.src{color:var(--mousse);background:transparent;border:1px solid var(--mousse)}
+.note{font-size:.85rem}
+/* tableau de bord */
+.bord{display:grid;gap:.4rem;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.9rem 1rem}
+.quand{font:400 clamp(1.6rem,5vw,2.2rem)/1.1 var(--f-titre);color:var(--aube)}
+.avance{height:6px;background:var(--roche);border-radius:3px;overflow:hidden}
+.avance div{height:100%;background:var(--aube)}
+/* besoins */
+.jauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:.7rem}
+.jauge{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:4px solid var(--c);border-radius:6px;padding:.6rem .75rem;min-width:0}
+.jauge-tete{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .5rem}
+.jauge-tete .val{margin-left:auto;font:500 1.15rem var(--f-data)}
+.etiquette{font:500 .68rem/1 var(--f-data);text-transform:uppercase;letter-spacing:.05em;padding:.25rem .4rem;border-radius:3px;border:1px solid currentColor}
+.e-calme{color:var(--pierre)}.e-rumeur{color:var(--acier)}.e-demande{color:var(--aube)}.e-urgence{color:#e09a5b}.e-crise{color:var(--braise)}.e-fige{color:var(--pierre);border-style:dashed}
+.barre{position:relative;height:12px;background:var(--roche);border-radius:3px;overflow:hidden}
+.barre .rempli{position:absolute;inset:0 auto 0 0;background:var(--c)}
+.barre i{position:absolute;top:0;bottom:0;width:1px;background:rgba(21,24,28,.85)}
+.jauge .suite{font-size:.82rem;color:var(--pierre);min-height:1.2em}
+.graphe-cadre{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.7rem .7rem .5rem 2rem;display:grid;gap:.4rem}
+.graphe{position:relative;height:220px}
+.graphe svg{position:absolute;inset:0;width:100%;height:100%}
+.graphe .axe{position:absolute;left:-1.8rem;transform:translateY(-50%);font:400 .66rem var(--f-data);color:var(--pierre)}
+.jours{display:flex;font:400 .62rem var(--f-data);color:var(--pierre)}
+.jours span{border-left:1px solid var(--roche);padding-left:2px;overflow:hidden;white-space:nowrap}
+.legende{display:flex;flex-wrap:wrap;gap:.35rem}
+.legende button{font-size:.78rem;padding:.3rem .5rem;display:inline-flex;align-items:center;gap:.35rem}
+.legende button[aria-pressed=false]{opacity:.4}
+.pastille{display:inline-block;width:.75rem;height:.75rem;border-radius:2px;background:var(--c);flex:none}
+/* demandes, tâches */
+.cartes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:.7rem}
+.carte{display:grid;gap:.4rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-left:4px solid var(--c,var(--roche));border-radius:6px;padding:.7rem .8rem;min-width:0}
+.carte .petit{font-size:.85rem;color:var(--pierre)}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:.8rem 1rem;color:var(--pierre)}
+/* villageois */
+.lieux{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:.6rem}
+.lieu{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.55rem .7rem;display:grid;gap:.35rem;align-content:start;min-width:0}
+.lieu h3{font-size:.85rem;color:var(--aube)}
+.lieu.l-tache h3{color:var(--acier)}.lieu.l-blesses h3{color:#e09a5b}.lieu.l-morts h3{color:var(--braise)}
+.vg{font-size:.85rem;line-height:1.35}
+.vg b{font-weight:600}
+.vg span{color:var(--pierre)}
+/* hameau et héros */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.7rem}
+.grand{font:500 1.35rem var(--f-data)}
+.etapes{display:flex;gap:.3rem}
+.etapes i{flex:1;height:8px;border-radius:2px;background:var(--roche)}
+.etapes i.fait{background:var(--mousse)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.3rem}
+/* journal */
+.journal{max-height:30rem;overflow-y:auto;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.4rem .6rem;display:grid;gap:.15rem;align-content:start}
+.entree{display:grid;grid-template-columns:6.6rem 1fr;gap:.6rem;align-items:baseline;padding:.25rem 0 .25rem .45rem;border-left:3px solid transparent;font-size:.9rem}
+.entree time{font:500 .74rem var(--f-data);color:var(--aube)}
+.t-demande{border-left-color:var(--aube)}.t-heros{border-left-color:var(--mousse)}.t-conscience{border-left-color:var(--acier)}
+.t-crise{border-left-color:var(--braise)}.t-betes{border-left-color:#e09a5b}.t-meteo,.t-rumeur,.t-blessure{border-left-color:var(--roche)}
+.t-crise .texte{color:#f0b3a5}
+@media (max-width:30rem){.entree{grid-template-columns:1fr;gap:0}.graphe{height:180px}}
+/* tableaux */
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.88rem}
+th,td{text-align:left;padding:.45rem .55rem;border-bottom:1px solid var(--roche);vertical-align:top}
+thead th{font:500 .7rem/1.2 var(--f-data);letter-spacing:.05em;text-transform:uppercase;color:var(--pierre)}
+td.n{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-align:right}
+tr.groupe td{font:400 1.05rem var(--f-titre);color:var(--aube);padding-top:1rem}
+tr.vu{background:rgba(212,168,87,.14)}
+/* bulle des « prop. » */
+.bulle[hidden]{display:none}
+.bulle{position:fixed;left:.75rem;right:.75rem;bottom:.75rem;max-width:36rem;margin:0 auto;background:#23282f;border:1px solid var(--aube);border-radius:8px;padding:.8rem .9rem;display:grid;gap:.45rem;box-shadow:0 8px 30px rgba(0,0,0,.5);z-index:10;font-size:.9rem}
+.bulle .rangee{justify-content:flex-end}
+.message{font-size:.85rem;color:var(--aube);min-height:1.2em}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · simulation · T-0202 · D-305</div>
+  <h1>Simulation <em>du hameau</em></h1>
+  <p class="lecture">Le Hameau de la Brume vit seul pendant 1 à 15 journées de jeu. Ses besoins montent heure par heure ; les villageois suivent leur emploi du temps et demandent de l'aide au héros. Si personne ne vient, la conscience du hameau envoie elle-même des villageois, avec des risques : blessés, morts, bêtes perdues.</p>
+  <p class="lecture muted">La règle jouée ici est la proposition de T-0201, pas encore validée (D-305, D-295). Tous les chiffres viennent de son tableau de réglages, en bas de page. Le badge <span class="prop">prop.</span> marque une valeur proposée, à valider ; le badge <span class="src">source</span> marque une valeur tirée d'un document ou d'une décision. Touchez un badge pour voir sa ligne.</p>
+</header>
+
+<section id="commandes" aria-label="Commandes">
+  <h2>Commandes</h2>
+  <div class="rangee">
+    <button id="b-lancer" class="principal" type="button">Lancer</button>
+    <button id="b-heure" type="button">Une heure</button>
+    <button id="b-fin" type="button">Jusqu'à la fin</button>
+    <button id="b-debut" type="button">Revenir au début</button>
+  </div>
+  <div class="champs">
+    <label>Vitesse <select id="vitesse"></select></label>
+    <label>Comportement du héros <select id="heros"></select></label>
+    <label>Durée <select id="journees"></select></label>
+    <label>Graine du hasard (même graine = même partie)
+      <span class="rangee"><input id="graine" type="number" min="1" step="1" inputmode="numeric"><button id="b-graine" type="button">Au hasard</button></span></label>
+  </div>
+  <div class="rangee"><span class="muted">Forcer :</span>
+    <button id="f-tempete" type="button">une Tempête de Neige</button>
+    <button id="f-meute" type="button">une meute de loups</button>
+    <button id="f-saison" type="button">la saison suivante</button>
+  </div>
+  <details id="depart">
+    <summary>Réglages de départ (options du tableau ; un changement relance la partie)</summary>
+    <div class="champs" id="options"></div>
+  </details>
+  <p class="message" id="message" aria-live="polite"></p>
+</section>
+
+<section id="maintenant" aria-label="Maintenant">
+  <div class="bord" id="horloge"></div>
+</section>
+
+<section id="besoins">
+  <h2>Besoins du hameau</h2>
+  <p class="lecture muted note">De 0 (rien ne manque) à 100 (crise). Paliers <span id="paliers-texte"></span> : à 40, on en parle à l'auberge ; à 60, un villageois demande de l'aide au héros ; à 80, c'est urgent ; à 100, c'est la crise.</p>
+  <div class="jauges" id="jauges"></div>
+  <div class="graphe-cadre">
+    <div class="graphe" id="graphe"></div>
+    <div class="jours" id="jours"></div>
+    <div class="legende" id="legende"></div>
+    <p class="muted note">Bandes sombres : la nuit ; bandes bleues : Tempête de Neige ; trait vertical : maintenant. Touchez un besoin pour masquer sa courbe.</p>
+  </div>
+</section>
+
+<section id="aide">
+  <h2>Demandes d'aide au héros</h2>
+  <p class="muted note" id="heros-etat"></p>
+  <div class="cartes" id="demandes"></div>
+  <h3>La conscience du hameau <span id="badge-conscience"></span></h3>
+  <div class="cartes" id="taches"></div>
+</section>
+
+<section id="villageois">
+  <h2>Où est chacun</h2>
+  <p class="muted note" id="horaire-texte"></p>
+  <div class="lieux" id="lieux"></div>
+  <p class="muted note">* nom provisoire (T-0202), à remplacer ; les PNJ nommés (chef, forgeron, éleveur, aubergiste) gardent leur titre, en attendant leur nom (fiches des PNJ) ; l'agente du Cartel suit la conscience sans être une habitante.</p>
+</section>
+
+<section id="hameau">
+  <h2>Le hameau et le héros</h2>
+  <div class="chiffres" id="chiffres"></div>
+</section>
+
+<section id="journal-section">
+  <h2>Journal</h2>
+  <div class="rangee">
+    <label class="muted note"><input type="checkbox" id="tout-journal"> montrer aussi la météo, les rumeurs et les guérisons</label>
+    <button id="b-copier" type="button">Copier le journal</button>
+  </div>
+  <div class="journal" id="journal" aria-live="off"></div>
+</section>
+
+<section id="bilan-section">
+  <h2>Bilan</h2>
+  <p class="muted note">Compté depuis le début de la partie en cours.</p>
+  <div class="tableau"><table id="bilan"></table></div>
+  <div class="rangee"><button id="b-comparer" type="button">Comparer les trois comportements du héros</button></div>
+  <p class="muted note">Avec la même graine et les mêmes réglages de départ, la page joue la partie entière trois fois (ne fait rien, répond parfois, répond à tout) : même météo, mêmes loups, seul le héros change.</p>
+  <div class="tableau" id="comparaison"></div>
+</section>
+
+<section id="reglages-section">
+  <h2>Réglages de la simulation</h2>
+  <p class="lecture muted note" id="reglages-intro"></p>
+  <details id="reglages-details">
+    <summary>Voir le tableau des réglages</summary>
+    <div class="tableau"><table id="reglages"></table></div>
+  </details>
+</section>
+
+<section id="limites">
+  <h2>Ce que la simulation simplifie</h2>
+  <ul class="liste lecture">
+    <li>Le temps avance d'une heure du monde à la fois ; les heures du jour et de l'emploi du temps sont arrondies à l'heure (la Brûlure va de 2 h 40 à 21 h 20 : ici, de 3 h à 21 h).</li>
+    <li>Le héros simulé ne se déplace pas : il accepte, puis il a fini au bout de la durée prévue pour le besoin, toujours avec succès. Sa mort en route, les objets donnés hors demande, la magie vue par un habitant et le hameau qui devient hostile en cours de partie ne sont pas simulés.</li>
+    <li>Choix de la simulation, que la règle ne fixe pas : les effets sur le travail (pluie, humeur, crise des outils) se multiplient ; une demande ne s'ouvre que si son demandeur est debout ; la recharge de 24 h d'un besoin compte depuis la fermeture de sa demande ; à 80, le délai restant passe à 6 h au plus ; « sous la pluie » veut dire : il pleut quand la tâche se termine.</li>
+    <li>La brume n'est pas simulée (elle ne change aucun besoin). Les prix sont montrés en pourcentage : aucun marchand n'est simulé.</li>
+    <li>Les noms des villageois sont provisoires. Rien ici n'entre dans les documents avant la validation par le directeur (questionnaire groupé, D-295).</li>
+  </ul>
+  <p class="muted note">Fichiers : <code>E:\aaa-proto\livrables\simulation-hameau\</code> (page, moteur <code>simulation.js</code>, réglages <code>reglages.json</code> construits par <code>construire_reglages.py</code> à partir du § 8 de <code>quetes-des-besoins.md</code>, essais dans <code>essais\</code>).</p>
+</section>
+</div>
+
+<div class="bulle" id="bulle" hidden role="dialog" aria-label="Réglage">
+  <div id="bulle-texte"></div>
+  <div class="rangee"><button id="bulle-voir" type="button">Voir dans le tableau</button><button id="bulle-fermer" type="button">Fermer</button></div>
+</div>
+
+<script src="simulation.js"></script>
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const md = (s) => esc(s).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  const arr = (x) => Math.round(x);
+  const moins = (x) => String(x).replace('-', '−');
+  let D, R = {}, L = {}, partie, vitesse, enMarche = false, dernier = 0, reste = 0, nbJournal = 0, ligneVue = null;
+  const cachees = new Set();
+  const HEROS = { rien: 'ne fait rien', tout: 'répond à tout', parfois: 'répond parfois' };
+
+  // --- badges « prop. » / « source » et leur bulle ------------------------------------------------------------------
+  function badge(id) {
+    const l = L[id];
+    if (!l) return '';
+    return `<button type="button" class="${l.prop ? 'prop' : 'src'}" data-ligne="${id}" title="${esc(l.reglage + ' : ' + l.texte.replace(/\*/g, '') + ' (' + l.source.replace(/\*/g, '') + ')')}">${l.prop ? 'prop.' : 'source'}</button>`;
+  }
+  function montrerBulle(id) {
+    const l = L[id];
+    ligneVue = id;
+    $('#bulle-texte').innerHTML = `<strong>${md(l.reglage)}</strong>${l.unite && l.unite !== '—' ? ` <span class="muted">(${md(l.unite)})</span>` : ''}<br>${md(l.texte)}<br><span class="muted">Source : ${md(l.source)}</span><br>${l.prop ? '<span class="prop">prop.</span> proposition de T-0201, à valider.' : '<span class="src">source</span> tiré d\'un document ou d\'une décision.'}`;
+    $('#bulle').hidden = false;
+  }
+  document.addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-ligne]');
+    if (b) { ev.preventDefault(); montrerBulle(b.dataset.ligne); }
+  });
+  $('#bulle-fermer').addEventListener('click', () => { $('#bulle').hidden = true; });
+  $('#bulle-voir').addEventListener('click', () => {
+    $('#bulle').hidden = true;
+    $('#reglages-details').open = true;
+    document.querySelectorAll('#reglages tr.vu').forEach((t) => t.classList.remove('vu'));
+    const tr = document.getElementById('r-' + ligneVue);
+    if (tr) { tr.classList.add('vu'); tr.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  });
+
+  // --- chargement des réglages ------------------------------------------------------------------------------------------
+  function charger() {
+    return new Promise((ok, ko) => {
+      const x = new XMLHttpRequest();
+      x.open('GET', 'reglages.json');
+      x.onload = () => { if (x.status === 200 || (x.status === 0 && x.responseText)) { try { ok(JSON.parse(x.responseText)); } catch (e) { ko(e); } } else ko(new Error('statut ' + x.status)); };
+      x.onerror = () => ko(new Error('réglages introuvables'));
+      x.send();
+    });
+  }
+
+  // --- options -------------------------------------------------------------------------------------------------------
+  function options() {
+    const o = { graine: Number($('#graine').value), journees: Number($('#journees').value), heros: $('#heros').value };
+    document.querySelectorAll('#options select').forEach((s) => { o[s.dataset.opt] = s.value; });
+    return o;
+  }
+  function remplir(sel, choix, defaut) {
+    sel.innerHTML = choix.map(([v, t]) => `<option value="${esc(v)}"${String(v) === String(defaut) ? ' selected' : ''}>${esc(t)}</option>`).join('');
+  }
+  function preparerCommandes() {
+    const I = D.interface;
+    remplir($('#vitesse'), I.vitesses_heures_par_seconde.map((v) => [v, v === 1 ? '1 h du monde par seconde' : `${v} h du monde par seconde`]), I.vitesse_defaut);
+    remplir($('#heros'), [['rien', HEROS.rien], ['parfois', `${HEROS.parfois} (${R.heros_parfois.accepte_pct} % des demandes)`], ['tout', HEROS.tout]], 'rien');
+    const js = [];
+    for (let j = R.debut.journees_min; j <= R.debut.journees_max; j++) js.push([j, j === 1 ? '1 journée' : `${j} journées`]);
+    remplir($('#journees'), js, I.journees_defaut);
+    $('#graine').value = I.graine_defaut;
+    const lignes = [
+      ['agneau', 'quetes_ecrites', 'Quête « L\'Agneau et le Loup »', { 'faite-1': 'faite, issue 1', 'faite-2': 'faite, issue 2 : le loup garde le troupeau', 'pas-faite': 'pas faite : bétail figé' }, R.quetes_ecrites.agneau],
+      ['forgeron', 'quetes_ecrites', 'Quête du forgeron', { faite: 'faite', 'pas-faite': 'pas faite : outils figés' }, R.quetes_ecrites.forgeron],
+      ['etat', 'etat_depart', 'État du hameau', { mefiant: 'méfiant', amical: '« Amical »', hostile: 'hostile : aucune demande', apeure: 'apeuré : aucune demande' }, R.etat_depart],
+      ['modeSaison', 'mode_saison', 'Saison', { glissement: 'glissement vers le Grand Gel', figee: `figée (Moisson, jour ${R.mode_saison.figee_jour})` }, R.mode_saison],
+      ['morts', 'morts_possibles', 'Morts chez les villageois', { oui: 'possibles', non: 'non : blessés seulement' }, R.morts_possibles],
+      ['remede', 'remede', 'Remède donné à un blessé', { 'apres-delai': `reprise ${R.remede.reprise_apres_h} h après`, aussitot: 'reprise aussitôt', 'aucun-effet': 'aucun effet sur la durée' }, R.remede],
+      ['parJour', 'par_jour', 'Travail d\'une heure', { reference: `1/${R.par_jour.heures_travail_reference} du travail d'un jour (journée courte = moins de travail)`, saison: 'même travail par jour en toute saison' }, R.par_jour],
+    ];
+    $('#options').innerHTML = lignes.map(([opt, id, nom, textes, r]) => `<label>${esc(nom)} ${badge(id)}<select data-opt="${opt}">${r.options.map((v) => `<option value="${v}"${v === r.defaut ? ' selected' : ''}>${esc(textes[v])}${v === r.defaut ? ' (défaut)' : ''}</option>`).join('')}</select></label>`).join('');
+    // adresse : ?graine=…&heros=…&jours=…
+    const q = new URLSearchParams(location.search);
+    if (q.get('graine')) $('#graine').value = q.get('graine');
+    if (HEROS[q.get('heros')]) $('#heros').value = q.get('heros');
+    if (q.get('jours') && $(`#journees option[value="${q.get('jours')}"]`)) $('#journees').value = q.get('jours');
+  }
+
+  // --- la partie --------------------------------------------------------------------------------------------------------
+  function nouvelle() {
+    arreter();
+    partie = SimHameau.creerPartie(D, options());
+    nbJournal = 0;
+    $('#journal').innerHTML = '';
+    $('#comparaison').innerHTML = '';
+    $('#message').textContent = '';
+    rendre();
+  }
+  function arreter() { enMarche = false; $('#b-lancer').textContent = 'Lancer'; }
+  function boucle(ts) {
+    if (!enMarche) return;
+    const dt = dernier ? Math.min((ts - dernier) / 1000, 1) : 0;
+    dernier = ts;
+    reste += dt * vitesse;
+    let n = Math.floor(reste), change = false;
+    reste -= n;
+    while (n-- > 0 && !partie.finie()) { partie.avancer(); change = true; }
+    if (change) rendre();
+    if (partie.finie()) { arreter(); rendre(); return; }
+    requestAnimationFrame(boucle);
+  }
+  $('#b-lancer').addEventListener('click', () => {
+    if (enMarche) { arreter(); return; }
+    if (partie.finie()) { $('#message').textContent = 'La partie est finie : « Revenir au début » pour en rejouer une.'; return; }
+    enMarche = true; dernier = 0; reste = 0; $('#b-lancer').textContent = 'Pause';
+    requestAnimationFrame(boucle);
+  });
+  $('#b-heure').addEventListener('click', () => { arreter(); partie.avancer(); rendre(); });
+  $('#b-fin').addEventListener('click', () => { arreter(); while (partie.avancer()); rendre(); });
+  $('#b-debut').addEventListener('click', nouvelle);
+  $('#vitesse').addEventListener('change', () => { vitesse = Number($('#vitesse').value); });
+  $('#heros').addEventListener('change', () => { partie.changerHeros($('#heros').value); rendre(); });
+  $('#journees').addEventListener('change', nouvelle);
+  $('#graine').addEventListener('change', nouvelle);
+  $('#b-graine').addEventListener('click', () => { $('#graine').value = 1 + Math.floor(Math.random() * 99999); nouvelle(); });
+  $('#options').addEventListener('change', nouvelle);
+  $('#f-tempete').addEventListener('click', () => { partie.forcerTempete(); rendre(); });
+  $('#f-meute').addEventListener('click', () => { partie.forcerMeute(); rendre(); });
+  $('#f-saison').addEventListener('click', () => { partie.forcerSaison(); rendre(); });
+  $('#demandes').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-repondre]');
+    if (!b) return;
+    const err = partie.repondre(Number(b.dataset.repondre));
+    $('#message').textContent = err ? `Impossible : ${err}.` : 'Le héros accepte la demande.';
+    rendre();
+  });
+  $('#tout-journal').addEventListener('change', () => { nbJournal = 0; $('#journal').innerHTML = ''; rendreJournal(); });
+  $('#b-copier').addEventListener('click', () => {
+    const t = partie.texteJournal();
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject(new Error('presse-papiers absent')))
+      .then(() => { $('#message').textContent = 'Journal copié.'; }, () => { $('#message').textContent = 'Copie impossible dans ce navigateur.'; });
+  });
+  $('#legende').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-courbe]');
+    if (!b) return;
+    const id = b.dataset.courbe;
+    if (cachees.has(id)) cachees.delete(id); else cachees.add(id);
+    rendreGraphe(partie.vue());
+  });
+  $('#b-comparer').addEventListener('click', comparer);
+
+  // --- affichage ----------------------------------------------------------------------------------------------------------
+  const COUL = { B1: 'var(--b1)', B2: 'var(--b2)', B3: 'var(--b3)', B4: 'var(--b4)', B5: 'var(--b5)', B6: 'var(--b6)' };
+  function etatBesoin(b) {
+    const P = R.paliers;
+    if (b.fige) return ['fige', 'figé'];
+    if (b.valeur >= P.crise) return ['crise', 'crise'];
+    if (b.valeur >= P.urgence) return ['urgence', 'urgence'];
+    if (b.valeur >= P.demande) return ['demande', 'demande'];
+    if (b.valeur >= P.rumeur) return ['rumeur', 'rumeur'];
+    return ['calme', 'calme'];
+  }
+  const RAISONS = { delai: 'personne n\'a répondu', crise: 'crise', 'sans-demande': 'aucune demande possible', 'reste-haut': 'le besoin reste à 80 ou plus' };
+  function rendre() {
+    const v = partie.vue();
+    // maintenant
+    const sais = `${v.saison}, jour ${v.jourSaison}` + (v.figee ? ' (saison figée)' : v.glissement > 0 ? ` · glisse vers le ${v.suivante} (${arr(v.glissement * 100)} %)` : '');
+    $('#horloge').innerHTML = `<div class="quand">${esc(v.quand)}</div>
+      <div>${esc(sais)} · ${v.nuit ? 'nuit' : 'jour'} (le jour va de ${v.aube} h à ${v.crep} h) ${badge('heures_jour')} · ${esc(v.meteo.nom)}${v.meteo.reste > 0 ? ` (encore ${v.meteo.reste} h)` : ''} ${badge(v.saison === 'Grand Gel' ? 'meteo_gel' : 'meteo_moisson_20')}</div>
+      <div class="avance" aria-hidden="true"><div style="width:${(100 * v.t / v.fin).toFixed(2)}%"></div></div>
+      <div class="muted note">Heure ${v.t} sur ${v.fin}. En jeu, une heure du monde dure ${R.heure_monde.minutes_reelles} min réelles ${badge('heure_monde')} : ${v.journees} journée${v.journees > 1 ? 's' : ''} = ${arr(v.fin * R.heure_monde.minutes_reelles / 60)} h de jeu réel.${v.finie ? ' <strong>Partie finie.</strong>' : ''}</div>`;
+    $('#b-lancer').disabled = v.finie; $('#b-heure').disabled = v.finie; $('#b-fin').disabled = v.finie;
+    ['#f-tempete', '#f-meute', '#f-saison'].forEach((s) => { $(s).disabled = v.finie; });
+    // besoins
+    $('#jauges').innerHTML = v.besoins.map((b) => {
+      const [cl, nom] = etatBesoin(b);
+      const suite = [];
+      if (b.fige) suite.push('la quête écrite porte ce besoin (rien ne bouge)');
+      if (b.tache) suite.push('des villageois y travaillent');
+      if (b.ordre) suite.push(`la conscience va envoyer quelqu'un (${RAISONS[b.ordre] || b.ordre})`);
+      const d = v.demandes.find((x) => x.besoin === b.id);
+      if (d) suite.push(d.acceptee !== null ? 'le héros s\'en occupe' : 'demande ouverte');
+      return `<div class="jauge" style="--c:${COUL[b.id]}"><div class="jauge-tete"><strong>${esc(b.nom)}</strong><span class="muted note">${b.id}</span>${badge(b.id.toLowerCase())}<span class="etiquette e-${cl}">${nom}</span><span class="val">${arr(b.valeur)}</span></div>
+        <div class="barre" role="img" aria-label="${esc(b.nom)} : ${arr(b.valeur)} sur 100"><div class="rempli" style="width:${b.valeur.toFixed(1)}%"></div><i style="left:${R.paliers.rumeur}%"></i><i style="left:${R.paliers.demande}%"></i><i style="left:${R.paliers.urgence}%"></i></div>
+        <div class="suite">${esc(suite.join(' · '))}</div></div>`;
+    }).join('');
+    rendreGraphe(v);
+    // demandes
+    const H = v.heros;
+    $('#heros-etat').innerHTML = `Comportement du héros : <strong>${esc(HEROS[H.mode])}</strong> ${badge(H.mode === 'parfois' ? 'heros_parfois' : 'heros_tout')} · le héros ${H.occupe ? `est occupé (fini vers le ${esc(H.finTexte)})` : 'est libre'}. Délais : ${R.delais.repondre_h} h pour répondre (${R.delais.repondre_urgence_h} h si urgent), ${R.delais.accomplir_h} h pour finir ${badge('delais')} ; ${R.limites.ouvertes} demandes ouvertes au plus, ${R.limites.par_jour} par jour ${badge('limites')}.`;
+    $('#demandes').innerHTML = v.demandes.length ? v.demandes.map((d) => {
+      const restant = d.delai - v.t;
+      return `<div class="carte" style="--c:${COUL[d.besoin]}"><h3>${esc(d.nomBesoin)}${d.urgente ? ' · <span class="etiquette e-urgence">urgent</span>' : ''}</h3>
+        <p>${esc(d.nomDemandeur)} demande : <em>${esc(d.quoi)}</em> ${badge('quantites')}</p>
+        <p class="petit">Ouverte le ${esc(d.ouverteTexte)} (besoin à ${arr(d.valeur)}).</p>
+        ${d.acceptee !== null ? '<p class="petit">Acceptée par le héros : il est en route.</p>'
+          : `<p class="petit">Réponse attendue avant le ${esc(d.delaiTexte)} (encore ${restant} h) ; sinon, la conscience s'en charge.</p>
+             <div class="rangee"><button type="button" data-repondre="${d.id}"${H.occupe || v.finie ? ' disabled' : ''}>Répondre : le héros accepte</button>${v.finie ? '<span class="muted note">partie finie</span>' : H.occupe ? '<span class="muted note">le héros est occupé</span>' : ''}</div>`}</div>`;
+    }).join('') : '<p class="vide">Aucune demande ouverte.</p>';
+    $('#badge-conscience').innerHTML = `${badge('envoyes')} ${badge('reussite')} ${badge('echec_sort')}`;
+    const att = v.besoins.filter((b) => b.ordre);
+    const taches = v.taches.map((t) => `<div class="carte" style="--c:${COUL[t.besoin]}"><h3>${esc(t.noms.join(', '))}</h3><p>${esc(t.nom)} : ${t.active ? `encore ${t.reste} h` : `en pause (encore ${t.reste} h)`}</p></div>`)
+      .concat(att.map((b) => `<div class="carte" style="--c:${COUL[b.id]}"><h3>${esc(b.nom)} : en attente</h3><p class="petit">${esc(RAISONS[b.ordre] || b.ordre)} ; la conscience n'envoie personne la nuit ni pendant une tempête, et seulement si la tâche (${R.envoyes.duree_h} h) finit avant la nuit.</p></div>`));
+    $('#taches').innerHTML = taches.length ? taches.join('') : '<p class="vide">Personne n\'est envoyé en ce moment.</p>';
+    // villageois
+    const hor = v.horaire;
+    $('#horaire-texte').innerHTML = `Emploi du temps du jour ${badge(v.saison === 'Brûlure' ? 'horaire_brulure' : v.saison === 'Grand Gel' ? 'horaire_gel' : 'horaire_degel_moisson')} : lever ${hor.lever} h, travail ${hor.t1d} h – ${hor.t1f} h et ${hor.t2d} h – ${hor.t2f} h, auberge ${hor.aubD} h – ${hor.aubF} h, maison la nuit ; abri pendant la tempête ${badge('tempete_villageois')}.`;
+    const par = {};
+    for (const x of v.villageois) (par[x.lieu] = par[x.lieu] || []).push(x);
+    $('#lieux').innerHTML = v.lieux.filter((l) => par[l.id]).map((l) => `<div class="lieu l-${l.id}"><h3>${esc(l.nom)}</h3>${par[l.id].map((x) =>
+      `<div class="vg"><b>${esc(x.nom)}${x.provisoire ? '*' : ''}</b>${x.nomme ? '' : ` <span>${esc(x.roleNom)}</span>`} · ${esc(x.activite)}</div>`).join('')}</div>`).join('');
+    // hameau et héros
+    const h = v.hameau;
+    let mef;
+    if (h.etat === 'hostile' || h.etat === 'apeure') mef = `<div class="grand">${h.etat === 'hostile' ? 'Hostile' : 'Apeuré'}</div><p class="petit muted">Plus aucune demande au héros : la conscience fait tout seule.</p>`;
+    else mef = `<div class="grand">${h.etat === 'amical' ? `« Amical » (prix ${moins(h.amicalPrix)} %)` : `+${h.mefiance} % sur les prix`}</div>
+      <div class="etapes">${Array.from({ length: h.etapes }, (_, i) => `<i class="${i < h.etape ? 'fait' : ''}"></i>`).join('')}</div>
+      <p class="petit muted">Étape ${h.etape} sur ${h.etapes} ; une demande réglée = un service rendu = une étape ${badge('etapes_par_demande')}. Services rendus : ${h.services}${h.servicesApresAmical ? ` (dont ${h.servicesApresAmical} après « Amical », sans effet)` : ''}.</p>`;
+    const xp = Object.entries(H.xp);
+    const obj = Object.entries(H.objets);
+    const prix = v.prix.map((x) => `${x.bien} ${x.hausse ? `<strong>+${x.hausse} %</strong>` : 'normal'}`).join(' · ');
+    $('#chiffres').innerHTML = [
+      `<div class="carte"><h3>Méfiance envers le héros ${badge('mefiance')}</h3>${mef}</div>`,
+      `<div class="carte"><h3>Humeur du hameau ${badge('humeur')}</h3><div class="grand">${arr(h.humeur)} · ${h.etatHumeur === 'abattu' ? 'abattu' : h.etatHumeur === 'confiant' ? 'confiant' : 'ordinaire'}</div>
+        <div class="barre" style="--c:var(--mousse)"><div class="rempli" style="width:${h.humeur.toFixed(1)}%"></div><i style="left:${R.humeur_seuils.abattu_sous}%"></i><i style="left:${R.humeur_seuils.confiant_au_dessus}%"></i></div>
+        <p class="petit muted">Sous ${R.humeur_seuils.abattu_sous} : abattu (travail ${moins(R.humeur_seuils.abattu_travail_pct)} %, soirée à la maison) ; au-dessus de ${R.humeur_seuils.confiant_au_dessus} : confiant (travail +${R.humeur_seuils.confiant_travail_pct} %) ${badge('humeur_seuils')}.</p></div>`,
+      `<div class="carte"><h3>Expérience du héros ${badge('experience')}</h3><div class="grand">${xp.length ? xp.map(([m, n]) => `${n} pts`).join(' · ') : '0 pt'}</div>
+        <p class="petit muted">${xp.length ? xp.map(([m, n]) => `${m === 'attente' ? 'compteur d\'attente' : m} : ${n}`).join(' ; ') : 'Aucune demande réglée.'} (${R.experience.points} pts par demande réglée, ${R.experience.points_urgence} si acceptée à ${R.experience.urgence_a_partir_de} ou plus)</p></div>`,
+      `<div class="carte"><h3>Récompenses ${badge('objets_nature')} ${badge('or')}</h3><div class="grand">${H.or} pièce${H.or > 1 ? 's' : ''}</div>
+        <p class="petit muted">${obj.length ? obj.map(([o, n]) => `${o} × ${n}`).join(' ; ') : 'Aucun objet reçu.'}</p></div>`,
+      `<div class="carte"><h3>Troupeau ${badge('troupeau')}</h3><div class="grand">${h.troupeau} bête${h.troupeau > 1 ? 's' : ''} sur ${h.troupeauDepart}</div><p class="petit muted">Une bête perdue par tâche ratée sur le bétail ; deux par crise. À 0 bête, le bétail ne monte plus.</p></div>`,
+      `<div class="carte"><h3>Habitants ${badge('habitants')}</h3><div class="grand">${h.habitants}</div><p class="petit muted">Dont ${v.villageois.length} suivis ici ; ${v.villageois.filter((x) => x.etat === 'blesse').length} blessé(s), ${v.villageois.filter((x) => x.etat === 'mort').length} mort(s).</p></div>`,
+      `<div class="carte"><h3>Prix chez les marchands ${badge('prix')}</h3><p>${prix}</p><p class="petit muted">+${R.prix.hausse_pct} % sur le bien qui manque dès ${R.prix.a_partir_de}, jusqu'au retour sous ${R.prix.retour_sous}, en plus de la méfiance.${h.travailMoins ? ` <strong>Crise des outils : tout le monde travaille ${moins(R.pertes_crise.B4.travail_pct)} %.</strong>` : ''}</p></div>`,
+    ].join('');
+    rendreJournal();
+    rendreBilan(v);
+  }
+
+  function rendreGraphe(v) {
+    const H = partie.historique, W = v.fin, ids = partie.besoinsIds;
+    const bandes = [];
+    let cur = null;
+    for (const x of H) {
+      const k = x.tempete ? 'tempete' : x.nuit ? 'nuit' : '';
+      if (cur && cur.k === k && x.t <= cur.fin) cur.fin = x.t + 1;
+      else { if (cur && cur.k) bandes.push(cur); cur = { k, debut: x.t, fin: x.t + 1 }; }
+    }
+    if (cur && cur.k) bandes.push(cur);
+    const y = (val) => (100 - val).toFixed(2);
+    const P = R.paliers;
+    let s = `<svg viewBox="0 0 ${W} 100" preserveAspectRatio="none" aria-hidden="true">`;
+    s += bandes.map((b) => `<rect x="${b.debut}" y="0" width="${Math.min(b.fin, W) - b.debut}" height="100" fill="${b.k === 'tempete' ? 'rgba(127,155,181,.28)' : 'rgba(0,0,0,.28)'}"/>`).join('');
+    s += [P.rumeur, P.demande, P.urgence].map((p) => `<line x1="0" x2="${W}" y1="${y(p)}" y2="${y(p)}" stroke="#3a4048" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>`).join('');
+    ids.forEach((id, i) => {
+      if (cachees.has(id)) return;
+      const pts = H.map((x) => `${x.t},${y(x.b[i])}`).join(' ');
+      s += `<polyline points="${pts}" fill="none" stroke="${COUL[id]}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+    });
+    s += `<line x1="${v.t}" x2="${v.t}" y1="0" y2="100" stroke="#e4e1d9" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>`;
+    s += [0, P.rumeur, P.demande, P.urgence, P.crise].map((p) => `<span class="axe" style="top:${100 - p}%">${p}</span>`).join('');
+    $('#graphe').innerHTML = s;
+    const debut = R.debut.heure, HJ = R.par_jour.heures_par_jour;
+    $('#jours').innerHTML = Array.from({ length: v.journees }, (_, j) => `<span style="width:${(100 * (j === 0 ? HJ - debut : HJ) / W).toFixed(3)}%">${j === 0 ? 'jour 1' : j + 1}</span>`).join('');
+    $('#legende').innerHTML = v.besoins.map((b) => `<button type="button" data-courbe="${b.id}" aria-pressed="${!cachees.has(b.id)}" style="--c:${COUL[b.id]}"><span class="pastille"></span>${esc(b.nom)}</button>`).join('');
+  }
+
+  function rendreJournal() {
+    const tout = $('#tout-journal').checked;
+    const j = partie.journal, boite = $('#journal');
+    const enBas = boite.scrollHeight - boite.scrollTop - boite.clientHeight < 40;
+    let html = '';
+    for (; nbJournal < j.length; nbJournal++) {
+      const e = j[nbJournal];
+      if (!tout && !e.important) continue;
+      html += `<div class="entree t-${e.type}"><time>${esc(e.quand)}</time><span class="texte">${esc(e.texte)}</span></div>`;
+    }
+    if (html) { boite.insertAdjacentHTML('beforeend', html); if (enBas) boite.scrollTop = boite.scrollHeight; }
+  }
+
+  function rendreBilan(v) {
+    const s = v.stats, ids = partie.besoinsIds;
+    const L1 = [
+      ['Demandes d\'aide ouvertes', s.demandes], ['… réglées par le héros', s.regleesHeros], ['… sans réponse (la conscience a pris le relais)', s.personne],
+      ['Tâches de la conscience', s.taches], ['… réussies', s.reussites], ['… échouées', s.echecs],
+      ['Villageois blessés', s.blesses], ['Villageois morts', s.morts], ['Bêtes perdues', s.betesPerdues], ['Crises (besoin à 100)', s.crises],
+      ['Tempêtes de Neige ; meutes ; morts-vivants rôdeurs', `${s.tempetes} ; ${s.meutes} ; ${s.rodeurs}`], ['Humeur la plus basse', arr(s.humeurMin)],
+    ];
+    $('#bilan').innerHTML = `<tbody>${L1.map(([a, b]) => `<tr><td>${esc(a)}</td><td class="n">${b}</td></tr>`).join('')}</tbody>
+      <thead><tr><th>Besoin</th><th>Maintenant</th><th>Le plus haut</th><th>Heures en urgence</th><th>Crises</th></tr></thead>
+      <tbody>${v.besoins.map((b) => `<tr><td>${esc(b.nom)}</td><td class="n">${arr(b.valeur)}</td><td class="n">${arr(s.max[b.id])}</td><td class="n">${s.heuresUrgence[b.id]}</td><td class="n">${s.criseParBesoin[b.id]}</td></tr>`).join('')}</tbody>`;
+  }
+
+  function comparer() {
+    const base = options(), res = [];
+    for (const mode of ['rien', 'parfois', 'tout']) {
+      const p = SimHameau.creerPartie(D, Object.assign({}, base, { heros: mode }));
+      while (p.avancer());
+      res.push([mode, p.vue()]);
+    }
+    const lignes = [
+      ['Demandes ouvertes', (v) => v.stats.demandes], ['Réglées par le héros', (v) => v.stats.regleesHeros], ['Sans réponse', (v) => v.stats.personne],
+      ['Tâches de la conscience (réussies / échouées)', (v) => `${v.stats.taches} (${v.stats.reussites} / ${v.stats.echecs})`],
+      ['Blessés', (v) => v.stats.blesses], ['Morts', (v) => v.stats.morts], ['Bêtes perdues', (v) => v.stats.betesPerdues], ['Crises', (v) => v.stats.crises],
+      ['Heures en urgence (tous besoins)', (v) => Object.values(v.stats.heuresUrgence).reduce((a, b) => a + b, 0)],
+      ['Humeur à la fin (la plus basse)', (v) => `${arr(v.hameau.humeur)} (${arr(v.stats.humeurMin)})`],
+      ['Méfiance à la fin', (v) => (v.hameau.etat === 'amical' ? '« Amical »' : v.hameau.mefiance === null ? v.hameau.etat : `+${v.hameau.mefiance} %`)],
+      ['Expérience ; or', (v) => `${Object.values(v.heros.xp).reduce((a, b) => a + b, 0)} pts ; ${v.heros.or} pièces`],
+      ['Besoins à la fin', (v) => v.besoins.map((b) => arr(b.valeur)).join(' · ')],
+    ];
+    $('#comparaison').innerHTML = `<table><thead><tr><th>Graine ${esc(base.graine)}, ${base.journees} j.</th>${res.map(([m]) => `<th>${esc(HEROS[m])}</th>`).join('')}</tr></thead>
+      <tbody>${lignes.map(([nom, f]) => `<tr><td>${esc(nom)}</td>${res.map(([, v]) => `<td class="n">${esc(f(v))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  }
+
+  function rendreReglages() {
+    $('#reglages-intro').innerHTML = `${D.nb_reglages} réglages lus dans le tableau du § 8 de la règle (T-0201), dont ${D.nb_prop} propositions « prop. ». ${esc(D.note)}`;
+    $('#reglages').innerHTML = `<thead><tr><th>Réglage</th><th>Unité</th><th>Valeur</th><th>Source</th><th></th></tr></thead><tbody>${D.groupes.map((g) =>
+      `<tr class="groupe"><td colspan="5">${esc(g.nom)}</td></tr>` + g.lignes.map((l) => `<tr id="r-${l.id}"><td>${md(l.reglage)}</td><td>${md(l.unite)}</td><td>${md(l.texte)}</td><td>${md(l.source)}</td><td>${l.prop ? '<span class="prop">prop.</span>' : '<span class="src">source</span>'}${l.jeu ? ' <span class="muted note">jeu</span>' : ''}</td></tr>`).join('')).join('')}</tbody>`;
+    $('#paliers-texte').innerHTML = badge('paliers');
+  }
+
+  charger().then((d) => {
+    D = d;
+    for (const g of D.groupes) for (const l of g.lignes) { R[l.id] = l.valeurs; L[l.id] = l; }
+    preparerCommandes();
+    vitesse = Number($('#vitesse').value);
+    rendreReglages();
+    nouvelle();
+  }, (e) => {
+    $('#message').textContent = 'Les réglages n\'ont pas pu être lus (reglages.json). Ouvrez la page depuis le site du projet.';
+    $('#horloge').textContent = 'Simulation indisponible : ' + e.message;
+  });
+})();
+</script>
+</body>
+</html>
