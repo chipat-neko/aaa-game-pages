@@ -127,7 +127,7 @@ tr.vu{background:rgba(212,168,87,.14)}
 <header>
   <div class="surtitre">Projet AAA · simulation · T-0202 · D-305</div>
   <h1>Simulation <em>du hameau</em></h1>
-  <p class="lecture">Le Hameau de la Brume vit seul pendant 1 à 15 journées de jeu. Ses besoins montent heure par heure ; les villageois suivent leur emploi du temps et demandent de l'aide au héros. Si personne ne vient, la conscience du hameau envoie elle-même des villageois, avec des risques : blessés, morts, bêtes perdues.</p>
+  <p class="lecture">Le Hameau de la Brume vit seul pendant <span id="t-journees">plusieurs</span> journées de jeu. Ses besoins montent heure par heure ; les villageois suivent leur emploi du temps et demandent de l'aide au héros. Si personne ne vient, la conscience du hameau envoie elle-même des villageois, avec des risques : blessés, morts, bêtes perdues.</p>
   <p class="lecture muted">La règle jouée ici est la proposition de T-0201, pas encore validée (D-305, D-295). Tous les chiffres viennent de son tableau de réglages, en bas de page. Le badge <span class="prop">prop.</span> marque une valeur proposée, à valider ; le badge <span class="src">source</span> marque une valeur tirée d'un document ou d'une décision. Touchez un badge pour voir sa ligne.</p>
 </header>
 
@@ -164,7 +164,7 @@ tr.vu{background:rgba(212,168,87,.14)}
 
 <section id="besoins">
   <h2>Besoins du hameau</h2>
-  <p class="lecture muted note">De 0 (rien ne manque) à 100 (crise). Paliers <span id="paliers-texte"></span> : à 40, on en parle à l'auberge ; à 60, un villageois demande de l'aide au héros ; à 80, c'est urgent ; à 100, c'est la crise.</p>
+  <p class="lecture muted note" id="besoins-note"></p>
   <div class="jauges" id="jauges"></div>
   <div class="graphe-cadre">
     <div class="graphe" id="graphe"></div>
@@ -224,9 +224,9 @@ tr.vu{background:rgba(212,168,87,.14)}
 <section id="limites">
   <h2>Ce que la simulation simplifie</h2>
   <ul class="liste lecture">
-    <li>Le temps avance d'une heure du monde à la fois ; les heures du jour et de l'emploi du temps sont arrondies à l'heure (la Brûlure va de 2 h 40 à 21 h 20 : ici, de 3 h à 21 h).</li>
+    <li id="limite-heures">Le temps avance d'une heure du monde à la fois ; les heures du jour et de l'emploi du temps sont arrondies à l'heure.</li>
     <li>Le héros simulé ne se déplace pas : il accepte, puis il a fini au bout de la durée prévue pour le besoin, toujours avec succès. Sa mort en route, les objets donnés hors demande, la magie vue par un habitant et le hameau qui devient hostile en cours de partie ne sont pas simulés.</li>
-    <li>Choix de la simulation, que la règle ne fixe pas : les effets sur le travail (pluie, humeur, crise des outils) se multiplient ; une demande ne s'ouvre que si son demandeur est debout ; la recharge de 24 h d'un besoin compte depuis la fermeture de sa demande ; à 80, le délai restant passe à 6 h au plus ; « sous la pluie » veut dire : il pleut quand la tâche se termine.</li>
+    <li id="limite-choix">Choix de la simulation, que la règle ne fixe pas.</li>
     <li>La brume n'est pas simulée (elle ne change aucun besoin). Les prix sont montrés en pourcentage : aucun marchand n'est simulé.</li>
     <li>Les noms des villageois sont provisoires. Rien ici n'entre dans les documents avant la validation par le directeur (questionnaire groupé, D-295).</li>
   </ul>
@@ -396,13 +396,16 @@ tr.vu{background:rgba(212,168,87,.14)}
     if (b.valeur >= P.rumeur) return ['rumeur', 'rumeur'];
     return ['calme', 'calme'];
   }
-  const RAISONS = { delai: 'personne n\'a répondu', crise: 'crise', 'sans-demande': 'aucune demande possible', 'reste-haut': 'le besoin reste à 80 ou plus' };
+  const raison = (k) => ({ delai: 'personne n\'a répondu', crise: 'crise', 'sans-demande': 'aucune demande possible', 'reste-haut': `le besoin reste à ${R.paliers.urgence} ou plus` }[k] || k);
+  // place sur une jauge, en % de sa largeur, d'après les bornes du tableau (besoins, humeur)
+  const pctBesoin = (x) => 100 * (x - R.besoins_depart.min) / (R.besoins_depart.max - R.besoins_depart.min);
+  const pctHumeur = (x) => 100 * (x - R.humeur.min) / (R.humeur.max - R.humeur.min);
   function rendre() {
     const v = partie.vue();
     // maintenant
     const sais = `${v.saison}, jour ${v.jourSaison}` + (v.figee ? ' (saison figée)' : v.glissement > 0 ? ` · glisse vers le ${v.suivante} (${arr(v.glissement * 100)} %)` : '');
     $('#horloge').innerHTML = `<div class="quand">${esc(v.quand)}</div>
-      <div>${esc(sais)} · ${v.nuit ? 'nuit' : 'jour'} (le jour va de ${v.aube} h à ${v.crep} h) ${badge('heures_jour')} · ${esc(v.meteo.nom)}${v.meteo.reste > 0 ? ` (encore ${v.meteo.reste} h)` : ''} ${badge(v.saison === 'Grand Gel' ? 'meteo_gel' : 'meteo_moisson_20')}</div>
+      <div>${esc(sais)} · ${v.nuit ? 'nuit' : 'jour'} (le jour va de ${v.aube} h à ${v.crep} h) ${badge('heures_jour')} · ${esc(v.meteo.nom)}${v.meteo.reste > 0 ? ` (encore ${v.meteo.reste} h)` : ''} ${v.meteo.lignes.map(badge).join(' ')}</div>
       <div class="avance" aria-hidden="true"><div style="width:${(100 * v.t / v.fin).toFixed(2)}%"></div></div>
       <div class="muted note">Heure ${v.t} sur ${v.fin}. En jeu, une heure du monde dure ${R.heure_monde.minutes_reelles} min réelles ${badge('heure_monde')} : ${v.journees} journée${v.journees > 1 ? 's' : ''} = ${arr(v.fin * R.heure_monde.minutes_reelles / 60)} h de jeu réel.${v.finie ? ' <strong>Partie finie.</strong>' : ''}</div>`;
     $('#b-lancer').disabled = v.finie; $('#b-heure').disabled = v.finie; $('#b-fin').disabled = v.finie;
@@ -411,13 +414,13 @@ tr.vu{background:rgba(212,168,87,.14)}
     $('#jauges').innerHTML = v.besoins.map((b) => {
       const [cl, nom] = etatBesoin(b);
       const suite = [];
-      if (b.fige) suite.push('la quête écrite porte ce besoin (rien ne bouge)');
+      if (b.fige) suite.push(b.sansBetes ? 'plus de bêtes : rien ne bouge (ni crise, ni demande, ni garde)' : 'la quête écrite porte ce besoin (rien ne bouge)');
       if (b.tache) suite.push('des villageois y travaillent');
-      if (b.ordre) suite.push(`la conscience va envoyer quelqu'un (${RAISONS[b.ordre] || b.ordre})`);
+      if (b.ordre) suite.push(`la conscience va envoyer quelqu'un (${raison(b.ordre)})`);
       const d = v.demandes.find((x) => x.besoin === b.id);
       if (d) suite.push(d.acceptee !== null ? 'le héros s\'en occupe' : 'demande ouverte');
       return `<div class="jauge" style="--c:${COUL[b.id]}"><div class="jauge-tete"><strong>${esc(b.nom)}</strong><span class="muted note">${b.id}</span>${badge(b.id.toLowerCase())}<span class="etiquette e-${cl}">${nom}</span><span class="val">${arr(b.valeur)}</span></div>
-        <div class="barre" role="img" aria-label="${esc(b.nom)} : ${arr(b.valeur)} sur 100"><div class="rempli" style="width:${b.valeur.toFixed(1)}%"></div><i style="left:${R.paliers.rumeur}%"></i><i style="left:${R.paliers.demande}%"></i><i style="left:${R.paliers.urgence}%"></i></div>
+        <div class="barre" role="img" aria-label="${esc(b.nom)} : ${arr(b.valeur)} sur ${R.besoins_depart.max}"><div class="rempli" style="width:${pctBesoin(b.valeur).toFixed(1)}%"></div><i style="left:${pctBesoin(R.paliers.rumeur)}%"></i><i style="left:${pctBesoin(R.paliers.demande)}%"></i><i style="left:${pctBesoin(R.paliers.urgence)}%"></i></div>
         <div class="suite">${esc(suite.join(' · '))}</div></div>`;
     }).join('');
     rendreGraphe(v);
@@ -436,7 +439,7 @@ tr.vu{background:rgba(212,168,87,.14)}
     $('#badge-conscience').innerHTML = `${badge('envoyes')} ${badge('reussite')} ${badge('echec_sort')}`;
     const att = v.besoins.filter((b) => b.ordre);
     const taches = v.taches.map((t) => `<div class="carte" style="--c:${COUL[t.besoin]}"><h3>${esc(t.noms.join(', '))}</h3><p>${esc(t.nom)} : ${t.active ? `encore ${t.reste} h` : `en pause (encore ${t.reste} h)`}</p></div>`)
-      .concat(att.map((b) => `<div class="carte" style="--c:${COUL[b.id]}"><h3>${esc(b.nom)} : en attente</h3><p class="petit">${esc(RAISONS[b.ordre] || b.ordre)} ; la conscience n'envoie personne la nuit ni pendant une tempête, et seulement si la tâche (${R.envoyes.duree_h} h) finit avant la nuit.</p></div>`));
+      .concat(att.map((b) => `<div class="carte" style="--c:${COUL[b.id]}"><h3>${esc(b.nom)} : en attente</h3><p class="petit">${esc(raison(b.ordre))} ; la conscience n'envoie personne la nuit ni pendant une tempête, et seulement si la tâche (${R.envoyes.duree_h} h) finit avant la nuit.</p></div>`));
     $('#taches').innerHTML = taches.length ? taches.join('') : '<p class="vide">Personne n\'est envoyé en ce moment.</p>';
     // villageois
     const hor = v.horaire;
@@ -451,20 +454,20 @@ tr.vu{background:rgba(212,168,87,.14)}
     if (h.etat === 'hostile' || h.etat === 'apeure') mef = `<div class="grand">${h.etat === 'hostile' ? 'Hostile' : 'Apeuré'}</div><p class="petit muted">Plus aucune demande au héros : la conscience fait tout seule.</p>`;
     else mef = `<div class="grand">${h.etat === 'amical' ? `« Amical » (prix ${moins(h.amicalPrix)} %)` : `+${h.mefiance} % sur les prix`}</div>
       <div class="etapes">${Array.from({ length: h.etapes }, (_, i) => `<i class="${i < h.etape ? 'fait' : ''}"></i>`).join('')}</div>
-      <p class="petit muted">Étape ${h.etape} sur ${h.etapes} ; une demande réglée = un service rendu = une étape ${badge('etapes_par_demande')}. Services rendus : ${h.services}${h.servicesApresAmical ? ` (dont ${h.servicesApresAmical} après « Amical », sans effet)` : ''}.</p>`;
+      <p class="petit muted">Étape ${h.etape} sur ${h.etapes} ; une demande réglée = un service rendu = ${R.etapes_par_demande.etapes === 1 ? 'une étape' : `${R.etapes_par_demande.etapes} étapes`} ${badge('etapes_par_demande')}. Services rendus : ${h.services}${h.servicesApresAmical ? ` (dont ${h.servicesApresAmical} après « Amical », sans effet)` : ''}.</p>`;
     const xp = Object.entries(H.xp);
     const obj = Object.entries(H.objets);
     const prix = v.prix.map((x) => `${x.bien} ${x.hausse ? `<strong>+${x.hausse} %</strong>` : 'normal'}`).join(' · ');
     $('#chiffres').innerHTML = [
       `<div class="carte"><h3>Méfiance envers le héros ${badge('mefiance')}</h3>${mef}</div>`,
       `<div class="carte"><h3>Humeur du hameau ${badge('humeur')}</h3><div class="grand">${arr(h.humeur)} · ${h.etatHumeur === 'abattu' ? 'abattu' : h.etatHumeur === 'confiant' ? 'confiant' : 'ordinaire'}</div>
-        <div class="barre" style="--c:var(--mousse)"><div class="rempli" style="width:${h.humeur.toFixed(1)}%"></div><i style="left:${R.humeur_seuils.abattu_sous}%"></i><i style="left:${R.humeur_seuils.confiant_au_dessus}%"></i></div>
+        <div class="barre" style="--c:var(--mousse)"><div class="rempli" style="width:${pctHumeur(h.humeur).toFixed(1)}%"></div><i style="left:${pctHumeur(R.humeur_seuils.abattu_sous)}%"></i><i style="left:${pctHumeur(R.humeur_seuils.confiant_au_dessus)}%"></i></div>
         <p class="petit muted">Sous ${R.humeur_seuils.abattu_sous} : abattu (travail ${moins(R.humeur_seuils.abattu_travail_pct)} %, soirée à la maison) ; au-dessus de ${R.humeur_seuils.confiant_au_dessus} : confiant (travail +${R.humeur_seuils.confiant_travail_pct} %) ${badge('humeur_seuils')}.</p></div>`,
       `<div class="carte"><h3>Expérience du héros ${badge('experience')}</h3><div class="grand">${xp.length ? xp.map(([m, n]) => `${n} pts`).join(' · ') : '0 pt'}</div>
         <p class="petit muted">${xp.length ? xp.map(([m, n]) => `${m === 'attente' ? 'compteur d\'attente' : m} : ${n}`).join(' ; ') : 'Aucune demande réglée.'} (${R.experience.points} pts par demande réglée, ${R.experience.points_urgence} si acceptée à ${R.experience.urgence_a_partir_de} ou plus)</p></div>`,
       `<div class="carte"><h3>Récompenses ${badge('objets_nature')} ${badge('or')}</h3><div class="grand">${H.or} pièce${H.or > 1 ? 's' : ''}</div>
         <p class="petit muted">${obj.length ? obj.map(([o, n]) => `${o} × ${n}`).join(' ; ') : 'Aucun objet reçu.'}</p></div>`,
-      `<div class="carte"><h3>Troupeau ${badge('troupeau')}</h3><div class="grand">${h.troupeau} bête${h.troupeau > 1 ? 's' : ''} sur ${h.troupeauDepart}</div><p class="petit muted">Une bête perdue par tâche ratée sur le bétail ; deux par crise. À 0 bête, le bétail ne monte plus.</p></div>`,
+      `<div class="carte"><h3>Troupeau ${badge('troupeau')}</h3><div class="grand">${h.troupeau} bête${h.troupeau > 1 ? 's' : ''} sur ${h.troupeauDepart}</div><p class="petit muted">${R.troupeau.perte_echec} bête${R.troupeau.perte_echec > 1 ? 's' : ''} perdue${R.troupeau.perte_echec > 1 ? 's' : ''} par tâche ratée sur le bétail ; ${R.pertes_crise.B2.betes} par crise ${badge('pertes_crise')}. À 0 bête, le bétail ne monte plus, donc plus de crise ; ici, il est aussi figé : ni demande, ni garde (choix de la simulation).</p></div>`,
       `<div class="carte"><h3>Habitants ${badge('habitants')}</h3><div class="grand">${h.habitants}</div><p class="petit muted">Dont ${v.villageois.length} suivis ici ; ${v.villageois.filter((x) => x.etat === 'blesse').length} blessé(s), ${v.villageois.filter((x) => x.etat === 'mort').length} mort(s).</p></div>`,
       `<div class="carte"><h3>Prix chez les marchands ${badge('prix')}</h3><p>${prix}</p><p class="petit muted">+${R.prix.hausse_pct} % sur le bien qui manque dès ${R.prix.a_partir_de}, jusqu'au retour sous ${R.prix.retour_sous}, en plus de la méfiance.${h.travailMoins ? ` <strong>Crise des outils : tout le monde travaille ${moins(R.pertes_crise.B4.travail_pct)} %.</strong>` : ''}</p></div>`,
     ].join('');
@@ -482,7 +485,7 @@ tr.vu{background:rgba(212,168,87,.14)}
       else { if (cur && cur.k) bandes.push(cur); cur = { k, debut: x.t, fin: x.t + 1 }; }
     }
     if (cur && cur.k) bandes.push(cur);
-    const y = (val) => (100 - val).toFixed(2);
+    const y = (val) => (100 - pctBesoin(val)).toFixed(2);
     const P = R.paliers;
     let s = `<svg viewBox="0 0 ${W} 100" preserveAspectRatio="none" aria-hidden="true">`;
     s += bandes.map((b) => `<rect x="${b.debut}" y="0" width="${Math.min(b.fin, W) - b.debut}" height="100" fill="${b.k === 'tempete' ? 'rgba(127,155,181,.28)' : 'rgba(0,0,0,.28)'}"/>`).join('');
@@ -493,7 +496,7 @@ tr.vu{background:rgba(212,168,87,.14)}
       s += `<polyline points="${pts}" fill="none" stroke="${COUL[id]}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
     });
     s += `<line x1="${v.t}" x2="${v.t}" y1="0" y2="100" stroke="#e4e1d9" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>`;
-    s += [0, P.rumeur, P.demande, P.urgence, P.crise].map((p) => `<span class="axe" style="top:${100 - p}%">${p}</span>`).join('');
+    s += [R.besoins_depart.min, P.rumeur, P.demande, P.urgence, P.crise].map((p) => `<span class="axe" style="top:${y(p)}%">${p}</span>`).join('');
     $('#graphe').innerHTML = s;
     const debut = R.debut.heure, HJ = R.par_jour.heures_par_jour;
     $('#jours').innerHTML = Array.from({ length: v.journees }, (_, j) => `<span style="width:${(100 * (j === 0 ? HJ - debut : HJ) / W).toFixed(3)}%">${j === 0 ? 'jour 1' : j + 1}</span>`).join('');
@@ -551,7 +554,20 @@ tr.vu{background:rgba(212,168,87,.14)}
     $('#reglages-intro').innerHTML = `${D.nb_reglages} réglages lus dans le tableau du § 8 de la règle (T-0201), dont ${D.nb_prop} propositions « prop. ». ${esc(D.note)}`;
     $('#reglages').innerHTML = `<thead><tr><th>Réglage</th><th>Unité</th><th>Valeur</th><th>Source</th><th></th></tr></thead><tbody>${D.groupes.map((g) =>
       `<tr class="groupe"><td colspan="5">${esc(g.nom)}</td></tr>` + g.lignes.map((l) => `<tr id="r-${l.id}"><td>${md(l.reglage)}</td><td>${md(l.unite)}</td><td>${md(l.texte)}</td><td>${md(l.source)}</td><td>${l.prop ? '<span class="prop">prop.</span>' : '<span class="src">source</span>'}${l.jeu ? ' <span class="muted note">jeu</span>' : ''}</td></tr>`).join('')).join('')}</tbody>`;
-    $('#paliers-texte').innerHTML = badge('paliers');
+    rendreTextes();
+  }
+
+  // textes fixes de la page dont les chiffres viennent du tableau (aucun chiffre de la règle écrit en dur)
+  function rendreTextes() {
+    const P = R.paliers, M = R.heures_jour.minutes;
+    $('#t-journees').textContent = `${R.debut.journees_min} à ${R.debut.journees_max}`;
+    $('#besoins-note').innerHTML = `De ${R.besoins_depart.min} (rien ne manque) à ${R.besoins_depart.max} (crise). Paliers ${badge('paliers')} : à ${P.rumeur}, on en parle à l'auberge ; à ${P.demande}, un villageois demande de l'aide au héros ; à ${P.urgence}, c'est urgent ; à ${P.crise}, c'est la crise.`;
+    const hm = (m) => `${Math.floor(m / 60)} h${m % 60 ? ' ' + m % 60 : ''}`;
+    const arrondies = Object.keys(M).filter((s) => M[s].some((m) => m % 60))
+      .map((s) => `${s} : le jour va de ${hm(M[s][0])} à ${hm(M[s][1])} ; ici, de ${Math.round(M[s][0] / 60)} h à ${Math.round(M[s][1] / 60)} h`);
+    $('#limite-heures').innerHTML = `Le temps avance d'une heure du monde à la fois ; les heures du jour et de l'emploi du temps sont arrondies à l'heure${arrondies.length ? ` (${esc(arrondies.join(' ; '))})` : ''} ${badge('heures_jour')}.`;
+    $('#limite-choix').innerHTML = `Choix de la simulation, que la règle ne fixe pas : les effets sur le travail (pluie, humeur, crise des outils) se multiplient ; une demande ne s'ouvre que si son demandeur est debout ; la recharge de ${R.limites.recharge_h} h d'un besoin compte depuis la fermeture de sa demande ; à ${P.urgence}, le délai restant passe à ${R.delais.repondre_urgence_h} h au plus ; « sous la pluie » veut dire : il pleut quand la tâche se termine.
+      <strong>Ajoutés à la correction 1 :</strong> quand le héros a accepté la demande d'un besoin, la conscience ne prend pas ce besoin, même à ${P.crise} : on laisse le héros finir (la règle ne prévoit pas d'exception ; les pertes de crise ont lieu quand même) ; l'agente du Cartel n'est jamais tirée au sort pour demander de l'aide pour les soins, car elle n'est pas une habitante (la règle n'exclut que le chef) ; à 0 bête, le bétail ne monte plus (règle), donc plus de crise ; ici, il est aussi figé : il ne baisse plus, aucune demande ne s'ouvre et personne n'est envoyé garder un troupeau vide (la demande ou la garde en cours s'arrête).`;
   }
 
   charger().then((d) => {

@@ -10,7 +10,14 @@
    - à 80, le délai restant d'une demande pas encore acceptée passe à 6 h au plus ;
    - « sous la pluie » (réussite d'une tâche) = il pleut quand la tâche se termine ;
    - météo, bêtes, villageois et héros tirent leur hasard dans des suites séparées : avec la même graine, deux
-     comportements du héros ont la même météo et les mêmes loups (tant qu'on ne force rien). */
+     comportements du héros ont la même météo et les mêmes loups (tant qu'on ne force rien) ;
+   - (correction 1) quand le héros a accepté la demande d'un besoin, la conscience ne prend pas ce besoin, même à 100
+     (la règle ne prévoit pas d'exception) : on laisse le héros finir ; les pertes de crise ont lieu quand même ;
+   - (correction 1) l'agente du Cartel n'est jamais tirée au sort pour demander de l'aide pour les soins (B6) : elle
+     n'est pas une habitante (§ 4) ; le § 8 n'exclut que le chef ;
+   - (correction 1) à 0 bête, le bétail (B2) est figé, comme le transcrit reglages.json (zero_bete_b2_fige) : il ne
+     monte plus (ni la nuit, ni la tempête, ni la meute), aucune crise, aucune demande, aucune garde ; la demande ou la
+     garde en cours s'arrête. La règle dit seulement « ne monte plus ». */
 (function (racine) {
   'use strict';
 
@@ -66,9 +73,10 @@
       for (const cle in a) r[cle] = a[cle] + (b[cle] - a[cle]) * k;
       return r;
     }
-    const chancesBase = (s, j) => (s === 'Moisson'
-      ? (j <= R.meteo_moisson_1_19.jusqu_au_jour ? R.meteo_moisson_1_19.chances : R.meteo_moisson_20.chances)
-      : s === 'Grand Gel' ? R.meteo_gel.chances : R.meteo_degel_brulure[s]);
+    const ligneMeteo = (s, j) => (s === 'Moisson'   // la ligne du § 8 qui donne les chances de la météo
+      ? (j <= R.meteo_moisson_1_19.jusqu_au_jour ? 'meteo_moisson_1_19' : 'meteo_moisson_20')
+      : s === 'Grand Gel' ? 'meteo_gel' : 'meteo_degel_brulure');
+    const chancesBase = (s, j) => { const id = ligneMeteo(s, j); return id === 'meteo_degel_brulure' ? R[id][s] : R[id].chances; };
     function horaireBase(s) {
       const h = [R.horaire_degel_moisson, R.horaire_brulure, R.horaire_gel].find((x) => x.saisons.includes(s));
       return { lever: h.lever, t1d: h.travail[0][0], t1f: h.travail[0][1], t2d: h.travail[1][0], t2f: h.travail[1][1],
@@ -100,7 +108,7 @@
       etat: o.etat, etape: o.etat === 'amical' ? R.mefiance.etapes_pct.length - 1 : 0,
       services: 0, servicesApresAmical: 0,
       heros: { mode: o.heros, finA: null, demande: null, xp: {}, or: 0, objets: {} },
-      troupeau: R.troupeau.depart, silenceSoir: false, remplacements: [], derniersRodeurs: null,
+      troupeau: R.troupeau.depart, sansBetes: false, silenceSoir: false, remplacements: [], derniersRodeurs: null,
       journal: [], historique: [], finie: false,
       stats: { demandes: 0, regleesHeros: 0, personne: 0, taches: 0, reussites: 0, echecs: 0, blesses: 0, morts: 0,
         betesPerdues: 0, crises: 0, criseParBesoin: {}, max: {}, heuresUrgence: {}, rumeurs: 0, tempetes: 0, meutes: 0,
@@ -119,6 +127,7 @@
     const qui = (v) => (ROLES[v.roleDepart].nomme ? v.nom : `${v.nom} (${nomRole(v)})`);
     const liste = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' et ' + xs[xs.length - 1]);
     const arr = (x) => Math.round(x);
+    const nombre = (x) => String(x).replace('.', ',');   // écriture française d'un réglage (0,5)
     const Maj = (s) => s.charAt(0).toUpperCase() + s.slice(1);
     function noter(texte, type, important) { p.journal.push({ t: p.t, quand: quand(p.t), texte: Maj(texte), type, important: !!important }); }
     function calEffectif() { return o.modeSaison === 'figee' ? p.calFige : p.cal; }
@@ -148,6 +157,10 @@
     function humeur(d) { p.humeur = borne(p.humeur + d, R.humeur.min, R.humeur.max); }
 
     // --- météo ----------------------------------------------------------------------------------------------------------
+    function sansGibier() {   // part de l'heure en cours sans gibier, après la tempête (vaut pour toute durée de retour)
+      const h = R.retour_gibier.heures, deja = Math.ceil(h) - p.apresTempete;   // heures déjà passées depuis la fin
+      return borne(h - deja, 0, 1);
+    }
     function debutTempete() {
       p.stats.tempetes++;
       const b2 = changer('B2', R.b2_tempete_loup.tempete_debut), b5 = changer('B5', R.b5.tempete_debut);
@@ -168,7 +181,7 @@
       p.meteo = { type, reste: entre(f, R.meteo_duree.min_h, R.meteo_duree.max_h), debut: p.t };
       if (avant === 'tempete' && type !== 'tempete') {
         p.apresTempete = Math.ceil(R.retour_gibier.heures);
-        noter(`la tempête est finie (${METEO[type]}) : chacun reprend son travail ; le gibier revient ${R.retour_gibier.heures === 0.5 ? 'une demi-heure' : R.retour_gibier.heures + ' h'} plus tard.`, 'meteo', true);
+        noter(`la tempête est finie (${METEO[type]}) : chacun reprend son travail ; le gibier revient ${nombre(R.retour_gibier.heures)} h plus tard.`, 'meteo', true);
       } else if (type === 'tempete' && (avant !== 'tempete' || forcee)) debutTempete();
       else if (type !== avant && avant !== null) {
         const t = { clair: 'le ciel se dégage', couvert: 'le ciel se couvre', pluie: 'il se met à pleuvoir : on travaille plus lentement', neige: 'il neige : le froid monte' }[type];
@@ -229,6 +242,7 @@
     function demandeurPossible(b) {
       const role = R.demandeur[b];
       let c;
+      // choix de la simulation (signalé dans la page) : l'agente du Cartel n'est pas tirée au sort, elle n'est pas une habitante
       if (role === 'tirage') c = p.villageois.filter((v) => valide(v) && !R.demandeur.jamais.includes(v.role) && v.role !== 'agente');
       else c = p.villageois.filter((v) => vivant(v) && v.role === role);
       if (c.length > 1 && R.changement_demandeur.pas_deux_fois_de_suite) c = c.filter((v) => v.id !== p.dernierDemandeur[b]);
@@ -293,8 +307,9 @@
       if (p.etat === 'amical') { p.servicesApresAmical++; rep = 'le hameau est déjà « Amical » : le service est compté, sans effet (paliers au-delà à définir)'; }
       else if (p.etat === 'mefiant') {
         p.etape = Math.min(p.etape + R.etapes_par_demande.etapes, etapes.length - 1);
-        if (p.etape === etapes.length - 1) { p.etat = 'amical'; rep = `la méfiance tombe à 0 : le hameau devient « Amical » (prix ${String(R.amical.prix_pct).replace('-', '−')} %)`; }
-        else rep = `la méfiance du hameau baisse d'une étape (prix +${etapes[p.etape]} %)`;
+        const n = R.etapes_par_demande.etapes;
+        if (p.etape === etapes.length - 1) { p.etat = 'amical'; rep = `la méfiance tombe à ${etapes[etapes.length - 1]} : le hameau devient « Amical » (prix ${String(R.amical.prix_pct).replace('-', '−')} %)`; }
+        else rep = `la méfiance du hameau baisse ${n === 1 ? 'd\'une étape' : `de ${n} étapes`} (prix +${etapes[p.etape]} %)`;
       } else rep = 'le hameau reste ' + p.etat;
       fermer(d, 'heros');
       noter(`${INFO[b].heros_fait} : ${INFO[b].le} baisse de ${-R.demande_reglee.baisse} (${arr(av)} → ${arr(ap)}). Il gagne ${pts} points d'expérience (${metier === 'attente' ? 'compteur d\'attente' : metier})${objet ? ', ' + objet : ''}${R.or[b] ? ' et ' + R.or[b] + ' pièce' + (R.or[b] > 1 ? 's' : '') : ''} ; ${rep}.${soins.length ? ' Remède donné à ' + liste(soins) + '.' : ''}`, 'heros', true);
@@ -303,7 +318,8 @@
     // --- conscience collective -----------------------------------------------------------------------------------------
     function ordonner(b, raison) {
       if (p.fige[b] || p.ordres[b] || p.taches.some((t) => t.besoin === b)) return;
-      if (p.demandes.some((d) => d.besoin === b && d.acceptee !== null)) return;   // le héros s'en occupe
+      // choix de la simulation (signalé dans la page) : le héros a accepté, on le laisse finir, même à 100
+      if (p.demandes.some((d) => d.besoin === b && d.acceptee !== null)) return;
       p.ordres[b] = { raison, depuis: p.t, attente: false };
     }
     function nombreEnvoyes(val) {
@@ -368,7 +384,7 @@
           if (r < sort.mort_pct / 100 && o.morts === 'oui') { tuer(v); suites.push(`${v.nom} ne revient pas : ${v.genre === 'f' ? 'elle' : 'il'} est mort${e(v)}`); }
           else if (r < (sort.mort_pct + sort.blesse_pct) / 100) suites.push(blesser(v, 'revient blessé' + e(v)).replace(`${v.nom} revient blessé${e(v)} : `, `${v.nom} revient `));
         }
-        if (b === 'B2' && p.troupeau > 0) { const k = Math.min(p.troupeau, R.troupeau.perte_echec); p.troupeau -= k; p.stats.betesPerdues += k; suites.push(`${k} bête perdue (troupeau : ${p.troupeau})`); }
+        if (b === 'B2' && p.troupeau > 0) { const k = Math.min(p.troupeau, R.troupeau.perte_echec); p.troupeau -= k; p.stats.betesPerdues += k; suites.push(`${betes(k)} (troupeau : ${p.troupeau})${plusDeBetes()}`); }
         if (b === 'B4') { const o4 = changer('B4', R.b4.outil_perdu); suites.push(`un outil est perdu (outils +${R.b4.outil_perdu} : ${arr(o4[1])})`); }
         noter(`${INFO[b].tache_nom} a échoué : ${INFO[b].le} ne baisse que de ${-R.baisse_tache.echec} (${arr(av)} → ${arr(ap)})${suites.length ? '. ' + suites.join('. ') : ''}.`, 'conscience', true);
       }
@@ -376,6 +392,24 @@
     }
 
     // --- bêtes, crises, rumeurs ----------------------------------------------------------------------------------------
+    const betes = (k) => `${k} bête${k > 1 ? 's' : ''} perdue${k > 1 ? 's' : ''}`;
+    function plusDeBetes() {   // § 8 : « à 0 bête, B2 ne monte plus » ; figé comme le transcrit reglages.json (zero_bete_b2_fige)
+      if (p.troupeau > 0 || !R.troupeau.zero_bete_b2_fige || p.fige.B2) return '';
+      p.fige.B2 = true; p.sansBetes = true;
+      delete p.ordres.B2;
+      const suites = [];
+      for (const d of p.demandes.filter((y) => y.besoin === 'B2')) {
+        fermer(d, 'sans-betes');
+        if (p.heros.demande === d.id) { p.heros.finA = null; p.heros.demande = null; }
+        suites.push(`la demande de ${d.nomDemandeur} est retirée`);
+      }
+      for (const t of p.taches.filter((y) => y.besoin === 'B2')) {
+        p.taches = p.taches.filter((y) => y !== t);
+        for (const v of t.equipe.map(parId).filter(Boolean)) v.tache = null;
+        suites.push(`${INFO.B2.tache_nom} s'arrête`);
+      }
+      return ` ; plus de bêtes : ${INFO.B2.le} ne bouge plus (ni crise, ni demande, ni garde)${suites.length ? ' ; ' + suites.join(' ; ') : ''}`;
+    }
     function meute(f, quand) {
       const n = entre(f, R.meute.taille[0], R.meute.taille[1]);
       p.stats.meutes++;
@@ -396,7 +430,7 @@
       const pc = R.pertes_crise;
       let txt = '';
       if (b === 'B1') { p.hausseB1.push(p.t + pc.B1.apres_h); txt = `des réserves sont gâchées : ${INFO.B1.le} montera encore de ${pc.B1.hausse} dans ${pc.B1.apres_h} h`; }
-      if (b === 'B2') { const k = Math.min(p.troupeau, pc.B2.betes); p.troupeau -= k; p.stats.betesPerdues += k; txt = `${k} bêtes perdues (troupeau : ${p.troupeau})${p.troupeau ? '' : ' ; plus de bêtes : le bétail ne monte plus'}`; }
+      if (b === 'B2') { const k = Math.min(p.troupeau, pc.B2.betes); p.troupeau -= k; p.stats.betesPerdues += k; txt = `${betes(k)} (troupeau : ${p.troupeau})${plusDeBetes()}`; }
       if (b === 'B3' || b === 'B5') {
         const c = eligiblesPertes();
         const ks = [];
@@ -532,7 +566,7 @@
         if (v.role === 'paysan') tr = { besoin: TRAVAIL.chasseur ? TRAVAIL.chasseur.besoin : 'B1', j: x.paysan };
         if (!tr || !tr.j) continue;
         let g = f;
-        if (v.role === 'chasseur') { g *= x.chasse; if (p.apresTempete > 0) g *= 1 - R.retour_gibier.heures; }
+        if (v.role === 'chasseur') { g *= x.chasse; if (p.apresTempete > 0) g *= 1 - sansGibier(); }
         d[tr.besoin] += tr.j / ref * g;
       }
       for (const b of BES) if (!p.fige[b]) { p.besoins[b] = borne(p.besoins[b] + d[b], BMIN, BMAX); p.stats.max[b] = Math.max(p.stats.max[b], p.besoins[b]); }
@@ -585,8 +619,10 @@
         t: p.t, fin: p.fin, finie: p.finie, quand: quand(p.t), jour: jourDe(p.t), heure: heureDe(p.t), journees: o.journees,
         saison: c.saison, jourSaison: c.jour, glissement: o.modeSaison !== 'figee' ? part(c) : 0, suivante: suivante(c.saison),
         figee: o.modeSaison === 'figee', nuit: x.nuit, aube: x.aube, crep: x.crep, horaire: x.hor,
-        meteo: { type: p.meteo.type, nom: METEO[p.meteo.type], reste: p.meteo.reste },
-        besoins: BES.map((b) => ({ id: b, nom: INFO[b].nom, valeur: p.besoins[b], fige: !!p.fige[b], crise: !!p.crise[b],
+        meteo: { type: p.meteo.type, nom: METEO[p.meteo.type], reste: p.meteo.reste,
+          // lignes du § 8 qui donnent les chances : celle de la saison, et celle de la suivante pendant le glissement
+          lignes: [...new Set([ligneMeteo(c.saison, c.jour)].concat(part(c) > 0 ? [ligneMeteo(suivante(c.saison), PREMIER_JOUR)] : []))] },
+        besoins: BES.map((b) => ({ id: b, nom: INFO[b].nom, valeur: p.besoins[b], fige: !!p.fige[b], sansBetes: b === 'B2' && !!p.sansBetes, crise: !!p.crise[b],
           ordre: p.ordres[b] ? p.ordres[b].raison : null, tache: p.taches.some((t) => t.besoin === b) })),
         demandes: p.demandes.map((d) => Object.assign({}, d, { delaiTexte: quandCourt(d.delai), ouverteTexte: quandCourt(d.ouverte), nomBesoin: INFO[d.besoin].nom })),
         taches: p.taches.map((t) => ({ besoin: t.besoin, nom: INFO[t.besoin].tache, noms: t.equipe.map((i) => parId(i).nom), reste: t.reste, active: t.active })),
