@@ -23,8 +23,9 @@
      (prénom provisoire) ; une victime de perte de crise (B3, B5) est tirée parmi tous les adultes présents, suivis ou
      non ; un habitant non suivi blessé compte dans les soins (B6) comme un villageois ;
    - « un enfant tombe malade » : un enfant de 2 à 15 ans (pas un bébé) ;
-   - un arrivant pour un rôle ordinaire vient 48 h après la mort ; le paysan qui change de rôle est le premier valide
-     de la liste ; l'adulte non suivi qui prend un rôle est tiré au sort ;
+   - un arrivant pour un rôle ordinaire, ou pour un PNJ nommé avec l'option « toujours un arrivant », vient 48 h après
+     la mort ; le paysan qui change de rôle est le premier valide de la liste ; l'adulte non suivi qui prend un rôle est
+     tiré au sort ;
    - option « la conscience choisit le plus apte » : l'aptitude n'est pas simulée, l'adulte est tiré au sort ;
    - naissances et petits du troupeau : un tirage par jour au lever du soleil ; une naissance annoncée un soir de
      silence (après une mort) l'est le soir suivant ;
@@ -255,7 +256,9 @@
         p.apresTempete = Math.ceil(R.retour_gibier.heures);
         noter(`la tempête est finie (${METEO[type]}) : chacun reprend son travail ; le gibier revient ${nombre(R.retour_gibier.heures)} h plus tard.`, 'meteo', true);
       } else if (type === 'tempete' && (avant !== 'tempete' || forcee)) debutTempete();
-      else if (type !== avant && avant !== null) {
+      else if (type === 'tempete') {   // deux tempêtes tirées à la suite : une seule tempête, prolongée (annoncée)
+        noter(`la Tempête de Neige se prolonge de ${p.meteo.reste} h (jusqu'au ${quandCourt(p.t + p.meteo.reste)}) : tout le monde reste à l'abri.`, 'meteo', true);
+      } else if (type !== avant && avant !== null) {
         const t = { clair: 'le ciel se dégage', couvert: 'le ciel se couvre', pluie: 'il se met à pleuvoir : on travaille plus lentement', neige: 'il neige : le froid monte' }[type];
         noter(`${t} (${p.meteo.reste} h).`, 'meteo', false);
       }
@@ -323,19 +326,20 @@
     }
     function designer(role) {   // § 6 « Successeur à désigner » : aussitôt
       const S = R.successeur_a_designer;
-      let s = tirer(adultesLibres(), rnd.village), d = 'un adulte non suivi, tiré au sort';
-      if (!s) { s = paysanLibre(); d = 'un paysan'; }
+      // d : comment il a été choisi, accordé à son genre (« une adulte non suivie, tirée au sort »)
+      let s = tirer(adultesLibres(), rnd.village), d = (x) => `un${e(x)} adulte non suivi${e(x)}, tiré${e(x)} au sort`;
+      if (!s) { s = paysanLibre(); d = (x) => `un${e(x)} ${nomRole(x, 'paysan')}`; }
       if (!s) {
         if (role !== 'chef') {
           p.arrivees.push({ t: p.t + S.arrivant_h, type: 'successeur', role });
           apres(`personne ne peut être désigné pour succéder ${au(ROLES[role].nom)} : un arrivant viendra dans ${S.arrivant_h} h.`, 'remplacement', false);
           return null;
         }
-        s = arrivantAdulte(); d = 'un arrivant, aussitôt (le rôle de chef n\'attend jamais)';
+        s = arrivantAdulte(); d = (x) => `un${e(x)} arrivant${e(x)}, aussitôt (le rôle de chef n'attend jamais)`;
       }
       if (!s.nom) s.nom = prochainNom(s.genre).nom;
       s.successeurDe = role; p.successeurs[role] = s;
-      apres(`${s.nom} (${d}) devient ${titreSucc(s, role)} : ${il(s)} reprendra le rôle ${de(ROLES[role].nom)} s'il le faut.`, 'remplacement', false);
+      apres(`${s.nom} (${d(s)}) devient ${titreSucc(s, role)} : ${il(s)} reprendra le rôle ${de(ROLES[role].nom)} s'il le faut.`, 'remplacement', false);
       return s;
     }
     function installer(s, role, mort, motif) {   // s (suivi ou non) prend le rôle ; la quête et les demandes du mort passent à s
@@ -414,7 +418,11 @@
           apres(`le Cartel enverra un autre agent dans ${R.agente_morte.autre_agent_h} h.`, 'remplacement', true);
         } else if (NOMMES.includes(x.role)) {
           if (x.role === 'chef') reprendre('chef', mort);
-          else {
+          else if (o.remplacementNomme === 'arrivant') {   // option « toujours un arrivant » : 48 h comptées depuis la mort
+            const h = R.arrivants.role_vide_h;
+            p.arrivees.push({ t: p.t + h, type: 'role', role: x.role, mort });
+            apres(`le rôle ${de(ROLES[x.role].nom)} reste vide : un arrivant viendra le prendre dans ${h} h (${quandCourt(p.t + h)}).`, 'remplacement', true);
+          } else {
             p.reprises.push({ role: x.role, mort, depuis: p.t });
             const s = o.remplacementNomme === 'successeur' ? p.successeurs[x.role] : null;
             apres(`${s ? `${s.nom}, ${titreSucc(s, x.role)},` : 'un remplaçant'} prendra le rôle ${de(ROLES[x.role].nom)} au lever suivant.`, 'remplacement', true);
