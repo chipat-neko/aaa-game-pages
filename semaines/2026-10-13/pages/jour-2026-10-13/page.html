@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · mardi 13 octobre 2026 · semaine du 13 au 19 octobre</div>
   <h1>Jour <em>1</em></h1>
   <p class="lecture">Première journée de la semaine : point de départ, report des dernières décisions dans les documents, et une idée du directeur : des quêtes qui naissent des besoins du hameau.</p>
-  <p class="ticket">Mise à jour : 13/10/2026 à 13:29</p>
+  <p class="ticket">Mise à jour : 13/10/2026 à 13:47</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,13 +104,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-valide">10 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-valide">10 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : nouvelle semaine, 0 % le 13/10 à 1 h ; un septième de la semaine par jour, cumulé (<span class="insec">D-231</span>).</li>
     <li><strong>Point de départ</strong> (03:23) : rien en cours ; cinq tickets du prototype sont prêts (<span class="insec">T-0189</span>, <span class="insec">T-0190</span>, <span class="insec">T-0191</span>, <span class="insec">T-0193</span>, <span class="insec">T-0199</span>), mis en attente par le directeur, tout comme la vérification longue du mardi.</li>
     <li><strong><span class="insec">D-305</span></strong> : des quêtes annexes sans lien avec l&#x27;histoire, nées des besoins du hameau, qui rapportent de l&#x27;expérience et de la réputation ; les PNJ demandent de l&#x27;aide au héros et, s&#x27;il ne fait rien, la conscience collective répartit le travail entre les villageois, avec des conséquences ; les villageois suivent un emploi du temps simple. D&#x27;abord une règle écrite (<span class="insec">T-0201</span>), puis une simulation sur ce site (<span class="insec">T-0202</span>).</li>
     <li><strong><span class="insec">D-306</span></strong> : la règle est tranchée. Les demandes ne se font que quand le héros est au hameau ; absent, le hameau vit sans lui. Une demande réglée vaut 1 étape de méfiance, une mort après une demande acceptée la fait remonter d&#x27;une étape. Tout le monde peut mourir, un autre reprend le rôle ; naissances et arrivants font un vrai cycle de vie. Les quêtes écrites s&#x27;appellent « quêtes d&#x27;apprentissage ». L&#x27;expérience du personnage sera définie d&#x27;abord (<span class="insec">T-0204</span>). Les six besoins iront dans le prototype des investisseurs.</li>
     <li><strong><span class="insec">D-307</span></strong> : les dernières questions sont tranchées. Si le héros part après avoir accepté une demande et qu&#x27;un villageois en meurt, la méfiance remonte à son retour ; les enfants ne meurent que de maladie après le froid ; une mort ne compte contre le héros qu&#x27;après un échec. L&#x27;expérience du personnage : le niveau (1 à 99) fait grandir le corps et donne un point d&#x27;entraînement, l&#x27;arbre avance par l&#x27;usage, la mort ne coûte pas d&#x27;expérience. Suite : report dans les documents (<span class="insec">T-0207</span>), chiffrage dans le plan (<span class="insec">T-0208</span>), puis <span class="insec">T-0190</span> et la vérification longue.</li>
+    <li><strong><span class="insec">D-308</span></strong> : la carte graphique est prise par l&#x27;agent Minecraft du directeur ; les preuves de <span class="insec">T-0190</span> et la vérification longue partiront ce soir ou cette nuit, quand elle sera libre. Pour que la main n&#x27;entre plus dans la roche à faible débit d&#x27;images, le directeur propose que le rocher ait un « mur invisible » : essai <span class="insec">T-0210</span>.</li>
   </ul>
 </section>
 
@@ -147,12 +148,13 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0190</span> · <span class="insec">D-290</span> · <span class="insec">D-293</span></span><h3>Essais fiables de l&#x27;escalade et de la horde</h3><p class="muted">10 lancements verts sur 10.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 08:22 (<span class="insec">D-307</span> (11)). Fin de passe à 13:29 : les deux causes sont trouvées et corrigées (escalade : la pente des prises était mal mesurée, et l&#x27;essai sautait trop au bord ; horde : les escortes du meneur lui barraient le chemin), commit 63f1d6f. Les 10 + 10 lancements verts n&#x27;ont pas pu être prouvés : de 10:01 à 13:30, la carte graphique était occupée de 30 à 97 % par un autre programme (l&#x27;agent Minecraft « Explorateur », via Ollama), et les essais tombent sous 60 images par seconde. En attente d&#x27;une carte libre.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0210</span> · <span class="insec">D-308</span> (2)</span><h3>Essai du « mur invisible » du rocher</h3><p class="muted">Une enveloppe invisible autour de la roche, pour qu&#x27;aucune main n&#x27;y entre, même sous 60 images par seconde.</p><span class="etat e-a-faire">À faire</span><p class="note">Après les preuves de <span class="insec">T-0190</span>, carte libre.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4) · <span class="insec">D-267</span> (3)</span><h3>La meute de 6 loups pendant la Tempête de Neige</h3><p class="muted">Elle rôde près du hameau pendant la tempête.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0193</span> · <span class="insec">D-288</span> (1) · <span class="insec">D-301</span> (3)</span><h3>Patte touchée du cheval, du sanglier et du loup</h3><p class="muted">Les autres pattes qui boitent, et la pose d&#x27;arrêt du cheval blessé.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
   </div>
-  <p class="suite">Preuves de <span class="insec">T-0190</span> (10 + 10 lancements verts), puis la vérification longue, dès que la carte graphique est libre.</p>
+  <p class="suite">Quand la carte graphique est libre (surveillée par le Chef) : preuves de <span class="insec">T-0190</span>, essai du mur invisible (<span class="insec">T-0210</span>), puis la vérification longue.</p>
 </div>
   </div>
 </section>
@@ -210,6 +212,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>08:39</time><p><span class="insec">T-0208</span> : calcul juste, trois retouches d&#x27;une ligne ; correction 1 lancée.</p></div>
     <div class="entree"><time>08:42</time><p><span class="insec">T-0208</span> validé : le plan de production compte les six besoins (environ +101 h, démo 2 repoussée d&#x27;environ 2,2 semaines).</p></div>
     <div class="entree"><time>13:29</time><p><span class="insec">T-0190</span> : causes trouvées et corrigées, preuves en attente d&#x27;une carte graphique libre (occupée par l&#x27;agent Minecraft « Explorateur »). Quota : 5,6 %.</p></div>
+    <div class="entree"><time>13:47</time><p><span class="insec">D-308</span> : preuves et vérification longue ce soir, carte libre ; essai du « mur invisible » du rocher (<span class="insec">T-0210</span>). Le Chef surveille la carte graphique.</p></div>
   </div>
 </section>
 
