@@ -162,9 +162,11 @@
     const nombre = (x) => String(x).replace('.', ',');   // écriture française d'un réglage (0,5)
     const pl = (n, mot, mots) => `${n} ${n > 1 ? (mots || mot + 's') : mot}`;
     const Maj = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-    const voyelle = (s) => /^[aeéèêiîoôuh]/i.test(s);
+    const voyelle = (s) => /^[aeéèêiîoôu]/i.test(s);
     const de = (s) => (voyelle(s) ? `d'${s}` : `de ${s}`);   // « le rôle d'éleveur », « le rôle de forgeron »
     const au = (s) => (voyelle(s) ? `à l'${s}` : `au ${s}`);   // « succéder à l'aubergiste », « au forgeron »
+    // « de » devant un nom ou un groupe : « du forgeron », « de l'éleveur », « d'Aldric », « du manque de bois »
+    const deNom = (s) => (/^le /.test(s) ? `du ${s.slice(3)}` : /^les /.test(s) ? `des ${s.slice(4)}` : voyelle(s) ? `d'${s}` : `de ${s}`);
     function noter(texte, type, important) { p.journal.push({ t: p.t, quand: quand(p.t), texte: Maj(texte), type, important: !!important }); }
     // ce qui suit une mort (remplaçant, méfiance, plancher…) s'écrit après la phrase qui annonce la mort
     function apres(texte, type, important) { p.apres.push([texte, type, important]); }
@@ -346,19 +348,19 @@
         p.villageois.push(s);
       } else {
         etait = s.successeurDe ? titreSucc(s, s.successeurDe) : nomRole(s);
-        if (s.role === 'paysan') p.postes.push({ type: 'paysan', role: 'paysan', mort: { nom: s.nom, id: null, parti: true, motif: `à la place de ${s.nom}, devenu${e(s)} ${nomRole(s, role)}` }, depuis: p.t });
+        if (s.role === 'paysan') p.postes.push({ type: 'paysan', role: 'paysan', mort: { nom: s.nom, id: null, parti: true, motif: `à la place ${deNom(s.nom)}, devenu${e(s)} ${nomRole(s, role)}` }, depuis: p.t });
       }
       s.successeurDe = null;
-      s.role = role; s.remplace = mort ? mort.nom : motif && motif.startsWith('à la place de ') ? motif.slice('à la place de '.length) : null; s.depuis = p.t;
+      s.role = role; s.remplace = mort ? mort.nom : motif ? motif.replace(/^à la place (de |d'|du )/, (m, x) => (x === 'du ' ? 'le ' : '')) : null; s.depuis = p.t;
       p.stats.remplacements++;
       const rep = ROLES[role].reprise ? ` ; ${il(s)} ${ROLES[role].reprise} (même quête, répliques en variante : ${il(s)} dit qui ${il(s)} remplace)` : '';
       const txt = `${s.nom}, ${etait}, prend le rôle ${de(nomRole(s))}${mort ? ` laissé par ${mort.nom}` : motif ? ` (${motif})` : ''}${rep}`;
       apres(txt + '.', 'remplacement', true);
       registre('remplacement', txt);
-      fait('remplacant', `${s.nom} devient ${nomRole(s)}${mort ? ` à la place de ${mort.nom}` : motif ? ` (${motif})` : ''}`);
+      fait('remplacant', `${s.nom} devient ${nomRole(s)}${mort ? ` à la place ${deNom(mort.nom)}` : motif ? ` (${motif})` : ''}`);
       if (mort && mort.id) for (const d of p.demandes) if (d.demandeur === mort.id) {
         d.demandeur = s.id; d.nomDemandeur = qui(s);
-        apres(`${s.nom} reprend aussi la demande d'aide de ${mort.nom} (${INFO[d.besoin].nom.toLowerCase()}) : délai inchangé (${quandCourt(d.delai)}).`, 'remplacement', true);
+        apres(`${s.nom} reprend aussi la demande d'aide ${deNom(mort.nom)} (${INFO[d.besoin].nom.toLowerCase()}) : délai inchangé (${quandCourt(d.delai)}).`, 'remplacement', true);
       }
     }
     function reprendre(role, mort) {   // PNJ nommé : son successeur (ou, selon l'option, le plus apte ou un arrivant) prend le rôle
@@ -447,7 +449,7 @@
             titre: true, etat: 'valide', gueritA: null, remede: false, tache: null, lieu: 'auberge', activite: '', travaille: false, remplace: a.mort.nom, depuis: p.t };
           p.villageois.push(v);
           p.stats.agents++;
-          const txt = `un autre agent du Cartel arrive au hameau à la place de ${a.mort.nom} : il ${ROLES.agente.reprise}`;
+          const txt = `un autre agent du Cartel arrive au hameau à la place ${deNom(a.mort.nom)} : il ${ROLES.agente.reprise}`;
           apres(txt + ' (il n\'est pas compté parmi les habitants).', 'remplacement', true);
           registre('remplacement', txt);
           fait('remplacant', 'un autre agent du Cartel');
@@ -525,7 +527,7 @@
       if (!f || R.etat_depart.sans_demande.includes(p.etat)) return;
       if (o.mortLiee === 'une-par-demande' && f.morts >= 1) return;
       f.morts++;
-      const pourquoi = `${court(x)} est mort${e(x)} de ${INFO[b].le}, alors que le héros avait accepté la demande de ${f.demandeur}`;
+      const pourquoi = `${court(x)} est mort${e(x)} ${deNom(INFO[b].le)}, alors que le héros avait accepté la demande ${deNom(f.demandeur)}`;
       if (!p.heros.present && o.absentMefiance === 'au-retour') {
         p.mefianceAuRetour.push(pourquoi);
         apres(`${pourquoi} : le héros est absent ; la méfiance remontera à son retour.`, 'mefiance', true);
@@ -763,7 +765,7 @@
       for (const d of p.demandes.filter((y) => y.besoin === 'B2')) {
         fermer(d, 'sans-betes');
         if (p.heros.demande === d.id) { p.heros.demande = null; p.heros.reste = 0; }
-        suites.push(`la demande de ${d.nomDemandeur} est retirée`);
+        suites.push(`la demande ${deNom(d.nomDemandeur)} est retirée`);
       }
       for (const t of p.taches.filter((y) => y.besoin === 'B2')) {
         p.taches = p.taches.filter((y) => y !== t);
@@ -1000,7 +1002,7 @@
     }
     function resumeFin() {
       const s = p.stats;
-      return `${s.demandes} demandes d'aide (${s.regleesHeros} réglées par le héros, ${s.personne} sans réponse) ; ${s.taches} tâches de la conscience (${s.reussites} réussies, ${s.echecs} échouées) ; ${s.blesses} blessés, ${s.malades} enfants malades, ${s.morts} morts (${s.mortsNommes} PNJ nommés), ${s.remplacements} remplacements ; ${s.naissances} naissances, ${s.arrivants} arrivants ; ${habitants()} habitants ; ${s.betesPerdues} bêtes perdues, ${s.petits} petits ; ${s.crises} crises ; humeur ${arr(p.humeur)} ; méfiance ${mefianceTexte()}${s.remontees ? ` (remontée ${s.remontees} fois)` : ''}.`;
+      return `${pl(s.demandes, 'demande')} d'aide (${pl(s.regleesHeros, 'réglée')} par le héros, ${s.personne} sans réponse) ; ${pl(s.taches, 'tâche')} de la conscience (${pl(s.reussites, 'réussie')}, ${pl(s.echecs, 'échouée')}) ; ${pl(s.blesses, 'blessé')}, ${pl(s.malades, 'enfant malade', 'enfants malades')}, ${pl(s.morts, 'mort')} (${pl(s.mortsNommes, 'PNJ nommé', 'PNJ nommés')}), ${pl(s.remplacements, 'remplacement')} ; ${pl(s.naissances, 'naissance')}, ${pl(s.arrivants, 'arrivant')} ; ${pl(habitants(), 'habitant')} ; ${pl(s.betesPerdues, 'bête perdue', 'bêtes perdues')}, ${pl(s.petits, 'petit')} ; ${pl(s.crises, 'crise')} ; humeur ${arr(p.humeur)} ; méfiance ${mefianceTexte()}${s.remontees ? ` (remontée ${s.remontees} fois)` : ''}.`;
     }
 
     // --- départ ------------------------------------------------------------------------------------------------------

@@ -286,6 +286,8 @@ tr.vu{background:rgba(212,168,87,.14)}
   const arr = (x) => Math.round(x);
   const moins = (x) => String(x).replace('-', '−');
   const pl = (n, mot, mots) => `${n} ${n > 1 ? (mots || mot + 's') : mot}`;
+  // « de » devant un nom : « du forgeron », « de l'éleveur », « d'Aldric »
+  const deNom = (s) => (/^le /.test(s) ? `du ${s.slice(3)}` : /^les /.test(s) ? `des ${s.slice(4)}` : /^[aeéèêiîoôu]/i.test(s) ? `d'${s}` : `de ${s}`);
   let D, R = {}, L = {}, partie, vitesse, enMarche = false, dernier = 0, reste = 0, nbJournal = 0, ligneVue = null;
   const cachees = new Set();
   const HEROS = SimHameau.modes;
@@ -578,7 +580,7 @@ tr.vu{background:rgba(212,168,87,.14)}
     else mef = `<div class="grand">${h.etat === 'amical' ? `« Amical » (prix ${moins(h.amicalPrix)} %)` : `+${h.mefiance} % sur les prix`}</div>
       <div class="etapes">${Array.from({ length: h.etapes }, (_, i) => `<i class="${i < h.etape ? 'fait' : ''}"></i>`).join('')}</div>
       <p class="petit muted">Étape ${h.etape} sur ${h.etapes} ; une demande réglée = un service rendu = ${R.etapes_par_demande.etapes === 1 ? 'une étape' : `${R.etapes_par_demande.etapes} étapes`} ${badge('etapes_par_demande')}. Services rendus : ${h.services}${h.servicesApresAmical ? ` (dont ${h.servicesApresAmical} après « Amical », sans effet ${badge('amical')})` : ''}.</p>
-      <p class="petit muted">Remontées : <strong>${h.remontees}</strong> ${badge('mefiance_remonte')} ${badge('mort_liee')}${h.auRetour ? ` · ${h.auRetour} en attente du retour du héros ${badge('absent_mefiance')}` : ''}${h.fautes.length ? ` · une mort compterait contre lui : ${h.fautes.map((f) => `${esc(f.nom.toLowerCase())} (demande de ${esc(f.demandeur)})`).join(', ')}` : ''}.</p>`;
+      <p class="petit muted">Remontées : <strong>${h.remontees}</strong> ${badge('mefiance_remonte')} ${badge('mort_liee')}${h.auRetour ? ` · ${h.auRetour} en attente du retour du héros ${badge('absent_mefiance')}` : ''}${h.fautes.length ? ` · une mort compterait contre lui : ${h.fautes.map((f) => `${esc(f.nom.toLowerCase())} (demande ${esc(deNom(f.demandeur))})`).join(', ')}` : ''}.</p>`;
     const obj = Object.entries(H.objets);
     const prix = v.prix.map((x) => `${x.bien} ${x.hausse ? `<strong>+${x.hausse} %</strong>` : 'normal'}`).join(' · ');
     $('#chiffres').innerHTML = [
