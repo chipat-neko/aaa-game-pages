@@ -1,9 +1,9 @@
 {
- "titre": "Réglages de la simulation du hameau (T-0202)",
- "source": ".equipe/prototype/quetes-des-besoins.md, § 8 (T-0201, validé ; règle encore à valider par le directeur, D-295)",
- "note": "« prop. » : proposition du rédacteur de T-0201, à valider ; les autres lignes citent un document ou une décision. Noms des villageois : provisoires (T-0202), sauf les PNJ nommés désignés par leur titre.",
- "nb_reglages": 77,
- "nb_prop": 68,
+ "titre": "Réglages de la simulation du hameau (T-0202, T-0206)",
+ "source": ".equipe/prototype/quetes-des-besoins.md, § 8 (T-0201, mis à jour avec D-306 par T-0205 ; règle encore à valider par le directeur, D-306 (10), D-295)",
+ "note": "« prop. » : proposition du rédacteur de la règle, à valider ; les autres lignes citent un document ou une décision. Noms des villageois : provisoires (T-0202, T-0206), sauf les PNJ nommés désignés par leur titre.",
+ "nb_reglages": 105,
+ "nb_prop": 92,
  "groupes": [
   {
    "nom": "Temps et saisons",
@@ -312,13 +312,14 @@
     {
      "reglage": "Tempête de Neige : villageois",
      "unite": "—",
-     "texte": "tous à l'abri (maison ou auberge) ; tâches en pause",
+     "texte": "tous à l'abri (maison ou auberge), enfants compris ; tâches en pause",
      "source": "D-305 (4)",
      "id": "tempete_villageois",
      "prop": false,
      "jeu": false,
      "valeurs": {
       "abri": true,
+      "enfants_compris": true,
       "taches_en_pause": true
      }
     },
@@ -420,13 +421,14 @@
     {
      "reglage": "B1 : montée ; chasseur",
      "unite": "pts/j",
-     "texte": "+15 ; −4 chacun",
+     "texte": "+15, quel que soit le nombre d'habitants ; −4 chacun",
      "source": "prop.",
      "id": "b1",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "montee_j": 15,
+      "selon_habitants": false,
       "travail_j": {
        "chasseur": -4
       }
@@ -564,15 +566,16 @@
      }
     },
     {
-     "reglage": "B6 : blessé ; repos",
+     "reglage": "B6 : blessé ou enfant malade ; repos",
      "unite": "pts",
-     "texte": "+20 par blessé ; −5/j",
+     "texte": "+20 par blessé ou malade ; −5/j",
      "source": "prop.",
      "id": "b6",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "par_blesse": 20,
+      "par_malade": 20,
       "repos_j": -5
      }
     },
@@ -601,6 +604,122 @@
    ]
   },
   {
+   "nom": "Présence du héros",
+   "lignes": [
+    {
+     "reglage": "Présence au départ",
+     "unite": "—",
+     "texte": "au hameau (défaut) ; option : parti",
+     "source": "prop. (D-306 (2))",
+     "id": "presence_depart",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "present",
+       "parti"
+      ],
+      "defaut": "present"
+     }
+    },
+    {
+     "reglage": "Demandes et héros absent",
+     "unite": "—",
+     "texte": "une demande (note, PNJ) ne s'ouvre que si le héros est au hameau ; absent, aucune ne s'ouvre (cas « aucune demande ne peut s'ouvrir »)",
+     "source": "D-306 (2)",
+     "id": "demandes_absent",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "seulement_si_present": true,
+      "absent_aucune": true
+     }
+    },
+    {
+     "reglage": "Héros absent : la conscience prend un besoin",
+     "unite": "pts",
+     "texte": "à 80 (comme toute demande impossible) et à 100 ; option : dès 60",
+     "source": "prop. (D-306 (2))",
+     "id": "absent_conscience",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       80,
+       60
+      ],
+      "defaut": 80,
+      "crise": 100
+     }
+    },
+    {
+     "reglage": "Héros qui part : demandes ouvertes ; acceptées",
+     "unite": "—",
+     "texte": "restent ouvertes, délai inchangé ; continuent (délai pour accomplir inchangé)",
+     "source": "prop.",
+     "id": "depart_heros",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "ouvertes_restent": true,
+      "delai_inchange": true,
+      "acceptees_continuent": true
+     }
+    },
+    {
+     "reglage": "Retour du héros : demandes",
+     "unite": "—",
+     "texte": "besoins à 60 ou plus, le plus haut d'abord, dans les limites ; pas pour un besoin en tâche de la conscience",
+     "source": "prop.",
+     "id": "retour_demandes",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "a_partir_de": 60,
+      "plus_haut_d_abord": true,
+      "dans_les_limites": true,
+      "pas_si_tache_conscience": true
+     }
+    },
+    {
+     "reglage": "Retour du héros : résumé",
+     "unite": "—",
+     "texte": "s'il s'est passé au moins un événement : besoins (au départ → au retour), tâches, blessés, morts et remplaçants, naissances, arrivants, bêtes perdues et nées, méfiance",
+     "source": "prop. (D-306 (2) : il découvre ce qui s'est passé)",
+     "id": "retour_resume",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "si_un_evenement": true,
+      "contenu": [
+       "besoins",
+       "taches",
+       "blesses",
+       "morts",
+       "remplacants",
+       "naissances",
+       "arrivants",
+       "betes",
+       "mefiance"
+      ]
+     }
+    },
+    {
+     "reglage": "Mort du héros en route (jeu)",
+     "unite": "—",
+     "texte": "le saut de quelques heures compte comme une absence",
+     "source": "prop. (*Repos* § 3.A)",
+     "id": "mort_heros",
+     "prop": true,
+     "jeu": true,
+     "valeurs": {
+      "simulee": false,
+      "compte_comme_absence": true
+     }
+    }
+   ]
+  },
+  {
    "nom": "Demandes et héros",
    "lignes": [
     {
@@ -621,13 +740,14 @@
     {
      "reglage": "Rumeur à l'auberge",
      "unite": "—",
-     "texte": "chaque soir, par besoin à 40 ou plus ; aucune le soir qui suit une mort, ni humeur sous 30",
+     "texte": "chaque soir, par besoin à 40 ou plus, héros présent ou non ; aucune le soir qui suit une mort, ni humeur sous 30",
      "source": "prop. (rumeurs : fiche § 3.6)",
      "id": "rumeur",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "chaque_soir": true,
+      "heros_present_ou_non": true,
       "humeur_min": 30,
       "silence_apres_mort": true
      }
@@ -635,8 +755,8 @@
     {
      "reglage": "Demandeur",
      "unite": "rôle",
-     "texte": "B1 chasseur, B2 éleveur, B3 bûcheron, B4 forgeron, B5 guetteur, B6 villageois valide tiré au sort ; jamais le chef",
-     "source": "prop. (chef : D-150)",
+     "texte": "B1 chasseur, B2 éleveur, B3 bûcheron, B4 forgeron, B5 guetteur, B6 villageois valide tiré au sort ; jamais le chef (ni son successeur), l'agente ni un enfant",
+     "source": "prop. (chef : D-150 ; agente : choix de T-0202, D-195)",
      "id": "demandeur",
      "prop": true,
      "jeu": false,
@@ -648,20 +768,24 @@
       "B5": "guetteur",
       "B6": "tirage",
       "jamais": [
-       "chef"
+       "chef",
+       "agente",
+       "enfant"
       ]
      }
     },
     {
      "reglage": "Changement de demandeur",
      "unite": "—",
-     "texte": "pas le même deux fois de suite si le rôle compte plusieurs villageois ; sinon le même",
-     "source": "prop.",
+     "texte": "pas le même deux fois de suite si le rôle compte plusieurs villageois ; sinon le même ; s'il meurt, son remplaçant reprend la demande, délai inchangé",
+     "source": "prop. (remplaçant : D-306 (5))",
      "id": "changement_demandeur",
      "prop": true,
      "jeu": false,
      "valeurs": {
-      "pas_deux_fois_de_suite": true
+      "pas_deux_fois_de_suite": true,
+      "remplacant_reprend": true,
+      "delai_inchange": true
      }
     },
     {
@@ -736,11 +860,11 @@
      }
     },
     {
-     "reglage": "Quêtes écrites au départ (sinon B2, B4 figés)",
+     "reglage": "Quêtes d'apprentissage au départ (sinon B2, B4 figés)",
      "unite": "—",
      "texte": "agneau : faite, issue 1 (défaut) ; options : pas faite, issue 2 (loup) ; forgeron : faite (défaut) ; option : pas faite",
-     "source": "prop. (D-305 (3), D-215 (2))",
-     "id": "quetes_ecrites",
+     "source": "D-306 (8) (nom) ; prop. (D-305 (3), D-215 (2))",
+     "id": "quetes_apprentissage",
      "prop": true,
      "jeu": false,
      "valeurs": {
@@ -788,12 +912,13 @@
     {
      "reglage": "Héros simulé « répond à tout »",
      "unite": "h",
-     "texte": "accepte 1 h après l'ouverture ; finit en B1 4, B2 8, B3 3, B4 6, B5 3, B6 4 ; réussit toujours ; une demande à la fois",
+     "texte": "toujours présent ; accepte 1 h après l'ouverture ; finit en B1 4, B2 8, B3 3, B4 6, B5 3, B6 4 ; réussit toujours ; une demande à la fois",
      "source": "prop. (simulation)",
      "id": "heros_tout",
      "prop": true,
      "jeu": false,
      "valeurs": {
+      "toujours_present": true,
       "accepte_apres_h": 1,
       "duree_h": {
        "B1": 4,
@@ -810,14 +935,49 @@
     {
      "reglage": "Héros simulé « répond parfois » ; mort en route",
      "unite": "% ; —",
-     "texte": "accepte 50 % des demandes (tirage à l'ouverture) ; mort non simulée (jeu : échec définitif, *Repos* § 3.A)",
+     "texte": "toujours présent ; accepte 50 % des demandes (tirage à l'ouverture) ; mort non simulée (jeu : échec définitif, *Repos* § 3.A)",
      "source": "prop. (simulation)",
      "id": "heros_parfois",
      "prop": true,
      "jeu": false,
      "valeurs": {
+      "toujours_present": true,
       "accepte_pct": 50,
       "mort_simulee": false
+     }
+    },
+    {
+     "reglage": "Héros simulé « ne fait rien »",
+     "unite": "—",
+     "texte": "toujours présent ; n'accepte rien",
+     "source": "prop. (simulation)",
+     "id": "heros_rien",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "toujours_present": true,
+      "accepte": false
+     }
+    },
+    {
+     "reglage": "Héros simulé « part et revient »",
+     "unite": "h",
+     "texte": "présent 24 h (de 4 h à 4 h), absent 48 h, en boucle, dès le départ ; présent, il agit comme « répond à tout », mais n'accepte que ce qu'il peut finir avant de partir ; option : il accepte tout, même juste avant de partir (montre la méfiance qui remonte)",
+     "source": "prop. (simulation ; T-0206)",
+     "id": "heros_revient",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "present_h": 24,
+      "absent_h": 48,
+      "debut_heure": 4,
+      "des_le_depart": true,
+      "comme": "tout",
+      "options": [
+       "finir-avant",
+       "tout"
+      ],
+      "defaut": "finir-avant"
      }
     }
    ]
@@ -828,15 +988,17 @@
     {
      "reglage": "Quand elle agit",
      "unite": "—",
-     "texte": "délai passé ; besoin à 100 ; besoin à 80 si aucune demande ne peut s'ouvrir",
-     "source": "prop.",
+     "texte": "délai passé ; besoin à 100 ; besoin à 80 si aucune demande ne peut s'ouvrir (héros absent compris) ; tant que la demande acceptée court, elle laisse ce besoin au héros, même à 100 (pertes de crise quand même)",
+     "source": "prop. (« laisse au héros » : choix de T-0202 ; absent : D-306 (2))",
      "id": "conscience_quand",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "delai_passe": true,
       "besoin_a": 100,
-      "sans_demande_possible_a": 80
+      "sans_demande_possible_a": 80,
+      "heros_absent_compris": true,
+      "laisse_au_heros": true
      }
     },
     {
@@ -883,8 +1045,8 @@
     {
      "reglage": "Ordre de choix",
      "unite": "—",
-     "texte": "rôle du besoin, puis paysans ; disponibles ; besoin propre le plus bas ; à égalité, tirage",
-     "source": "prop.",
+     "texte": "rôle du besoin, PNJ nommé du rôle compris (éleveur : B2 ; forgeron : B4), puis paysans ; disponibles ; besoin propre le plus bas ; à égalité, tirage",
+     "source": "prop. (PNJ nommés : D-306 (5))",
      "id": "ordre_choix",
      "prop": true,
      "jeu": false,
@@ -893,26 +1055,51 @@
        "role",
        "paysan"
       ],
+      "pnj_nommes_du_role": {
+       "B2": "eleveur",
+       "B4": "forgeron"
+      },
       "besoin_propre_le_plus_bas": true,
       "egalite": "tirage"
      }
     },
     {
-     "reglage": "Jamais envoyés",
+     "reglage": "Pas envoyés",
      "unite": "PNJ",
-     "texte": "chef, forgeron, éleveur, aubergiste, agente du Cartel",
-     "source": "prop. (`fiches-pnj.md` ; *IA Collective* § 1, D-195)",
-     "id": "jamais_envoyes",
+     "texte": "chef, aubergiste, agente du Cartel, enfants (défaut) ; options : aucun PNJ nommé envoyé (comme avant D-306) ; chef et aubergiste aussi envoyés, après les paysans",
+     "source": "prop. (agente : *IA Collective* § 1, D-195)",
+     "id": "pas_envoyes",
      "prop": true,
      "jeu": false,
      "valeurs": {
-      "roles": [
+      "options": [
+       "defaut",
+       "aucun-nomme",
+       "chef-aubergiste"
+      ],
+      "defaut": "defaut",
+      "roles": {
+       "defaut": [
+        "chef",
+        "aubergiste",
+        "agente"
+       ],
+       "aucun-nomme": [
+        "chef",
+        "forgeron",
+        "eleveur",
+        "aubergiste",
+        "agente"
+       ],
+       "chef-aubergiste": [
+        "agente"
+       ]
+      },
+      "apres_les_paysans": [
        "chef",
-       "forgeron",
-       "eleveur",
-       "aubergiste",
-       "agente"
-      ]
+       "aubergiste"
+      ],
+      "enfants": false
      }
     },
     {
@@ -947,8 +1134,8 @@
     {
      "reglage": "Échec : blessé / mort (B1, B3, B4, B6) ; (B2, B5)",
      "unite": "% par villageois",
-     "texte": "25 / 5 ; 35 / 10",
-     "source": "prop.",
+     "texte": "25 / 5 ; 35 / 10 (PNJ nommés compris)",
+     "source": "prop. ; D-306 (5)",
      "id": "echec_sort",
      "prop": true,
      "jeu": false,
@@ -964,36 +1151,20 @@
       "besoins_combat": [
        "B2",
        "B5"
-      ]
-     }
-    },
-    {
-     "reglage": "Morts possibles",
-     "unite": "—",
-     "texte": "oui (défaut) ; option : non (blessés seulement)",
-     "source": "prop. (question 3)",
-     "id": "morts_possibles",
-     "prop": true,
-     "jeu": false,
-     "valeurs": {
-      "options": [
-       "oui",
-       "non"
       ],
-      "defaut": "oui"
+      "pnj_nommes_compris": true
      }
     },
     {
-     "reglage": "Blessé hors travail ; remplacement d'un mort",
+     "reglage": "Blessé hors travail",
      "unite": "h",
-     "texte": "48 ; 72 (par un paysan, s'il en reste)",
+     "texte": "48",
      "source": "prop.",
      "id": "blessure",
      "prop": true,
      "jeu": false,
      "valeurs": {
-      "hors_travail_h": 48,
-      "remplacement_h": 72
+      "hors_travail_h": 48
      }
     },
     {
@@ -1018,7 +1189,7 @@
     {
      "reglage": "Troupeau de départ ; bête perdue sur échec B2",
      "unite": "bêtes",
-     "texte": "12 ; 1 (à 0 bête, B2 ne monte plus)",
+     "texte": "12 ; 1 (à 0 bête, B2 ne monte plus ; simulation : B2 figé, ni crise, ni demande, ni garde, choix de T-0202)",
      "source": "prop. (nombre de vaches à définir, D-278 (3))",
      "id": "troupeau",
      "prop": true,
@@ -1032,7 +1203,7 @@
     {
      "reglage": "Pertes de crise (à 100, puis toutes les 24 h)",
      "unite": "—",
-     "texte": "B1 +10 sur B1 24 h après ; B2 2 bêtes ; B3 1 blessé ; B4 travail de tous −10 % jusqu'au retour sous 60 ; B5 1 blessé ; B6 chaque blessé : mort 10 %",
+     "texte": "B1 +10 sur B1 24 h après ; B2 2 bêtes ; B3 1 adulte blessé, et 1 enfant malade (25 %) ; B4 travail de tous −10 % jusqu'au retour sous 60 ; B5 1 adulte blessé ; B6 chaque blessé ou malade : mort 10 %",
      "source": "prop.",
      "id": "pertes_crise",
      "prop": true,
@@ -1047,7 +1218,8 @@
        "betes": 2
       },
       "B3": {
-       "blesses": 1
+       "blesses": 1,
+       "enfant_malade_pct": 25
       },
       "B4": {
        "travail_pct": -10,
@@ -1057,7 +1229,8 @@
        "blesses": 1
       },
       "B6": {
-       "mort_pct": 10
+       "mort_pct": 10,
+       "malades_compris": true
       }
      }
     },
@@ -1083,7 +1256,7 @@
     {
      "reglage": "Humeur : bornes, départ ; hausses",
      "unite": "pts",
-     "texte": "0 à 100, départ 60 ; +5 par besoin réglé, par le héros (demande réglée) **ou** par la conscience (tâche réussie) ; B6 réglé par le héros : +10 **à la place** des +5",
+     "texte": "0 à 100, départ 60 ; +5 par besoin réglé, par le héros (demande réglée) **ou** par la conscience (tâche réussie) ; B6 réglé par le héros : +10 **à la place** des +5 ; +5 par naissance",
      "source": "prop.",
      "id": "humeur",
      "prop": true,
@@ -1093,7 +1266,8 @@
       "max": 100,
       "depart": 60,
       "besoin_regle": 5,
-      "b6_regle_par_le_heros": 10
+      "b6_regle_par_le_heros": 10,
+      "par_naissance": 5
      }
     },
     {
@@ -1129,6 +1303,313 @@
    ]
   },
   {
+   "nom": "Morts et remplaçants",
+   "lignes": [
+    {
+     "reglage": "Morts possibles",
+     "unite": "—",
+     "texte": "oui, PNJ nommés compris, à tout moment (défaut) ; option : non (blessés seulement, pour comparer)",
+     "source": "D-306 (5) ; option prop.",
+     "id": "morts_possibles",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "oui",
+       "non"
+      ],
+      "defaut": "oui",
+      "pnj_nommes_compris": true
+     }
+    },
+    {
+     "reglage": "Victime d'une perte de crise (B3, B5)",
+     "unite": "—",
+     "texte": "tirée parmi les adultes présents non blessés, PNJ nommés et agente compris ; enfants : ligne « Enfants »",
+     "source": "D-306 (5) ; tirage prop.",
+     "id": "victime_crise",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "adultes_presents_non_blesses": true,
+      "pnj_nommes_compris": true,
+      "agente_comprise": true
+     }
+    },
+    {
+     "reglage": "Remplacement, rôle ordinaire (chasseur, bûcheron, guetteur, berger, paysan)",
+     "unite": "h",
+     "texte": "24 : un paysan change de rôle, sinon un adulte non suivi ; sinon un arrivant, en 48",
+     "source": "D-306 (6) (« vite ») ; délais prop.",
+     "id": "remplacement_ordinaire",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "roles": [
+       "chasseur",
+       "bucheron",
+       "guetteur",
+       "berger",
+       "paysan"
+      ],
+      "delai_h": 24,
+      "ordre": [
+       "paysan",
+       "adulte_non_suivi"
+      ],
+      "arrivant_h": 48
+     }
+    },
+    {
+     "reglage": "Paysans partis ou morts",
+     "unite": "nombre ; h",
+     "texte": "complétés jusqu'à 4 : un adulte non suivi en 24, sinon un arrivant en 48",
+     "source": "prop.",
+     "id": "paysans_completes",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "jusqu_a": 4,
+      "adulte_non_suivi_h": 24,
+      "arrivant_h": 48
+     }
+    },
+    {
+     "reglage": "Remplacement, PNJ nommé (chef, forgeron, éleveur, aubergiste)",
+     "unite": "h",
+     "texte": "successeur désigné au lever suivant (24 au plus) ; chef : aussitôt ; nouveau successeur : ligne suivante ; options : la conscience choisit le plus apte ; toujours un arrivant",
+     "source": "D-306 (5) ; détail prop.",
+     "id": "remplacement_nomme",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "roles": [
+       "chef",
+       "forgeron",
+       "eleveur",
+       "aubergiste"
+      ],
+      "au_lever_suivant": true,
+      "au_plus_h": 24,
+      "chef_aussitot": true,
+      "options": [
+       "successeur",
+       "plus-apte",
+       "arrivant"
+      ],
+      "defaut": "successeur"
+     }
+    },
+    {
+     "reglage": "Successeur à désigner (après une reprise, ou successeur mort avant la reprise)",
+     "unite": "h",
+     "texte": "aussitôt : un adulte non suivi (tirage), sinon un paysan, sinon un arrivant en 48 ; chef, quelle que soit l'option : jamais d'attente (sinon un arrivant aussitôt) ; chef et successeur morts ensemble : le nouveau successeur prend le rôle aussitôt",
+     "source": "prop. (D-306 (5) ; chaîne : D-35, D-150)",
+     "id": "successeur_a_designer",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "aussitot": true,
+      "ordre": [
+       "adulte_non_suivi",
+       "paysan",
+       "arrivant"
+      ],
+      "arrivant_h": 48,
+      "chef_jamais_d_attente": true,
+      "chef_et_successeur_morts": "nouveau successeur aussitôt"
+     }
+    },
+    {
+     "reglage": "Quête et demande d'un mort",
+     "unite": "—",
+     "texte": "même quête (étapes, objectifs, récompenses), proposée ou rendue au remplaçant, répliques en variante ; services du rôle gardés ; demande ouverte : passe au remplaçant, délai inchangé",
+     "source": "D-306 (5) ; détail prop.",
+     "id": "quete_d_un_mort",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "meme_quete": true,
+      "variante_repliques": true,
+      "services_gardes": true,
+      "demande_au_remplacant": true,
+      "delai_inchange": true
+     }
+    },
+    {
+     "reglage": "Agente du Cartel morte",
+     "unite": "h",
+     "texte": "un autre agent arrive en 48 et reprend son rôle (Choix B, nourriture frelatée, marché noir) ; option : elle n'est jamais victime",
+     "source": "prop. (D-195 ; *Topographie* POI A, § 5)",
+     "id": "agente_morte",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "autre_agent_h": 48,
+      "options": [
+       "remplacee",
+       "jamais-victime"
+      ],
+      "defaut": "remplacee"
+     }
+    }
+   ]
+  },
+  {
+   "nom": "Cycle de vie",
+   "lignes": [
+    {
+     "reglage": "Habitants : départ ; bornes",
+     "unite": "nombre",
+     "texte": "80 ; 50 à 150 (jamais moins de 50 : ligne « Plancher de 50 habitants » ; jamais plus de 150 : naissances sous 150 seulement)",
+     "source": "*Topographie* POI A ; D-306 (6), *IA Collective* § 1",
+     "id": "habitants",
+     "prop": false,
+     "jeu": false,
+     "valeurs": {
+      "depart": 80,
+      "min": 50,
+      "max": 150
+     }
+    },
+    {
+     "reglage": "Composition de départ",
+     "unite": "nombre",
+     "texte": "15 habitants suivis ; 45 adultes et anciens non suivis (dont 4 successeurs désignés) ; 20 enfants (âges tirés de 0 à 15 ans) ; agente (suivie) non comptée",
+     "source": "prop. (agente : D-195)",
+     "id": "composition",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "suivis": 15,
+      "adultes_non_suivis": 45,
+      "successeurs": 4,
+      "enfants": 20,
+      "age_enfants": [
+       0,
+       15
+      ],
+      "agente_comptee": false
+     }
+    },
+    {
+     "reglage": "Naissances",
+     "unite": "%/j",
+     "texte": "10, tirage au lever du soleil, si moins de 150 habitants ; annoncée le soir à l'auberge ; « forcer une naissance » (simulation) : même effet",
+     "source": "D-306 (6) (« de temps en temps ») ; valeurs prop.",
+     "id": "naissances",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chance_pct": 10,
+      "au_lever_du_soleil": true,
+      "si_moins_de": 150,
+      "annonce_le_soir": true,
+      "forcer": true
+     }
+    },
+    {
+     "reglage": "Âge et croissance",
+     "unite": "j par an d'âge",
+     "texte": "30 (1 an par saison) ; bébé avant 2 ans, enfant de 2 à 15 ans, adulte non suivi à 16 ans (480 j) ; options : 120 ; 10",
+     "source": "D-306 (6) (« très lentement ») ; valeurs prop.",
+     "id": "croissance",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       30,
+       120,
+       10
+      ],
+      "defaut": 30,
+      "bebe_avant": 2,
+      "adulte_a": 16
+     }
+    },
+    {
+     "reglage": "Moment où l'on vieillit",
+     "unite": "—",
+     "texte": "à son anniversaire, tous les « j par an d'âge » depuis la naissance ; enfants du départ : jour de l'année tiré au hasard (en 15 journées, un sur deux environ prend un an) ; options : tous au jour 1 de chaque saison (Grand Gel : 12e journée de la partie) ; compteurs à 0 au départ (aucun changement d'âge en 15 journées)",
+     "source": "prop.",
+     "id": "vieillir",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "anniversaire",
+       "saison",
+       "zero"
+      ],
+      "defaut": "anniversaire",
+      "saison_jour": 1
+     }
+    },
+    {
+     "reglage": "Enfants",
+     "unite": "—",
+     "texte": "ni travail, ni tâche, ni demande ; suivent un parent le jour, maison le soir et la nuit ; pas victimes de B5 ; malades à la crise de B3 (25 %), mort possible à la crise de B6 ; options : jamais en danger ; comme les adultes",
+     "source": "D-306 (5) (« tout le monde ») ; valeurs prop. (question 2)",
+     "id": "enfants",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "travail": false,
+      "tache": false,
+      "demande": false,
+      "victimes_b5": false,
+      "options": [
+       "defaut",
+       "jamais",
+       "comme-adultes"
+      ],
+      "defaut": "defaut"
+     }
+    },
+    {
+     "reglage": "Arrivants adultes",
+     "unite": "h",
+     "texte": "48 pour un rôle vide que personne ne peut reprendre ; aussitôt pour le plancher (ligne suivante) ; ils partagent la conscience, méfiance inchangée",
+     "source": "D-306 (6) ; *IA Collective* § 1 ; délais prop.",
+     "id": "arrivants",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "role_vide_h": 48,
+      "plancher_aussitot": true,
+      "mefiance_inchangee": true
+     }
+    },
+    {
+     "reglage": "Plancher de 50 habitants",
+     "unite": "—",
+     "texte": "une mort qui ferait passer le hameau sous 50 : un arrivant adulte (non suivi) compté au même instant ; le hameau ne compte jamais moins de 50 ; au-dessus de 50, pas d'arrivant sans rôle vide",
+     "source": "D-306 (6) (« entre 50 et 150 ») ; règle prop.",
+     "id": "plancher",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "habitants": 50,
+      "arrivant_au_meme_instant": true
+     }
+    },
+    {
+     "reglage": "Petits du troupeau",
+     "unite": "%/j ; bêtes",
+     "texte": "10 si au moins 2 bêtes, jusqu'à 20 bêtes ; le petit compte aussitôt comme une bête ; à 0 bête, pas de petit",
+     "source": "D-306 (6) ; valeurs prop.",
+     "id": "petits",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "chance_pct": 10,
+      "min_betes": 2,
+      "max_betes": 20
+     }
+    }
+   ]
+  },
+  {
    "nom": "Récompenses et réputation",
    "lignes": [
     {
@@ -1153,9 +1634,9 @@
      "reglage": "Étapes par demande réglée",
      "unite": "étapes",
      "texte": "1 (service rendu)",
-     "source": "prop. (question 2 ; D-237 (4) : 1 ou 2)",
+     "source": "D-306 (3), D-237 (4)",
      "id": "etapes_par_demande",
-     "prop": true,
+     "prop": false,
      "jeu": false,
      "valeurs": {
       "etapes": 1
@@ -1164,47 +1645,93 @@
     {
      "reglage": "« Amical » ; services après « Amical »",
      "unite": "% ; —",
-     "texte": "−10 dès la méfiance à 0 ; comptés, sans effet",
+     "texte": "−10 dès la méfiance à 0 ; comptés, sans effet (ne rachètent pas une remontée)",
      "source": "D-238 (2), D-215 (4) ; compte prop.",
      "id": "amical",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "prix_pct": -10,
-      "services_comptes": true
+      "services_comptes": true,
+      "rachetent_une_remontee": false
+     }
+    },
+    {
+     "reglage": "Méfiance qui remonte",
+     "unite": "étapes",
+     "texte": "+1 par villageois mort à cause d'une demande acceptée ; jamais au-dessus de +20 % ; depuis « Amical », +1 ramène à +5 % et retire « Amical »",
+     "source": "D-306 (4) ; borne et « Amical » prop. (D-238 (2))",
+     "id": "mefiance_remonte",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "etapes_par_mort": 1,
+      "au_plus_pct": 20,
+      "depuis_amical_vers_pct": 5
+     }
+    },
+    {
+     "reglage": "Mort « à cause d'une demande acceptée »",
+     "unite": "—",
+     "texte": "mort venue du besoin de la demande (tâche de la conscience ou perte de crise), après l'échec de la demande (délai pour accomplir passé ; héros mort en route), avant le retour du besoin sous 60 ; options (question 3) : dès l'acceptation ; au plus 1 étape par demande",
+     "source": "prop. (D-306 (4))",
+     "id": "mort_liee",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "apres-echec",
+       "des-acceptation",
+       "une-par-demande"
+      ],
+      "defaut": "apres-echec",
+      "jusqu_au_retour_sous": 60
+     }
+    },
+    {
+     "reglage": "Héros absent : méfiance",
+     "unite": "—",
+     "texte": "ne remonte pas pendant l'absence ; une mort liée à une demande acceptée avant le départ compte au retour ; options (question 1) : ne compte jamais ; compte aussitôt",
+     "source": "D-306 (2) ; « au retour » prop.",
+     "id": "absent_mefiance",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "au-retour",
+       "jamais",
+       "aussitot"
+      ],
+      "defaut": "au-retour"
      }
     },
     {
      "reglage": "Méfiance : demande ignorée ; acceptée puis délai filé",
      "unite": "étapes",
-     "texte": "0 ; 0 (réplique de déception)",
-     "source": "prop. (question 4)",
-     "id": "mefiance_remontee",
+     "texte": "0 ; 0 (réplique de déception), sauf mort liée (ligne « Méfiance qui remonte »)",
+     "source": "prop. ; D-306 (4)",
+     "id": "mefiance_ignoree",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "ignoree": 0,
-      "delai_file": 0
+      "delai_file": 0,
+      "sauf_mort_liee": true
      }
     },
     {
      "reglage": "Expérience par demande réglée",
-     "unite": "points",
-     "texte": "10 ; 20 si acceptée à 80 ou plus ; au métier (Chasse : B1, B2 ; Minage : B4), sinon au compteur d'attente",
-     "source": "prop. (question 6 ; métiers : GDD)",
+     "unite": "—",
+     "texte": "à définir (T-0204) ; compteur d'attente : demandes réglées, dont celles acceptées à 80 ou plus ; aucun point, ni au personnage ni au métier",
+     "source": "D-306 (7)",
      "id": "experience",
-     "prop": true,
+     "prop": false,
      "jeu": false,
      "valeurs": {
-      "points": 10,
-      "points_urgence": 20,
+      "a_definir": "T-0204",
+      "compteur_d_attente": true,
       "urgence_a_partir_de": 80,
-      "metier": {
-       "B1": "Chasse",
-       "B2": "Chasse",
-       "B4": "Minage"
-      },
-      "sinon": "compteur d'attente"
+      "points": null
      }
     },
     {
@@ -1247,23 +1774,23 @@
    "nom": "Villageois et emploi du temps",
    "lignes": [
     {
-     "reglage": "Habitants ; villageois suivis",
+     "reglage": "Villageois suivis",
      "unite": "nombre",
-     "texte": "80 ; 16",
-     "source": "*Topographie* POI A ; prop. (P2-06 : 12 à 20)",
-     "id": "habitants",
+     "texte": "16 (agente comprise)",
+     "source": "prop. (P2-06 : 12 à 20 visibles)",
+     "id": "suivis",
      "prop": true,
      "jeu": false,
      "valeurs": {
-      "habitants": 80,
-      "suivis": 16
+      "nombre": 16,
+      "agente_comprise": true
      }
     },
     {
      "reglage": "Rôles",
      "unite": "nombre",
-     "texte": "chef 1, forgeron 1, éleveur 1, aubergiste 1, berger 1, chasseurs 2, bûcherons 2, guetteurs 2, paysans 4, agente 1",
-     "source": "prop. ; fiches",
+     "texte": "chef 1, forgeron 1, éleveur 1, aubergiste 1, berger 1, chasseurs 2, bûcherons 2, guetteurs 2, paysans 4, agente 1 ; successeurs désignés 4 (non suivis)",
+     "source": "prop. ; fiches ; successeurs : D-306 (5)",
      "id": "roles",
      "prop": true,
      "jeu": false,
@@ -1277,7 +1804,8 @@
       "bucheron": 2,
       "guetteur": 2,
       "paysan": 4,
-      "agente": 1
+      "agente": 1,
+      "successeurs_non_suivis": 4
      }
     },
     {
@@ -1453,7 +1981,8 @@
    "lieu": "place",
    "besoin": null,
    "nomme": true,
-   "activite": "veille sur la place"
+   "activite": "veille sur la place",
+   "reprise": "donne la prime du nid et oriente le héros vers Oakhaven (QP1) : la chaîne hameau → nid → pont → QP1 tient"
   },
   "forgeron": {
    "nom": "forgeron",
@@ -1461,7 +1990,8 @@
    "lieu": "forge",
    "besoin": "B4",
    "nomme": true,
-   "activite": "travaille à la forge"
+   "activite": "travaille à la forge",
+   "reprise": "porte la quête du forgeron et garde la forge (réparations, boutique)"
   },
   "eleveur": {
    "nom": "éleveur",
@@ -1469,14 +1999,16 @@
    "lieu": "enclos",
    "besoin": "B2",
    "nomme": true,
-   "activite": "soigne les bêtes"
+   "activite": "soigne les bêtes",
+   "reprise": "porte « L'Agneau et le Loup » et garde le troupeau"
   },
   "aubergiste": {
    "nom": "aubergiste",
    "lieu": "auberge",
    "besoin": null,
    "nomme": true,
-   "activite": "tient l'auberge"
+   "activite": "tient l'auberge",
+   "reprise": "tient l'auberge (nuits, rumeurs)"
   },
   "berger": {
    "nom": "berger",
@@ -1519,11 +2051,39 @@
    "activite": "travaille aux champs"
   },
   "agente": {
-   "nom": "agente du Cartel",
+   "nom": "agent du Cartel",
+   "nom_f": "agente du Cartel",
    "lieu": "auberge",
    "besoin": null,
    "nomme": true,
-   "activite": "observe, à l'auberge"
+   "activite": "observe, à l'auberge",
+   "reprise": "reprend le Choix B du pont, la nourriture frelatée et le marché noir"
+  }
+ },
+ "successeurs": {
+  "chef": {
+   "titre": "le doyen",
+   "titre_f": "la doyenne",
+   "lieu": "place",
+   "genre": "m"
+  },
+  "forgeron": {
+   "titre": "l'apprenti de la forge",
+   "titre_f": "l'apprentie de la forge",
+   "lieu": "forge",
+   "genre": "m"
+  },
+  "eleveur": {
+   "titre": "l'aîné de l'éleveur",
+   "titre_f": "l'aînée de l'éleveur",
+   "lieu": "enclos",
+   "genre": "m"
+  },
+  "aubergiste": {
+   "titre": "le serveur de l'auberge",
+   "titre_f": "la servante de l'auberge",
+   "lieu": "auberge",
+   "genre": "f"
   }
  },
  "lieux": [
@@ -1576,6 +2136,10 @@
    "nom": "Blessés (chez eux)"
   },
   {
+   "id": "route",
+   "nom": "Sur la route (annoncés)"
+  },
+  {
    "id": "morts",
    "nom": "Morts"
   }
@@ -1586,28 +2150,32 @@
    "nom": "le chef",
    "role": "chef",
    "genre": "m",
-   "provisoire": false
+   "provisoire": false,
+   "titre": true
   },
   {
    "id": "forgeron",
    "nom": "le forgeron",
    "role": "forgeron",
    "genre": "m",
-   "provisoire": false
+   "provisoire": false,
+   "titre": true
   },
   {
    "id": "eleveur",
    "nom": "l'éleveur",
    "role": "eleveur",
    "genre": "m",
-   "provisoire": false
+   "provisoire": false,
+   "titre": true
   },
   {
    "id": "aubergiste",
    "nom": "l'aubergiste",
    "role": "aubergiste",
    "genre": "f",
-   "provisoire": false
+   "provisoire": false,
+   "titre": true
   },
   {
    "id": "odon",
@@ -1691,7 +2259,170 @@
    "nom": "l'agente du Cartel",
    "role": "agente",
    "genre": "f",
-   "provisoire": false
+   "provisoire": false,
+   "titre": true
+  }
+ ],
+ "noms": [
+  {
+   "nom": "Aubin",
+   "genre": "m"
+  },
+  {
+   "nom": "Perrine",
+   "genre": "f"
+  },
+  {
+   "nom": "Jehan",
+   "genre": "m"
+  },
+  {
+   "nom": "Clémence",
+   "genre": "f"
+  },
+  {
+   "nom": "Gautier",
+   "genre": "m"
+  },
+  {
+   "nom": "Isabeau",
+   "genre": "f"
+  },
+  {
+   "nom": "Lambert",
+   "genre": "m"
+  },
+  {
+   "nom": "Sibylle",
+   "genre": "f"
+  },
+  {
+   "nom": "Foulques",
+   "genre": "m"
+  },
+  {
+   "nom": "Tiphaine",
+   "genre": "f"
+  },
+  {
+   "nom": "Raoul",
+   "genre": "m"
+  },
+  {
+   "nom": "Mathilde",
+   "genre": "f"
+  },
+  {
+   "nom": "Norbert",
+   "genre": "m"
+  },
+  {
+   "nom": "Héloïse",
+   "genre": "f"
+  },
+  {
+   "nom": "Bertrand",
+   "genre": "m"
+  },
+  {
+   "nom": "Aude",
+   "genre": "f"
+  },
+  {
+   "nom": "Vivien",
+   "genre": "m"
+  },
+  {
+   "nom": "Ermengarde",
+   "genre": "f"
+  },
+  {
+   "nom": "Denis",
+   "genre": "m"
+  },
+  {
+   "nom": "Pernelle",
+   "genre": "f"
+  },
+  {
+   "nom": "Ursin",
+   "genre": "m"
+  },
+  {
+   "nom": "Guillemette",
+   "genre": "f"
+  },
+  {
+   "nom": "Anseau",
+   "genre": "m"
+  },
+  {
+   "nom": "Jacquette",
+   "genre": "f"
+  },
+  {
+   "nom": "Baudouin",
+   "genre": "m"
+  },
+  {
+   "nom": "Oda",
+   "genre": "f"
+  },
+  {
+   "nom": "Herbert",
+   "genre": "m"
+  },
+  {
+   "nom": "Richilde",
+   "genre": "f"
+  },
+  {
+   "nom": "Josse",
+   "genre": "m"
+  },
+  {
+   "nom": "Alix",
+   "genre": "f"
+  },
+  {
+   "nom": "Enguerrand",
+   "genre": "m"
+  },
+  {
+   "nom": "Marguerite",
+   "genre": "f"
+  },
+  {
+   "nom": "Thierry",
+   "genre": "m"
+  },
+  {
+   "nom": "Bertille",
+   "genre": "f"
+  },
+  {
+   "nom": "Gilles",
+   "genre": "m"
+  },
+  {
+   "nom": "Ide",
+   "genre": "f"
+  },
+  {
+   "nom": "Arnoul",
+   "genre": "m"
+  },
+  {
+   "nom": "Jeanne",
+   "genre": "f"
+  },
+  {
+   "nom": "Robin",
+   "genre": "m"
+  },
+  {
+   "nom": "Philippa",
+   "genre": "f"
   }
  ],
  "interface": {

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Simulation du hameau (T-0202, D-305) : la règle de T-0201 jouée heure par heure ; même identité sombre que les autres pages */
+/* Simulation du hameau (T-0202, mise à jour par T-0206 : D-305, D-306) : la règle « Besoins du hameau » jouée heure par heure ; même identité sombre que les autres pages */
 :root{
   --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
   --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
@@ -39,11 +39,13 @@ button{cursor:pointer}
 button:hover{border-color:var(--pierre)}
 button:disabled{opacity:.45;cursor:default}
 button.principal{background:var(--aube);color:#1a1712;border-color:var(--aube);font-weight:600}
+button.presence{border-color:var(--aube);color:var(--aube)}
 input[type=number]{width:7.5rem}
 .rangee{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
 .champs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:.6rem .9rem}
 .champs label{display:grid;gap:.25rem;font-size:.82rem;color:var(--pierre);min-width:0}
 .champs select{width:100%}
+.champs h3{grid-column:1/-1;font-size:.85rem;color:var(--aube);margin-top:.3rem}
 details{min-width:0;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.6rem .8rem}
 summary{cursor:pointer;font-weight:500}
 details[open] summary{margin-bottom:.6rem}
@@ -56,6 +58,9 @@ details[open] summary{margin-bottom:.6rem}
 .quand{font:400 clamp(1.6rem,5vw,2.2rem)/1.1 var(--f-titre);color:var(--aube)}
 .avance{height:6px;background:var(--roche);border-radius:3px;overflow:hidden}
 .avance div{height:100%;background:var(--aube)}
+.lieu-heros{font-weight:600}
+.lieu-heros.parti{color:var(--braise)}
+.lieu-heros.la{color:var(--mousse)}
 /* besoins */
 .jauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:.7rem}
 .jauge{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:4px solid var(--c);border-radius:6px;padding:.6rem .75rem;min-width:0}
@@ -67,29 +72,35 @@ details[open] summary{margin-bottom:.6rem}
 .barre .rempli{position:absolute;inset:0 auto 0 0;background:var(--c)}
 .barre i{position:absolute;top:0;bottom:0;width:1px;background:rgba(21,24,28,.85)}
 .jauge .suite{font-size:.82rem;color:var(--pierre);min-height:1.2em}
-.graphe-cadre{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.7rem .7rem .5rem 2rem;display:grid;gap:.4rem}
+.graphe-cadre{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.7rem .7rem .5rem 2rem;display:grid;gap:.4rem;min-width:0}
 .graphe{position:relative;height:220px}
+.graphe.petit{height:120px}
 .graphe svg{position:absolute;inset:0;width:100%;height:100%}
 .graphe .axe{position:absolute;left:-1.8rem;transform:translateY(-50%);font:400 .66rem var(--f-data);color:var(--pierre)}
+.bande{position:relative;height:10px}
+.bande svg{position:absolute;inset:0;width:100%;height:100%}
 .jours{display:flex;font:400 .62rem var(--f-data);color:var(--pierre)}
 .jours span{border-left:1px solid var(--roche);padding-left:2px;overflow:hidden;white-space:nowrap}
 .legende{display:flex;flex-wrap:wrap;gap:.35rem}
 .legende button{font-size:.78rem;padding:.3rem .5rem;display:inline-flex;align-items:center;gap:.35rem}
 .legende button[aria-pressed=false]{opacity:.4}
 .pastille{display:inline-block;width:.75rem;height:.75rem;border-radius:2px;background:var(--c);flex:none}
+.graphes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:.7rem}
 /* demandes, tâches */
 .cartes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:.7rem}
 .carte{display:grid;gap:.4rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-left:4px solid var(--c,var(--roche));border-radius:6px;padding:.7rem .8rem;min-width:0}
-.carte .petit{font-size:.85rem;color:var(--pierre)}
+.carte .petit,.petit{font-size:.85rem;color:var(--pierre)}
+.carte.retour{--c:var(--aube)}
 .vide{border:1px dashed var(--roche);border-radius:6px;padding:.8rem 1rem;color:var(--pierre)}
 /* villageois */
 .lieux{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:.6rem}
 .lieu{background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.55rem .7rem;display:grid;gap:.35rem;align-content:start;min-width:0}
 .lieu h3{font-size:.85rem;color:var(--aube)}
-.lieu.l-tache h3{color:var(--acier)}.lieu.l-blesses h3{color:#e09a5b}.lieu.l-morts h3{color:var(--braise)}
+.lieu.l-tache h3{color:var(--acier)}.lieu.l-blesses h3{color:#e09a5b}.lieu.l-morts h3{color:var(--braise)}.lieu.l-route h3{color:var(--mousse)}
 .vg{font-size:.85rem;line-height:1.35}
 .vg b{font-weight:600}
-.vg span{color:var(--pierre)}
+.vg span,.vg small{color:var(--pierre)}
+.vg small{display:block;font-size:.78rem}
 /* hameau et héros */
 .chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.7rem}
 .grand{font:500 1.35rem var(--f-data)}
@@ -97,14 +108,20 @@ details[open] summary{margin-bottom:.6rem}
 .etapes i{flex:1;height:8px;border-radius:2px;background:var(--roche)}
 .etapes i.fait{background:var(--mousse)}
 ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.3rem}
+.registre{max-height:16rem;overflow-y:auto;display:grid;gap:.25rem;font-size:.85rem}
+.registre div{border-left:3px solid var(--roche);padding-left:.45rem}
+.registre .r-mort{border-left-color:var(--braise)}.registre .r-remplacement{border-left-color:var(--acier)}.registre .r-naissance{border-left-color:var(--mousse)}
+.registre time{font:500 .72rem var(--f-data);color:var(--aube);margin-right:.4rem}
 /* journal */
 .journal{max-height:30rem;overflow-y:auto;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:.4rem .6rem;display:grid;gap:.15rem;align-content:start}
 .entree{display:grid;grid-template-columns:6.6rem 1fr;gap:.6rem;align-items:baseline;padding:.25rem 0 .25rem .45rem;border-left:3px solid transparent;font-size:.9rem}
 .entree time{font:500 .74rem var(--f-data);color:var(--aube)}
 .t-demande{border-left-color:var(--aube)}.t-heros{border-left-color:var(--mousse)}.t-conscience{border-left-color:var(--acier)}
 .t-crise{border-left-color:var(--braise)}.t-betes{border-left-color:#e09a5b}.t-meteo,.t-rumeur,.t-blessure{border-left-color:var(--roche)}
-.t-crise .texte{color:#f0b3a5}
-@media (max-width:30rem){.entree{grid-template-columns:1fr;gap:0}.graphe{height:180px}}
+.t-presence,.t-retour{border-left-color:var(--aube)}.t-retour{background:rgba(212,168,87,.08)}
+.t-mort{border-left-color:var(--braise)}.t-remplacement{border-left-color:var(--acier)}.t-vie{border-left-color:var(--mousse)}.t-mefiance{border-left-color:var(--braise)}
+.t-crise .texte,.t-mefiance .texte{color:#f0b3a5}
+@media (max-width:30rem){.entree{grid-template-columns:1fr;gap:0}.graphe{height:180px}.graphe.petit{height:110px}}
 /* tableaux */
 .tableau{overflow-x:auto}
 table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.88rem}
@@ -125,10 +142,10 @@ tr.vu{background:rgba(212,168,87,.14)}
 <nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
 <div class="page">
 <header>
-  <div class="surtitre">Projet AAA · simulation · T-0202 · D-305</div>
+  <div class="surtitre">Projet AAA · simulation · T-0202 · T-0206 · D-305 · D-306</div>
   <h1>Simulation <em>du hameau</em></h1>
-  <p class="lecture">Le Hameau de la Brume vit seul pendant <span id="t-journees">plusieurs</span> journées de jeu. Ses besoins montent heure par heure ; les villageois suivent leur emploi du temps et demandent de l'aide au héros. Si personne ne vient, la conscience du hameau envoie elle-même des villageois, avec des risques : blessés, morts, bêtes perdues.</p>
-  <p class="lecture muted">La règle jouée ici est la proposition de T-0201, pas encore validée (D-305, D-295). Tous les chiffres viennent de son tableau de réglages, en bas de page. Le badge <span class="prop">prop.</span> marque une valeur proposée, à valider ; le badge <span class="src">source</span> marque une valeur tirée d'un document ou d'une décision. Touchez un badge pour voir sa ligne.</p>
+  <p class="lecture">Le Hameau de la Brume vit pendant <span id="t-journees">plusieurs</span> journées de jeu, avec ou sans le héros. Ses besoins montent heure par heure ; quand le héros est là, les villageois lui demandent de l'aide. Sinon, ou si personne ne vient, la conscience du hameau envoie elle-même des villageois, avec des risques : blessés, morts, bêtes perdues. Tout le monde peut mourir, PNJ nommés compris : un autre reprend le rôle et la quête. Des bébés naissent, les enfants grandissent, des arrivants prennent les postes vides.</p>
+  <p class="lecture muted" id="intro-regle">La règle jouée ici est celle de <code>quetes-des-besoins.md</code>, mise à jour avec D-306, encore à valider par le directeur (D-306 (10), D-295). Tous les chiffres viennent de son tableau de réglages, en bas de page. Le badge <span class="prop">prop.</span> marque une valeur proposée, à valider ; le badge <span class="src">source</span> marque une valeur tirée d'un document ou d'une décision. Touchez un badge pour voir sa ligne.</p>
 </header>
 
 <section id="commandes" aria-label="Commandes">
@@ -139,6 +156,7 @@ tr.vu{background:rgba(212,168,87,.14)}
     <button id="b-fin" type="button">Jusqu'à la fin</button>
     <button id="b-debut" type="button">Revenir au début</button>
   </div>
+  <div class="rangee"><button id="b-presence" class="presence" type="button">Le héros part</button><span class="muted note" id="presence-texte"></span></div>
   <div class="champs">
     <label>Vitesse <select id="vitesse"></select></label>
     <label>Comportement du héros <select id="heros"></select></label>
@@ -150,7 +168,11 @@ tr.vu{background:rgba(212,168,87,.14)}
     <button id="f-tempete" type="button">une Tempête de Neige</button>
     <button id="f-meute" type="button">une meute de loups</button>
     <button id="f-saison" type="button">la saison suivante</button>
+    <button id="f-naissance" type="button">une naissance</button>
+    <button id="f-chef" type="button">la mort du chef</button>
+    <button id="f-mort" type="button">une mort au hasard</button>
   </div>
+  <p class="muted note" id="forcer-note"></p>
   <details id="depart">
     <summary>Réglages de départ (options du tableau ; un changement relance la partie)</summary>
     <div class="champs" id="options"></div>
@@ -168,15 +190,17 @@ tr.vu{background:rgba(212,168,87,.14)}
   <div class="jauges" id="jauges"></div>
   <div class="graphe-cadre">
     <div class="graphe" id="graphe"></div>
+    <div class="bande" id="bande-heros" aria-hidden="true"></div>
     <div class="jours" id="jours"></div>
     <div class="legende" id="legende"></div>
-    <p class="muted note">Bandes sombres : la nuit ; bandes bleues : Tempête de Neige ; trait vertical : maintenant. Touchez un besoin pour masquer sa courbe.</p>
+    <p class="muted note">Bandes sombres : la nuit ; bandes bleues : Tempête de Neige ; trait vertical : maintenant. Sous le graphique : le héros au hameau (or) ou parti (rouge). Touchez un besoin pour masquer sa courbe.</p>
   </div>
 </section>
 
 <section id="aide">
   <h2>Demandes d'aide au héros</h2>
   <p class="muted note" id="heros-etat"></p>
+  <div class="cartes" id="retour"></div>
   <div class="cartes" id="demandes"></div>
   <h3>La conscience du hameau <span id="badge-conscience"></span></h3>
   <div class="cartes" id="taches"></div>
@@ -186,7 +210,18 @@ tr.vu{background:rgba(212,168,87,.14)}
   <h2>Où est chacun</h2>
   <p class="muted note" id="horaire-texte"></p>
   <div class="lieux" id="lieux"></div>
-  <p class="muted note">* nom provisoire (T-0202), à remplacer ; les PNJ nommés (chef, forgeron, éleveur, aubergiste) gardent leur titre, en attendant leur nom (fiches des PNJ) ; l'agente du Cartel suit la conscience sans être une habitante.</p>
+  <p class="muted note" id="successeurs"></p>
+  <p class="muted note" id="villageois-note"></p>
+</section>
+
+<section id="vie">
+  <h2>Habitants dans le temps</h2>
+  <p class="lecture muted note" id="vie-note"></p>
+  <div class="graphes">
+    <div class="graphe-cadre"><h3>Habitants <span id="badge-habitants"></span></h3><div class="graphe petit" id="graphe-hab"></div><div class="jours" id="jours-hab"></div></div>
+    <div class="graphe-cadre"><h3>Troupeau <span id="badge-troupeau"></span></h3><div class="graphe petit" id="graphe-tr"></div><div class="jours" id="jours-tr"></div></div>
+  </div>
+  <div class="chiffres" id="population"></div>
 </section>
 
 <section id="hameau">
@@ -197,7 +232,7 @@ tr.vu{background:rgba(212,168,87,.14)}
 <section id="journal-section">
   <h2>Journal</h2>
   <div class="rangee">
-    <label class="muted note"><input type="checkbox" id="tout-journal"> montrer aussi la météo, les rumeurs et les guérisons</label>
+    <label class="muted note"><input type="checkbox" id="tout-journal"> montrer aussi la météo, les rumeurs, les guérisons et les anniversaires</label>
     <button id="b-copier" type="button">Copier le journal</button>
   </div>
   <div class="journal" id="journal" aria-live="off"></div>
@@ -207,8 +242,8 @@ tr.vu{background:rgba(212,168,87,.14)}
   <h2>Bilan</h2>
   <p class="muted note">Compté depuis le début de la partie en cours.</p>
   <div class="tableau"><table id="bilan"></table></div>
-  <div class="rangee"><button id="b-comparer" type="button">Comparer les trois comportements du héros</button></div>
-  <p class="muted note">Avec la même graine et les mêmes réglages de départ, la page joue la partie entière trois fois (ne fait rien, répond parfois, répond à tout) : même météo, mêmes loups, seul le héros change.</p>
+  <div class="rangee"><button id="b-comparer" type="button">Comparer les comportements du héros</button></div>
+  <p class="muted note" id="comparer-note"></p>
   <div class="tableau" id="comparaison"></div>
 </section>
 
@@ -227,8 +262,10 @@ tr.vu{background:rgba(212,168,87,.14)}
     <li id="limite-heures">Le temps avance d'une heure du monde à la fois ; les heures du jour et de l'emploi du temps sont arrondies à l'heure.</li>
     <li>Le héros simulé ne se déplace pas : il accepte, puis il a fini au bout de la durée prévue pour le besoin, toujours avec succès. Sa mort en route, les objets donnés hors demande, la magie vue par un habitant et le hameau qui devient hostile en cours de partie ne sont pas simulés.</li>
     <li id="limite-choix">Choix de la simulation, que la règle ne fixe pas.</li>
-    <li>La brume n'est pas simulée (elle ne change aucun besoin). Les prix sont montrés en pourcentage : aucun marchand n'est simulé.</li>
-    <li>Les noms des villageois sont provisoires. Rien ici n'entre dans les documents avant la validation par le directeur (questionnaire groupé, D-295).</li>
+    <li id="limite-t0206">Choix ajoutés par T-0206.</li>
+    <li id="limite-repris">Choix de T-0202 repris dans la règle.</li>
+    <li>La brume n'est pas simulée (elle ne change aucun besoin). Les prix sont montrés en pourcentage : aucun marchand n'est simulé. L'expérience attend celle du personnage (T-0204) : la page compte seulement les demandes réglées.</li>
+    <li>Les noms des villageois sont provisoires. Rien ici n'entre dans les documents avant la validation par le directeur (D-306 (10) ; questionnaire groupé, D-295).</li>
   </ul>
   <p class="muted note">Fichiers : <code>E:\aaa-proto\livrables\simulation-hameau\</code> (page, moteur <code>simulation.js</code>, réglages <code>reglages.json</code> construits par <code>construire_reglages.py</code> à partir du § 8 de <code>quetes-des-besoins.md</code>, essais dans <code>essais\</code>).</p>
 </section>
@@ -248,9 +285,11 @@ tr.vu{background:rgba(212,168,87,.14)}
   const md = (s) => esc(s).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
   const arr = (x) => Math.round(x);
   const moins = (x) => String(x).replace('-', '−');
+  const pl = (n, mot, mots) => `${n} ${n > 1 ? (mots || mot + 's') : mot}`;
   let D, R = {}, L = {}, partie, vitesse, enMarche = false, dernier = 0, reste = 0, nbJournal = 0, ligneVue = null;
   const cachees = new Set();
-  const HEROS = { rien: 'ne fait rien', tout: 'répond à tout', parfois: 'répond parfois' };
+  const HEROS = SimHameau.modes;
+  const ORDRE_HEROS = ['rien', 'parfois', 'tout', 'revient'];
 
   // --- badges « prop. » / « source » et leur bulle ------------------------------------------------------------------
   function badge(id) {
@@ -261,7 +300,7 @@ tr.vu{background:rgba(212,168,87,.14)}
   function montrerBulle(id) {
     const l = L[id];
     ligneVue = id;
-    $('#bulle-texte').innerHTML = `<strong>${md(l.reglage)}</strong>${l.unite && l.unite !== '—' ? ` <span class="muted">(${md(l.unite)})</span>` : ''}<br>${md(l.texte)}<br><span class="muted">Source : ${md(l.source)}</span><br>${l.prop ? '<span class="prop">prop.</span> proposition de T-0201, à valider.' : '<span class="src">source</span> tiré d\'un document ou d\'une décision.'}`;
+    $('#bulle-texte').innerHTML = `<strong>${md(l.reglage)}</strong>${l.unite && l.unite !== '—' ? ` <span class="muted">(${md(l.unite)})</span>` : ''}<br>${md(l.texte)}<br><span class="muted">Source : ${md(l.source)}</span><br>${l.prop ? '<span class="prop">prop.</span> proposition du rédacteur de la règle, à valider.' : '<span class="src">source</span> tiré d\'un document ou d\'une décision.'}`;
     $('#bulle').hidden = false;
   }
   document.addEventListener('click', (ev) => {
@@ -297,24 +336,49 @@ tr.vu{background:rgba(212,168,87,.14)}
   function remplir(sel, choix, defaut) {
     sel.innerHTML = choix.map(([v, t]) => `<option value="${esc(v)}"${String(v) === String(defaut) ? ' selected' : ''}>${esc(t)}</option>`).join('');
   }
+  function libelleHeros(m) {
+    if (m === 'parfois') return `${HEROS.parfois} (${R.heros_parfois.accepte_pct} % des demandes)`;
+    if (m === 'revient') return `${HEROS.revient} (${R.heros_revient.present_h} h au hameau, ${R.heros_revient.absent_h} h parti)`;
+    return HEROS[m];
+  }
   function preparerCommandes() {
     const I = D.interface;
     remplir($('#vitesse'), I.vitesses_heures_par_seconde.map((v) => [v, v === 1 ? '1 h du monde par seconde' : `${v} h du monde par seconde`]), I.vitesse_defaut);
-    remplir($('#heros'), [['rien', HEROS.rien], ['parfois', `${HEROS.parfois} (${R.heros_parfois.accepte_pct} % des demandes)`], ['tout', HEROS.tout]], 'rien');
+    remplir($('#heros'), ORDRE_HEROS.map((m) => [m, libelleHeros(m)]), 'rien');
     const js = [];
     for (let j = R.debut.journees_min; j <= R.debut.journees_max; j++) js.push([j, j === 1 ? '1 journée' : `${j} journées`]);
     remplir($('#journees'), js, I.journees_defaut);
     $('#graine').value = I.graine_defaut;
+    const C = R.heros_revient, P = R.paliers;
+    // [option, ligne du § 8, nom, textes des choix, réglage (options, défaut)] ; titre de groupe : [null, titre]
     const lignes = [
-      ['agneau', 'quetes_ecrites', 'Quête « L\'Agneau et le Loup »', { 'faite-1': 'faite, issue 1', 'faite-2': 'faite, issue 2 : le loup garde le troupeau', 'pas-faite': 'pas faite : bétail figé' }, R.quetes_ecrites.agneau],
-      ['forgeron', 'quetes_ecrites', 'Quête du forgeron', { faite: 'faite', 'pas-faite': 'pas faite : outils figés' }, R.quetes_ecrites.forgeron],
+      [null, 'Le héros (D-306 (2))'],
+      ['presence', 'presence_depart', 'Présence au départ', { present: 'au hameau', parti: 'parti' }, R.presence_depart],
+      ['absentSeuil', 'absent_conscience', 'Héros absent : la conscience prend un besoin', Object.fromEntries(R.absent_conscience.options.map((v) => [v, `dès ${v}`])), R.absent_conscience],
+      ['revientAccepte', 'heros_revient', '« Part et revient » accepte', { 'finir-avant': 'ce qu\'il peut finir avant de partir', tout: 'tout, même juste avant de partir' }, R.heros_revient],
+      [null, 'Réputation (D-306 (4) ; questions 1 et 3)'],
+      ['mortLiee', 'mort_liee', 'Une mort compte contre le héros', { 'apres-echec': 'après l\'échec de la demande acceptée', 'des-acceptation': 'dès qu\'il a accepté', 'une-par-demande': 'après l\'échec, une étape au plus par demande' }, R.mort_liee],
+      ['absentMefiance', 'absent_mefiance', 'Mort liée pendant son absence', { 'au-retour': 'compte à son retour', jamais: 'ne compte jamais', aussitot: 'compte aussitôt' }, R.absent_mefiance],
+      [null, 'Morts et remplaçants (D-306 (5))'],
+      ['morts', 'morts_possibles', 'Morts chez les villageois', { oui: 'possibles, PNJ nommés compris', non: 'non : blessés seulement' }, R.morts_possibles],
+      ['pasEnvoyes', 'pas_envoyes', 'Pas envoyés par la conscience', { defaut: 'chef, aubergiste, agente, enfants', 'aucun-nomme': 'aucun PNJ nommé (comme avant D-306)', 'chef-aubergiste': 'chef et aubergiste aussi envoyés, après les paysans' }, R.pas_envoyes],
+      ['remplacementNomme', 'remplacement_nomme', 'Remplaçant d\'un PNJ nommé', { successeur: 'son successeur désigné', 'plus-apte': 'le plus apte (choisi par la conscience)', arrivant: 'toujours un arrivant' }, R.remplacement_nomme],
+      ['agente', 'agente_morte', 'Agente du Cartel', { remplacee: 'remplacée par un autre agent si elle meurt', 'jamais-victime': 'jamais victime' }, R.agente_morte],
+      [null, 'Cycle de vie (D-306 (6))'],
+      ['anParJours', 'croissance', 'Âge et croissance', Object.fromEntries(R.croissance.options.map((v) => [v, `1 an d'âge tous les ${v} jours`])), R.croissance],
+      ['vieillir', 'vieillir', 'Moment où l\'on vieillit', { anniversaire: 'à son anniversaire', saison: `tous au jour ${R.vieillir.saison_jour} de chaque saison`, zero: 'compteurs à 0 au départ' }, R.vieillir],
+      ['enfants', 'enfants', 'Enfants (question 2)', { defaut: 'malades seulement (crise du froid)', jamais: 'jamais en danger', 'comme-adultes': 'comme les adultes' }, R.enfants],
+      [null, 'Départ, saison, travail'],
+      ['agneau', 'quetes_apprentissage', 'Quête « L\'Agneau et le Loup »', { 'faite-1': 'faite, issue 1', 'faite-2': 'faite, issue 2 : le loup garde le troupeau', 'pas-faite': 'pas faite : bétail figé' }, R.quetes_apprentissage.agneau],
+      ['forgeron', 'quetes_apprentissage', 'Quête du forgeron', { faite: 'faite', 'pas-faite': 'pas faite : outils figés' }, R.quetes_apprentissage.forgeron],
       ['etat', 'etat_depart', 'État du hameau', { mefiant: 'méfiant', amical: '« Amical »', hostile: 'hostile : aucune demande', apeure: 'apeuré : aucune demande' }, R.etat_depart],
       ['modeSaison', 'mode_saison', 'Saison', { glissement: 'glissement vers le Grand Gel', figee: `figée (Moisson, jour ${R.mode_saison.figee_jour})` }, R.mode_saison],
-      ['morts', 'morts_possibles', 'Morts chez les villageois', { oui: 'possibles', non: 'non : blessés seulement' }, R.morts_possibles],
       ['remede', 'remede', 'Remède donné à un blessé', { 'apres-delai': `reprise ${R.remede.reprise_apres_h} h après`, aussitot: 'reprise aussitôt', 'aucun-effet': 'aucun effet sur la durée' }, R.remede],
       ['parJour', 'par_jour', 'Travail d\'une heure', { reference: `1/${R.par_jour.heures_travail_reference} du travail d'un jour (journée courte = moins de travail)`, saison: 'même travail par jour en toute saison' }, R.par_jour],
     ];
-    $('#options').innerHTML = lignes.map(([opt, id, nom, textes, r]) => `<label>${esc(nom)} ${badge(id)}<select data-opt="${opt}">${r.options.map((v) => `<option value="${v}"${v === r.defaut ? ' selected' : ''}>${esc(textes[v])}${v === r.defaut ? ' (défaut)' : ''}</option>`).join('')}</select></label>`).join('');
+    $('#options').innerHTML = lignes.map(([opt, id, nom, textes, r]) => (opt === null ? `<h3>${esc(id)}</h3>`
+      : `<label>${esc(nom)} ${badge(id)}<select data-opt="${opt}">${r.options.map((v) => `<option value="${v}"${v === r.defaut ? ' selected' : ''}>${esc(textes[v])}${v === r.defaut ? ' (défaut)' : ''}</option>`).join('')}</select></label>`)).join('');
+    $('#forcer-note').innerHTML = `« Une naissance », « la mort du chef » et « une mort au hasard » sont des outils de la page pour voir les règles à l'œuvre (successeur du chef, plancher de ${R.plancher.habitants} habitants) ${badge('remplacement_nomme')} ${badge('plancher')}.`;
     // adresse : ?graine=…&heros=…&jours=…
     const q = new URLSearchParams(location.search);
     if (q.get('graine')) $('#graine').value = q.get('graine');
@@ -345,6 +409,7 @@ tr.vu{background:rgba(212,168,87,.14)}
     if (partie.finie()) { arreter(); rendre(); return; }
     requestAnimationFrame(boucle);
   }
+  const dire = (err, ok) => { $('#message').textContent = err ? `Impossible : ${err}.` : ok; rendre(); };
   $('#b-lancer').addEventListener('click', () => {
     if (enMarche) { arreter(); return; }
     if (partie.finie()) { $('#message').textContent = 'La partie est finie : « Revenir au début » pour en rejouer une.'; return; }
@@ -354,6 +419,7 @@ tr.vu{background:rgba(212,168,87,.14)}
   $('#b-heure').addEventListener('click', () => { arreter(); partie.avancer(); rendre(); });
   $('#b-fin').addEventListener('click', () => { arreter(); while (partie.avancer()); rendre(); });
   $('#b-debut').addEventListener('click', nouvelle);
+  $('#b-presence').addEventListener('click', () => { const p = partie.vue().heros.present; dire(partie.changerPresence(), p ? 'Le héros quitte le hameau.' : 'Le héros revient au hameau.'); });
   $('#vitesse').addEventListener('change', () => { vitesse = Number($('#vitesse').value); });
   $('#heros').addEventListener('change', () => { partie.changerHeros($('#heros').value); rendre(); });
   $('#journees').addEventListener('change', nouvelle);
@@ -363,12 +429,13 @@ tr.vu{background:rgba(212,168,87,.14)}
   $('#f-tempete').addEventListener('click', () => { partie.forcerTempete(); rendre(); });
   $('#f-meute').addEventListener('click', () => { partie.forcerMeute(); rendre(); });
   $('#f-saison').addEventListener('click', () => { partie.forcerSaison(); rendre(); });
+  $('#f-naissance').addEventListener('click', () => dire(partie.forcerNaissance(), 'Une naissance (forcée).'));
+  $('#f-chef').addEventListener('click', () => dire(partie.forcerMort('chef'), 'Le chef meurt (forcé) : son successeur prend aussitôt le rôle.'));
+  $('#f-mort').addEventListener('click', () => dire(partie.forcerMort('hasard'), 'Un adulte meurt (forcé).'));
   $('#demandes').addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-repondre]');
     if (!b) return;
-    const err = partie.repondre(Number(b.dataset.repondre));
-    $('#message').textContent = err ? `Impossible : ${err}.` : 'Le héros accepte la demande.';
-    rendre();
+    dire(partie.repondre(Number(b.dataset.repondre)), 'Le héros accepte la demande.');
   });
   $('#tout-journal').addEventListener('change', () => { nbJournal = 0; $('#journal').innerHTML = ''; rendreJournal(); });
   $('#b-copier').addEventListener('click', () => {
@@ -401,61 +468,117 @@ tr.vu{background:rgba(212,168,87,.14)}
   const pctBesoin = (x) => 100 * (x - R.besoins_depart.min) / (R.besoins_depart.max - R.besoins_depart.min);
   const pctHumeur = (x) => 100 * (x - R.humeur.min) / (R.humeur.max - R.humeur.min);
   function rendre() {
-    const v = partie.vue();
+    const v = partie.vue(), H = v.heros;
     // maintenant
     const sais = `${v.saison}, jour ${v.jourSaison}` + (v.figee ? ' (saison figée)' : v.glissement > 0 ? ` · glisse vers le ${v.suivante} (${arr(v.glissement * 100)} %)` : '');
+    const ou = H.present ? '<span class="lieu-heros la">Le héros est au hameau</span>' : `<span class="lieu-heros parti">Le héros est parti</span> (depuis le ${esc(H.absentDepuis)})`;
     $('#horloge').innerHTML = `<div class="quand">${esc(v.quand)}</div>
       <div>${esc(sais)} · ${v.nuit ? 'nuit' : 'jour'} (le jour va de ${v.aube} h à ${v.crep} h) ${badge('heures_jour')} · ${esc(v.meteo.nom)}${v.meteo.reste > 0 ? ` (encore ${v.meteo.reste} h)` : ''} ${v.meteo.lignes.map(badge).join(' ')}</div>
+      <div>${ou}${H.prochain ? ` · ${H.present ? 'il part' : 'il revient'} le ${esc(H.prochain)}` : ''} ${badge('presence_depart')} · ${pl(v.population.habitants, 'habitant')} ${badge('habitants')}</div>
       <div class="avance" aria-hidden="true"><div style="width:${(100 * v.t / v.fin).toFixed(2)}%"></div></div>
       <div class="muted note">Heure ${v.t} sur ${v.fin}. En jeu, une heure du monde dure ${R.heure_monde.minutes_reelles} min réelles ${badge('heure_monde')} : ${v.journees} journée${v.journees > 1 ? 's' : ''} = ${arr(v.fin * R.heure_monde.minutes_reelles / 60)} h de jeu réel.${v.finie ? ' <strong>Partie finie.</strong>' : ''}</div>`;
     $('#b-lancer').disabled = v.finie; $('#b-heure').disabled = v.finie; $('#b-fin').disabled = v.finie;
-    ['#f-tempete', '#f-meute', '#f-saison'].forEach((s) => { $(s).disabled = v.finie; });
+    ['#f-tempete', '#f-meute', '#f-saison', '#f-naissance', '#f-chef', '#f-mort', '#b-presence'].forEach((s) => { $(s).disabled = v.finie; });
+    $('#b-presence').textContent = H.present ? 'Le héros part' : 'Le héros revient';
+    $('#presence-texte').innerHTML = `${H.present ? 'Le héros est au hameau : les villageois peuvent lui demander de l\'aide.' : 'Le héros est parti : personne ne lui demande rien ; le hameau vit sans lui.'} ${badge('demandes_absent')}${H.mode === 'revient' ? ` En « part et revient », le cycle reprend à son heure suivante ${badge('heros_revient')}.` : ''}`;
     // besoins
     $('#jauges').innerHTML = v.besoins.map((b) => {
       const [cl, nom] = etatBesoin(b);
       const suite = [];
-      if (b.fige) suite.push(b.sansBetes ? 'plus de bêtes : rien ne bouge (ni crise, ni demande, ni garde)' : 'la quête écrite porte ce besoin (rien ne bouge)');
+      if (b.fige) suite.push(b.sansBetes ? 'plus de bêtes : rien ne bouge (ni crise, ni demande, ni garde)' : 'la quête d\'apprentissage porte ce besoin (rien ne bouge)');
       if (b.tache) suite.push('des villageois y travaillent');
       if (b.ordre) suite.push(`la conscience va envoyer quelqu'un (${raison(b.ordre)})`);
       const d = v.demandes.find((x) => x.besoin === b.id);
       if (d) suite.push(d.acceptee !== null ? 'le héros s\'en occupe' : 'demande ouverte');
+      if (b.faute) suite.push('une mort ici compterait contre le héros');
       return `<div class="jauge" style="--c:${COUL[b.id]}"><div class="jauge-tete"><strong>${esc(b.nom)}</strong><span class="muted note">${b.id}</span>${badge(b.id.toLowerCase())}<span class="etiquette e-${cl}">${nom}</span><span class="val">${arr(b.valeur)}</span></div>
         <div class="barre" role="img" aria-label="${esc(b.nom)} : ${arr(b.valeur)} sur ${R.besoins_depart.max}"><div class="rempli" style="width:${pctBesoin(b.valeur).toFixed(1)}%"></div><i style="left:${pctBesoin(R.paliers.rumeur)}%"></i><i style="left:${pctBesoin(R.paliers.demande)}%"></i><i style="left:${pctBesoin(R.paliers.urgence)}%"></i></div>
         <div class="suite">${esc(suite.join(' · '))}</div></div>`;
     }).join('');
     rendreGraphe(v);
     // demandes
-    const H = v.heros;
-    $('#heros-etat').innerHTML = `Comportement du héros : <strong>${esc(HEROS[H.mode])}</strong> ${badge(H.mode === 'parfois' ? 'heros_parfois' : 'heros_tout')} · le héros ${H.occupe ? `est occupé (fini vers le ${esc(H.finTexte)})` : 'est libre'}. Délais : ${R.delais.repondre_h} h pour répondre (${R.delais.repondre_urgence_h} h si urgent), ${R.delais.accomplir_h} h pour finir ${badge('delais')} ; ${R.limites.ouvertes} demandes ouvertes au plus, ${R.limites.par_jour} par jour ${badge('limites')}.`;
+    const occupe = H.occupe ? `est occupé (fini vers le ${esc(H.finTexte)})` : 'est libre';
+    $('#heros-etat').innerHTML = `Comportement du héros : <strong>${esc(libelleHeros(H.mode))}</strong> ${badge(H.mode === 'parfois' ? 'heros_parfois' : H.mode === 'revient' ? 'heros_revient' : H.mode === 'rien' ? 'heros_rien' : 'heros_tout')} · ${H.present ? `le héros ${occupe}` : `le héros est parti${H.occupe ? ' : sa demande acceptée attend son retour' : ''}`}. Délais : ${R.delais.repondre_h} h pour répondre (${R.delais.repondre_urgence_h} h si urgent), ${R.delais.accomplir_h} h pour finir ${badge('delais')} ; ${R.limites.ouvertes} demandes ouvertes au plus, ${R.limites.par_jour} par jour ${badge('limites')}.`;
+    $('#retour').innerHTML = H.resume ? `<div class="carte retour"><h3>Au retour du héros (${esc(H.resume.quand)}) ${badge('retour_resume')}</h3><p class="petit">${esc(H.resume.texte)}</p></div>` : '';
     $('#demandes').innerHTML = v.demandes.length ? v.demandes.map((d) => {
       const restant = d.delai - v.t;
+      const bloque = !H.present ? 'le héros est parti' : H.occupe ? 'le héros est occupé' : v.finie ? 'partie finie' : '';
       return `<div class="carte" style="--c:${COUL[d.besoin]}"><h3>${esc(d.nomBesoin)}${d.urgente ? ' · <span class="etiquette e-urgence">urgent</span>' : ''}</h3>
         <p>${esc(d.nomDemandeur)} demande : <em>${esc(d.quoi)}</em> ${badge('quantites')}</p>
         <p class="petit">Ouverte le ${esc(d.ouverteTexte)} (besoin à ${arr(d.valeur)}).</p>
-        ${d.acceptee !== null ? '<p class="petit">Acceptée par le héros : il est en route.</p>'
+        ${d.acceptee !== null ? `<p class="petit">Acceptée par le héros : ${H.present ? 'il est en route' : 'il est parti, elle attend son retour'} ; à finir avant le ${esc(d.accompliTexte)}.</p>`
           : `<p class="petit">Réponse attendue avant le ${esc(d.delaiTexte)} (encore ${restant} h) ; sinon, la conscience s'en charge.</p>
-             <div class="rangee"><button type="button" data-repondre="${d.id}"${H.occupe || v.finie ? ' disabled' : ''}>Répondre : le héros accepte</button>${v.finie ? '<span class="muted note">partie finie</span>' : H.occupe ? '<span class="muted note">le héros est occupé</span>' : ''}</div>`}</div>`;
-    }).join('') : '<p class="vide">Aucune demande ouverte.</p>';
-    $('#badge-conscience').innerHTML = `${badge('envoyes')} ${badge('reussite')} ${badge('echec_sort')}`;
+             <div class="rangee"><button type="button" data-repondre="${d.id}"${bloque ? ' disabled' : ''}>Répondre : le héros accepte</button>${bloque ? `<span class="muted note">${bloque}</span>` : ''}</div>`}</div>`;
+    }).join('') : `<p class="vide">Aucune demande ouverte.${H.present ? '' : ' Le héros est parti : aucune ne peut s\'ouvrir.'}</p>`;
+    $('#badge-conscience').innerHTML = `${badge('envoyes')} ${badge('ordre_choix')} ${badge('pas_envoyes')} ${badge('reussite')} ${badge('echec_sort')}`;
     const att = v.besoins.filter((b) => b.ordre);
     const taches = v.taches.map((t) => `<div class="carte" style="--c:${COUL[t.besoin]}"><h3>${esc(t.noms.join(', '))}</h3><p>${esc(t.nom)} : ${t.active ? `encore ${t.reste} h` : `en pause (encore ${t.reste} h)`}</p></div>`)
       .concat(att.map((b) => `<div class="carte" style="--c:${COUL[b.id]}"><h3>${esc(b.nom)} : en attente</h3><p class="petit">${esc(raison(b.ordre))} ; la conscience n'envoie personne la nuit ni pendant une tempête, et seulement si la tâche (${R.envoyes.duree_h} h) finit avant la nuit.</p></div>`));
     $('#taches').innerHTML = taches.length ? taches.join('') : '<p class="vide">Personne n\'est envoyé en ce moment.</p>';
-    // villageois
+    rendreVillageois(v);
+    rendreVie(v);
+    rendreHameau(v);
+    rendreJournal();
+    rendreBilan(v);
+  }
+
+  function rendreVillageois(v) {
     const hor = v.horaire;
-    $('#horaire-texte').innerHTML = `Emploi du temps du jour ${badge(v.saison === 'Brûlure' ? 'horaire_brulure' : v.saison === 'Grand Gel' ? 'horaire_gel' : 'horaire_degel_moisson')} : lever ${hor.lever} h, travail ${hor.t1d} h – ${hor.t1f} h et ${hor.t2d} h – ${hor.t2f} h, auberge ${hor.aubD} h – ${hor.aubF} h, maison la nuit ; abri pendant la tempête ${badge('tempete_villageois')}.`;
+    $('#horaire-texte').innerHTML = `Emploi du temps du jour ${badge(v.saison === 'Brûlure' ? 'horaire_brulure' : v.saison === 'Grand Gel' ? 'horaire_gel' : 'horaire_degel_moisson')} : lever ${hor.lever} h, travail ${hor.t1d} h – ${hor.t1f} h et ${hor.t2d} h – ${hor.t2f} h, auberge ${hor.aubD} h – ${hor.aubF} h, maison la nuit ; abri pendant la tempête, enfants compris ${badge('tempete_villageois')}.`;
     const par = {};
     for (const x of v.villageois) (par[x.lieu] = par[x.lieu] || []).push(x);
-    $('#lieux').innerHTML = v.lieux.filter((l) => par[l.id]).map((l) => `<div class="lieu l-${l.id}"><h3>${esc(l.nom)}</h3>${par[l.id].map((x) =>
-      `<div class="vg"><b>${esc(x.nom)}${x.provisoire ? '*' : ''}</b>${x.nomme ? '' : ` <span>${esc(x.roleNom)}</span>`} · ${esc(x.activite)}</div>`).join('')}</div>`).join('');
-    // hameau et héros
-    const h = v.hameau;
+    const route = v.attentes.filter((a) => a.route), postes = v.attentes.filter((a) => !a.route);
+    $('#lieux').innerHTML = v.lieux.filter((l) => par[l.id] || (l.id === 'route' && v.attentes.length)).map((l) => {
+      if (l.id === 'route') return `<div class="lieu l-route"><h3>Postes vides et arrivants ${badge('remplacement_ordinaire')} ${badge('arrivants')}</h3>${postes.concat(route).map((a) => `<div class="vg">${esc(a.texte)}</div>`).join('')}</div>`;
+      return `<div class="lieu l-${l.id}"><h3>${esc(l.nom)}</h3>${par[l.id].map((x) =>
+        `<div class="vg"><b>${esc(x.nom)}${x.provisoire ? '*' : ''}</b>${x.titre ? '' : ` <span>${esc(x.roleNom)}</span>`} · ${esc(x.activite)}${x.remplace ? `<small>remplace ${esc(x.remplace)} depuis le ${esc(x.depuis)}</small>` : x.depuis && x.etat !== 'mort' ? `<small>dans ce rôle depuis le ${esc(x.depuis)}</small>` : ''}</div>`).join('')}</div>`;
+    }).join('');
+    $('#successeurs').innerHTML = `Successeurs désignés (non suivis, visibles près du PNJ nommé) ${badge('successeur_a_designer')} : ${v.successeurs.map((s) => `${esc(s.roleNom)} : ${s.nom ? `${esc(s.nom)}* (${esc(s.titre)})` : '<em>aucun pour l\'instant</em>'}`).join(' · ')}.`;
+    $('#villageois-note').innerHTML = `* nom provisoire, à remplacer ; les PNJ nommés (chef, forgeron, éleveur, aubergiste) gardent leur titre, en attendant leur nom (fiches des PNJ) ; l'agente du Cartel suit la conscience sans être une habitante. Tout le monde peut mourir ${badge('morts_possibles')} ; un PNJ nommé est repris par son successeur ${badge('remplacement_nomme')}, qui garde sa quête ${badge('quete_d_un_mort')} ; un autre agent remplace l'agente ${badge('agente_morte')}.`;
+  }
+
+  // petite courbe d'une série (habitants, troupeau) ; bas et haut de l'échelle donnés
+  function courbe(el, jours, serie, bas, haut, couleur, reperes) {
+    const v = partie.vue(), W = v.fin, H = partie.historique;
+    const y = (x) => (100 - 100 * (x - bas) / Math.max(1, haut - bas)).toFixed(2);
+    let s = `<svg viewBox="0 0 ${W} 100" preserveAspectRatio="none" aria-hidden="true">`;
+    s += reperes.map((r) => `<line x1="0" x2="${W}" y1="${y(r)}" y2="${y(r)}" stroke="#3a4048" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>`).join('');
+    s += `<polyline points="${H.map((x) => `${x.t},${y(serie(x))}`).join(' ')}" fill="none" stroke="${couleur}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+    s += `<line x1="${v.t}" x2="${v.t}" y1="0" y2="100" stroke="#e4e1d9" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>`;
+    s += [...new Set([bas, haut].concat(reperes))].map((r) => `<span class="axe" style="top:${y(r)}%">${r}</span>`).join('');
+    $(el).innerHTML = s;
+    $(jours).innerHTML = joursHtml(v, true);
+  }
+  function joursHtml(v, court) {   // court : petits graphiques, où « jour 1 » ne tient pas dans la première case
+    const debut = R.debut.heure, HJ = R.par_jour.heures_par_jour;
+    return Array.from({ length: v.journees }, (_, j) => `<span style="width:${(100 * (j === 0 ? HJ - debut : HJ) / v.fin).toFixed(3)}%">${j === 0 && !court ? 'jour 1' : j + 1}</span>`).join('');
+  }
+  function rendreVie(v) {
+    const P = v.population, s = v.stats, hab = partie.historique.map((x) => x.hab);
+    $('#vie-note').innerHTML = `Le hameau reste entre ${R.habitants.min} et ${R.habitants.max} habitants ${badge('habitants')} : naissances « de temps en temps » ${badge('naissances')}, enfants qui grandissent très lentement ${badge('croissance')} ${badge('vieillir')}, arrivants pour les postes vides ou pour le plancher ${badge('arrivants')} ${badge('plancher')}, petits du troupeau ${badge('petits')}.`;
+    $('#badge-habitants').innerHTML = badge('composition');
+    $('#badge-troupeau').innerHTML = badge('petits');
+    const lo = Math.min(...hab, R.habitants.depart), hi = Math.max(...hab, R.habitants.depart);
+    const bas = Math.max(R.habitants.min, lo - 3), haut = Math.min(R.habitants.max, hi + 3);
+    courbe('#graphe-hab', '#jours-hab', (x) => x.hab, bas, haut, 'var(--mousse)', [R.habitants.depart].filter((r) => r > bas && r < haut));
+    courbe('#graphe-tr', '#jours-tr', (x) => x.troupeau, 0, R.petits.max_betes, 'var(--b2)', [R.troupeau.depart]);
+    const reg = v.registre.slice().reverse();
+    $('#population').innerHTML = [
+      `<div class="carte"><h3>Habitants ${badge('composition')}</h3><div class="grand">${P.habitants}</div><p class="petit">${P.suivis} suivis · ${P.adultes} adultes non suivis · ${P.enfants} enfants · ${P.bebes} bébés${P.blesses ? ` · ${P.blesses} blessé(s) non suivi(s)` : ''}${P.malades ? ` · ${P.malades} enfant(s) malade(s)` : ''}. Au départ : ${P.depart} ; le plus bas : ${s.habitantsMin}, le plus haut : ${s.habitantsMax}.</p></div>`,
+      `<div class="carte"><h3>Cycle de vie</h3><p class="petit">Naissances : <strong>${s.naissances}</strong> · anniversaires : ${s.anniversaires} (devenus adultes : ${s.devenusAdultes}) · arrivants : ${s.arrivants}${s.plancher ? ` (dont ${s.plancher} pour le plancher de ${R.plancher.habitants})` : ''} · petits du troupeau : ${s.petits}.</p><p class="petit">Morts : <strong>${s.morts}</strong> (${s.mortsSuivis} suivis, dont ${s.mortsNommes} PNJ nommés ; ${s.mortsEnfants} enfants) · remplacements : ${s.remplacements}${s.agents ? ` · autre agent du Cartel : ${s.agents}` : ''}.</p></div>`,
+      `<div class="carte"><h3>Chaîne hameau → nid → pont → QP1</h3><p class="petit">Le rôle de chef n'est jamais vide ${badge('successeur_a_designer')} : <strong>${esc(P.chef || '—')}</strong> donne la prime du nid et oriente le héros vers Oakhaven (QP1).</p></div>`,
+      `<div class="carte"><h3>Registre : morts, remplaçants, naissances</h3>${reg.length ? `<div class="registre">${reg.map((r) => `<div class="r-${r.type}"><time>${esc(r.quand)}</time>${esc(r.texte)}</div>`).join('')}</div>` : '<p class="petit">Rien pour l\'instant.</p>'}</div>`,
+    ].join('');
+  }
+
+  function rendreHameau(v) {
+    const h = v.hameau, H = v.heros;
     let mef;
     if (h.etat === 'hostile' || h.etat === 'apeure') mef = `<div class="grand">${h.etat === 'hostile' ? 'Hostile' : 'Apeuré'}</div><p class="petit muted">Plus aucune demande au héros : la conscience fait tout seule.</p>`;
     else mef = `<div class="grand">${h.etat === 'amical' ? `« Amical » (prix ${moins(h.amicalPrix)} %)` : `+${h.mefiance} % sur les prix`}</div>
       <div class="etapes">${Array.from({ length: h.etapes }, (_, i) => `<i class="${i < h.etape ? 'fait' : ''}"></i>`).join('')}</div>
-      <p class="petit muted">Étape ${h.etape} sur ${h.etapes} ; une demande réglée = un service rendu = ${R.etapes_par_demande.etapes === 1 ? 'une étape' : `${R.etapes_par_demande.etapes} étapes`} ${badge('etapes_par_demande')}. Services rendus : ${h.services}${h.servicesApresAmical ? ` (dont ${h.servicesApresAmical} après « Amical », sans effet)` : ''}.</p>`;
-    const xp = Object.entries(H.xp);
+      <p class="petit muted">Étape ${h.etape} sur ${h.etapes} ; une demande réglée = un service rendu = ${R.etapes_par_demande.etapes === 1 ? 'une étape' : `${R.etapes_par_demande.etapes} étapes`} ${badge('etapes_par_demande')}. Services rendus : ${h.services}${h.servicesApresAmical ? ` (dont ${h.servicesApresAmical} après « Amical », sans effet ${badge('amical')})` : ''}.</p>
+      <p class="petit muted">Remontées : <strong>${h.remontees}</strong> ${badge('mefiance_remonte')} ${badge('mort_liee')}${h.auRetour ? ` · ${h.auRetour} en attente du retour du héros ${badge('absent_mefiance')}` : ''}${h.fautes.length ? ` · une mort compterait contre lui : ${h.fautes.map((f) => `${esc(f.nom.toLowerCase())} (demande de ${esc(f.demandeur)})`).join(', ')}` : ''}.</p>`;
     const obj = Object.entries(H.objets);
     const prix = v.prix.map((x) => `${x.bien} ${x.hausse ? `<strong>+${x.hausse} %</strong>` : 'normal'}`).join(' · ');
     $('#chiffres').innerHTML = [
@@ -463,16 +586,13 @@ tr.vu{background:rgba(212,168,87,.14)}
       `<div class="carte"><h3>Humeur du hameau ${badge('humeur')}</h3><div class="grand">${arr(h.humeur)} · ${h.etatHumeur === 'abattu' ? 'abattu' : h.etatHumeur === 'confiant' ? 'confiant' : 'ordinaire'}</div>
         <div class="barre" style="--c:var(--mousse)"><div class="rempli" style="width:${pctHumeur(h.humeur).toFixed(1)}%"></div><i style="left:${pctHumeur(R.humeur_seuils.abattu_sous)}%"></i><i style="left:${pctHumeur(R.humeur_seuils.confiant_au_dessus)}%"></i></div>
         <p class="petit muted">Sous ${R.humeur_seuils.abattu_sous} : abattu (travail ${moins(R.humeur_seuils.abattu_travail_pct)} %, soirée à la maison) ; au-dessus de ${R.humeur_seuils.confiant_au_dessus} : confiant (travail +${R.humeur_seuils.confiant_travail_pct} %) ${badge('humeur_seuils')}.</p></div>`,
-      `<div class="carte"><h3>Expérience du héros ${badge('experience')}</h3><div class="grand">${xp.length ? xp.map(([m, n]) => `${n} pts`).join(' · ') : '0 pt'}</div>
-        <p class="petit muted">${xp.length ? xp.map(([m, n]) => `${m === 'attente' ? 'compteur d\'attente' : m} : ${n}`).join(' ; ') : 'Aucune demande réglée.'} (${R.experience.points} pts par demande réglée, ${R.experience.points_urgence} si acceptée à ${R.experience.urgence_a_partir_de} ou plus)</p></div>`,
+      `<div class="carte"><h3>Expérience du héros ${badge('experience')}</h3><div class="grand">à définir (${esc(R.experience.a_definir)})</div>
+        <p class="petit muted">Compteur d'attente : <strong>${pl(H.compteur.reglees, 'demande réglée', 'demandes réglées')}</strong>, dont ${H.compteur.urgence} acceptée${H.compteur.urgence > 1 ? 's' : ''} à ${R.experience.urgence_a_partir_de} ou plus. Aucun point, ni au personnage ni au métier, tant que l'expérience du personnage n'est pas définie.</p></div>`,
       `<div class="carte"><h3>Récompenses ${badge('objets_nature')} ${badge('or')}</h3><div class="grand">${H.or} pièce${H.or > 1 ? 's' : ''}</div>
         <p class="petit muted">${obj.length ? obj.map(([o, n]) => `${o} × ${n}`).join(' ; ') : 'Aucun objet reçu.'}</p></div>`,
-      `<div class="carte"><h3>Troupeau ${badge('troupeau')}</h3><div class="grand">${h.troupeau} bête${h.troupeau > 1 ? 's' : ''} sur ${h.troupeauDepart}</div><p class="petit muted">${R.troupeau.perte_echec} bête${R.troupeau.perte_echec > 1 ? 's' : ''} perdue${R.troupeau.perte_echec > 1 ? 's' : ''} par tâche ratée sur le bétail ; ${R.pertes_crise.B2.betes} par crise ${badge('pertes_crise')}. À 0 bête, le bétail ne monte plus (règle) ; ici, il est aussi figé : ni crise, ni demande, ni garde (choix de la simulation).</p></div>`,
-      `<div class="carte"><h3>Habitants ${badge('habitants')}</h3><div class="grand">${h.habitants}</div><p class="petit muted">Dont ${v.villageois.length} suivis ici ; ${v.villageois.filter((x) => x.etat === 'blesse').length} blessé(s), ${v.villageois.filter((x) => x.etat === 'mort').length} mort(s).</p></div>`,
+      `<div class="carte"><h3>Troupeau ${badge('troupeau')}</h3><div class="grand">${h.troupeau} bête${h.troupeau > 1 ? 's' : ''} (départ : ${h.troupeauDepart})</div><p class="petit muted">${R.troupeau.perte_echec} bête${R.troupeau.perte_echec > 1 ? 's' : ''} perdue${R.troupeau.perte_echec > 1 ? 's' : ''} par tâche ratée sur le bétail ; ${R.pertes_crise.B2.betes} par crise ${badge('pertes_crise')} ; un petit de temps en temps, jusqu'à ${R.petits.max_betes} ${badge('petits')}. À 0 bête, le bétail ne monte plus et reste figé : ni crise, ni demande, ni garde (choix de T-0202 repris dans la règle).</p></div>`,
       `<div class="carte"><h3>Prix chez les marchands ${badge('prix')}</h3><p>${prix}</p><p class="petit muted">+${R.prix.hausse_pct} % sur le bien qui manque dès ${R.prix.a_partir_de}, jusqu'au retour sous ${R.prix.retour_sous}, en plus de la méfiance.${h.travailMoins ? ` <strong>Crise des outils : tout le monde travaille ${moins(R.pertes_crise.B4.travail_pct)} %.</strong>` : ''}</p></div>`,
     ].join('');
-    rendreJournal();
-    rendreBilan(v);
   }
 
   function rendreGraphe(v) {
@@ -498,9 +618,15 @@ tr.vu{background:rgba(212,168,87,.14)}
     s += `<line x1="${v.t}" x2="${v.t}" y1="0" y2="100" stroke="#e4e1d9" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>`;
     s += [R.besoins_depart.min, P.rumeur, P.demande, P.urgence, P.crise].map((p) => `<span class="axe" style="top:${y(p)}%">${p}</span>`).join('');
     $('#graphe').innerHTML = s;
-    const debut = R.debut.heure, HJ = R.par_jour.heures_par_jour;
-    $('#jours').innerHTML = Array.from({ length: v.journees }, (_, j) => `<span style="width:${(100 * (j === 0 ? HJ - debut : HJ) / W).toFixed(3)}%">${j === 0 ? 'jour 1' : j + 1}</span>`).join('');
-    $('#legende').innerHTML = v.besoins.map((b) => `<button type="button" data-courbe="${b.id}" aria-pressed="${!cachees.has(b.id)}" style="--c:${COUL[b.id]}"><span class="pastille"></span>${esc(b.nom)}</button>`).join('');
+    // bande de présence du héros
+    let b = `<svg viewBox="0 0 ${W} 10" preserveAspectRatio="none">`;
+    for (let i = 0; i < H.length; i++) {
+      const x = H[i], fin = i + 1 < H.length ? H[i + 1].t : x.t + 1;
+      b += `<rect x="${x.t}" y="0" width="${Math.max(0, Math.min(fin, W) - x.t)}" height="10" fill="${x.present ? 'rgba(212,168,87,.75)' : 'rgba(199,113,92,.55)'}"/>`;
+    }
+    $('#bande-heros').innerHTML = b + '</svg>';
+    $('#jours').innerHTML = joursHtml(v);
+    $('#legende').innerHTML = v.besoins.map((x) => `<button type="button" data-courbe="${x.id}" aria-pressed="${!cachees.has(x.id)}" style="--c:${COUL[x.id]}"><span class="pastille"></span>${esc(x.nom)}</button>`).join('');
   }
 
   function rendreJournal() {
@@ -517,11 +643,15 @@ tr.vu{background:rgba(212,168,87,.14)}
   }
 
   function rendreBilan(v) {
-    const s = v.stats, ids = partie.besoinsIds;
+    const s = v.stats;
     const L1 = [
       ['Demandes d\'aide ouvertes', s.demandes], ['… réglées par le héros', s.regleesHeros], ['… sans réponse (la conscience a pris le relais)', s.personne],
+      ['… acceptées puis pas finies à temps', s.echecsHeros],
       ['Tâches de la conscience', s.taches], ['… réussies', s.reussites], ['… échouées', s.echecs],
-      ['Villageois blessés', s.blesses], ['Villageois morts', s.morts], ['Bêtes perdues', s.betesPerdues], [`Crises (besoin à ${R.paliers.crise})`, s.crises],
+      ['Blessés ; enfants malades', `${s.blesses} ; ${s.malades}`], ['Morts (dont PNJ nommés ; enfants)', `${s.morts} (${s.mortsNommes} ; ${s.mortsEnfants})`], ['Remplacements', s.remplacements],
+      ['Naissances ; arrivants', `${s.naissances} ; ${s.arrivants}`], ['Habitants : maintenant (le plus bas, le plus haut)', `${v.population.habitants} (${s.habitantsMin}, ${s.habitantsMax})`],
+      ['Bêtes perdues ; petits nés', `${s.betesPerdues} ; ${s.petits}`], [`Crises (besoin à ${R.paliers.crise})`, s.crises],
+      ['Héros : départs ; retours ; heures parti', `${s.departs} ; ${s.retours} ; ${s.heuresAbsent}`], ['Méfiance : remontées', s.remontees],
       ['Tempêtes de Neige ; meutes ; morts-vivants rôdeurs', `${s.tempetes} ; ${s.meutes} ; ${s.rodeurs}`], ['Humeur la plus basse', arr(s.humeurMin)],
     ];
     $('#bilan').innerHTML = `<tbody>${L1.map(([a, b]) => `<tr><td>${esc(a)}</td><td class="n">${b}</td></tr>`).join('')}</tbody>
@@ -531,7 +661,7 @@ tr.vu{background:rgba(212,168,87,.14)}
 
   function comparer() {
     const base = options(), res = [];
-    for (const mode of ['rien', 'parfois', 'tout']) {
+    for (const mode of ORDRE_HEROS) {
       const p = SimHameau.creerPartie(D, Object.assign({}, base, { heros: mode }));
       while (p.avancer());
       res.push([mode, p.vue()]);
@@ -539,11 +669,14 @@ tr.vu{background:rgba(212,168,87,.14)}
     const lignes = [
       ['Demandes ouvertes', (v) => v.stats.demandes], ['Réglées par le héros', (v) => v.stats.regleesHeros], ['Sans réponse', (v) => v.stats.personne],
       ['Tâches de la conscience (réussies / échouées)', (v) => `${v.stats.taches} (${v.stats.reussites} / ${v.stats.echecs})`],
-      ['Blessés', (v) => v.stats.blesses], ['Morts', (v) => v.stats.morts], ['Bêtes perdues', (v) => v.stats.betesPerdues], ['Crises', (v) => v.stats.crises],
+      ['Blessés', (v) => v.stats.blesses], ['Morts (PNJ nommés)', (v) => `${v.stats.morts} (${v.stats.mortsNommes})`], ['Remplacements', (v) => v.stats.remplacements],
+      ['Naissances ; arrivants', (v) => `${v.stats.naissances} ; ${v.stats.arrivants}`], ['Habitants à la fin', (v) => v.population.habitants],
+      ['Bêtes perdues ; petits', (v) => `${v.stats.betesPerdues} ; ${v.stats.petits}`], ['Crises', (v) => v.stats.crises],
       ['Heures en urgence (tous besoins)', (v) => Object.values(v.stats.heuresUrgence).reduce((a, b) => a + b, 0)],
       ['Humeur à la fin (la plus basse)', (v) => `${arr(v.hameau.humeur)} (${arr(v.stats.humeurMin)})`],
-      ['Méfiance à la fin', (v) => (v.hameau.etat === 'amical' ? '« Amical »' : v.hameau.mefiance === null ? v.hameau.etat : `+${v.hameau.mefiance} %`)],
-      ['Expérience ; or', (v) => `${Object.values(v.heros.xp).reduce((a, b) => a + b, 0)} pts ; ${v.heros.or} pièces`],
+      ['Méfiance à la fin (remontées)', (v) => `${v.hameau.mefianceTexte} (${v.stats.remontees})`],
+      ['Heures où le héros est parti', (v) => v.stats.heuresAbsent],
+      ['Compteur d\'attente (expérience à définir) ; or', (v) => `${v.heros.compteur.reglees} ; ${v.heros.or} pièces`],
       ['Besoins à la fin', (v) => v.besoins.map((b) => arr(b.valeur)).join(' · ')],
     ];
     $('#comparaison').innerHTML = `<table><thead><tr><th>Graine ${esc(base.graine)}, ${base.journees} j.</th>${res.map(([m]) => `<th>${esc(HEROS[m])}</th>`).join('')}</tr></thead>
@@ -551,7 +684,7 @@ tr.vu{background:rgba(212,168,87,.14)}
   }
 
   function rendreReglages() {
-    $('#reglages-intro').innerHTML = `${D.nb_reglages} réglages lus dans le tableau du § 8 de la règle (T-0201), dont ${D.nb_prop} propositions « prop. ». ${esc(D.note)}`;
+    $('#reglages-intro').innerHTML = `${D.nb_reglages} réglages lus dans le tableau du § 8 de la règle (T-0201, mis à jour avec D-306 par T-0205), dont ${D.nb_prop} propositions « prop. ». ${esc(D.note)}`;
     $('#reglages').innerHTML = `<thead><tr><th>Réglage</th><th>Unité</th><th>Valeur</th><th>Source</th><th></th></tr></thead><tbody>${D.groupes.map((g) =>
       `<tr class="groupe"><td colspan="5">${esc(g.nom)}</td></tr>` + g.lignes.map((l) => `<tr id="r-${l.id}"><td>${md(l.reglage)}</td><td>${md(l.unite)}</td><td>${md(l.texte)}</td><td>${md(l.source)}</td><td>${l.prop ? '<span class="prop">prop.</span>' : '<span class="src">source</span>'}${l.jeu ? ' <span class="muted note">jeu</span>' : ''}</td></tr>`).join('')).join('')}</tbody>`;
     rendreTextes();
@@ -559,15 +692,17 @@ tr.vu{background:rgba(212,168,87,.14)}
 
   // textes fixes de la page dont les chiffres viennent du tableau (aucun chiffre de la règle écrit en dur)
   function rendreTextes() {
-    const P = R.paliers, M = R.heures_jour.minutes;
+    const P = R.paliers, M = R.heures_jour.minutes, C = R.heros_revient;
     $('#t-journees').textContent = `${R.debut.journees_min} à ${R.debut.journees_max}`;
-    $('#besoins-note').innerHTML = `De ${R.besoins_depart.min} (rien ne manque) à ${R.besoins_depart.max} (crise). Paliers ${badge('paliers')} : à ${P.rumeur}, on en parle à l'auberge ; à ${P.demande}, un villageois demande de l'aide au héros ; à ${P.urgence}, c'est urgent ; à ${P.crise}, c'est la crise.`;
+    $('#besoins-note').innerHTML = `De ${R.besoins_depart.min} (rien ne manque) à ${R.besoins_depart.max} (crise). Paliers ${badge('paliers')} : à ${P.rumeur}, on en parle à l'auberge ; à ${P.demande}, un villageois demande de l'aide au héros, s'il est là ; à ${P.urgence}, c'est urgent ; à ${P.crise}, c'est la crise.`;
+    $('#comparer-note').innerHTML = `Avec la même graine et les mêmes réglages de départ, la page joue la partie entière quatre fois (ne fait rien, répond parfois, répond à tout, part et revient : ${C.present_h} h au hameau puis ${C.absent_h} h parti, en boucle ${badge('heros_revient')}) : même météo, mêmes loups, mêmes naissances, seul le héros change.`;
     const hm = (m) => `${Math.floor(m / 60)} h${m % 60 ? ' ' + m % 60 : ''}`;
     const arrondies = Object.keys(M).filter((s) => M[s].some((m) => m % 60))
       .map((s) => `${s} : le jour va de ${hm(M[s][0])} à ${hm(M[s][1])} ; ici, de ${Math.round(M[s][0] / 60)} h à ${Math.round(M[s][1] / 60)} h`);
     $('#limite-heures').innerHTML = `Le temps avance d'une heure du monde à la fois ; les heures du jour et de l'emploi du temps sont arrondies à l'heure${arrondies.length ? ` (${esc(arrondies.join(' ; '))})` : ''} ${badge('heures_jour')}.`;
-    $('#limite-choix').innerHTML = `Choix de la simulation, que la règle ne fixe pas : les effets sur le travail (pluie, humeur, crise des outils) se multiplient ; une demande ne s'ouvre que si son demandeur est debout ; la recharge de ${R.limites.recharge_h} h d'un besoin compte depuis la fermeture de sa demande ; à ${P.urgence}, le délai restant passe à ${R.delais.repondre_urgence_h} h au plus ; « sous la pluie » veut dire : il pleut quand la tâche se termine.
-      <strong>Ajoutés à la correction 1 :</strong> quand le héros a accepté la demande d'un besoin, la conscience ne prend pas ce besoin, même à ${P.crise} : on laisse le héros finir (la règle ne prévoit pas d'exception ; les pertes de crise ont lieu quand même) ; l'agente du Cartel n'est jamais tirée au sort pour demander de l'aide pour les soins, car elle n'est pas une habitante (la règle n'exclut que le chef) ; à 0 bête, le bétail ne monte plus (règle) ; ici, il est aussi figé : il ne baisse plus, il ne fait plus de crise (avec la seule règle, si la dernière bête meurt dans une crise, il resterait à ${P.crise} et la crise reviendrait toutes les ${R.pertes_crise.repetition_h} h), aucune demande ne s'ouvre et personne n'est envoyé garder un troupeau vide (la demande ou la garde en cours s'arrête).`;
+    $('#limite-choix').innerHTML = `Choix de la simulation (T-0202), que la règle ne fixe pas : les effets sur le travail (pluie, humeur, crise des outils) se multiplient ; une demande ne s'ouvre que si son demandeur est debout ; la recharge de ${R.limites.recharge_h} h d'un besoin compte depuis la fermeture de sa demande ; à ${P.urgence}, le délai restant passe à ${R.delais.repondre_urgence_h} h au plus ; « sous la pluie » veut dire : il pleut quand la tâche se termine.`;
+    $('#limite-t0206').innerHTML = `<strong>Choix ajoutés par T-0206</strong> : les demandes s'ouvrent toujours du besoin le plus haut au plus bas (la règle le dit pour le retour du héros), et jamais pour un besoin que la conscience a déjà en main (ordre en attente ou tâche) ; absent, le héros simulé ne travaille pas à une demande acceptée : elle attend son retour, et son délai pour accomplir (${R.delais.accomplir_h} h) court toujours ; la commande « le héros part / revient » marche dans tous les comportements (en « part et revient », le cycle reprend à son heure suivante) ; les ${R.composition.adultes_non_suivis + R.composition.enfants} habitants non suivis sont comptés un par un, sans nom (sauf les successeurs désignés) ; une victime de perte de crise est tirée parmi tous les adultes présents, suivis ou non, et un habitant non suivi blessé compte dans les soins ; « un enfant tombe malade » vise un enfant de ${R.croissance.bebe_avant} à ${R.croissance.adulte_a - 1} ans, jamais un bébé ; un arrivant pour un rôle ordinaire vient ${R.remplacement_ordinaire.arrivant_h} h après la mort ; le paysan qui change de rôle est le premier valide de la liste, l'adulte non suivi qui prend un rôle est tiré au sort ; l'option « le plus apte » tire un adulte au sort (l'aptitude n'est pas simulée) ; naissances et petits du troupeau : un tirage par jour au lever du soleil ; une naissance un soir de silence (après une mort) est fêtée le soir suivant ; les anniversaires tombent à minuit ; « une naissance », « la mort du chef » et « une mort au hasard » sont des outils de la page, pas des règles.`;
+    $('#limite-repris').innerHTML = `<strong>Choix de T-0202 repris dans la règle</strong> (lignes « prop. » du tableau) : quand le héros a accepté la demande d'un besoin, la conscience lui laisse ce besoin, même à ${P.crise} (les pertes de crise ont lieu quand même) ${badge('conscience_quand')} ; l'agente du Cartel ne demande jamais ${badge('demandeur')} ; à 0 bête, le bétail est figé : ni crise, ni demande, ni garde ${badge('troupeau')}.`;
   }
 
   charger().then((d) => {
