@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · mercredi 14 octobre 2026 · semaine du 13 au 19 octobre</div>
   <h1>Jour <em>2</em></h1>
   <p class="lecture">Deuxième journée de la semaine : les preuves des essais fiables (<span class="insec">T-0190</span>), l&#x27;essai du mur invisible du rocher (<span class="insec">T-0210</span>) et la vérification longue, maintenant que la carte graphique est libre.</p>
-  <p class="ticket">Mise à jour : 14/10/2026 à 14:04</p>
+  <p class="ticket">Mise à jour : 14/10/2026 à 15:02</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,10 +104,11 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-valide">4 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-en-cours">5 en cours</span><span class="etat e-valide">4 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 5,9 % de la semaine au début de la journée ; budget cumulé 28,6 %.</li>
     <li><strong>Carte graphique</strong> : libre au réveil (le directeur a fermé l&#x27;Explorateur) ; les preuves de <span class="insec">T-0190</span> partent à 05:33.</li>
+    <li><strong><span class="insec">D-309</span></strong> (questionnaire groupé) : le mur invisible est gardé et étendu aux pieds ; le meneur garde son nouveau comportement, avec un contrôle de ses arrêts ; le regard de la horde sera corrigé (seul le corps visible cache les yeux) ; ménage du disque E: puis paquet du jeu. Besoins du hameau : aucune simplification, enfants MetaHuman si possible, ticket « gibier et ramassage », démo 2 sur un hameau qui a déjà vécu. Le trappeur est une quête d&#x27;apprentissage ; le tableau devient le « tableau du hameau » ; l&#x27;expérience complète va dans le prototype.</li>
   </ul>
 </section>
 
@@ -123,12 +124,26 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0210</span> · <span class="insec">D-308</span> (2)</span><h3>Essai du « mur invisible » du rocher</h3><p class="muted">Une enveloppe invisible autour de la roche, pour qu&#x27;aucune main n&#x27;y entre, même sous 60 images par seconde.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:55. Livré (commit aca557a) : « aucune main dans la roche » VERTE à 30, 45, 60 et 120 images par seconde (avant : ROUGE à 30 et 45). Une enveloppe invisible à 0,3 cm de la roche repousse la main dans la même image ; la main ne flotte pas (écart moyen inchangé). Vérification lancée à 08:58. Validé à 09:12 (relances VERTES à 29 et 58 images par seconde).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0211</span> · <span class="insec">D-281</span> · <span class="insec">D-308</span></span><h3>Vérification longue de la semaine</h3><p class="muted">Parcours complet deux fois, série de la horde, essai de l&#x27;escalade, règles ; jeu empaqueté si possible.</p><span class="etat e-valide">Validé</span><p class="note">Lancée à 09:12. Faite de 09:14 à 11:20 : règles sans échec ; parcours 5 sur 6 ; horde 4 sur 5 (défaut connu du regard) ; escalade 3 sur 3, et VERTE à 30 images par seconde grâce au mur invisible. Une casse : le meneur de la horde encore bloqué en route par une créature qui n&#x27;est pas une escorte (6 lancements sur 11). Jeu empaqueté non lancé : le dernier paquet date du 02/10.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0212</span> · <span class="insec">D-281</span> (4) · <span class="insec">D-261</span></span><h3>Correction prioritaire : le meneur de la horde bloqué en route</h3><p class="muted">Aucune créature, escorte ou non, ne doit bloquer le meneur sur son chemin.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 11:08. Livré (commit 42fca4b) : le meneur ne s&#x27;arrête plus une seule fois en route sur 17 lancements (avant : 5 à 14 arrêts dans 6 lancements sur 8) ; héros encerclé à 24 s au plus (avant : jusqu&#x27;à 34,9 s). Les créatures contournent sa place et s&#x27;écartent de devant lui. Vérification lancée à 13:04. Validé à 14:04 (relances : 0 arrêt dans 2 parcours et 5 lancements de la horde).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0213</span> · <span class="insec">D-309</span> (3)</span><h3>Regard de la horde : seul le corps visible cache les yeux</h3><p class="muted">Plus de faux « 0 œil vu » quand un mort-vivant est collé à la caméra.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 15:02.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0214</span> · <span class="insec">D-309</span> (2)</span><h3>Contrôle des arrêts du meneur</h3><p class="muted">Un essai qui échoue si le meneur se fige de nouveau en route.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0213</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0215</span> · <span class="insec">D-309</span> (1)</span><h3>Le mur invisible étendu aux pieds</h3><p class="muted">Aucun pied dans la roche, à tout débit d&#x27;images ; capture de côté.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0214</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4) · <span class="insec">D-267</span> (3)</span><h3>La meute de 6 loups pendant la Tempête de Neige</h3><p class="muted">Elle rôde près du hameau pendant la tempête.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0193</span> · <span class="insec">D-288</span> (1) · <span class="insec">D-301</span> (3)</span><h3>Patte touchée du cheval, du sanglier et du loup</h3><p class="muted">Les autres pattes qui boitent, et la pose d&#x27;arrêt du cheval blessé.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
   </div>
-  <p class="suite">Questionnaire groupé au directeur (mur invisible, meneur, regard de la horde, paquet du jeu, Besoins du hameau dans le prototype, suite de la semaine).</p>
+  <p class="suite"><span class="insec">T-0213</span>, <span class="insec">T-0214</span>, <span class="insec">T-0215</span>, puis les tickets prêts (<span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span>, <span class="insec">T-0193</span>) ; carte libre jusqu&#x27;à ce que le directeur dise le contraire.</p>
+</div>
+<div class="file">
+  <h3>Écriture (<span class="insec">D-309</span>)</h3>
+  <p class="muted">Documents, propositions et plan, sans carte graphique.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0216</span> · <span class="insec">D-308</span> · <span class="insec">D-309</span></span><h3>Report dans les documents</h3><p class="muted">Trappeur, tableau du hameau, expérience complète, périmètre du prototype.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 15:02.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0217</span> · <span class="insec">D-309</span> (11)</span><h3>Proposition : méfiance étendue</h3><p class="muted">Villages moyens, villes, disparitions ; exemple de Repos réécrit.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 15:02.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0218</span> · <span class="insec">D-309</span> (12)</span><h3>Proposition : détails de l&#x27;expérience</h3><p class="muted">Héritage, Flétrissement, bonus, courbe, point d&#x27;entraînement, 8 branches.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 15:02.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0219</span> · <span class="insec">D-309</span> (14)</span><h3>Plan : chiffrer les ajouts</h3><p class="muted">Gibier et ramassage, expérience complète, enfants, démo 2 sur un hameau qui a déjà vécu.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 15:02.</p></div>
+  </div>
+  <p class="suite">Questionnaire sur les deux propositions quand elles seront validées.</p>
 </div>
   </div>
 </section>
@@ -152,15 +167,16 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>11:08</time><p><span class="insec">T-0212</span> lancé : correction prioritaire du meneur (<span class="insec">D-281</span> (4)).</p></div>
     <div class="entree"><time>13:04</time><p><span class="insec">T-0212</span> livré : plus aucun arrêt du meneur en route ; vérification lancée.</p></div>
     <div class="entree"><time>14:04</time><p><span class="insec">T-0212</span> validé : le meneur de la horde n&#x27;est plus bloqué. Tout est validé : questionnaire groupé au directeur.</p></div>
+    <div class="entree"><time>15:00</time><p><span class="insec">D-309</span> : questionnaire groupé tranché (16 réponses).</p></div>
+    <div class="entree"><time>15:02</time><p><span class="insec">T-0213</span> lancé dans Unreal ; <span class="insec">T-0216</span> à <span class="insec">T-0219</span> lancés en parallèle (écriture).</p></div>
   </div>
 </section>
 
 <section id="questions">
   <h2>Questions pour le directeur</h2>
   <p class="lecture muted">Questions en attente du directeur (questionnaire groupé après la vérification longue).</p>
-  <p class="lecture muted">2 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <p class="lecture muted">1 question attend sa réponse. Personne ne les tranche à la place du directeur.</p>
   <div class="questions">
-    <div class="question"><span class="ticket">Besoins du hameau</span><p>Simplifications possibles du chiffrage (environ −29 h), enfants MetaHuman, ce que fait le héros pour régler une demande, quête du trappeur, tableau du hameau, exemple de Repos, détails de l&#x27;expérience.</p></div>
     <div class="question"><span class="ticket">Échanges</span><p>Installer giscus ; supprimer les deux anciennes pages claude.ai ; surnoms de l&#x27;entité.</p></div>
   </div>
 </section>
