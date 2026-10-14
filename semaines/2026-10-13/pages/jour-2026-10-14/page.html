@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · mercredi 14 octobre 2026 · semaine du 13 au 19 octobre</div>
   <h1>Jour <em>2</em></h1>
   <p class="lecture">Deuxième journée de la semaine : les preuves des essais fiables (<span class="insec">T-0190</span>), l&#x27;essai du mur invisible du rocher (<span class="insec">T-0210</span>) et la vérification longue, maintenant que la carte graphique est libre.</p>
-  <p class="ticket">Mise à jour : 14/10/2026 à 08:58</p>
+  <p class="ticket">Mise à jour : 14/10/2026 à 09:12</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">1 validé</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-valide">2 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Quota</strong> : 5,9 % de la semaine au début de la journée ; budget cumulé 28,6 %.</li>
     <li><strong>Carte graphique</strong> : libre au réveil (le directeur a fermé l&#x27;Explorateur) ; les preuves de <span class="insec">T-0190</span> partent à 05:33.</li>
@@ -120,13 +120,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0190</span> · <span class="insec">D-290</span> · <span class="insec">D-293</span> · <span class="insec">D-308</span></span><h3>Essais fiables de l&#x27;escalade et de la horde</h3><p class="muted">Causes trouvées et corrigées le 13/10 (commit 63f1d6f) ; reste à prouver 10 + 10 lancements verts, carte libre.</p><span class="etat e-valide">Validé</span><p class="note">Preuves lancées à 05:33 (environ 1 h 30). Preuves faites (commit ea439f5) : escalade 10 sur 10 à 144-148 images par seconde ; règles sans échec ; parcours VERT. Horde : jamais encerclé en 10 lancements ; 1 ROUGE sur un autre contrôle, le regard (« effet du plancher »), défaut ancien : un mort-vivant collé à la caméra fait croire que tous les yeux sont cachés. Vérification lancée à 07:36. Validé à 07:55 (relances 3 sur 3 et 3 sur 3, règles sans échec). Le défaut du regard deviendra une question au directeur.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0210</span> · <span class="insec">D-308</span> (2)</span><h3>Essai du « mur invisible » du rocher</h3><p class="muted">Une enveloppe invisible autour de la roche, pour qu&#x27;aucune main n&#x27;y entre, même sous 60 images par seconde.</p><span class="etat e-verification">En vérification</span><p class="note">Lancé à 07:55. Livré (commit aca557a) : « aucune main dans la roche » VERTE à 30, 45, 60 et 120 images par seconde (avant : ROUGE à 30 et 45). Une enveloppe invisible à 0,3 cm de la roche repousse la main dans la même image ; la main ne flotte pas (écart moyen inchangé). Vérification lancée à 08:58.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0210</span> · <span class="insec">D-308</span> (2)</span><h3>Essai du « mur invisible » du rocher</h3><p class="muted">Une enveloppe invisible autour de la roche, pour qu&#x27;aucune main n&#x27;y entre, même sous 60 images par seconde.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 07:55. Livré (commit aca557a) : « aucune main dans la roche » VERTE à 30, 45, 60 et 120 images par seconde (avant : ROUGE à 30 et 45). Une enveloppe invisible à 0,3 cm de la roche repousse la main dans la même image ; la main ne flotte pas (écart moyen inchangé). Vérification lancée à 08:58. Validé à 09:12 (relances VERTES à 29 et 58 images par seconde).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0211</span> · <span class="insec">D-281</span> · <span class="insec">D-308</span></span><h3>Vérification longue de la semaine</h3><p class="muted">Parcours complet deux fois, série de la horde, essai de l&#x27;escalade, règles ; jeu empaqueté si possible.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancée à 09:12.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4) · <span class="insec">D-267</span> (3)</span><h3>La meute de 6 loups pendant la Tempête de Neige</h3><p class="muted">Elle rôde près du hameau pendant la tempête.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0193</span> · <span class="insec">D-288</span> (1) · <span class="insec">D-301</span> (3)</span><h3>Patte touchée du cheval, du sanglier et du loup</h3><p class="muted">Les autres pattes qui boitent, et la pose d&#x27;arrêt du cheval blessé.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
   </div>
-  <p class="suite">Preuves de <span class="insec">T-0190</span>, puis l&#x27;essai du mur invisible (<span class="insec">T-0210</span>), puis la vérification longue (<span class="insec">D-281</span>, <span class="insec">D-308</span>).</p>
+  <p class="suite">Vérification longue (<span class="insec">T-0211</span>), puis le questionnaire groupé au directeur.</p>
 </div>
   </div>
 </section>
@@ -144,6 +145,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>07:36</time><p><span class="insec">T-0190</span> livré : escalade 10 sur 10, parcours VERT ; horde 9 sur 10 (défaut ancien du contrôle du regard). Vérification lancée.</p></div>
     <div class="entree"><time>07:55</time><p><span class="insec">T-0190</span> validé : escalade et horde fiables. <span class="insec">T-0210</span> lancé (essai du mur invisible du rocher).</p></div>
     <div class="entree"><time>08:58</time><p><span class="insec">T-0210</span> livré : le mur invisible du rocher marche aux quatre débits ; vérification lancée.</p></div>
+    <div class="entree"><time>09:12</time><p><span class="insec">T-0210</span> validé : le mur invisible du rocher est en place.</p></div>
+    <div class="entree"><time>09:12</time><p><span class="insec">T-0211</span> lancé : la vérification longue de la semaine.</p></div>
   </div>
 </section>
 
