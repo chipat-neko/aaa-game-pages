@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · jeudi 15 octobre 2026 (à partir de 19 h 18, après une coupure de courant d&#x27;environ 24 h) · semaine du 13 au 19 octobre</div>
   <h1>Jour <em>3</em></h1>
   <p class="lecture">Reprise après une coupure de courant d&#x27;environ 24 h : fin du regard de la horde, courbe d&#x27;expérience, puis les corrections Unreal et le paquet du jeu.</p>
-  <p class="ticket">Mise à jour : 15/10/2026 à 20:58</p>
+  <p class="ticket">Mise à jour : 15/10/2026 à 21:15</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-valide">5 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">5 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Coupure de courant</strong> du 14/10 vers 20 h au 15/10 : le parcours de <span class="insec">T-0213</span> et la correction de <span class="insec">T-0222</span> ont été coupés en route ; aucun fichier abîmé, sauf le verrou de la carte graphique (vide, supprimé par le Chef) ; dépôts sains.</li>
     <li><strong>Quota</strong> : 10,6 % de la semaine ; le directeur dit de ne pas s&#x27;en inquiéter tant qu&#x27;il ne dit rien.</li>
@@ -124,7 +124,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0213</span> · <span class="insec">D-309</span> (3)</span><h3>Regard de la horde : seul le corps visible cache les yeux</h3><p class="muted">Lancement 15 VERT et règles OK le 14/10 ; reste le parcours et le commit.</p><span class="etat e-valide">Validé</span><p class="note">Relancé à 19:21 après la coupure. Livré (commit 43d8e1a) : 15 lancements VERTS sur 15, plus aucun « effet du plancher » ; règles sans échec ; parcours VERT. La coupure avait abîmé le cache Zen d&#x27;Unreal : le moteur l&#x27;a refait seul. Vérification lancée à 19:57. Validé à 20:39 (5 lancements relancés, tous VERTS, aucun œil à travers un corps).</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0214</span> · <span class="insec">D-309</span> (2)</span><h3>Contrôle des arrêts du meneur</h3><p class="muted">Un essai qui échoue si le meneur se fige de nouveau en route.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:40.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0214</span> · <span class="insec">D-309</span> (2)</span><h3>Contrôle des arrêts du meneur</h3><p class="muted">Un essai qui échoue si le meneur se fige de nouveau en route.</p><span class="etat e-verification">En vérification</span><p class="note">Lancé à 20:40. Livré (commit 21d5610) : contrôle « au plus 2 arrêts du meneur par passage », ROUGE sans la correction de <span class="insec">T-0212</span> (13 et 22 arrêts), VERT avec (0 arrêt) ; lien du LISEZMOI réparé ; règles sans échec. Vérification lancée à 21:15.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0215</span> · <span class="insec">D-309</span> (1)</span><h3>Le mur invisible étendu aux pieds</h3><p class="muted">Aucun pied dans la roche, à tout débit d&#x27;images ; capture de côté.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0214</span>.</p></div>
     <div class="piste"><span class="ticket">Paquet · <span class="insec">D-309</span> (4)</span><h3>Le paquet du jeu</h3><p class="muted">Paquet de nuit, parcours sur le paquet, contrôle du mur et de la horde.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0215</span> (disque E: libéré : 112 Go).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
@@ -170,6 +170,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>20:39</time><p><span class="insec">D-315</span> (pente 4, métiers et monture, Brutus). <span class="insec">T-0213</span> validé.</p></div>
     <div class="entree"><time>20:40</time><p><span class="insec">T-0214</span> lancé dans Unreal ; <span class="insec">T-0225</span> lancé (écriture). Consigne du directeur : faire tous les tickets.</p></div>
     <div class="entree"><time>20:58</time><p><span class="insec">T-0225</span> validé (<span class="insec">D-314</span> et <span class="insec">D-315</span> dans les documents).</p></div>
+    <div class="entree"><time>21:15</time><p><span class="insec">T-0214</span> livré ; vérification lancée.</p></div>
   </div>
 </section>
 
