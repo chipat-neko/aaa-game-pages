@@ -1,9 +1,9 @@
 {
- "titre": "Réglages de la simulation du hameau (T-0202, T-0206)",
- "source": ".equipe/prototype/quetes-des-besoins.md, § 8 (T-0201, mis à jour avec D-306 par T-0205 ; règle encore à valider par le directeur, D-306 (10), D-295)",
+ "titre": "Réglages de la simulation du hameau (T-0202, T-0206, T-0227)",
+ "source": ".equipe/prototype/quetes-des-besoins.md, § 8 (T-0201, mis à jour avec D-306 par T-0205, puis avec D-307 et l'expérience, D-312, D-315, par T-0227 ; valeurs « prop. » encore à valider, D-295)",
  "note": "« prop. » : proposition du rédacteur de la règle, à valider ; les autres lignes citent un document ou une décision. Noms des villageois : provisoires (T-0202, T-0206), sauf les PNJ nommés désignés par leur titre.",
- "nb_reglages": 105,
- "nb_prop": 92,
+ "nb_reglages": 109,
+ "nb_prop": 95,
  "groupes": [
   {
    "nom": "Temps et saisons",
@@ -1548,8 +1548,8 @@
     {
      "reglage": "Enfants",
      "unite": "—",
-     "texte": "ni travail, ni tâche, ni demande ; suivent un parent le jour, maison le soir et la nuit ; pas victimes de B5 ; malades à la crise de B3 (25 %), mort possible à la crise de B6 ; options : jamais en danger ; comme les adultes",
-     "source": "D-306 (5) (« tout le monde ») ; valeurs prop. (question 2)",
+     "texte": "ni travail, ni tâche, ni demande ; suivent un parent le jour, maison le soir et la nuit ; jamais tirés comme victimes d'une perte de crise (B3, B5) ni envoyés au combat ; **ne meurent que de maladie, après une crise du froid** : à la crise de B3, un enfant tombe malade (25 %), mort possible à la crise de B6 ; options écartées par D-307 (2), gardées pour comparer : jamais en danger ; comme les adultes",
+     "source": "D-307 (2) ; D-306 (5) (« tout le monde ») ; 25 % prop.",
      "id": "enfants",
      "prop": true,
      "jeu": false,
@@ -1673,8 +1673,8 @@
     {
      "reglage": "Mort « à cause d'une demande acceptée »",
      "unite": "—",
-     "texte": "mort venue du besoin de la demande (tâche de la conscience ou perte de crise), après l'échec de la demande (délai pour accomplir passé ; héros mort en route), avant le retour du besoin sous 60 ; options (question 3) : dès l'acceptation ; au plus 1 étape par demande",
-     "source": "prop. (D-306 (4))",
+     "texte": "mort venue du besoin de la demande (tâche de la conscience ou perte de crise), **seulement après l'échec** de la demande (délai pour accomplir passé ; héros mort en route), tant que le besoin n'est pas redescendu sous 60 ; options écartées par D-307 (3), gardées pour comparer : dès l'acceptation ; au plus 1 étape par demande",
+     "source": "D-307 (3), D-306 (4) ; « venue du besoin » prop.",
      "id": "mort_liee",
      "prop": true,
      "jeu": false,
@@ -1691,10 +1691,10 @@
     {
      "reglage": "Héros absent : méfiance",
      "unite": "—",
-     "texte": "ne remonte pas pendant l'absence ; une mort liée à une demande acceptée avant le départ compte au retour ; options (question 1) : ne compte jamais ; compte aussitôt",
-     "source": "D-306 (2) ; « au retour » prop.",
+     "texte": "ne remonte pas pendant l'absence ; une mort liée à une demande acceptée avant le départ compte **à son retour** (+1 étape) ; options écartées par D-307 (1), gardées pour comparer : ne compte jamais ; compte aussitôt",
+     "source": "D-307 (1), D-306 (2)",
      "id": "absent_mefiance",
-     "prop": true,
+     "prop": false,
      "jeu": false,
      "valeurs": {
       "options": [
@@ -1721,17 +1721,111 @@
     },
     {
      "reglage": "Expérience par demande réglée",
-     "unite": "—",
-     "texte": "à définir (T-0204) ; compteur d'attente : demandes réglées, dont celles acceptées à 80 ou plus ; aucun point, ni au personnage ni au métier",
-     "source": "D-306 (7)",
+     "unite": "pts",
+     "texte": "personnage : 50 ; 100 si acceptée en urgence (à 80 ou plus) ; plus le métier concerné (ligne suivante), s'il existe dans la partie : 40 ; 80 en urgence",
+     "source": "D-307 (4) ; personnage : D-312 (1), mêmes gains partout (D-313 (3)), `experience-personnage.md` § 7.4 ; métier : prop. (`experience-personnage.md` § 9.7, point 7 : une unité de travail, § 9.5)",
      "id": "experience",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "personnage": 50,
+      "personnage_urgence": 100,
+      "urgence_a_partir_de": 80,
+      "metier": 40,
+      "metier_urgence": 80
+     }
+    },
+    {
+     "reglage": "Métier concerné par une demande",
+     "unite": "—",
+     "texte": "B1 et B2 : Chasse & Traque ; B4 : Minage (défaut ; option : Forge) ; B3, B5, B6 : aucun",
+     "source": "prop. (T-0201 : Chasse pour B1 et B2, Minage pour B4 ; `experience-personnage.md` § 4, tension 4)",
+     "id": "metier_concerne",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "par_besoin": {
+       "B1": "chasse",
+       "B2": "chasse",
+       "B3": null,
+       "B4": "minage",
+       "B5": null,
+       "B6": null
+      },
+      "option_besoin": "B4",
+      "options": [
+       "minage",
+       "forge"
+      ],
+      "defaut": "minage"
+     }
+    },
+    {
+     "reglage": "Métiers dans la partie",
+     "unite": "—",
+     "texte": "prototype (défaut) : Minage et Forge, appris par la quête du forgeron (aucun avant elle) ; pas de Chasse & Traque (la quête du trappeur n'est pas dans le prototype) ; option : jeu complet, Chasse & Traque aussi",
+     "source": "D-177 (4), D-209 (3) ; *Guide Complet des Métiers* § 1 ; option prop.",
+     "id": "metiers_partie",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       "prototype",
+       "complet"
+      ],
+      "defaut": "prototype",
+      "prototype": [
+       "minage",
+       "forge"
+      ],
+      "complet": [
+       "minage",
+       "forge",
+       "chasse"
+      ],
+      "apres_quete_forgeron": [
+       "minage",
+       "forge"
+      ]
+     }
+    },
+    {
+     "reglage": "Courbe du personnage (courbe A)",
+     "unite": "pts",
+     "texte": "passer du niveau n au suivant : 50 × n² pour n de 1 à 5, puis 1 250 + 4 × (n − 5) ; niveau 6 à 2 750 points, niveau 99 à 136 484 ; niveaux 1 à 99, bloqué à 99,99 %",
+     "source": "D-315 (1), D-313 (1), D-307 (6)",
+     "id": "courbe_a",
      "prop": false,
      "jeu": false,
      "valeurs": {
-      "a_definir": "T-0204",
-      "compteur_d_attente": true,
-      "urgence_a_partir_de": 80,
-      "points": null
+      "a": 50,
+      "carre_jusqu_au_niveau": 5,
+      "pente": 4,
+      "niveau_max": 99,
+      "total_niveau_max": 136484,
+      "bloque_pct": 99.99,
+      "niveau_demo": 6,
+      "total_niveau_demo": 2750
+     }
+    },
+    {
+     "reglage": "Expérience du personnage au départ (simulation)",
+     "unite": "pts",
+     "texte": "0, niveau 1 : seuls les Besoins comptent (défaut) ; option : 200, fin du didacticiel (niveau 2)",
+     "source": "prop. (simulation) ; 200 : `experience-personnage.md` § 7.4 (D-312 (1))",
+     "id": "experience_depart",
+     "prop": true,
+     "jeu": false,
+     "valeurs": {
+      "options": [
+       0,
+       200
+      ],
+      "defaut": 0,
+      "niveaux": {
+       "0": 1,
+       "200": 2
+      }
      }
     },
     {
@@ -2425,6 +2519,11 @@
    "genre": "f"
   }
  ],
+ "metiers": {
+  "chasse": "Chasse & Traque",
+  "minage": "Minage",
+  "forge": "Forge"
+ },
  "interface": {
   "vitesses_heures_par_seconde": [
    1,

@@ -32,7 +32,16 @@
    - anniversaires à minuit ; « forcer la mort du chef », « une mort au hasard » et « une naissance » sont des outils
      de la page, pas des règles.
    Choix de T-0202 repris dans la règle par T-0205 (lignes du § 8, « prop. ») : la conscience laisse au héros le besoin
-   qu'il a accepté, même à 100 ; l'agente ne demande jamais ; à 0 bête, B2 est figé (ni crise, ni demande, ni garde). */
+   qu'il a accepté, même à 100 ; l'agente ne demande jamais ; à 0 bête, B2 est figé (ni crise, ni demande, ni garde).
+   T-0227 (D-307 (1) à (4), expérience de D-312 (1) et D-315 (1)) :
+   - l'expérience d'une demande réglée est donnée quand le héros la finit ; « en urgence » = acceptée à 80 ou plus ;
+   - seule l'expérience des Besoins est comptée (pas les quêtes, ennemis, lieux…), à partir de l'expérience de départ
+     du tableau ; le niveau du personnage suit la courbe A ; les métiers ne montrent que leurs points gagnés, sans
+     niveau (leur valeur de départ dépend des quêtes, non simulées) ;
+   - Minage et Forge n'existent dans la partie qu'une fois la quête du forgeron faite (D-209 (3)) ;
+   - personne pour reprendre le rôle d'un PNJ nommé (toutes options) : l'arrivant vient 48 h après la mort, pas après
+     la reprise manquée du lever suivant ; un seul arrivant attendu à la fois pour devenir successeur d'un rôle ;
+   - un même temps tiré deux fois de suite (pluie, neige, couvert, clair) est annoncé comme prolongé, avec sa fin. */
 (function (racine) {
   'use strict';
 
@@ -63,6 +72,7 @@
       pasEnvoyes: R.pas_envoyes.defaut, remplacementNomme: R.remplacement_nomme.defaut, agente: R.agente_morte.defaut,
       anParJours: R.croissance.defaut, vieillir: R.vieillir.defaut, enfants: R.enfants.defaut,
       mortLiee: R.mort_liee.defaut, absentMefiance: R.absent_mefiance.defaut,
+      metiersPartie: R.metiers_partie.defaut, metierB4: R.metier_concerne.defaut, xpDepart: R.experience_depart.defaut,
     }, options || {});
     o.journees = Math.max(R.debut.journees_min, Math.min(R.debut.journees_max, Math.round(Number(o.journees) || UI.journees_defaut)));
     o.graine = Math.abs(Math.round(Number(o.graine))) || UI.graine_defaut;
@@ -71,6 +81,9 @@
     const nombreOpt = (v, l) => (l.options.includes(Number(v)) ? Number(v) : l.defaut);
     o.absentSeuil = nombreOpt(o.absentSeuil, R.absent_conscience);
     o.anParJours = nombreOpt(o.anParJours, R.croissance);
+    o.xpDepart = nombreOpt(o.xpDepart, R.experience_depart);
+    if (!R.metiers_partie.options.includes(o.metiersPartie)) o.metiersPartie = R.metiers_partie.defaut;
+    if (!R.metier_concerne.options.includes(o.metierB4)) o.metierB4 = R.metier_concerne.defaut;
     const flux = (nom) => suite(fnv(o.graine + '/' + nom));
     const rnd = { meteo: flux('meteo'), betes: flux('betes'), village: flux('village'), heros: flux('heros'), force: flux('force'), vie: flux('vie') };
     const entre = (f, a, b) => a + Math.floor(f() * (b - a + 1));
@@ -85,6 +98,15 @@
     }
     const AD = R.croissance.adulte_a, BB = R.croissance.bebe_avant, AN = o.anParJours * HJ;   // heures par an d'âge
     const NOMMES = R.remplacement_nomme.roles;
+    // expérience (D-307 (4)) : courbe A (D-315 (1)) ; TOT[L] = points pour atteindre le niveau L depuis le niveau 1
+    const CA = R.courbe_a, TOT = [0, 0];
+    const coutNiveau = (n) => (n <= CA.carre_jusqu_au_niveau ? CA.a * n * n
+      : CA.a * CA.carre_jusqu_au_niveau * CA.carre_jusqu_au_niveau + CA.pente * (n - CA.carre_jusqu_au_niveau));
+    for (let L = 2; L <= CA.niveau_max; L++) TOT[L] = TOT[L - 1] + coutNiveau(L - 1);
+    const niveauDe = (xp) => { let L = 1; while (L < CA.niveau_max && TOT[L + 1] <= xp) L++; return L; };
+    // métiers de la partie (D-177 (4), D-209 (3)) et métier concerné par chaque besoin
+    const METIERS = R.metiers_partie[o.metiersPartie].filter((m) => !(R.metiers_partie.apres_quete_forgeron.includes(m) && o.forgeron === 'pas-faite'));
+    const metierDe = (b) => (b === R.metier_concerne.option_besoin ? o.metierB4 : R.metier_concerne.par_besoin[b]) || null;
 
     // --- saisons, glissement, heures ------------------------------------------------------------------------------
     const ORDRE = R.saisons.ordre;
@@ -138,14 +160,15 @@
       etat: o.etat, etape: o.etat === 'amical' ? R.mefiance.etapes_pct.length - 1 : 0,
       services: 0, servicesApresAmical: 0, fautes: {}, mefianceAuRetour: [],
       heros: { mode: o.heros, present: o.presence !== 'parti', demande: null, reste: 0, compteur: { reglees: 0, urgence: 0 },
-        or: 0, objets: {}, absence: null, resume: null },
+        or: 0, objets: {}, absence: null, resume: null, xp: o.xpDepart, xpBesoins: 0, metiers: {}, rienAuMetier: 0 },
       troupeau: R.troupeau.depart, sansBetes: false, silenceSoir: false, derniersRodeurs: null,
       journal: [], historique: [], finie: false,
       stats: { demandes: 0, regleesHeros: 0, personne: 0, acceptees: 0, echecsHeros: 0, taches: 0, reussites: 0, echecs: 0,
         blesses: 0, malades: 0, morts: 0, mortsSuivis: 0, mortsNommes: 0, mortsEnfants: 0, remplacements: 0, agents: 0,
         naissances: 0, arrivants: 0, plancher: 0, petits: 0, anniversaires: 0, devenusAdultes: 0, remontees: 0,
         departs: 0, retours: 0, heuresAbsent: 0, betesPerdues: 0, crises: 0, criseParBesoin: {}, max: {}, heuresUrgence: {},
-        rumeurs: 0, tempetes: 0, meutes: 0, rodeurs: 0, humeurMin: R.humeur.depart, habitantsMin: 0, habitantsMax: 0 },
+        rumeurs: 0, tempetes: 0, meutes: 0, rodeurs: 0, humeurMin: R.humeur.depart, habitantsMin: 0, habitantsMax: 0,
+        niveauxGagnes: 0, prolongations: 0 },
     };
     for (const b of BES) { p.stats.max[b] = p.besoins[b]; p.stats.heuresUrgence[b] = 0; p.stats.criseParBesoin[b] = 0; }
 
@@ -161,6 +184,8 @@
     const liste = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' et ' + xs[xs.length - 1]);
     const arr = (x) => Math.round(x);
     const nombre = (x) => String(x).replace('.', ',');   // écriture française d'un réglage (0,5)
+    const mil = (x) => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');   // « 2 750 » (espace insécable)
+    const points = (x) => `${mil(x)} point${x > 1 ? 's' : ''}`;
     const pl = (n, mot, mots) => `${n} ${n > 1 ? (mots || mot + 's') : mot}`;
     const Maj = (s) => s.charAt(0).toUpperCase() + s.slice(1);
     const voyelle = (s) => /^[aeéèêiîoôu]/i.test(s);
@@ -254,13 +279,17 @@
       p.meteo = { type, reste: entre(f, R.meteo_duree.min_h, R.meteo_duree.max_h), debut: p.t };
       if (avant === 'tempete' && type !== 'tempete') {
         p.apresTempete = Math.ceil(R.retour_gibier.heures);
-        noter(`la tempête est finie (${METEO[type]}) : chacun reprend son travail ; le gibier revient ${nombre(R.retour_gibier.heures)} h plus tard.`, 'meteo', true);
+        noter(`la tempête est finie (${METEO[type]}, ${p.meteo.reste} h) : chacun reprend son travail ; le gibier revient ${nombre(R.retour_gibier.heures)} h plus tard.`, 'meteo', true);
       } else if (type === 'tempete' && (avant !== 'tempete' || forcee)) debutTempete();
       else if (type === 'tempete') {   // deux tempêtes tirées à la suite : une seule tempête, prolongée (annoncée)
         noter(`la Tempête de Neige se prolonge de ${p.meteo.reste} h (jusqu'au ${quandCourt(p.t + p.meteo.reste)}) : tout le monde reste à l'abri.`, 'meteo', true);
       } else if (type !== avant && avant !== null) {
         const t = { clair: 'le ciel se dégage', couvert: 'le ciel se couvre', pluie: 'il se met à pleuvoir : on travaille plus lentement', neige: 'il neige : le froid monte' }[type];
         noter(`${t} (${p.meteo.reste} h).`, 'meteo', false);
+      } else if (avant !== null) {   // même temps tiré deux fois de suite : il se prolonge (annoncé, avec sa fin)
+        p.stats.prolongations++;
+        const t = { clair: 'le temps reste clair', couvert: 'le ciel reste couvert', pluie: 'la pluie continue', neige: 'la neige continue' }[type];
+        noter(`${t} ${p.meteo.reste} h de plus (jusqu'au ${quandCourt(p.t + p.meteo.reste)}).`, 'meteo', false);
       }
     }
 
@@ -331,6 +360,11 @@
       if (!s) { s = paysanLibre(); d = (x) => `un${e(x)} ${nomRole(x, 'paysan')}`; }
       if (!s) {
         if (role !== 'chef') {
+          const deja = p.arrivees.find((a) => a.type === 'successeur' && a.role === role);   // un seul attendu à la fois
+          if (deja) {
+            apres(`personne ne peut être désigné pour succéder ${au(ROLES[role].nom)} : l'arrivant attendu le ${quandCourt(deja.t)} le sera.`, 'remplacement', false);
+            return null;
+          }
           p.arrivees.push({ t: p.t + S.arrivant_h, type: 'successeur', role });
           apres(`personne ne peut être désigné pour succéder ${au(ROLES[role].nom)} : un arrivant viendra dans ${S.arrivant_h} h.`, 'remplacement', false);
           return null;
@@ -367,7 +401,7 @@
         apres(`${s.nom} reprend aussi la demande d'aide ${deNom(mort.nom)} (${INFO[d.besoin].nom.toLowerCase()}) : délai inchangé (${quandCourt(d.delai)}).`, 'remplacement', true);
       }
     }
-    function reprendre(role, mort) {   // PNJ nommé : son successeur (ou, selon l'option, le plus apte ou un arrivant) prend le rôle
+    function reprendre(role, mort, depuis) {   // PNJ nommé : son successeur (ou, selon l'option, le plus apte ou un arrivant) prend le rôle ; depuis : heure de la mort
       const opt = o.remplacementNomme;
       let s = null;
       if (opt === 'successeur') {
@@ -376,10 +410,11 @@
       } else if (opt === 'plus-apte') s = adulteLibre() || paysanLibre();
       if (!s) {
         if (role === 'chef') s = arrivantAdulte();
-        else {
+        else {   // personne pour reprendre : un arrivant, compté depuis la mort (§ 8, « Arrivants adultes »), pas depuis ce lever
           const h = opt === 'successeur' ? R.successeur_a_designer.arrivant_h : R.arrivants.role_vide_h;
-          p.arrivees.push({ t: p.t + h, type: 'role', role, mort });
-          apres(`le rôle ${de(ROLES[role].nom)} reste vide : un arrivant viendra le prendre dans ${h} h.`, 'remplacement', true);
+          const at = Math.max(p.t, (depuis === undefined ? p.t : depuis) + h);
+          p.arrivees.push({ t: at, type: 'role', role, mort });
+          apres(`le rôle ${de(ROLES[role].nom)} reste vide : un arrivant viendra le prendre le ${quandCourt(at)} (${h} h après la mort).`, 'remplacement', true);
           return;
         }
       }
@@ -682,7 +717,23 @@
         else rep = `la méfiance du hameau baisse ${n === 1 ? 'd\'une étape' : `de ${n} étapes`} (prix +${EP[p.etape]} %)`;
       } else rep = 'le hameau reste ' + p.etat;
       fermer(d, 'heros');
-      noter(`${INFO[b].heros_fait} : ${INFO[b].le} baisse de ${-R.demande_reglee.baisse} (${arr(av)} → ${arr(ap)}). Expérience : à définir (T-0204), la demande est comptée en attente${d.urgenteAcceptation ? ' (acceptée en urgence)' : ''}${objet ? ' ; ' + objet : ''}${R.or[b] ? ' et ' + pl(R.or[b], 'pièce') : ''} ; ${rep}.${soins.length ? ' Remède donné à ' + liste(soins) + '.' : ''}`, 'heros', true);
+      // expérience (D-307 (4)) : personnage, plus le métier concerné s'il existe dans la partie
+      const X = R.experience, urg = d.urgenteAcceptation, nivAvant = niveauDe(h.xp);
+      const gain = urg ? X.personnage_urgence : X.personnage;
+      h.xp += gain; h.xpBesoins += gain;
+      const m = metierDe(b);
+      let txtMetier = '';
+      if (m && METIERS.includes(m)) {
+        const gm = urg ? X.metier_urgence : X.metier;
+        h.metiers[m] = (h.metiers[m] || 0) + gm;
+        txtMetier = ` et ${donnees.metiers[m]} +${gm}`;
+      } else if (m) { h.rienAuMetier++; txtMetier = `, rien au métier (pas de ${donnees.metiers[m]} dans cette partie)`; }
+      const niv = niveauDe(h.xp);
+      noter(`${INFO[b].heros_fait} : ${INFO[b].le} baisse de ${-R.demande_reglee.baisse} (${arr(av)} → ${arr(ap)}). Expérience${urg ? ' (demande acceptée en urgence)' : ''} : personnage +${gain} (${points(h.xp)}, niveau ${niv})${txtMetier}${objet ? ' ; ' + objet : ''}${R.or[b] ? ' et ' + pl(R.or[b], 'pièce') : ''} ; ${rep}.${soins.length ? ' Remède donné à ' + liste(soins) + '.' : ''}`, 'heros', true);
+      if (niv > nivAvant) {
+        p.stats.niveauxGagnes += niv - nivAvant;
+        noter(`le héros passe ${niv - nivAvant > 1 ? `du niveau ${nivAvant} au niveau ${niv}` : `au niveau ${niv}`} (${points(h.xp)})${niv < CA.niveau_max ? ` ; le niveau ${niv + 1} demande ${mil(TOT[niv + 1])} points` : ''}.`, 'heros', true);
+      }
     }
 
     // --- conscience collective -----------------------------------------------------------------------------------------
@@ -858,7 +909,7 @@
       traiterPostes();
       for (const r of p.reprises.slice()) if (x.h === x.hor.lever || p.t - r.depuis >= R.remplacement_nomme.au_plus_h) {
         p.reprises.splice(p.reprises.indexOf(r), 1);
-        reprendre(r.role, r.mort);
+        reprendre(r.role, r.mort, r.depuis);
       }
       vider();
       anniversaires();
@@ -1010,7 +1061,7 @@
     }
     function resumeFin() {
       const s = p.stats;
-      return `${pl(s.demandes, 'demande')} d'aide (${pl(s.regleesHeros, 'réglée')} par le héros, ${s.personne} sans réponse) ; ${pl(s.taches, 'tâche')} de la conscience (${pl(s.reussites, 'réussie')}, ${pl(s.echecs, 'échouée')}) ; ${pl(s.blesses, 'blessé')}, ${pl(s.malades, 'enfant malade', 'enfants malades')}, ${pl(s.morts, 'mort')} (${pl(s.mortsNommes, 'PNJ nommé', 'PNJ nommés')}), ${pl(s.remplacements, 'remplacement')} ; ${pl(s.naissances, 'naissance')}, ${pl(s.arrivants, 'arrivant')} ; ${pl(habitants(), 'habitant')} ; ${pl(s.betesPerdues, 'bête perdue', 'bêtes perdues')}, ${pl(s.petits, 'petit')} ; ${pl(s.crises, 'crise')} ; humeur ${arr(p.humeur)} ; méfiance ${mefianceTexte()}${s.remontees ? ` (remontée ${s.remontees} fois)` : ''}.`;
+      return `${pl(s.demandes, 'demande')} d'aide (${pl(s.regleesHeros, 'réglée')} par le héros, ${s.personne} sans réponse) ; ${pl(s.taches, 'tâche')} de la conscience (${pl(s.reussites, 'réussie')}, ${pl(s.echecs, 'échouée')}) ; ${pl(s.blesses, 'blessé')}, ${pl(s.malades, 'enfant malade', 'enfants malades')}, ${pl(s.morts, 'mort')} (${pl(s.mortsNommes, 'PNJ nommé', 'PNJ nommés')}), ${pl(s.remplacements, 'remplacement')} ; ${pl(s.naissances, 'naissance')}, ${pl(s.arrivants, 'arrivant')} ; ${pl(habitants(), 'habitant')} ; ${pl(s.betesPerdues, 'bête perdue', 'bêtes perdues')}, ${pl(s.petits, 'petit')} ; ${pl(s.crises, 'crise')} ; humeur ${arr(p.humeur)} ; méfiance ${mefianceTexte()}${s.remontees ? ` (remontée ${s.remontees} fois)` : ''} ; expérience du personnage ${points(p.heros.xp)}, niveau ${niveauDe(p.heros.xp)}${Object.keys(p.heros.metiers).length ? ` (${Object.entries(p.heros.metiers).map(([m, x]) => `${donnees.metiers[m]} +${x}`).join(', ')})` : ''}.`;
     }
 
     // --- départ ------------------------------------------------------------------------------------------------------
@@ -1032,7 +1083,7 @@
       const x = contexte();
       const fig = Object.keys(p.fige).filter((b) => p.fige[b]).map((b) => INFO[b].nom.toLowerCase());
       const succ = o.remplacementNomme === 'successeur' ? ` Successeurs désignés : ${liste(NOMMES.map((r) => `${p.successeurs[r].nom} (${titreSucc(p.successeurs[r], r)})`))}.` : '';
-      noter(`début de la partie au Hameau de la Brume (${calEffectif().saison}, jour ${calEffectif().jour}${o.modeSaison === 'figee' ? ', saison figée' : ''}) pour ${o.journees} journée${o.journees > 1 ? 's' : ''}. Graine ${o.graine}. Héros : ${MODES[p.heros.mode]}, ${p.heros.present ? 'au hameau' : 'parti'}. Hameau ${{ mefiant: 'méfiant', amical: '« Amical »', hostile: 'hostile', apeure: 'apeuré' }[p.etat]} ; ${habitants()} habitants (${p.villageois.filter((v) => v.role !== 'agente').length} suivis, ${p.autres.filter((u) => u.adulte).length} adultes non suivis, ${p.autres.filter((u) => !u.adulte).length} enfants ; l'agente du Cartel n'est pas comptée).${succ}${fig.length ? ' Figé (quête d\'apprentissage pas encore faite) : ' + fig.join(', ') + '.' : ''}${p.loup ? ' Le loup garde le troupeau (issue 2 de « L\'Agneau et le Loup »).' : ''}`, 'info', true);
+      noter(`début de la partie au Hameau de la Brume (${calEffectif().saison}, jour ${calEffectif().jour}${o.modeSaison === 'figee' ? ', saison figée' : ''}) pour ${o.journees} journée${o.journees > 1 ? 's' : ''}. Graine ${o.graine}. Héros : ${MODES[p.heros.mode]}, ${p.heros.present ? 'au hameau' : 'parti'}. Hameau ${{ mefiant: 'méfiant', amical: '« Amical »', hostile: 'hostile', apeure: 'apeuré' }[p.etat]} ; ${habitants()} habitants (${p.villageois.filter((v) => v.role !== 'agente').length} suivis, ${p.autres.filter((u) => u.adulte).length} adultes non suivis, ${p.autres.filter((u) => !u.adulte).length} enfants ; l'agente du Cartel n'est pas comptée).${succ}${fig.length ? ' Figé (quête d\'apprentissage pas encore faite) : ' + fig.join(', ') + '.' : ''}${p.loup ? ' Le loup garde le troupeau (issue 2 de « L\'Agneau et le Loup »).' : ''} Expérience du personnage : ${points(p.heros.xp)} (niveau ${niveauDe(p.heros.xp)}) ; métiers de la partie : ${METIERS.length ? liste(METIERS.map((m) => donnees.metiers[m])) : 'aucun'}.`, 'info', true);
       tirerMeteo(x, false);
       if (p.meteo.type !== 'clair' && p.meteo.type !== 'tempete') noter(`${METEO[p.meteo.type]} pour ${p.meteo.reste} h.`, 'meteo', false);
       debutHeure();
@@ -1045,7 +1096,7 @@
       const pc = prochainChangement();
       const attentes = p.postes.map((po) => ({ texte: `${ROLES[po.role].nom} : ${po.mort.parti ? `${po.mort.nom} a changé de rôle` : `laissé par ${po.mort.nom}`} ; repris le ${quandCourt(po.depuis + (po.type === 'paysan' ? R.paysans_completes.adulte_non_suivi_h : R.remplacement_ordinaire.delai_h))}` }))
         .concat(p.reprises.map((r) => ({ texte: `${ROLES[r.role].nom} : laissé par ${r.mort.nom} ; repris au lever suivant` })))
-        .concat(p.arrivees.map((a) => ({ texte: `${a.type === 'agent' ? 'un autre agent du Cartel' : a.type === 'successeur' ? `un successeur pour le rôle de ${ROLES[a.role].nom}` : `un arrivant pour le poste de ${ROLES[a.role].nom}`}, attendu le ${quandCourt(a.t)}`, route: true })));
+        .concat(p.arrivees.map((a) => ({ texte: `${a.type === 'agent' ? 'un autre agent du Cartel' : a.type === 'successeur' ? `un successeur pour le rôle ${de(ROLES[a.role].nom)}` : `un arrivant pour le poste ${de(ROLES[a.role].nom)}`}, attendu le ${quandCourt(a.t)}`, route: true })));
       return {
         t: p.t, fin: p.fin, finie: p.finie, quand: quand(p.t), jour: jourDe(p.t), heure: heureDe(p.t), journees: o.journees,
         saison: c.saison, jourSaison: c.jour, glissement: o.modeSaison !== 'figee' ? part(c) : 0, suivante: suivante(c.saison),
@@ -1072,7 +1123,14 @@
         heros: { mode: p.heros.mode, present: p.heros.present, occupe: p.heros.demande !== null, demande: p.heros.demande, reste: p.heros.reste,
           finTexte: p.heros.demande !== null ? (p.heros.present ? quandCourt(p.t + p.heros.reste) : 'à son retour') : null,
           prochain: pc !== null ? quandCourt(pc) : null, compteur: Object.assign({}, p.heros.compteur), or: p.heros.or, objets: Object.assign({}, p.heros.objets),
-          resume: p.heros.resume, absentDepuis: p.heros.absence ? quandCourt(p.heros.absence.t) : null },
+          resume: p.heros.resume, absentDepuis: p.heros.absence ? quandCourt(p.heros.absence.t) : null,
+          experience: (() => {   // D-307 (4) ; courbe A (D-315 (1))
+            const xp = p.heros.xp, niv = niveauDe(xp), max = niv >= CA.niveau_max;
+            return { xp, depart: o.xpDepart, besoins: p.heros.xpBesoins, niveau: niv, niveauMax: CA.niveau_max, debutNiveau: TOT[niv],
+              suivant: max ? null : TOT[niv + 1], part: max ? CA.bloque_pct / 100 : (xp - TOT[niv]) / (TOT[niv + 1] - TOT[niv]),
+              niveauxGagnes: p.stats.niveauxGagnes, metiers: Object.assign({}, p.heros.metiers), rienAuMetier: p.heros.rienAuMetier,
+              metiersPartie: METIERS.slice() };
+          })() },
         hameau: { etat: p.etat, mefiance: p.etat === 'mefiant' || p.etat === 'amical' ? EP[p.etape] : null, mefianceTexte: mefianceTexte(),
           etape: p.etape, etapes: EP.length - 1, amicalPrix: R.amical.prix_pct, services: p.services, servicesApresAmical: p.servicesApresAmical,
           remontees: p.stats.remontees, auRetour: p.mefianceAuRetour.length, fautes: Object.keys(p.fautes).map((b) => ({ besoin: b, nom: INFO[b].nom, demandeur: p.fautes[b].demandeur })),
@@ -1086,7 +1144,7 @@
     const apresGeste = () => { vider(); const x = contexte(); majActivites(x); enregistrer(x); };
 
     return {
-      reglages: R, options: o, journal: p.journal, historique: p.historique, besoinsIds: BES, modes: MODES,
+      reglages: R, options: o, journal: p.journal, historique: p.historique, besoinsIds: BES, modes: MODES, totauxNiveaux: TOT.slice(),
       avancer: heure, vue, texteJournal, resumeFin,
       finie: () => p.finie,
       changerHeros(mode) { if (!MODES[mode]) return; p.heros.mode = mode; noter(`le comportement du héros change : ${MODES[mode]}.`, 'heros', false); },

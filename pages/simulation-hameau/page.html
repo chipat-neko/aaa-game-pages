@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Simulation du hameau (T-0202, mise à jour par T-0206 : D-305, D-306) : la règle « Besoins du hameau » jouée heure par heure ; même identité sombre que les autres pages */
+/* Simulation du hameau (T-0202, mise à jour par T-0206 : D-305, D-306 ; par T-0227 : D-307, expérience D-312, D-315) : la règle « Besoins du hameau » jouée heure par heure ; même identité sombre que les autres pages */
 :root{
   --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
   --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
@@ -142,10 +142,10 @@ tr.vu{background:rgba(212,168,87,.14)}
 <nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
 <div class="page">
 <header>
-  <div class="surtitre">Projet AAA · simulation · T-0202 · T-0206 · D-305 · D-306</div>
+  <div class="surtitre">Projet AAA · simulation · T-0202 · T-0206 · T-0227 · D-305 · D-306 · D-307</div>
   <h1>Simulation <em>du hameau</em></h1>
-  <p class="lecture">Le Hameau de la Brume vit pendant <span id="t-journees">plusieurs</span> journées de jeu, avec ou sans le héros. Ses besoins montent heure par heure ; quand le héros est là, les villageois lui demandent de l'aide. Sinon, ou si personne ne vient, la conscience du hameau envoie elle-même des villageois, avec des risques : blessés, morts, bêtes perdues. Tout le monde peut mourir, PNJ nommés compris : un autre reprend le rôle et la quête. Des bébés naissent, les enfants grandissent, des arrivants prennent les postes vides.</p>
-  <p class="lecture muted" id="intro-regle">La règle jouée ici est celle de <code>quetes-des-besoins.md</code>, mise à jour avec D-306, encore à valider par le directeur (D-306 (10), D-295). Tous les chiffres viennent de son tableau de réglages, en bas de page. Le badge <span class="prop">prop.</span> marque une valeur proposée, à valider ; le badge <span class="src">source</span> marque une valeur tirée d'un document ou d'une décision. Touchez un badge pour voir sa ligne.</p>
+  <p class="lecture">Le Hameau de la Brume vit pendant <span id="t-journees">plusieurs</span> journées de jeu, avec ou sans le héros. Ses besoins montent heure par heure ; quand le héros est là, les villageois lui demandent de l'aide. Sinon, ou si personne ne vient, la conscience du hameau envoie elle-même des villageois, avec des risques : blessés, morts, bêtes perdues. Tout le monde peut mourir, PNJ nommés compris : un autre reprend le rôle et la quête. Des bébés naissent, les enfants grandissent, des arrivants prennent les postes vides. Chaque demande réglée rapporte de l'expérience au héros, et à son métier quand il existe dans la partie.</p>
+  <p class="lecture muted" id="intro-regle">La règle jouée ici est celle de <code>quetes-des-besoins.md</code>, mise à jour avec D-306, puis avec D-307 (méfiance au retour, enfants, faute après l'échec, expérience) et la courbe A réglée (D-315 (1)) ; ses valeurs « prop. » restent à valider (D-295). Tous les chiffres viennent de son tableau de réglages, en bas de page. Le badge <span class="prop">prop.</span> marque une valeur proposée, à valider ; le badge <span class="src">source</span> marque une valeur tirée d'un document ou d'une décision. Touchez un badge pour voir sa ligne.</p>
 </header>
 
 <section id="commandes" aria-label="Commandes">
@@ -263,9 +263,10 @@ tr.vu{background:rgba(212,168,87,.14)}
     <li>Le héros simulé ne se déplace pas : il accepte, puis il a fini au bout de la durée prévue pour le besoin, toujours avec succès. Sa mort en route, les objets donnés hors demande, la magie vue par un habitant et le hameau qui devient hostile en cours de partie ne sont pas simulés.</li>
     <li id="limite-choix">Choix de la simulation, que la règle ne fixe pas.</li>
     <li id="limite-t0206">Choix ajoutés par T-0206.</li>
+    <li id="limite-t0227">Choix ajoutés par T-0227.</li>
     <li id="limite-repris">Choix de T-0202 repris dans la règle.</li>
-    <li>La brume n'est pas simulée (elle ne change aucun besoin). Les prix sont montrés en pourcentage : aucun marchand n'est simulé. L'expérience attend celle du personnage (T-0204) : la page compte seulement les demandes réglées.</li>
-    <li>Les noms des villageois sont provisoires. Rien ici n'entre dans les documents avant la validation par le directeur (D-306 (10) ; questionnaire groupé, D-295).</li>
+    <li>La brume n'est pas simulée (elle ne change aucun besoin). Les prix sont montrés en pourcentage : aucun marchand n'est simulé. Seule l'expérience des Besoins est comptée : les quêtes, les ennemis, les lieux et les paliers de l'arbre, qui rapportent l'essentiel en jeu, ne sont pas simulés.</li>
+    <li>Les noms des villageois sont provisoires. Les valeurs « prop. » n'entrent dans les documents qu'après leur validation par le directeur (questionnaire groupé, D-295).</li>
   </ul>
   <p class="muted note">Fichiers : <code>E:\aaa-proto\livrables\simulation-hameau\</code> (page, moteur <code>simulation.js</code>, réglages <code>reglages.json</code> construits par <code>construire_reglages.py</code> à partir du § 8 de <code>quetes-des-besoins.md</code>, essais dans <code>essais\</code>).</p>
 </section>
@@ -343,6 +344,8 @@ tr.vu{background:rgba(212,168,87,.14)}
     if (m === 'revient') return `${HEROS.revient} (${R.heros_revient.present_h} h au hameau, ${R.heros_revient.absent_h} h parti)`;
     return HEROS[m];
   }
+  // niveau du personnage pour une expérience de départ (courbe A, calculée par le moteur)
+  const partieVide = (x) => SimHameau.creerPartie(D, { xpDepart: x }).vue().heros.experience.niveau;
   function preparerCommandes() {
     const I = D.interface;
     remplir($('#vitesse'), I.vitesses_heures_par_seconde.map((v) => [v, v === 1 ? '1 h du monde par seconde' : `${v} h du monde par seconde`]), I.vitesse_defaut);
@@ -358,9 +361,13 @@ tr.vu{background:rgba(212,168,87,.14)}
       ['presence', 'presence_depart', 'Présence au départ', { present: 'au hameau', parti: 'parti' }, R.presence_depart],
       ['absentSeuil', 'absent_conscience', 'Héros absent : la conscience prend un besoin', Object.fromEntries(R.absent_conscience.options.map((v) => [v, `dès ${v}`])), R.absent_conscience],
       ['revientAccepte', 'heros_revient', '« Part et revient » accepte', { 'finir-avant': 'ce qu\'il peut finir avant de partir', tout: 'tout, même juste avant de partir' }, R.heros_revient],
-      [null, 'Réputation (D-306 (4) ; questions 1 et 3)'],
-      ['mortLiee', 'mort_liee', 'Une mort compte contre le héros', { 'apres-echec': 'après l\'échec de la demande acceptée', 'des-acceptation': 'dès qu\'il a accepté', 'une-par-demande': 'après l\'échec, une étape au plus par demande' }, R.mort_liee],
-      ['absentMefiance', 'absent_mefiance', 'Mort liée pendant son absence', { 'au-retour': 'compte à son retour', jamais: 'ne compte jamais', aussitot: 'compte aussitôt' }, R.absent_mefiance],
+      [null, 'Réputation (D-306 (4), D-307 (1), (3))'],
+      ['mortLiee', 'mort_liee', 'Une mort compte contre le héros', { 'apres-echec': 'après l\'échec de la demande acceptée (D-307 (3))', 'des-acceptation': 'dès qu\'il a accepté (écartée, pour comparer)', 'une-par-demande': 'après l\'échec, une étape au plus par demande (écartée, pour comparer)' }, R.mort_liee],
+      ['absentMefiance', 'absent_mefiance', 'Mort liée pendant son absence', { 'au-retour': 'compte à son retour (D-307 (1))', jamais: 'ne compte jamais (écartée, pour comparer)', aussitot: 'compte aussitôt (écartée, pour comparer)' }, R.absent_mefiance],
+      [null, 'Expérience (D-307 (4), D-312 (1), D-315 (1))'],
+      ['metiersPartie', 'metiers_partie', 'Métiers dans la partie', { prototype: 'prototype : Minage et Forge, pas de Chasse & Traque', complet: 'jeu complet : Chasse & Traque aussi' }, R.metiers_partie],
+      ['metierB4', 'metier_concerne', `Métier d'une demande ${R.metier_concerne.option_besoin} (${D.besoins.find((b) => b.id === R.metier_concerne.option_besoin).nom.toLowerCase()})`, Object.fromEntries(R.metier_concerne.options.map((m) => [m, D.metiers[m]])), R.metier_concerne],
+      ['xpDepart', 'experience_depart', 'Expérience du personnage au départ', Object.fromEntries(R.experience_depart.options.map((x) => [x, `${x} point${x > 1 ? 's' : ''} (niveau ${partieVide(x)})`])), R.experience_depart],
       [null, 'Morts et remplaçants (D-306 (5))'],
       ['morts', 'morts_possibles', 'Morts chez les villageois', { oui: 'possibles, PNJ nommés compris', non: 'non : blessés seulement' }, R.morts_possibles],
       ['pasEnvoyes', 'pas_envoyes', 'Pas envoyés par la conscience', { defaut: 'chef, aubergiste, agente, enfants', 'aucun-nomme': 'aucun PNJ nommé (comme avant D-306)', 'chef-aubergiste': 'chef et aubergiste aussi envoyés, après les paysans' }, R.pas_envoyes],
@@ -369,7 +376,7 @@ tr.vu{background:rgba(212,168,87,.14)}
       [null, 'Cycle de vie (D-306 (6))'],
       ['anParJours', 'croissance', 'Âge et croissance', Object.fromEntries(R.croissance.options.map((v) => [v, `1 an d'âge tous les ${v} jours`])), R.croissance],
       ['vieillir', 'vieillir', 'Moment où l\'on vieillit', { anniversaire: 'à son anniversaire', saison: `tous au jour ${R.vieillir.saison_jour} de chaque saison`, zero: 'compteurs à 0 au départ' }, R.vieillir],
-      ['enfants', 'enfants', 'Enfants (question 2)', { defaut: 'malades seulement (crise du froid)', jamais: 'jamais en danger', 'comme-adultes': 'comme les adultes' }, R.enfants],
+      ['enfants', 'enfants', 'Enfants (D-307 (2))', { defaut: 'ne meurent que de maladie, après une crise du froid (D-307 (2))', jamais: 'jamais en danger (écartée, pour comparer)', 'comme-adultes': 'comme les adultes (écartée, pour comparer)' }, R.enfants],
       [null, 'Départ, saison, travail'],
       ['agneau', 'quetes_apprentissage', 'Quête « L\'Agneau et le Loup »', { 'faite-1': 'faite, issue 1', 'faite-2': 'faite, issue 2 : le loup garde le troupeau', 'pas-faite': 'pas faite : bétail figé' }, R.quetes_apprentissage.agneau],
       ['forgeron', 'quetes_apprentissage', 'Quête du forgeron', { faite: 'faite', 'pas-faite': 'pas faite : outils figés' }, R.quetes_apprentissage.forgeron],
@@ -573,6 +580,18 @@ tr.vu{background:rgba(212,168,87,.14)}
     ].join('');
   }
 
+  const mil = (x) => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+  const points = (x) => `${mil(x)} point${x > 1 ? 's' : ''}`;
+  function carteExperience(H) {
+    const E = H.experience, X = R.experience, A = R.courbe_a;
+    const met = E.metiersPartie.length ? E.metiersPartie.map((m) => `${esc(D.metiers[m])} <strong>+${E.metiers[m] || 0}</strong>`).join(' · ') : 'aucun métier dans cette partie';
+    const vers = E.suivant === null ? `niveau ${E.niveauMax} : barre bloquée à ${String(A.bloque_pct).replace('.', ',')} %` : `${points(E.xp - E.debutNiveau)} sur ${mil(E.suivant - E.debutNiveau)} vers le niveau ${E.niveau + 1} (à ${mil(E.suivant)})`;
+    return `<div class="carte"><h3>Expérience du héros ${badge('experience')} ${badge('courbe_a')}</h3><div class="grand">Niveau ${E.niveau} · ${points(E.xp)}</div>
+        <div class="barre" style="--c:var(--aube)" role="img" aria-label="${esc(vers)}"><div class="rempli" style="width:${(100 * E.part).toFixed(1)}%"></div></div>
+        <p class="petit muted">${esc(vers)}. Courbe A : ${A.a} × n² pour passer du niveau n au suivant jusqu'au ${A.carre_jusqu_au_niveau}, puis ${mil(A.a * A.carre_jusqu_au_niveau * A.carre_jusqu_au_niveau)} + ${A.pente} × (n − ${A.carre_jusqu_au_niveau}) ; niveau ${A.niveau_demo} à ${mil(A.total_niveau_demo)} points, ${A.niveau_max} à ${mil(A.total_niveau_max)}.</p>
+        <p class="petit muted">Besoins : <strong>${pl(H.compteur.reglees, 'demande réglée', 'demandes réglées')}</strong> (dont ${H.compteur.urgence} acceptée${H.compteur.urgence > 1 ? 's' : ''} en urgence, à ${X.urgence_a_partir_de} ou plus) = ${points(E.besoins)} au personnage (${X.personnage} ; ${X.personnage_urgence} en urgence)${E.depart ? `, en plus des ${points(E.depart)} du départ ${badge('experience_depart')}` : ''} ; ${E.niveauxGagnes ? pl(E.niveauxGagnes, 'montée de niveau', 'montées de niveau') : 'aucune montée de niveau'}.</p>
+        <p class="petit muted">Métiers ${badge('metier_concerne')} ${badge('metiers_partie')} (${X.metier} ; ${X.metier_urgence} en urgence) : ${met}${E.rienAuMetier ? ` ; ${pl(E.rienAuMetier, 'demande', 'demandes')} dont le métier n'est pas dans cette partie : rien au métier` : ''}.</p></div>`;
+  }
   function rendreHameau(v) {
     const h = v.hameau, H = v.heros;
     let mef;
@@ -588,8 +607,7 @@ tr.vu{background:rgba(212,168,87,.14)}
       `<div class="carte"><h3>Humeur du hameau ${badge('humeur')}</h3><div class="grand">${arr(h.humeur)} · ${h.etatHumeur === 'abattu' ? 'abattu' : h.etatHumeur === 'confiant' ? 'confiant' : 'ordinaire'}</div>
         <div class="barre" style="--c:var(--mousse)"><div class="rempli" style="width:${pctHumeur(h.humeur).toFixed(1)}%"></div><i style="left:${pctHumeur(R.humeur_seuils.abattu_sous)}%"></i><i style="left:${pctHumeur(R.humeur_seuils.confiant_au_dessus)}%"></i></div>
         <p class="petit muted">Sous ${R.humeur_seuils.abattu_sous} : abattu (travail ${moins(R.humeur_seuils.abattu_travail_pct)} %, soirée à la maison) ; au-dessus de ${R.humeur_seuils.confiant_au_dessus} : confiant (travail +${R.humeur_seuils.confiant_travail_pct} %) ${badge('humeur_seuils')}.</p></div>`,
-      `<div class="carte"><h3>Expérience du héros ${badge('experience')}</h3><div class="grand">à définir (${esc(R.experience.a_definir)})</div>
-        <p class="petit muted">Compteur d'attente : <strong>${pl(H.compteur.reglees, 'demande réglée', 'demandes réglées')}</strong>, dont ${H.compteur.urgence} acceptée${H.compteur.urgence > 1 ? 's' : ''} à ${R.experience.urgence_a_partir_de} ou plus. Aucun point, ni au personnage ni au métier, tant que l'expérience du personnage n'est pas définie.</p></div>`,
+      carteExperience(H),
       `<div class="carte"><h3>Récompenses ${badge('objets_nature')} ${badge('or')}</h3><div class="grand">${H.or} pièce${H.or > 1 ? 's' : ''}</div>
         <p class="petit muted">${obj.length ? obj.map(([o, n]) => `${o} × ${n}`).join(' ; ') : 'Aucun objet reçu.'}</p></div>`,
       `<div class="carte"><h3>Troupeau ${badge('troupeau')}</h3><div class="grand">${h.troupeau} bête${h.troupeau > 1 ? 's' : ''} (départ : ${h.troupeauDepart})</div><p class="petit muted">${R.troupeau.perte_echec} bête${R.troupeau.perte_echec > 1 ? 's' : ''} perdue${R.troupeau.perte_echec > 1 ? 's' : ''} par tâche ratée sur le bétail ; ${R.pertes_crise.B2.betes} par crise ${badge('pertes_crise')} ; un petit de temps en temps, jusqu'à ${R.petits.max_betes} ${badge('petits')}. À 0 bête, le bétail ne monte plus et reste figé : ni crise, ni demande, ni garde (choix de T-0202 repris dans la règle).</p></div>`,
@@ -655,6 +673,7 @@ tr.vu{background:rgba(212,168,87,.14)}
       ['Bêtes perdues ; petits nés', `${s.betesPerdues} ; ${s.petits}`], [`Crises (besoin à ${R.paliers.crise})`, s.crises],
       ['Héros : départs ; retours ; heures parti', `${s.departs} ; ${s.retours} ; ${s.heuresAbsent}`], ['Méfiance : remontées', s.remontees],
       ['Tempêtes de Neige ; meutes ; morts-vivants rôdeurs', `${s.tempetes} ; ${s.meutes} ; ${s.rodeurs}`], ['Humeur la plus basse', arr(s.humeurMin)],
+      ['Expérience du personnage : points (niveau) ; montées', `${mil(v.heros.experience.xp)} (${v.heros.experience.niveau}) ; ${v.heros.experience.niveauxGagnes}`],
     ];
     $('#bilan').innerHTML = `<tbody>${L1.map(([a, b]) => `<tr><td>${esc(a)}</td><td class="n">${b}</td></tr>`).join('')}</tbody>
       <thead><tr><th>Besoin</th><th>Maintenant</th><th>Le plus haut</th><th>Heures en urgence</th><th>Crises</th></tr></thead>
@@ -678,7 +697,8 @@ tr.vu{background:rgba(212,168,87,.14)}
       ['Humeur à la fin (la plus basse)', (v) => `${arr(v.hameau.humeur)} (${arr(v.stats.humeurMin)})`],
       ['Méfiance à la fin (remontées)', (v) => `${v.hameau.mefianceTexte} (${v.stats.remontees})`],
       ['Heures où le héros est parti', (v) => v.stats.heuresAbsent],
-      ['Compteur d\'attente (expérience à définir) ; or', (v) => `${v.heros.compteur.reglees} ; ${v.heros.or} pièces`],
+      ['Expérience du personnage (niveau) ; métiers', (v) => `${mil(v.heros.experience.xp)} (${v.heros.experience.niveau}) ; ${Object.entries(v.heros.experience.metiers).map(([m, x]) => `${D.metiers[m]} +${x}`).join(', ') || 'aucun point'}`],
+      ['Demandes réglées (en urgence) ; or', (v) => `${v.heros.compteur.reglees} (${v.heros.compteur.urgence}) ; ${v.heros.or} pièces`],
       ['Besoins à la fin', (v) => v.besoins.map((b) => arr(b.valeur)).join(' · ')],
     ];
     $('#comparaison').innerHTML = `<table><thead><tr><th>Graine ${esc(base.graine)}, ${base.journees} j.</th>${res.map(([m]) => `<th>${esc(HEROS[m])}</th>`).join('')}</tr></thead>
@@ -686,7 +706,7 @@ tr.vu{background:rgba(212,168,87,.14)}
   }
 
   function rendreReglages() {
-    $('#reglages-intro').innerHTML = `${D.nb_reglages} réglages lus dans le tableau du § 8 de la règle (T-0201, mis à jour avec D-306 par T-0205), dont ${D.nb_prop} propositions « prop. ». ${esc(D.note)}`;
+    $('#reglages-intro').innerHTML = `${D.nb_reglages} réglages lus dans le tableau du § 8 de la règle (T-0201, mis à jour avec D-306 par T-0205, puis avec D-307 et l'expérience par T-0227), dont ${D.nb_prop} propositions « prop. ». ${esc(D.note)}`;
     $('#reglages').innerHTML = `<thead><tr><th>Réglage</th><th>Unité</th><th>Valeur</th><th>Source</th><th></th></tr></thead><tbody>${D.groupes.map((g) =>
       `<tr class="groupe"><td colspan="5">${esc(g.nom)}</td></tr>` + g.lignes.map((l) => `<tr id="r-${l.id}"><td>${md(l.reglage)}</td><td>${md(l.unite)}</td><td>${md(l.texte)}</td><td>${md(l.source)}</td><td>${l.prop ? '<span class="prop">prop.</span>' : '<span class="src">source</span>'}${l.jeu ? ' <span class="muted note">jeu</span>' : ''}</td></tr>`).join('')).join('')}</tbody>`;
     rendreTextes();
@@ -701,9 +721,10 @@ tr.vu{background:rgba(212,168,87,.14)}
     const hm = (m) => `${Math.floor(m / 60)} h${m % 60 ? ' ' + m % 60 : ''}`;
     const arrondies = Object.keys(M).filter((s) => M[s].some((m) => m % 60))
       .map((s) => `${s} : le jour va de ${hm(M[s][0])} à ${hm(M[s][1])} ; ici, de ${Math.round(M[s][0] / 60)} h à ${Math.round(M[s][1] / 60)} h`);
+    $('#limite-t0227').innerHTML = `<strong>Choix ajoutés par T-0227</strong> : l'expérience d'une demande réglée est donnée quand le héros la finit, « en urgence » voulant dire acceptée à ${R.experience.urgence_a_partir_de} ou plus ${badge('experience')} ; le niveau du personnage part de l'expérience de départ du tableau ${badge('experience_depart')} ; les métiers ne montrent que les points gagnés par les Besoins, sans niveau (leur valeur de départ dépend des quêtes, non simulées) ; Minage et Forge n'existent qu'une fois la quête du forgeron faite ${badge('metiers_partie')} ; quand personne ne peut reprendre le rôle d'un PNJ nommé, quelle que soit l'option, l'arrivant vient ${R.arrivants.role_vide_h} h après la mort, et un seul arrivant à la fois est attendu pour en devenir le successeur ${badge('arrivants')} ; un même temps tiré deux fois de suite est annoncé comme prolongé, avec sa fin.`;
     $('#limite-heures').innerHTML = `Le temps avance d'une heure du monde à la fois ; les heures du jour et de l'emploi du temps sont arrondies à l'heure${arrondies.length ? ` (${esc(arrondies.join(' ; '))})` : ''} ${badge('heures_jour')}.`;
     $('#limite-choix').innerHTML = `Choix de la simulation (T-0202), que la règle ne fixe pas : les effets sur le travail (pluie, humeur, crise des outils) se multiplient ; une demande ne s'ouvre que si son demandeur est debout ; la recharge de ${R.limites.recharge_h} h d'un besoin compte depuis la fermeture de sa demande ; à ${P.urgence}, le délai restant passe à ${R.delais.repondre_urgence_h} h au plus ; « sous la pluie » veut dire : il pleut quand la tâche se termine.`;
-    $('#limite-t0206').innerHTML = `<strong>Choix ajoutés par T-0206</strong> : les demandes s'ouvrent toujours du besoin le plus haut au plus bas (la règle le dit pour le retour du héros), et jamais pour un besoin que la conscience a déjà en main (ordre en attente ou tâche) ; absent, le héros simulé ne travaille pas à une demande acceptée : elle attend son retour, et son délai pour accomplir (${R.delais.accomplir_h} h) court toujours ; la commande « le héros part / revient » marche dans tous les comportements (en « part et revient », le cycle reprend à son heure suivante) ; les ${R.composition.adultes_non_suivis + R.composition.enfants} habitants non suivis sont comptés un par un, sans nom (sauf les successeurs désignés) ; une victime de perte de crise est tirée parmi tous les adultes présents, suivis ou non, et un habitant non suivi blessé compte dans les soins ; « un enfant tombe malade » vise un enfant de ${R.croissance.bebe_avant} à ${R.croissance.adulte_a - 1} ans, jamais un bébé ; un arrivant pour un rôle ordinaire vient ${R.remplacement_ordinaire.arrivant_h} h après la mort, et pour un PNJ nommé avec l'option « toujours un arrivant », ${R.arrivants.role_vide_h} h après la mort (pas au lever suivant) ; le paysan qui change de rôle est le premier valide de la liste, l'adulte non suivi qui prend un rôle est tiré au sort ; l'option « le plus apte » tire un adulte au sort (l'aptitude n'est pas simulée) ; naissances et petits du troupeau : un tirage par jour au lever du soleil ; une naissance un soir de silence (après une mort) est fêtée le soir suivant ; les anniversaires tombent à minuit ; « une naissance », « la mort du chef » et « une mort au hasard » sont des outils de la page, pas des règles.`;
+    $('#limite-t0206').innerHTML = `<strong>Choix ajoutés par T-0206</strong> : les demandes s'ouvrent toujours du besoin le plus haut au plus bas (la règle le dit pour le retour du héros), et jamais pour un besoin que la conscience a déjà en main (ordre en attente ou tâche) ; absent, le héros simulé ne travaille pas à une demande acceptée : elle attend son retour, et son délai pour accomplir (${R.delais.accomplir_h} h) court toujours ; la commande « le héros part / revient » marche dans tous les comportements (en « part et revient », le cycle reprend à son heure suivante) ; les ${R.composition.adultes_non_suivis + R.composition.enfants} habitants non suivis sont comptés un par un, sans nom (sauf les successeurs désignés) ; une victime de perte de crise est tirée parmi tous les adultes présents, suivis ou non, et un habitant non suivi blessé compte dans les soins ; « un enfant tombe malade » vise un enfant de ${R.croissance.bebe_avant} à ${R.croissance.adulte_a - 1} ans, jamais un bébé ; un arrivant pour un rôle ordinaire vient ${R.remplacement_ordinaire.arrivant_h} h après la mort, et pour un PNJ nommé avec l'option « toujours un arrivant », ${R.arrivants.role_vide_h} h après la mort (pas au lever suivant ; T-0227 l'étend à tous les cas) ; le paysan qui change de rôle est le premier valide de la liste, l'adulte non suivi qui prend un rôle est tiré au sort ; l'option « le plus apte » tire un adulte au sort (l'aptitude n'est pas simulée) ; naissances et petits du troupeau : un tirage par jour au lever du soleil ; une naissance un soir de silence (après une mort) est fêtée le soir suivant ; les anniversaires tombent à minuit ; « une naissance », « la mort du chef » et « une mort au hasard » sont des outils de la page, pas des règles.`;
     $('#limite-repris').innerHTML = `<strong>Choix de T-0202 repris dans la règle</strong> (lignes « prop. » du tableau) : quand le héros a accepté la demande d'un besoin, la conscience lui laisse ce besoin, même à ${P.crise} (les pertes de crise ont lieu quand même) ${badge('conscience_quand')} ; l'agente du Cartel ne demande jamais ${badge('demandeur')} ; à 0 bête, le bétail est figé : ni crise, ni demande, ni garde ${badge('troupeau')}.`;
   }
 
