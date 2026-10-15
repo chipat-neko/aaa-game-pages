@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · jeudi 15 octobre 2026 (à partir de 19 h 18, après une coupure de courant d&#x27;environ 24 h) · semaine du 13 au 19 octobre</div>
   <h1>Jour <em>3</em></h1>
   <p class="lecture">Reprise après une coupure de courant d&#x27;environ 24 h : fin du regard de la horde, courbe d&#x27;expérience, puis les corrections Unreal et le paquet du jeu.</p>
-  <p class="ticket">Mise à jour : 15/10/2026 à 20:08</p>
+  <p class="ticket">Mise à jour : 15/10/2026 à 20:39</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,12 +104,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">7 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">3 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-valide">4 validés</span></div>
   <ul class="liste lecture">
     <li><strong>Coupure de courant</strong> du 14/10 vers 20 h au 15/10 : le parcours de <span class="insec">T-0213</span> et la correction de <span class="insec">T-0222</span> ont été coupés en route ; aucun fichier abîmé, sauf le verrou de la carte graphique (vide, supprimé par le Chef) ; dépôts sains.</li>
     <li><strong>Quota</strong> : 10,6 % de la semaine ; le directeur dit de ne pas s&#x27;en inquiéter tant qu&#x27;il ne dit rien.</li>
     <li><strong><span class="insec">D-313</span></strong> : courbe d&#x27;expérience A (50 × n² jusqu&#x27;au niveau 6, puis presque plate ; le 99 à 140 855 points), le 99 vers 90 % d&#x27;une partie complète (réglé quand le contenu du jeu sera compté), gains stables gardés, croissance +3 % / +2 % par niveau gardée.</li>
     <li><strong><span class="insec">D-314</span></strong> : courbes des métiers et des montures de la même forme que celle du personnage ; QP1 gardée à 600 ; niveaux du personnage au jalon 1 (démo 1) ; un ticket compte le contenu du jeu complet pour régler la courbe (<span class="insec">T-0224</span>).</li>
+    <li><strong><span class="insec">D-315</span></strong> : courbe A à la pente 4 (le 99 à 136 484 points, environ 90 % d&#x27;une partie) ; courbes des métiers et de la monture retenues ; Brutus le Brisé entraîne le héros dans le prototype.</li>
+    <li><strong>Consigne du directeur (20:40)</strong> : faire tous les tickets, la carte graphique est libre : <span class="insec">T-0214</span>, <span class="insec">T-0215</span>, le paquet du jeu, puis <span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span> et <span class="insec">T-0193</span>, un à la fois dans Unreal.</li>
   </ul>
 </section>
 
@@ -121,8 +123,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>Unreal</h3>
   <p class="muted">Le prototype jouable ; un seul agent à la fois dans le projet.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0213</span> · <span class="insec">D-309</span> (3)</span><h3>Regard de la horde : seul le corps visible cache les yeux</h3><p class="muted">Lancement 15 VERT et règles OK le 14/10 ; reste le parcours et le commit.</p><span class="etat e-verification">En vérification</span><p class="note">Relancé à 19:21 après la coupure. Livré (commit 43d8e1a) : 15 lancements VERTS sur 15, plus aucun « effet du plancher » ; règles sans échec ; parcours VERT. La coupure avait abîmé le cache Zen d&#x27;Unreal : le moteur l&#x27;a refait seul. Vérification lancée à 19:57.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0214</span> · <span class="insec">D-309</span> (2)</span><h3>Contrôle des arrêts du meneur</h3><p class="muted">Un essai qui échoue si le meneur se fige de nouveau en route.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0213</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0213</span> · <span class="insec">D-309</span> (3)</span><h3>Regard de la horde : seul le corps visible cache les yeux</h3><p class="muted">Lancement 15 VERT et règles OK le 14/10 ; reste le parcours et le commit.</p><span class="etat e-valide">Validé</span><p class="note">Relancé à 19:21 après la coupure. Livré (commit 43d8e1a) : 15 lancements VERTS sur 15, plus aucun « effet du plancher » ; règles sans échec ; parcours VERT. La coupure avait abîmé le cache Zen d&#x27;Unreal : le moteur l&#x27;a refait seul. Vérification lancée à 19:57. Validé à 20:39 (5 lancements relancés, tous VERTS, aucun œil à travers un corps).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0214</span> · <span class="insec">D-309</span> (2)</span><h3>Contrôle des arrêts du meneur</h3><p class="muted">Un essai qui échoue si le meneur se fige de nouveau en route.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:40.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0215</span> · <span class="insec">D-309</span> (1)</span><h3>Le mur invisible étendu aux pieds</h3><p class="muted">Aucun pied dans la roche, à tout débit d&#x27;images ; capture de côté.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0214</span>.</p></div>
     <div class="piste"><span class="ticket">Paquet · <span class="insec">D-309</span> (4)</span><h3>Le paquet du jeu</h3><p class="muted">Paquet de nuit, parcours sur le paquet, contrôle du mur et de la horde.</p><span class="etat e-a-faire">À faire</span><p class="note">Après <span class="insec">T-0215</span> (disque E: libéré : 112 Go).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
@@ -130,7 +132,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0193</span> · <span class="insec">D-288</span> (1) · <span class="insec">D-301</span> (3)</span><h3>Patte touchée du cheval, du sanglier et du loup</h3><p class="muted">Les autres pattes qui boitent, et la pose d&#x27;arrêt du cheval blessé.</p><span class="etat e-a-faire">À faire</span><p class="note">En attente.</p></div>
   </div>
-  <p class="suite">Fin de <span class="insec">T-0213</span>, puis <span class="insec">T-0214</span>, <span class="insec">T-0215</span> et le paquet du jeu ; puis les tickets prêts (<span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span>, <span class="insec">T-0193</span>).</p>
+  <p class="suite"><span class="insec">T-0214</span> (en cours), <span class="insec">T-0215</span>, le paquet du jeu, puis <span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span>, <span class="insec">T-0193</span> (consigne du directeur : tout faire).</p>
 </div>
 <div class="file">
   <h3>Écriture</h3>
@@ -139,8 +141,9 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0222</span> · <span class="insec">D-312</span></span><h3>Courbe d&#x27;expérience plus douce ; report de <span class="insec">D-312</span></h3><p class="muted">Trois courbes proposées (A recommandée : niveau 6 en fin de démo, 99 à 140 855 points).</p><span class="etat e-valide">Validé</span><p class="note">Correction 1 faite le 14/10 juste avant la coupure ; vérification lancée à 19:21. Validé à 19:24.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0223</span> · <span class="insec">D-313</span></span><h3>Reporter la courbe A</h3><p class="muted">Arbre, GDD, Structure, Topographie, règle des Besoins, plan de production.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 19:26. Livré à 19:31 ; correction 1 (un titre de tableau) ; validé à 19:35.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0224</span> · <span class="insec">D-314</span></span><h3>Compter le contenu du jeu, régler la courbe, courbes des métiers</h3><p class="muted">Le 99 vers 90 % d&#x27;une partie ; courbes des métiers et des montures ; niveaux au jalon 1 dans le plan.</p><span class="etat e-valide">Validé</span><p class="note">Lancé à 19:37. Livré à 19:59 : partie complète d&#x27;environ 152 000 points (médiane) ; courbe A à la pente 4 (le 99 à 136 484 points, environ 90 %) ; courbes des métiers et de la monture ; niveaux au jalon 1 (démo 1 vers S5,8). Correction 1 (monture, une source) ; validé à 20:08.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0225</span> · <span class="insec">D-314</span> · <span class="insec">D-315</span></span><h3>Reporter les courbes réglées, les métiers et Brutus</h3><p class="muted">Arbre, GDD, Guide des Métiers, Montures, Topographie ; courbe « 40 × n » remplacée.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:40.</p></div>
   </div>
-  <p class="suite">Rien en cours. Questions en attente : la pente de la courbe A, les valeurs des métiers et de la monture, le maître du prototype (Brutus recommandé).</p>
+  <p class="suite"><span class="insec">T-0225</span>.</p>
 </div>
   </div>
 </section>
@@ -164,6 +167,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>19:37</time><p><span class="insec">T-0224</span> lancé (sans carte graphique).</p></div>
     <div class="entree"><time>19:57</time><p><span class="insec">T-0213</span> livré (15 sur 15, parcours VERT) ; vérification lancée.</p></div>
     <div class="entree"><time>20:08</time><p><span class="insec">T-0224</span> validé (contenu compté, courbes réglées).</p></div>
+    <div class="entree"><time>20:39</time><p><span class="insec">D-315</span> (pente 4, métiers et monture, Brutus). <span class="insec">T-0213</span> validé.</p></div>
+    <div class="entree"><time>20:40</time><p><span class="insec">T-0214</span> lancé dans Unreal ; <span class="insec">T-0225</span> lancé (écriture). Consigne du directeur : faire tous les tickets.</p></div>
   </div>
 </section>
 
