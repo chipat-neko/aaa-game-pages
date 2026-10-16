@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>Jour 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Semaine du 13 au 19 octobre</a></nav>
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de jour-2026-10-16.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · vendredi 16 octobre 2026 · semaine du 13 au 19 octobre</div>
+  <h1>Jour <em>4</em></h1>
+  <p class="lecture">Le paquet du jeu est VERT ; le directeur garde la carte graphique ce matin : la file processeur avance (répliques du hameau, prologue court, animations des villageois, boiterie du cheval, documents).</p>
+  <p class="ticket">Mise à jour : 16/10/2026 à 07:50</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">3 en cours</span><span class="etat e-verification">2 en vérification</span></div>
+  <ul class="liste lecture">
+    <li><strong>Paquet du jeu</strong> `20261016-0036` : VERT (0 erreur, 144 images par seconde), validé sur pièces ; une relance de 2,5 min sera faite quand la carte sera rendue.</li>
+    <li><strong>Carte graphique</strong> : gardée par le directeur ce matin (<span class="insec">D-316</span>) ; seuls des travaux sans carte tournent.</li>
+    <li><strong><span class="insec">D-318</span></strong> : la semelle de la botte sur la prise (ticket) ; le « ++ » retiré hors des décrets ; Brutus dans les Mines jusqu&#x27;au niveau 29 de Minage, un PNJ des Canyons le dit ; l&#x27;expérience de métier suit l&#x27;action faite (40, 80 en urgence) ; l&#x27;agente du Cartel protégée ; un successeur prévu pour le chef ; des morts au hasard aussi ; la boiterie arrière du cheval plus visible.</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Les deux files de travail (<span class="insec">D-317</span>).</p>
+  <div class="files">
+<div class="file">
+  <h3>File carte graphique (Unreal)</h3>
+  <p class="muted">Un seul agent à la fois dans le projet ; en pause : le directeur garde la carte ce matin.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0237</span> · <span class="insec">D-318</span> (1)</span><h3>La semelle se pose sur la prise</h3><p class="muted">Avec la relance de 2,5 min du nouveau paquet.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4)</span><h3>La meute de 6 loups pendant la Tempête de Neige</h3><p class="muted">Elle rôde près du hameau pendant la tempête.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+  </div>
+  <p class="suite">Quand la carte sera rendue : <span class="insec">T-0237</span> (semelle sur la prise et relance du paquet), puis <span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span>.</p>
+</div>
+<div class="file">
+  <h3>File processeur (écriture, Blender)</h3>
+  <p class="muted">Sans carte graphique ; plusieurs agents à la fois.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0232</span> · <span class="insec">P2-26</span> · <span class="insec">D-305</span> à <span class="insec">D-318</span></span><h3>Répliques des Besoins du hameau</h3><p class="muted">108 répliques : demandes, rumeurs, reproche, remplaçants, naissance, récit de l&#x27;aubergiste.</p><span class="etat e-verification">En vérification</span><p class="note">Livré ; vérification et relecture du lore lancées à 07:50.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0233</span> · <span class="insec">P1-20</span> · <span class="insec">D-177</span></span><h3>Prologue court de la démo 1 (script)</h3><p class="muted">64 s, 18 plans, 9 répliques de l&#x27;entité ; 21 images, 9 voix et 8 sons restent à produire.</p><span class="etat e-verification">En vérification</span><p class="note">Livré ; vérification et relecture du lore lancées à 07:50.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0234</span> · <span class="insec">P2-25</span></span><h3>Animations de tâches des villageois (Blender)</h3><p class="muted">Couper du bois, porter des fagots, ronde, troupeau, champs, alité, tombe.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 07:41.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0235</span> · <span class="insec">D-318</span> (12)</span><h3>Boiterie des postérieurs du cheval plus visible</h3><p class="muted">Hanche qui monte, appui plus court, tête qui marque un peu.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 07:52.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0236</span> · <span class="insec">D-318</span></span><h3>Reporter <span class="insec">D-318</span> dans les documents</h3><p class="muted">« ++ », Brutus, métiers, agente, chef, morts au hasard, cheval.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 07:52.</p></div>
+  </div>
+  <p class="suite">Vérifications, puis les prochains travaux qui font avancer le prototype des investisseurs.</p>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D du jour</h2>
+  <p class="vide">Aucun modèle 3D du jour pour l'instant.</p>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>07:33</time><p>Le directeur garde la carte graphique ce matin ; la file processeur continue.</p></div>
+    <div class="entree"><time>07:41</time><p><span class="insec">T-0232</span> (répliques), <span class="insec">T-0233</span> (prologue) et <span class="insec">T-0234</span> (animations des villageois) lancés.</p></div>
+    <div class="entree"><time>07:49</time><p><span class="insec">D-318</span> : questions en attente tranchées. <span class="insec">T-0193</span> et <span class="insec">T-0230</span> validés (paquet VERT).</p></div>
+    <div class="entree"><time>07:52</time><p><span class="insec">T-0235</span> (boiterie du cheval) et <span class="insec">T-0236</span> (report de <span class="insec">D-318</span>) lancés ; <span class="insec">T-0237</span> prêt pour la carte.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Questions en attente du directeur.</p>
+  <p class="lecture muted">1 question attend sa réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question"><span class="ticket">Échanges</span><p>Installer giscus ; supprimer les deux anciennes pages claude.ai ; surnoms de l&#x27;entité.</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:/aaa-proto/unreal-v2/paquets/nuit/20261016-0036 : le paquet du jeu · D:/aaa-game/.equipe/prototype/dialogues/j2-hameau-besoins.md : les répliques du hameau · D:/aaa-game/.equipe/prototype/prologue-court.md : le prologue court</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
