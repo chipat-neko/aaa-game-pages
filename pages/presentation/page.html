@@ -110,6 +110,9 @@ details.notes summary{cursor:pointer;font:500 .75rem/1.3 var(--f-data);letter-sp
 details.notes[open] summary{margin-bottom:.6rem}
 details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
 .sources{font:400 .74rem/1.6 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.maj{font-size:.84rem;font-style:italic;color:var(--pierre);border-left:2px solid var(--aube);padding-left:.6rem}
+.diapo .texte h3{margin-top:.4rem}
+.diapo .texte ul.liste ul{margin-top:.3rem}
 
 /* Graphiques : une seule teinte (or), une seule série ; l'hypothèse sans source en pointillés ; la valeur est toujours écrite en toutes lettres à côté */
 .graphe{overflow-x:auto}
@@ -127,7 +130,7 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
 .axe .graduations span:first-child{transform:none}
 .legende{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-size:.8rem;color:var(--pierre)}
 .legende i{display:inline-block;width:1.4rem;height:.6rem;vertical-align:middle;margin-right:.35rem;border-radius:2px}
-.frise .piste{height:1.55rem;background:repeating-linear-gradient(90deg,transparent 0 calc(11.7647% - 1px),var(--roche) calc(11.7647% - 1px) 11.7647%)}
+.frise .piste{height:1.55rem;background:repeating-linear-gradient(90deg,transparent 0 calc(9.5238% - 1px),var(--roche) calc(9.5238% - 1px) 9.5238%)}
 .barre{position:absolute;height:.55rem;border-radius:2px;min-width:3px}
 .barre.ue{top:.15rem;background:var(--aube)}
 .barre.un{top:.85rem;background:transparent;border:1.5px solid var(--aube)}
@@ -140,10 +143,11 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
 <nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
 <div class="page">
 <header>
-  <div class="surtitre">Projet AAA · chantier T-0086 · 30/09/2026 · brouillon</div>
+  <div class="surtitre">Projet AAA · chantier T-0086 · 30/09/2026 · brouillon · mis à jour le 17/10/2026 (T-0274, T-0284)</div>
   <h1>Présentation <em>investisseurs</em></h1>
   <p class="lecture">Les 17 diapositives du brouillon de présentation, dans l'ordre : ce qui est à l'écran, les images, les notes de l'orateur et les sources. C'est une <strong>proposition à valider</strong> par le directeur ; le Chef la transformera en présentation. Chaque chiffre a sa source datée ou est annoncé comme une hypothèse ; l'équipe reste à compléter par le directeur.</p>
   <p class="bandeau lecture">Titre du jeu : « Le Crépuscule de l'Ombre », <strong>titre de travail provisoire</strong> (GDD ; bilan de la Mission 5). Moteur : <strong>Unreal Engine 5.8</strong>, choix définitif du 30/09/2026 (D-181) ; les chiffres suivent la variante Unreal de l'étude T-0077 et du plan T-0090. Texte complet : <span class="chemins">D:\aaa-game\.equipe\prototype\presentation.md</span></p>
+  <p class="bandeau lecture"><strong>Mise à jour du 17/10/2026 (T-0274) :</strong> les diapositives qui parlent de l'avancement sont remises à l'état du 17/10/2026 : 8 (contenu du prototype), 9 et 10 (déjà fait, dans le moteur et hors du moteur), 13 (calendrier), 16 (risques), 17 (prochaines étapes ; l'équipe reste à compléter par le directeur) ; des décisions récentes touchent aussi les diapositives 1 (date), 4 (le hameau qui vit, D-305, D-306) et 5 (niveaux du personnage, D-307, D-310, D-311) ; deux notes sans changement de l'écran (12 et 14) ; la liste des points à valider. Sous chaque diapositive touchée, une ligne dit ce qui a changé. Toujours un <strong>brouillon, proposition à valider</strong>.</p>
 </header>
 
 <section>
@@ -157,8 +161,8 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     <li><a href="#d6">Unique (3) : la coopération qui divise</a></li>
     <li><a href="#d7">Le monde</a></li>
     <li><a href="#d8">Le prototype pour les investisseurs</a></li>
-    <li><a href="#d9">Déjà fait (1) : mini-tranche et moteur</a></li>
-    <li><a href="#d10">Déjà fait (2) : univers visuel et personnages</a></li>
+    <li><a href="#d9">Déjà fait (1) : le prototype dans Unreal</a></li>
+    <li><a href="#d10">Déjà fait (2) : univers, personnages, bêtes</a></li>
     <li><a href="#d11">Marché et jeux comparables</a></li>
     <li><a href="#d12">Méthode : agents IA et freelances</a></li>
     <li><a href="#d13">Calendrier</a></li>
@@ -192,12 +196,13 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
         <p>Action-RPG en monde ouvert · dark fantasy · PC d'abord</p>
       </div>
     </div>
-    <p class="muted" style="font-size:.85rem"><span class="nature n-capture">Capture</span>Prototype Unreal 5.8, belvédère des Gorges des Soupirs (T-0060, 30/09/2026). Ligne du bas de la diapositive : « Brouillon pour les investisseurs · Unreal Engine 5.8 ».</p>
+    <p class="muted" style="font-size:.85rem"><span class="nature n-capture">Capture</span>Prototype Unreal 5.8, belvédère des Gorges des Soupirs (T-0060, 30/09/2026). Ligne du bas de la diapositive : « Brouillon pour les investisseurs · Unreal Engine 5.8 · 30/09/2026, mis à jour le 17/10/2026 ».</p>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
     <p>Ce que vous voyez n'est pas une illustration : c'est une capture de notre prototype jouable, prise le 30 septembre 2026. Le titre est un titre de travail. Le jeu est un action-RPG en monde ouvert, de dark fantasy, qui sortira d'abord sur PC. Je vais vous montrer ce que le jeu promet, ce qui est déjà fait, et ce qu'il faut pour aller au bout du prototype.</p>
   </div></details>
-  <p class="sources">Sources : GDD (« Concept principal ») ; Pitch § 1 ; D-80 ; capture T-0060 (unreal-v2\captures\decor5\c_belvedere.png).</p>
+  <p class="sources">Sources : GDD (« Concept principal ») ; <em>Pitch</em> § 1 ; D-80 (PC d'abord) ; capture T-0060.</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : date de la ligne du bas seulement.</em></p>
 </article>
 
 <!-- 2 -->
@@ -271,12 +276,14 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     <h2>Un monde <em>qui se souvient</em></h2>
     <div class="ecran deux">
       <div class="texte">
-        <ul class="liste">
-          <li><strong>Les PNJ partagent leur mémoire.</strong> Un hameau apprend tout, d'un bloc ; la Capitale est découpée en quartiers qui se renseignent entre eux ; les monstres d'une région s'adaptent à votre style (abusez de l'épée, ils y deviennent résistants).</li>
-          <li><strong>La mémoire du nom.</strong> Au début, on vous appelle « Capitaine » ou « étranger ». Plus vous parlez aux gens, plus ils retiennent le nom que vous avez choisi, et finissent par l'employer.</li>
-          <li><strong>Le monde change sans vous attendre.</strong> Les décrets des Hauts Gradés transforment les régions au fil de la partie et créent de nouvelles quêtes.</li>
-        </ul>
-        <p class="citation">« Restez où vous êtes, Capitaine. » — « Non, moi c'est [Nom du héros]. »<span>Le chef du hameau et le héros, premier jet de dialogue (T-0087, provisoire)</span></p>
+<ul class="liste">
+<li><strong>Les PNJ partagent leur mémoire.</strong> Un hameau apprend tout, d'un bloc ; la Capitale est découpée en quartiers qui se renseignent entre eux ; les monstres d'une région s'adaptent à votre style (abusez de l'épée, ils y deviennent résistants).</li>
+<li><strong>La mémoire du nom.</strong> Au début, on vous appelle « Capitaine » ou « étranger ». Plus vous parlez aux gens, plus ils retiennent <strong>le nom que vous avez choisi</strong>, et finissent par l'employer.<ul>
+<li><em>Premier jet de dialogue :</em> le chef du hameau : « Restez où vous êtes, Capitaine. » — le héros : « <strong>Non, moi c'est [Nom du héros].</strong> »</li>
+</ul></li>
+<li><strong>Le monde change sans vous attendre.</strong> Les décrets des Hauts Gradés transforment les régions au fil de la partie et créent de nouvelles quêtes.</li>
+<li><strong>Un hameau qui vit, avec ou sans vous</strong> (« Besoins du hameau »). Chaque villageois a un rôle et un emploi du temps. Quand le hameau manque de quelque chose ou est menacé, ses habitants demandent de l'aide au héros s'il est là ; sinon, la conscience collective répartit le travail entre eux, avec des conséquences qu'il découvre à son retour. Tout le monde peut mourir, et un autre reprend le rôle ; des enfants naissent, des arrivants s'installent (D-305, D-306).</li>
+</ul>
       </div>
       <div class="images">
         <figure>
@@ -291,11 +298,12 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     </div>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>Dans la plupart des RPG, chaque PNJ est une île. Ici, les habitants d'un lieu partagent ce qu'ils savent : dans le hameau de départ, une rumeur est connue de tous ; dans la Capitale, chaque quartier a sa mémoire et espionne les autres. Et le monde apprend votre nom : les gens vous appellent d'abord par un titre, puis par votre nom, au fil des rencontres.</p>
-    <p>Faire prononcer à voix haute un nom saisi librement par le joueur est un objectif du projet : une solution technique est à l'étude ; en attendant, le nom s'affiche à l'écrit et les voix utilisent des titres.</p>
-    <p class="attention">À ne pas promettre : que les voix prononcent déjà le nom du joueur (objectif D-170, solution non trouvée ; méthode « nom seul inséré » écartée, D-176).</p>
+    <p>Dans la plupart des RPG, chaque PNJ est une île. Ici, les habitants d'un lieu partagent ce qu'ils savent : dans le hameau de départ, une rumeur est connue de tous ; dans la Capitale, chaque quartier a sa mémoire et espionne les autres. Et le monde apprend votre nom : les gens vous appellent d'abord par un titre, puis par votre nom, au fil des rencontres. Faire prononcer à voix haute un nom saisi librement par le joueur est un objectif du projet : une solution technique est à l'étude ; en attendant, le nom s'affiche à l'écrit et les voix utilisent des titres.</p>
+    <p>Et le hameau n'attend pas le joueur : il a ses besoins, ses morts et ses naissances. Si vous l'aidez, il vous fait peu à peu confiance ; si vous partez, il se débrouille sans vous, et vous découvrez au retour ce qui s'est passé.</p>
+    <p class="attention">À ne pas promettre : que les voix prononcent déjà le nom du joueur (objectif D-170, solution non trouvée ; la méthode « nom seul inséré » a été écartée, D-176). Que le hameau vive déjà dans le prototype : sa règle, ses répliques et une simulation existent (diapositive 10), pas encore le code (jalon 2, diapositive 13).</p>
   </div></details>
-  <p class="sources">Sources : Pitch § 3.A ; GDD (« IA des PNJ et des ennemis », « Quêtes secondaires et Quêtes ++ ») ; D-78, D-155, D-170, D-172, D-174, D-176 ; dialogues T-0087 (CHF-01, CHF-02 ; premier jet, validé).</p>
+  <p class="sources">Sources : <em>Pitch</em> § 3.A ; GDD (« IA des PNJ et des ennemis », « Quêtes secondaires et Quêtes ++ ») ; D-78, D-155, D-170, D-172, D-174, D-176 ; dialogues provisoires T-0087 (CHF-01, CHF-02 ; premier jet, validé). Hameau qui vit : D-305 (2), (4), D-306 (2), (3), (5), (6), D-307 (1), D-237 (4) (méfiance qui baisse peu à peu) ; règle <code>.equipe/prototype/quetes-des-besoins.md</code> (T-0201, T-0205, T-0231, validés) ; simulation (T-0202, T-0206, T-0227).</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : quatrième point « Un hameau qui vit, avec ou sans vous » (D-305, D-306), une phrase des notes, une réserve « À ne pas promettre » et ses sources.</em></p>
 </article>
 
 <!-- 5 -->
@@ -305,13 +313,14 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     <h2>L'Ange <em>qui ronge</em></h2>
     <div class="ecran deux">
       <div class="texte">
-        <ul class="liste">
-          <li><strong>La corruption se mérite.</strong> Chaque sort de l'Ange, chaque pacte, chaque mort fait monter la Synchronicité, votre fusion avec lui. Trois stades : une voix, puis des visions, puis l'Ange lui-même, visible de vous seul. Elle peut redescendre : c'est à vous de résister.</li>
-          <li><strong>Pas de « Game Over ».</strong> À votre mort, l'Ange recoud vos chairs au dernier point de repos (auberge ou feu de camp). Mais le temps a passé, les quêtes en cours ont échoué, et votre corps vieillit : de 30 à 50 puis 70 ans d'apparence, jusqu'à 5 cicatrices qui changent le jeu.</li>
-          <li><strong>L'héritage.</strong> Au bout du vieillissement, la mort devient définitive : un héritier, que vous avez formé, reprend la partie dans un monde qui se souvient.</li>
-          <li><strong>Pas de classe figée, pas de boutons de sorts figés.</strong> Les sorts passent par une roue des magies (commandes provisoires, D-67) ; épée et magie se mêlent ; 20 fusions secrètes se découvrent en expérimentant.</li>
-        </ul>
-        <p class="citation">« Encore toi… Regarde tes mains, cadavre ambulant. La peau se ride, le sang se glace. »<span>Malak-Gath, à l'oral (DA &amp; Script, scénario A)</span></p>
+<ul class="liste">
+<li><strong>La corruption se mérite.</strong> Chaque sort de l'Ange, chaque pacte, chaque mort fait monter la Synchronicité, votre fusion avec lui. Trois stades : une voix, puis des visions, puis l'Ange lui-même, visible de vous seul. Elle peut redescendre : c'est à vous de résister.</li>
+<li><strong>Pas de « Game Over ».</strong> À votre mort, l'Ange recoud vos chairs au dernier point de repos (auberge ou feu de camp). Mais le temps a passé, les quêtes en cours ont échoué, et votre corps vieillit : de 30 à 50 puis 70 ans d'apparence, jusqu'à 5 cicatrices qui changent le jeu.</li>
+<li><strong>L'héritage.</strong> Au bout du vieillissement, la mort devient définitive : un héritier, que vous avez formé, reprend la partie dans un monde qui se souvient.</li>
+<li><strong>Pas de classe figée, pas de boutons de sorts figés.</strong> Les sorts passent par une roue des magies (commandes provisoires, D-67) ; épée et magie se mêlent ; 20 fusions secrètes se découvrent en expérimentant.</li>
+<li><strong>Des niveaux, pas d'achat de compétences.</strong> Du niveau 1 au niveau 99, chaque niveau fait grandir le corps (PV, Endurance, Mana, charge) ; l'arbre de compétences avance par la théorie et la pratique, pas par un menu ; la mort ne coûte pas d'expérience ; l'héritier repart au niveau 1 (D-307 (5) à (8), D-310 (6)).</li>
+</ul>
+<p><strong>Citation possible (à l'oral, voix de l'Ange) :</strong> « Encore toi… Regarde tes mains, cadavre ambulant. La peau se ride, le sang se glace. » (<em>DA &amp; Script</em>, scénario A)</p>
       </div>
       <figure>
         <img src="images/s05-magie-corruption.jpg" alt="Planche de la bible : les yeux de l'Ange, les veines noires, le code couleur des éléments, souvenirs et symptômes" loading="lazy">
@@ -320,11 +329,11 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     </div>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>La corruption n'est pas une barre d'histoire qui monte toute seule : c'est le reflet de vos choix. Plus vous utilisez la magie de l'Ange, plus il prend de place : d'abord une voix, ensuite des visions, enfin sa présence physique, que vous êtes seul à voir.</p>
-    <p>Et la mort a un prix : le monde continue sans vous, vous vieillissez, vous gardez des cicatrices. À la fin, votre héritier prend la relève. C'est ce qui rend chaque partie différente : 8 branches de compétences sur 10 au plus, 3 fins, une vie qui laisse des traces.</p>
+    <p>La corruption n'est pas une barre d'histoire qui monte toute seule : c'est le reflet de vos choix. Plus vous utilisez la magie de l'Ange, plus il prend de place : d'abord une voix, ensuite des visions, enfin sa présence physique, que vous êtes seul à voir. Et la mort a un prix : le monde continue sans vous, vous vieillissez, vous gardez des cicatrices. À la fin, votre héritier prend la relève. C'est ce qui rend chaque partie différente : jusqu'à 8 branches complètes sur 10, 3 fins, une vie qui laisse des traces.</p>
     <p class="attention">À ne pas promettre : l'illusion du Stade 3 (l'Ange visible) dans le prototype : il y montre les Stades 1 et 2 complets et un Stade 3 réduit (roue corrompue, voix plus forte, journal qui tremble), sans illusion ni prise de contrôle (D-182 (4)).</p>
   </div></details>
-  <p class="sources">Sources : Pitch § 3.C, § 3.D, § 4 ; GDD (« Corruption », « Mort, repos et vieillissement », « Magie de l'Ange et fusions ») ; DA &amp; Script § 3 ; D-10, D-13, D-29, D-67, D-99, D-101, D-107, D-116, D-121, D-182.</p>
+  <p class="sources">Sources : <em>Pitch</em> § 3.C et § 3.D, § 4 ; GDD (« Corruption », « Mort, repos et vieillissement », « Magie de l'Ange et fusions ») ; <em>DA &amp; Script</em> § 3 (scénario A) ; D-10, D-13, D-29, D-67, D-99, D-101, D-107, D-116, D-121, D-182. Niveaux : D-307 (5) à (8), D-310 (6), D-313 (4) ; « jusqu'à 8 branches complètes sur 10 (plafond de 600 niveaux de palier) » : D-310 (11), D-311 (7) ; <code>.equipe/prototype/experience-personnage.md</code> (T-0204, T-0218, T-0221 à T-0225, validés).</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : point « Des niveaux, pas d'achat de compétences » ajouté ; dans les notes, « 8 branches de compétences sur 10 au plus » devient « jusqu'à 8 branches complètes sur 10 » (D-311 (7)).</em></p>
 </article>
 
 <!-- 6 -->
@@ -407,19 +416,21 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     <h2>Le prototype <em>pour les investisseurs</em></h2>
     <div class="ecran deux">
       <div class="texte">
-        <p>Un morceau du jeu <strong>complet et jouable</strong>, en solo :</p>
-        <ol class="liste">
-          <li><strong>Prologue court</strong> (environ une minute), puis le <strong>didacticiel</strong> : réveil, reflet (visage, corps, nom), combat, apparition de l'Ange face à une horde, escalade de la falaise, panorama sur la Plaine Royale.</li>
-          <li><strong>La zone de départ</strong> : le Hameau de la Brume et ses PNJ, le nid à nettoyer, le <strong>Pont des Déserteurs</strong> (tuer ou empoisonner : le premier choix qui compte), la route.</li>
-          <li><strong>La première quête principale</strong> : les portes et la grand-place d'Oakhaven, trois façons d'entrer (voies B et C : à trancher, PB-11), la rencontre du Général.</li>
-          <li><strong>Une quête annexe</strong>, « L'Agneau et le Loup » (tuer ou apprivoiser un loup) ; <strong>une quête de métier</strong>, celle du forgeron (mines, minage, forge).</li>
-          <li><strong>Un morceau de nature libre</strong> avec bêtes, monstres et PNJ, la Ferme des Veilleurs, et <strong>toute l'interface</strong> de ce périmètre.</li>
-        </ol>
-        <p><strong>La magie du prototype</strong> (D-182) : au didacticiel, un pouvoir démesuré guidé par l'entité ; au nid, <strong>un seul élément</strong>, <strong>Feu ou Glace</strong>, que le joueur choisit par un dialogue avec l'entité (les autres quadrants de la roue restent scellés) ; corruption : Stades 1 et 2 complets, Stade 3 réduit.</p>
+<p>Un morceau du jeu <strong>complet et jouable</strong>, en solo :</p>
+<ol class="liste">
+<li><strong>Prologue court</strong> (environ une minute), puis le <strong>didacticiel</strong> : réveil en vue à la première personne (D-319 (3)), reflet (visage, corps, nom), combat, apparition de l'Ange face à une horde, escalade de la falaise, panorama sur la Plaine Royale, et <strong>première montée de niveau</strong> à la fin de la horde (D-314 (3), D-319 (4)).</li>
+<li><strong>La zone de départ</strong> : le Hameau de la Brume et ses PNJ, <strong>qui vit avec ses six « Besoins » et son cycle de vie</strong> (D-306 (9), D-309 (5)), le nid à nettoyer, le <strong>Pont des Déserteurs</strong> (tuer ou empoisonner : le premier choix qui compte), la route.</li>
+<li><strong>La première quête principale</strong> : les portes et la grand-place d'Oakhaven, trois façons d'entrer, chacune en version courte (D-205, qui tranche PB-11), la rencontre du Général.</li>
+<li><strong>Deux quêtes d'apprentissage</strong> (D-306 (8)) : « L'Agneau et le Loup » (tuer ou apprivoiser un loup) et celle du forgeron (mines, minage, forge ; Brutus le Brisé, dans les Mines, est le maître qui entraîne le héros, D-315 (3)).</li>
+<li><strong>Un morceau de nature libre</strong> avec des bêtes, des monstres et des PNJ, la Ferme des Veilleurs, le cycle du jour et de la nuit et la météo (P1-23), et <strong>toute l'interface</strong> de ce périmètre.</li>
+</ol>
+<p><strong>La magie du prototype</strong> (D-182) : au didacticiel, un pouvoir démesuré guidé par l'entité ; au nid, <strong>un seul élément</strong>, <strong>Feu ou Glace</strong>, que le joueur choisit par un dialogue avec l'entité (les autres quadrants de la roue restent scellés) ; corruption : Stades 1 et 2 complets, Stade 3 réduit.</p>
+<p>En chiffres : <strong>13 PNJ qui parlent</strong> (fiches T-0084 ; à recompter, point 9 de la liste finale), <strong>375 à 1 010 répliques</strong> (hypothèse de l'inventaire) ; le héros finit au <strong>niveau 6</strong> (« niveau 6 en fin de démo », D-312 (1), D-315 (1)). Démo intermédiaire de 15 à 20 minutes, puis de 45 à 60 minutes, qui commence sur un hameau qui a déjà vécu quelques jours (D-309 (8)), puis le prototype entier (diapositive 13).</p>
         <div class="chiffres">
-          <div><span class="cle">13</span><small>PNJ qui parlent (fiches T-0084)</small></div>
+          <div><span class="cle">13</span><small>PNJ qui parlent (fiches T-0084 ; à recompter, point 9 de la liste finale)</small></div>
           <div><span class="cle">375 à 1&nbsp;010</span><small>répliques (hypothèse de l'inventaire)</small></div>
-          <div><span class="cle">15-20 min</span><small>démo 1, puis 45 à 60 min pour la démo 2 (proposition du plan)</small></div>
+          <div><span class="cle">niveau 6</span><small>le héros en fin de démo (D-312 (1), D-315 (1))</small></div>
+          <div><span class="cle">15-20 min</span><small>démo intermédiaire, puis 45 à 60 min sur un hameau qui a déjà vécu (D-309 (8))</small></div>
         </div>
       </div>
       <figure>
@@ -437,25 +448,32 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     </div>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>Les éditeurs et les fonds ne regardent plus guère les dossiers papier : ils veulent jouer. Notre prototype est donc un vrai morceau du jeu, pas une vitrine technique : du réveil jusqu'à la première quête principale, avec une quête annexe et une quête de métier, et toute l'interface qui va avec. On le joue en solo ; la coopération sera montrée à part. Ce qui n'y est pas : les boss mineurs de la plaine, la météo, la coopération.</p>
+    <p>Les éditeurs et les fonds ne regardent plus guère les dossiers papier : ils veulent jouer. Notre prototype est donc un vrai morceau du jeu, pas une vitrine technique : du réveil jusqu'à la première quête principale, avec deux quêtes d'apprentissage, et toute l'interface qui va avec. On le joue en solo ; la coopération sera montrée à part. Ce qui n'y est pas : les boss mineurs de la plaine, la coopération. Le hameau, lui, y vit vraiment : ses habitants travaillent, demandent de l'aide, meurent parfois, et d'autres prennent leur place.</p>
     <p>Les cinq écrans du bas sont des maquettes : elles fixent la disposition, les textes et les commandes, avant la fabrication dans le moteur. Au nid, l'entité offre au joueur un seul élément, le Feu ou la Glace ; sa roue n'ouvre alors que celui-là.</p>
   </div></details>
-  <p class="sources">Sources : D-159, D-175, D-177, D-182 ; inventaire T-0077 § 1, § 2, § 3, § 4.6 ; fiches T-0084 § 1 ; points bloquants T-0085 (PB-11, voies B et C) ; plan T-0090 § 3 ; étude T-0077 [S-50, S-52] ; maquettes T-0083 (validées : E1, E3, E11 capturés le 30/09/2026 vers 20:55 ; E2 et E2 bis vers 21:58, après D-182).</p>
+  <p class="sources">Sources : D-159, D-175, D-177, D-182 ; inventaire T-0077 § 1, § 2, § 3, § 4.6 ; fiches des PNJ T-0084 § 1 ; points bloquants T-0085 (PB-11, voies B et C) ; plan de production T-0090 § 3 (durées des démos, proposition) ; [étude T-0077, S-50, S-52] (démo jouable plutôt que dossier) ; maquettes T-0083 (validées). Mise à jour : D-205, D-306 (8), (9), D-309 (5), (8), D-312 (1), D-314 (3), D-315 (1), (3), D-319 (3), (4) ; [PP] § 3 (démo 1), fiche P1-23 et « Depuis la validation » (P1-23 ajouté, D-187 en partie : météo) ; [ÉD] § 1 (P1-23 « Fait », valeurs provisoires ; T-0127, T-0168).</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : au didacticiel, réveil en vue à la première personne et première montée de niveau ; le hameau et ses Besoins ; les trois voies d'Oakhaven tranchées (D-205) au lieu de « à trancher, PB-11 » ; « quête annexe » et « quête de métier » deviennent « quêtes d'apprentissage » (D-306 (8)), avec Brutus pour maître ; la météo n'est plus dans « ce qui n'y est pas » (elle est au prototype, P1-23) ; niveau 6 en fin de prototype ; démo 2 sur un hameau qui a déjà vécu.</em></p>
 </article>
 
 <!-- 9 -->
 <article class="diapo" id="d9">
   <div class="carte">
     <div class="num"><span>Diapositive 9 / 17</span><span>Déjà fait · 1</span></div>
-    <h2>Une mini-tranche jouable, <em>un moteur choisi sur pièces</em></h2>
+    <h2>Déjà fait (1) : <em>le prototype dans Unreal</em>, un moteur choisi sur pièces</h2>
     <div class="ecran">
       <div class="texte">
-        <ul class="liste">
-          <li><strong>Une mini-tranche jouable dans Unreal Engine 5.8</strong> : les Gorges des Soupirs, le héros, un combat contre 2 morts-vivants et 1 esprit (épée, esquive, parade, verrouillage, Endurance).</li>
-          <li><strong>Un moteur choisi sur pièces :</strong> la même mini-tranche a aussi été faite dans Unity 6.5 ; après avoir joué aux deux, le directeur a retenu <strong>Unreal 5.8</strong> pour son rendu (D-181). C'est le moteur le plus utilisé (42 %) et le plus courant dans les jeux AA et AAA (GDC 2026).</li>
-          <li><strong>Début de la production :</strong> le premier PNJ MetaHuman, le forgeron du hameau, a été créé par script le 30/09/2026 ; sa voix, son inventaire et la première version empaquetée suivent.</li>
-        </ul>
-        <div class="chiffres">
+<ul class="liste">
+<li><strong>La démo 1 « Le Réveil » est en route</strong> (état au 17/10/2026) : sur les 24 entrées de son jalon, <strong>6 sont faites, 15 en partie, 3 à faire</strong>. Se jouent déjà : le réveil au fond des Gorges, le combat à l'épée, la horde impossible et l'apparition de l'Ange (effets provisoires), le grand sort guidé par l'entité, le panorama et la patrouille de l'Ordre, le chemin jusqu'à l'entrée du hameau. Pas encore : le prologue dans le moteur, le reflet, l'escalade de la falaise de sortie, la première montée de niveau, les voix de l'entité et du prologue.</li>
+<li><strong>Une horde de 20</strong> (15 morts-vivants variés, 4 esprits, un meneur) qui se déclenche, reçoit des renforts et se déplace dans le décor ; son meneur n'est jamais bloqué en route.</li>
+<li><strong>L'escalade libre</strong> : règles, Endurance, chute, raccrochage ; mains et pieds hors de la roche ; essayée sur une paroi d'essai.</li>
+<li><strong>La patrouille de l'Ordre</strong> au-delà du ravin : soldats MetaHumans tous différents, arc animé par le code.</li>
+<li><strong>Un monde qui tourne</strong> : cycle du jour et de la nuit, lune, fin de la Moisson et premières neiges, six météos tirées au hasard (valeurs provisoires) ; le relief de la zone de départ (1,53 km², 16 chemins) ; le chien et le loup dans le jeu.</li>
+<li><strong>Le forgeron du hameau</strong>, MetaHuman refait d'après sa fiche, qui parle avec sa voix et ses lèvres ; l'inventaire.</li>
+<li><strong>Une version installable refaite chaque nuit</strong>, jouée par un parcours automatique qui échoue à la moindre erreur : verte aux deux lancements le 16/10/2026.</li>
+<li><strong>Les mesures du 30/09/2026</strong> : décor photoréaliste de ≈ 0,65 km² et ≈ 7 500 sapins en <strong>≈ 8 h 30 d'agent</strong> ; héros MetaHuman en <strong>≈ 2 h 10</strong> ; combat complet (règles, IA, affichage, 22 tests automatiques) en <strong>≈ 50 min</strong> ; <strong>133 images/s</strong> pendant le combat en 1920 × 1080, sur le poste de développement.</li>
+<li><strong>Un moteur choisi sur pièces</strong> : la même mini-tranche a aussi été faite dans Unity 6.5 ; après avoir joué aux deux, le directeur a retenu <strong>Unreal 5.8</strong> pour son rendu (D-181). C'est le moteur le plus utilisé (42 %) et le plus courant dans les jeux AA et AAA (GDC 2026).</li>
+</ul>
+<div class="chiffres">
           <div><span class="cle">≈ 8 h 30</span><small>d'agent pour le décor photoréaliste : ≈ 0,65 km², ≈ 7 500 sapins (M-1)</small></div>
           <div><span class="cle">≈ 2 h 10</span><small>pour un héros MetaHuman jouable et retouché (M-2)</small></div>
           <div><span class="cle">≈ 50 min</span><small>pour le combat complet : règles, IA, affichage, 22 tests automatiques (M-3)</small></div>
@@ -483,26 +501,34 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     </div>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>Ceci est déjà jouable. Les temps affichés sont des temps mesurés de travail d'agent : un décor photoréaliste en une journée de travail, un combat complet avec ses tests en moins d'une heure. Ce sont ces mesures qui fondent notre estimation.</p>
-    <p>Pour choisir le moteur, nous avons fait la même mini-tranche dans Unreal et dans Unity, puis le directeur a joué aux deux. Il a retenu Unreal pour la qualité de son rendu ; l'étude de coût, qui trouvait les deux moteurs à égalité sur le prix du prototype, recommandait aussi Unreal. La production a commencé : voici le forgeron, notre premier personnage secondaire, créé par script ; il n'est pas encore habillé.</p>
+    <p>Ceci est déjà jouable. Depuis le choix du moteur, nous travaillons sur la première démo, « Le Réveil » : la horde, l'apparition de l'Ange, le grand sort, la patrouille, le cycle du jour et la météo tournent dans le prototype, et une version installable est refaite et jouée automatiquement chaque nuit. Il reste surtout le reflet, l'escalade de la falaise, le prologue et les voix de l'entité et du prologue.</p>
+    <p>Les temps affichés sont des temps mesurés de travail d'agent : un décor photoréaliste en une journée de travail, un combat complet avec ses tests en moins d'une heure. Ce sont ces mesures qui fondent notre estimation.</p>
+    <p>Pour choisir le moteur, nous avons fait la même mini-tranche dans Unreal et dans Unity, puis le directeur a joué aux deux. Il a retenu Unreal pour la qualité de son rendu ; l'étude de coût, qui trouvait les deux moteurs à égalité sur le prix du prototype, recommandait aussi Unreal. Voici le forgeron, notre premier personnage secondaire, refait d'après sa fiche, qui parle.</p>
     <p>Les images par seconde sont mesurées sur notre poste, avec une carte graphique récente : il faudra les vérifier sur une machine moyenne avant la démo.</p>
+    <p class="attention">À ne pas promettre : que le reflet, l'escalade de la falaise de sortie ou les voix de l'entité et du prologue marchent déjà ([ÉD], « En bref ») ; une date ferme pour la démo 1 (diapositive 13).</p>
   </div></details>
-  <p class="sources">Sources : D-159, D-162, D-164, D-165, D-169, D-175, D-178, D-179, D-181 ; étude T-0077 § 1.2 (M-1 à M-3) et partie 5 ; [S-48] (GDC 2026 : Unreal 42 %, Unity 30 %) ; 133 images/s : Unreal, série T-0060, seul sur la carte graphique, rendu hors écran, RTX 5070 Ti (unity\MESURES.md § 5 ; unreal-v2\MESURES.md) ; forgeron : essai T-0081 en cours, unreal-v2\captures\forgeron\ (bilan_forgeron.json).</p>
+  <p class="sources">État au 17/10/2026 : [ÉD] « En bref » et § 1 (P1-01 : paquet de nuit <code>20261016-0036</code> vert aux deux lancements, T-0230 ; P1-02 : T-0096 ; P1-05 : T-0152, T-0190, T-0210, T-0215, T-0237 ; P1-12 : T-0121, T-0130, T-0161, T-0169 ; P1-14 : T-0130, T-0146, T-0153, T-0154, T-0160, T-0212 à T-0214 ; P1-15 : T-0122, T-0130 ; P1-19 : T-0157, T-0174 ; P1-23 : T-0127, T-0168) ; forgeron : T-0081, T-0094 ; chien et loup dans le jeu : T-0132 ; inventaire et version empaquetée de l'essai : [PP] § 3 (« Avant la démo 1 »).</p>
+  <p class="sources">Chiffres et bases : 133 images/s pendant le combat (Unreal, série T-0060, seul sur la carte graphique, rendu hors écran, 1920 × 1080 ; poste avec RTX 5070 Ti, D-165) : tableau du § 5 de <code>E:\aaa-proto\unity\MESURES.md</code> et <code>E:\aaa-proto\unreal-v2\MESURES.md</code> ; mesures M-1 à M-3 de l'étude T-0077 (§ 1.2) ; forgeron : <code>captures\forgeron\bilan_forgeron.json</code> (création, rig, textures et assemblage par script) ; parts des moteurs : [étude T-0077, S-48] (enquête GDC 2026 : Unreal 42 %, Unity 30 % ; Unreal « more common in B2P, AA, and AAA development »).</p>
+  <p class="sources">Sources : D-159, D-162, D-164, D-165, D-169, D-175, D-178, D-179, D-181 ; étude T-0077 § 1.2, partie 5 ; [S-48].</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : titre ; nouveau premier point, l'état de la démo 1 (6 faites, 15 en partie, 3 à faire sur 24) ; points sur la horde, l'escalade, la patrouille, le monde qui tourne, le forgeron et la version de nuit ; les mesures du 30/09 regroupées en un point ; le point « Début de la production » retiré (fait depuis) ; capture du forgeron à remplacer d'après T-0094 ; notes, « À ne pas promettre » et état sourcé ajoutés.</em></p>
 </article>
 
 <!-- 10 -->
 <article class="diapo" id="d10">
   <div class="carte">
     <div class="num"><span>Diapositive 10 / 17</span><span>Déjà fait · 2</span></div>
-    <h2>L'univers visuel <em>et les personnages</em></h2>
+    <h2>Déjà fait (2) : <em>l'univers, les personnages et les bêtes</em>, hors du moteur</h2>
     <div class="ecran deux">
       <div class="texte">
-        <ul class="liste">
-          <li><strong>Une bible artistique</strong> (proposition) : photoréalisme sombre, un monde sourd aux accents rares (l'or pour le pouvoir, le violet pour le Vide, le rouge pour le sang), palettes par lieu, lumière, matières, silhouettes.</li>
-          <li><strong>13 personnages qui parlent</strong> dans le prototype, chacun avec sa fiche (rôle, voix, visage), à fabriquer en MetaHuman, chacun différent.</li>
-          <li><strong>Des modèles 3D générés en local</strong> à partir des fiches pour les créatures et les tenues, puis intégrés au moteur (diapositive 12).</li>
-          <li><strong>Travaux de la nuit :</strong> maquettes cliquables de l'interface, premier jet des dialogues du hameau, bibliothèque de 236 sons libres de droits, plan de production en 98 tickets, dossier de 34 points de design, dont 4 déjà tranchés (D-182).</li>
-        </ul>
+<ul class="liste">
+<li><strong>Une bible artistique</strong> (proposition) : photoréalisme sombre, un monde sourd aux accents rares (l'or pour le pouvoir, le violet pour le Vide, le rouge pour le sang), palettes par lieu, lumière, matières, silhouettes ; une seconde fiche de l'Ange, tel qu'il était à Gath, pour le prologue.</li>
+<li><strong>13 personnages qui parlent</strong> dans le prototype, chacun avec sa fiche (rôle, voix, visage), à fabriquer en MetaHuman, chacun différent.</li>
+<li><strong>Des modèles 3D générés en local, et animés</strong> : les bêtes (cheval, sanglier et laie, loup, chien, lapin, perdrix, araignée, chauves-souris) ; le cheval, le sanglier et le lapin ont leurs vraies foulées, et le cheval, le sanglier, le loup et le chien boitent de la patte touchée ; la monte et la descente du cheval et sept tâches des villageois (sur le squelette MetaHuman) sont animées par le code ; le meneur et les morts-vivants variés de la horde sont dans le jeu.</li>
+<li><strong>Une page « Modèles 3D »</strong> sur le site du projet : chaque bête s'y regarde en 3D, avec ses vidéos et ses planches ; les villageois en vidéo et en images seulement, comme le veut la licence MetaHuman.</li>
+<li><strong>Écrit et monté pour la démo 1</strong> : le prologue court (64 s, 18 plans, 9 répliques) ; les 37 répliques de l'entité (≈ 3 minutes, sous-titres français et anglais) et la feuille qui servira à générer sa voix ; la musique et les sons du prologue (piste témoin de 64 s) ; le plan sonore de la démo, moment par moment.</li>
+<li><strong>Le hameau et le héros, en règles</strong> : les « Besoins du hameau » et leurs répliques, et une <strong>simulation sur le site</strong> qui fait vivre le hameau plusieurs jours de jeu ; l'expérience du personnage, avec sa courbe réglée.</li>
+<li><strong>Toujours là :</strong> maquettes cliquables de l'interface, dialogues du hameau, bibliothèque de 236 sons libres de droits, dossier de 34 points de design, plan de production (119 tickets au 15/10/2026).</li>
+</ul>
       </div>
       <figure>
         <img src="images/s10-silhouettes.jpg" alt="Planche de la bible : silhouettes noires du héros au réveil, du soldat, du gradé de l'Ordre et du possédé" loading="lazy">
@@ -520,8 +546,10 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
     <p>Nous ne partons pas d'une page blanche. La direction visuelle est écrite, avec des règles simples : un monde sourd, où la couleur a un sens. Les personnages du prototype ont chacun une fiche : le forgeron, le chef du hameau, Brutus le Maître du Minage, l'agente du Cartel, la Veilleuse, le Général… Ces planches sont générées par IA et servent de référence aux modèles 3D. Tout cela reste à valider par le directeur, et la direction artistique est l'un des postes où nous voulons un professionnel humain.</p>
+    <p>Hors du moteur, beaucoup est prêt : les bêtes ont leurs vraies allures et leurs boiteries, et se regardent en 3D sur la page du projet ; le prologue, les répliques de l'Ange, la musique et les sons de la première démo sont écrits ou montés ; et le hameau a ses règles de vie, qu'une simulation fait tourner sur plusieurs jours.</p>
   </div></details>
-  <p class="sources">Sources : bible T-0088 (§ 2, § 3, § 12) ; fiches T-0084 (§ 1, § 5) ; D-164, D-165, D-179, D-180 ; sons T-0089 § 3 (236 sons retenus ; validée) ; plan T-0090 (98 tickets) ; points bloquants T-0085 (34 points, PB-01 à PB-34 ; PB-01 à PB-04 tranchés par D-182) ; dialogues T-0087 (validés) ; maquettes T-0083 (validées).</p>
+  <p class="sources">Sources : bible artistique T-0088 (§ 2, § 3, § 12) ; fiches des PNJ T-0084 (§ 1, § 5) ; D-164, D-165, D-179, D-180 ; bibliothèque sonore T-0089 § 3 (236 sons retenus ; validée) ; plan de production T-0090 (98 tickets au 30/09/2026 ; 119 au 15/10/2026, [PP] § 12.10) ; points bloquants T-0085 (34 points, PB-01 à PB-34 ; PB-01 à PB-04 tranchés par D-182 ; 25 sur 34 tranchés au 01/10/2026, [PP] « Depuis la validation ») ; dialogues T-0087 (validés ; repris par T-0241, T-0242, T-0244, T-0250) ; maquettes T-0083, T-0117 (validées). Mise à jour (tickets validés) : fiche « ange-gath » T-0267, D-319 (2), D-320 (14) ; bêtes et allures T-0176 (vraies foulées), T-0178 et T-0179 (boiteries), T-0181 (monte et descente, D-303), T-0193 (patte touchée), T-0194 et T-0196 (pas, trot et galop du sanglier), T-0235 (postérieurs du cheval), T-0245 (laie) ; modèles des bêtes T-0123, T-0133, T-0135, T-0170, T-0177, T-0180 ; horde T-0153, T-0154 ; villageois T-0234 ([ÉD] § 2 : 7 tâches, squelette <code>metahuman_base_skel</code>) ; allures, monte et villageois faits sur le processeur, dans Blender (D-282 (2), D-288 (4)) ; monte et villageois animés par le code (titre de T-0181 ; D-320 (12) (b)) ; horde dans le jeu ([ÉD] § 1, P1-14) ; page « Modèles 3D » T-0125, T-0156, T-0167, T-0182, T-0195, T-0256 (licence : T-0173) ; site du projet T-0163 (D-256) ; prologue T-0233 ; répliques de l'entité T-0240, T-0248 (37 répliques, 179,5 s), T-0261 (anglais relu) ; feuille des voix T-0262, T-0270 ; musique et sons du prologue T-0243, T-0247 ([ÉD] § 2 : 13 OGG, piste témoin de 64 s) ; plan sonore T-0266 ; Besoins du hameau T-0201, T-0205, T-0231 (règle), T-0232 (répliques), T-0202, T-0206, T-0227 (simulation), D-305 (5) ; expérience T-0204, T-0218, T-0221 à T-0225, D-315 (1).</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : titre ; fiche de l'Ange à Gath ; le point « modèles 3D » décrit ce qui est fait (bêtes, allures, monte, horde, villageois) ; nouveaux points : page « Modèles 3D », écrit et monté pour la démo 1, le hameau et le héros en règles ; « Travaux de la nuit » devient « Toujours là » (plan : 119 tickets au lieu de 98) ; proposition d'images ; un paragraphe des notes.</em></p>
 </article>
 
 <!-- 11 -->
@@ -561,13 +589,13 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     <h2>Agents IA <em>et freelances</em></h2>
     <div class="ecran deux">
       <div class="texte">
-        <ul class="liste">
-          <li><strong>Une équipe d'agents IA (Claude)</strong> organisée comme un studio : un chef qui écrit des tickets, des exécutants qui les réalisent, un vérificateur qui relit chaque livrable avant qu'il soit accepté ; tout est tracé (tickets, registre des décisions, mesures).</li>
-          <li><strong>Des temps mesurés, pas supposés :</strong> décor 0,65 km² ≈ 8 h 30 ; héros MetaHuman ≈ 2 h 10 ; combat complet ≈ 50 min ; un modèle 3D généré, riggé et importé en ≈ 15 à 50 min ; corrections après relecture : 15 à 27 % du temps.</li>
-          <li><strong>Une chaîne d'assets locale :</strong> fiche dessinée par IA → modèle 3D généré sur le poste → moteur ; licences commerciales, provenance notée pour chaque asset.</li>
-          <li><strong>Des freelances là où les agents sont faibles</strong> (proposition) : direction artistique, animation (escalade, bêtes, visages), doublage.</li>
-          <li><strong>Transparence :</strong> le contenu généré par IA sera déclaré (obligation de Steam, règlement européen sur l'IA).</li>
-        </ul>
+<ul class="liste">
+<li><strong>Une équipe d'agents IA (Claude)</strong> organisée comme un studio : un chef qui écrit des tickets, des exécutants qui les réalisent, un vérificateur qui relit chaque livrable avant qu'il soit accepté ; tout est tracé (tickets, registre des décisions, mesures).</li>
+<li><strong>Des temps mesurés, pas supposés</strong> : décor 0,65 km² ≈ 8 h 30 ; héros MetaHuman ≈ 2 h 10 ; combat complet ≈ 50 min ; un modèle 3D généré, riggé et importé en ≈ 15 à 50 min ; corrections après relecture : 15 à 27 % du temps.</li>
+<li><strong>Une chaîne d'assets locale</strong> : fiche dessinée par IA → modèle 3D généré sur le poste → moteur ; licences commerciales, provenance notée pour chaque asset.</li>
+<li><strong>Des freelances là où les agents sont faibles</strong> (proposition) : direction artistique, animation (escalade, bêtes, visages), doublage.</li>
+<li><strong>Transparence</strong> : le contenu généré par IA sera déclaré (obligation de Steam, règlement européen sur l'IA).</li>
+</ul>
       </div>
       <figure>
         <img src="images/s12-fiche-au-moteur.jpg" alt="Planche de la bible : fiches de personnages et modèles obtenus dans Unreal et Unity, côte à côte" loading="lazy">
@@ -576,55 +604,57 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     </div>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>Notre façon de produire est inhabituelle : le travail de fabrication est fait par des agents d'IA, organisés comme une équipe, avec un vérificateur qui relit tout. Nous avons mesuré leurs temps sur la mini-tranche, et c'est sur ces mesures que reposent le calendrier et le budget.</p>
-    <p>Leurs limites sont connues : l'animation, la direction artistique et le jeu d'acteur restent des métiers humains, c'est là que nous voulons des freelances. Et nous serons transparents : Steam exige de déclarer le contenu généré, et l'Europe impose de signaler les voix générées.</p>
-    <p class="muted">Pour la question « et les artistes ? » : 52 % des développeurs interrogés par la GDC 2026 ont une vue négative de l'IA générative [étude T-0077, S-48].</p>
+    <p>Notre façon de produire est inhabituelle : le travail de fabrication est fait par des agents d'IA, organisés comme une équipe, avec un vérificateur qui relit tout. Nous avons mesuré leurs temps sur la mini-tranche, et c'est sur ces mesures que reposent le calendrier et le budget. Leurs limites sont connues : l'animation, la direction artistique et le jeu d'acteur restent des métiers humains, c'est là que nous voulons des freelances. Et nous serons transparents : Steam exige de déclarer le contenu généré, et l'Europe impose de signaler les voix générées.</p>
   </div></details>
-  <p class="sources">Sources : .equipe/README.md (protocole) ; étude T-0077 § 1.2 (M-1, M-2, M-3, M-5), § 2.2, § 4.1, H-15 ; etude-assets-ia.md § 1.3 ; [S-48, S-56] ; règlement européen sur l'IA, art. 50 (applicable depuis le 02/08/2026) ; D-160, D-164, D-165, D-168, D-179.</p>
+  <p class="sources">Chiffres et bases : M-1, M-2, M-3, M-5 de l'étude T-0077 (§ 1.2) ; chaîne locale D-164, D-165, D-179 ; manifeste de provenance (<code>etude-assets-ia.md</code> § 1.3) ; [étude T-0077, S-56] (Steam, règles précisées en janvier 2026) ; règlement européen sur l'IA, art. 50, applicable depuis le 02/08/2026 (étude T-0077, H-15 ; <code>etude-voix-du-nom.md</code> § 3.2) ; [étude T-0077, S-48] : 52 % des développeurs interrogés par la GDC 2026 ont une vue négative de l'IA générative (à avoir en tête pour la question « et les artistes ? »).</p>
+  <p class="sources">Sources : <code>.equipe/README.md</code> (protocole) ; étude T-0077 § 1.2, § 2.2, § 4.1 ; D-160, D-164, D-165, D-168, D-179.</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274), note sans changement de l'écran :</em> depuis le 30/09, les agents ont aussi animé par le code, dans Blender, la monte du cheval et les tâches des villageois (T-0181, T-0234), et les allures des bêtes sur le processeur (T-0176, T-0179, T-0193 à T-0196) ; les animations d'escalade suivent la même voie, avec une escalade simplifiée en repli (D-320 (12) (b), T-0268). La ligne « freelances … animation (escalade, bêtes, visages) » est donc à revoir par le directeur (point 9 de la liste finale). Le travail tourne sur deux files en parallèle, carte graphique et processeur (D-317), avec une vérification ciblée sur ce qui change et une vérification longue chaque semaine (D-281) ; les heures du plan ne sont pas mesurées, le coût réel se lit en quota ([ÉD], en-tête ; D-270 (1)).</p>
 </article>
 
 <!-- 13 -->
 <article class="diapo" id="d13">
   <div class="carte">
     <div class="num"><span>Diapositive 13 / 17</span><span>Calendrier</span></div>
-    <h2>Un peu moins de <em>16 semaines</em>, deux démos en route</h2>
-    <p class="lecture">Semaines comptées <strong>depuis le choix du moteur</strong> (S0 : Unreal 5.8, 30/09/2026, D-181), au débit probable de 50 h de travail d'agent par semaine. Les mois sont <strong>indicatifs</strong> (HP-5 : production lancée le 01/10/2026, sans interruption).</p>
-    <div class="graphe frise" role="img" aria-label="Frise des 8 jalons du prototype dans Unreal : démo 1 vers la semaine 5,3, démo 2 vers la semaine 9,5, prototype final vers la semaine 15,4">
+    <h2>Un peu moins de <em>20 semaines</em>, deux démos en route</h2>
+    <p class="lecture">Semaines comptées <strong>depuis le choix du moteur</strong> (S0 : Unreal 5.8, 30/09/2026, D-181), au débit probable de 50 h de travail d'agent par semaine (valeurs probables du plan, variante Unreal), <strong>mises à jour à la main du 13 au 15/10/2026</strong> (le plan n'est pas recalculé). Les mois sont <strong>indicatifs</strong> (HP-5 : production lancée le 01/10/2026, sans interruption, au débit probable) :</p>
+    <div class="graphe frise" role="img" aria-label="Frise des 8 jalons du prototype dans Unreal : démo 1 vers la semaine 5,8, démo 2 vers la semaine 13,1, prototype final vers la semaine 19,4 (mise à jour à la main du 13 au 15/10/2026)">
       <div class="corps">
         <div class="legende"><span><i style="background:var(--aube)"></i>Durée probable du jalon</span><span>Semaines depuis le choix du moteur</span></div>
-        <div class="ligne"><div class="etiq">0 · Préalables<small>S0,5 · début oct. 2026</small></div><div class="piste"><div class="barre seule" style="left:0;width:2.941%" title="S0 → S0,5 : plan recalculé, plans de la zone et d'Oakhaven"></div></div></div>
-        <div class="ligne"><div class="etiq">1 · Monde et héros<small>S5,3 · début nov. · <span class="demo">Démo 1</span></small></div><div class="piste"><div class="barre seule" style="left:0;width:31.176%" title="S0 → S5,3 : didacticiel complet ; démo 1 « Le Réveil »"></div></div></div>
-        <div class="ligne"><div class="etiq">2 · Hameau et PNJ<small>S7,7 · fin nov.</small></div><div class="piste"><div class="barre seule" style="left:31.176%;width:14.118%" title="S5,3 → S7,7 : hameau vivant"></div></div></div>
-        <div class="ligne"><div class="etiq">3 · Nid et pont<small>S9,5 · début déc. · <span class="demo">Démo 2</span></small></div><div class="piste"><div class="barre seule" style="left:45.294%;width:10.588%" title="S7,7 → S9,5 : nid, pont, route ; démo 2 « La zone de départ »"></div></div></div>
-        <div class="ligne"><div class="etiq">4 · Quête annexe et métier<small>S11,8 · fin déc.</small></div><div class="piste"><div class="barre seule" style="left:55.882%;width:13.53%" title="S9,5 → S11,8 : « L'Agneau et le Loup », quête du forgeron"></div></div></div>
-        <div class="ligne"><div class="etiq">5 · QP1 (Oakhaven)<small>S13,9 · début janv. 2027</small></div><div class="piste"><div class="barre seule" style="left:69.412%;width:12.353%" title="S11,8 → S13,9 : première quête principale"></div></div></div>
-        <div class="ligne"><div class="etiq">6 · Interface<small>S14,8 · mi-janv.</small></div><div class="piste"><div class="barre seule" style="left:81.765%;width:5.294%" title="S13,9 → S14,8 : interface complète"></div></div></div>
-        <div class="ligne"><div class="etiq">7 · Polissage et démo<small>S15,4 · mi-janv. · <span class="demo">Final</span></small></div><div class="piste"><div class="barre seule" style="left:87.059%;width:3.529%" title="S14,8 → S15,4 : prototype final et démo guidée"></div></div></div>
-        <div class="axe"><div></div><div class="graduations"><span style="left:0">S0</span><span style="left:23.529%">S4</span><span style="left:47.059%">S8</span><span style="left:70.588%">S12</span><span style="left:94.118%">S16</span></div></div>
+        <div class="ligne"><div class="etiq">0 · Préalables<small>S0,5 · début oct. 2026</small></div><div class="piste"><div class="barre seule" style="left:0.0%;width:2.381%" title="S0 → S0,5 : Préalables : plans de la zone et d'Oakhaven, plan recalculé ; Plan validé"></div></div></div>
+        <div class="ligne"><div class="etiq">1 · Monde et héros<small>S5,8 · début nov. · <span class="demo">Démo 1</span></small></div><div class="piste"><div class="barre seule" style="left:0.0%;width:27.619%" title="S0 → S5,8 : Monde et héros : le didacticiel complet, jusqu'à la première montée de niveau ; Démo 1 « Le Réveil » (15 à 20 min)"></div></div></div>
+        <div class="ligne"><div class="etiq">2 · Hameau et PNJ<small>S10,9 · mi-déc.</small></div><div class="piste"><div class="barre seule" style="left:27.619%;width:24.286%" title="S5,8 → S10,9 : Le Hameau de la Brume et ses PNJ, ses six Besoins et son cycle de vie ; Hameau vivant"></div></div></div>
+        <div class="ligne"><div class="etiq">3 · Nid et pont<small>S13,1 · fin déc. · <span class="demo">Démo 2</span></small></div><div class="piste"><div class="barre seule" style="left:51.905%;width:10.476%" title="S10,9 → S13,1 : Le nid et le Pont des Déserteurs ; Démo 2 « La zone de départ » (45 à 60 min)"></div></div></div>
+        <div class="ligne"><div class="etiq">4 · Quêtes d'apprentissage<small>S15,8 · mi-janv. 2027</small></div><div class="piste"><div class="barre seule" style="left:62.381%;width:12.857%" title="S13,1 → S15,8 : Les deux quêtes d'apprentissage (« L'Agneau et le Loup », le forgeron) ; Quêtes du hameau jouables"></div></div></div>
+        <div class="ligne"><div class="etiq">5 · QP1 (Oakhaven)<small>S17,9 · début févr.</small></div><div class="piste"><div class="barre seule" style="left:75.238%;width:10.0%" title="S15,8 → S17,9 : Première quête principale (Oakhaven) ; Contenu complet"></div></div></div>
+        <div class="ligne"><div class="etiq">6 · Interface<small>S18,8 · début févr.</small></div><div class="piste"><div class="barre seule" style="left:85.238%;width:4.286%" title="S17,9 → S18,8 : Interface complète ; Interface complète"></div></div></div>
+        <div class="ligne"><div class="etiq">7 · Polissage et démo<small>S19,4 · mi-févr. · <span class="demo">Final</span></small></div><div class="piste"><div class="barre seule" style="left:89.524%;width:2.857%" title="S18,8 → S19,4 : Polissage et démo guidée ; Prototype final"></div></div></div>
+        <div class="axe"><div></div><div class="graduations"><span style="left:0.0%">S0</span><span style="left:19.048%">S4</span><span style="left:38.095%">S8</span><span style="left:57.143%">S12</span><span style="left:76.19%">S16</span><span style="left:95.238%">S20</span></div></div>
       </div>
     </div>
-    <div class="tableau"><table>
-      <thead><tr><th>Jalon</th><th>Contenu</th><th>Fin</th><th>Mois indicatif (HP-5)</th><th>Sortie</th></tr></thead>
-      <tbody>
-        <tr><td>0</td><td>Préalables : plan recalculé, plans de la zone et d'Oakhaven</td><td class="chiffre">S0,5</td><td>début octobre 2026</td><td>Plan validé</td></tr>
-        <tr><td>1</td><td>Monde et héros : le didacticiel complet</td><td class="chiffre">S5,3</td><td>début novembre 2026</td><td><strong>Démo 1 « Le Réveil »</strong> (15 à 20 min)</td></tr>
-        <tr><td>2</td><td>Le Hameau de la Brume et ses PNJ</td><td class="chiffre">S7,7</td><td>fin novembre 2026</td><td>Hameau vivant</td></tr>
-        <tr><td>3</td><td>Le nid et le Pont des Déserteurs</td><td class="chiffre">S9,5</td><td>début décembre 2026</td><td><strong>Démo 2 « La zone de départ »</strong> (45 à 60 min)</td></tr>
-        <tr><td>4</td><td>Quête annexe et quête du forgeron</td><td class="chiffre">S11,8</td><td>fin décembre 2026</td><td>Quêtes du hameau jouables</td></tr>
-        <tr><td>5</td><td>Première quête principale (Oakhaven)</td><td class="chiffre">S13,9</td><td>début janvier 2027</td><td>Contenu complet</td></tr>
-        <tr><td>6</td><td>Interface complète</td><td class="chiffre">S14,8</td><td>mi-janvier 2027</td><td>Interface complète</td></tr>
-        <tr><td>7</td><td>Polissage et démo guidée</td><td class="chiffre"><strong>S15,4</strong></td><td><strong>mi-janvier 2027</strong></td><td><strong>Prototype final</strong></td></tr>
-      </tbody>
-    </table></div>
-    <ul class="liste">
-      <li><strong>Fourchette :</strong> de 7 à 30 semaines selon la vitesse réelle (HP-5 : de fin novembre 2026 à fin avril 2027) ; avec un quota serré (30 h d'agent par semaine) : ≈ 25 semaines (fin mars 2027).</li>
-      <li><strong>En parallèle des premières semaines :</strong> 1 à 3 semaines de décisions de design du directeur (séances à la fin des semaines 1, 2 et 3).</li>
-    </ul>
+<div class="tableau"><table>
+<thead><tr><th>Jalon</th><th>Contenu</th><th>Fin</th><th>Mois indicatif (HP-5)</th><th>Sortie</th><th>État au 17/10/2026</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>Préalables : plans de la zone et d'Oakhaven, plan recalculé</td><td>S0,5</td><td>début octobre 2026</td><td>Plan validé</td><td><strong>Fait</strong>, sauf le recalcul du plan (P0-01)</td></tr>
+<tr><td>1</td><td>Monde et héros : le didacticiel complet, jusqu'à la première montée de niveau</td><td>S5,8</td><td>début novembre 2026</td><td><strong>Démo 1 « Le Réveil »</strong> (15 à 20 min)</td><td><strong>En cours</strong> : 6 entrées faites, 15 en partie, 3 à faire sur 24</td></tr>
+<tr><td>2</td><td>Le Hameau de la Brume et ses PNJ, ses six Besoins et son cycle de vie</td><td>S10,9</td><td>mi-décembre 2026</td><td>Hameau vivant</td><td>Préparé hors du moteur : règle, répliques, simulation, animations des villageois</td></tr>
+<tr><td>3</td><td>Le nid et le Pont des Déserteurs</td><td>S13,1</td><td>fin décembre 2026</td><td><strong>Démo 2 « La zone de départ »</strong> (45 à 60 min)</td><td>—</td></tr>
+<tr><td>4</td><td>Les deux quêtes d'apprentissage (« L'Agneau et le Loup », le forgeron)</td><td>S15,8</td><td>mi-janvier 2027</td><td>Quêtes du hameau jouables</td><td>—</td></tr>
+<tr><td>5</td><td>Première quête principale (Oakhaven)</td><td>S17,9</td><td>début février 2027</td><td>Contenu complet</td><td>—</td></tr>
+<tr><td>6</td><td>Interface complète</td><td>S18,8</td><td>début février 2027</td><td>Interface complète</td><td>—</td></tr>
+<tr><td>7</td><td>Polissage et démo guidée</td><td><strong>S19,4</strong></td><td><strong>mi-février 2027</strong></td><td><strong>Prototype final</strong></td><td>—</td></tr>
+</tbody></table></div>
+<ul class="liste">
+<li><strong>Au 17/10/2026</strong> (vers S2,3) : il reste au jalon 1 <strong>au plus ≈ 150 h</strong> d'agent, vérification comprise (107,1 h avant) ; c'est un plafond, car la part déjà faite des entrées partielles n'est pas chiffrée.</li>
+<li><strong>Ordre de travail de la démo 1</strong> (D-320 (12)) : d'abord ce qui garde le parcours automatique vert, et <strong>tôt un court essai</strong> de faisabilité du reflet ; puis <strong>le montrable</strong> (finir la magie, les effets, la scène de l'Ange, les voix de l'entité, l'affichage, la première montée de niveau, les sons) ; puis le reflet entier, l'escalade de la falaise (animations faites par le code dans Blender, escalade simplifiée en repli), le prologue ; enfin le parcours complet de la démo, le forgeron placé à l'entrée du hameau, et la vidéo.</li>
+<li><strong>Fourchette</strong> du prototype final : de S9,4 à S37,8 selon la vitesse réelle (HP-5 : de début décembre 2026 à fin juin 2027) ; démo 1 entre S2,7 et S11,2. Au quota serré de 30 h d'agent par semaine, le plan ne donne plus de total à jour (25,3 semaines au 30/09, plus ≈ 5,4 semaines dues aux ajouts du 13 au 15/10).</li>
+<li><strong>Les décisions de design</strong> se prennent au fil du travail, par questionnaires groupés quand tout est validé (D-295) : D-182 à D-320 depuis le choix du moteur.</li>
+</ul>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>Le prototype complet demande un peu moins de 16 semaines de production : s'il démarre maintenant, vers la mi-janvier 2027. Mais on aura quelque chose à montrer bien avant : la première démo, le réveil et le didacticiel, vers la cinquième semaine, donc début novembre ; la deuxième, toute la zone de départ, vers la dixième, début décembre. La fourchette est large parce que le rythme des agents dépend de leur quota d'utilisation, déjà atteint une fois : c'est notre premier risque de calendrier.</p>
+    <p>Le prototype a grandi depuis le 30 septembre, parce que nous avons choisi d'y mettre un hameau qui vit vraiment et la progression du héros. Notre plan, mis à jour à la main cette semaine, compte un peu moins de 20 semaines de production : vers la mi-février 2027. On aura quelque chose à montrer bien avant : la première démo, le réveil et le didacticiel, vers la sixième semaine, en novembre ; la deuxième, toute la zone de départ, vers la fin de l'année. La fourchette est large parce que le rythme des agents dépend de leur quota d'utilisation : c'est notre premier risque de calendrier, et le plan doit encore être recalculé.</p>
   </div></details>
-  <p class="sources">Sources : plan T-0090 § 2, § 3, § 4.1 (variante Unreal, D-181 ; simulation ticket par ticket, 98 tickets, un seul agent à la fois dans le moteur, D-168) ; étude T-0077 H-10, H-12. Le plan compte ≈ 6 % d'heures de plus que l'étude (751 h contre 705 h). Mois : 01/10/2026 + semaines × 7 jours, arrondis au demi-mois (HP-5).</p>
+  <p class="sources">Chiffres et bases : plan de production T-0090 (§ 2, § 3, § 4.1 : simulation ticket par ticket, un seul agent à la fois dans le moteur, D-168 ; variante Unreal, D-181), <strong>mis à jour à la main</strong> le 13/10 (§ 12.8, Besoins du hameau, D-306 (9), D-307 (10)), le 14/10 (§ 12.9, D-309) et le 15/10 (§ 12.10, P2-31 au jalon 1, D-314 (3)) : <strong>≈ 928 h (443 à 1 825), 119 tickets</strong> ; fins de jalon : tableau « Jalons » du § 12.10 ; démos : tableau « Démos » du § 12.10 (démo 1 S5,8 (S2,7, S11,2), démo 2 S13,1, quêtes du hameau S15,7, QP1 S17,9, version finale S19,4 (S9,4, S37,8) ; fin du jalon 4 à S15,8 au tableau des jalons, écart d'arrondi signalé par le plan) ; semaines à 30 h : [PP] § 4.1 (25,3) et ses mises à jour du 13, du 14 et du 15/10 (+3,7, +1,2, +0,5 ; les ajouts du 01/10, § 12.5, n'y sont pas convertis) ; blocs calculés non recalculés, recalcul P0-01 sans ticket ([PP] § 12.10, point 1 ; [ÉD] § 4, point 10). Au 30/09, le plan comptait 751 h et 98 tickets (≈ 6 % d'heures de plus que les 705 h de l'étude). Jalon 0 fait : [PP], mise à jour du 01/10 (T-0091, T-0092). État et heures du jalon 1 : [ÉD] « En bref » ; ordre : D-320 (12), [ÉD] § 3.2. Étude T-0077 H-10 (débit). Durée des démos : proposition du plan (§ 3). Mois : S0 = 01/10/2026 + semaines × 7 jours (HP-5) : début = du 1er au 10, mi = du 11 au 20, fin = du 21 au dernier jour, comme pour les mois du 30/09 (S5,8 tombe le 10/11, d'où « début novembre ») ; « vers S2,3 » : 16 jours après le 01/10/2026.</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : semaines et mois du plan mis à jour à la main au 15/10 (démo 1 S5,3 → S5,8 ; démo 2 S9,5 → S13,1 ; prototype final S15,4 → S19,4) ; colonne « État au 17/10/2026 » ; contenu des jalons 1, 2 et 4 (montée de niveau, Besoins, quêtes d'apprentissage) ; état et heures restantes du jalon 1 ; ordre de D-320 (12) ; fourchette (fin avril → fin juin 2027) ; les séances de décision des semaines 1 à 3 remplacées par les questionnaires groupés (D-295) ; notes et bases.</em></p>
 </article>
 
 <!-- 14 -->
@@ -656,10 +686,10 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     </ul>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>Le prototype lui-même coûte peu en argent, parce que le travail est fait par des agents déjà payés : moins de 1 000 € si les agents font tout. Avec des freelances pour ce que les agents font mal, compter environ 38 000 €, entre 12 500 € et 78 500 € selon les tarifs et le temps réel.</p>
-    <p>Pour situer : le même prototype fait par une équipe humaine classique coûterait, selon notre hypothèse, entre 90 000 € et 350 000 €. Ce repère n'est pas une source : c'est un calcul sur des salaires moyens du secteur.</p>
+    <p>Le prototype lui-même coûte peu en argent, parce que le travail est fait par des agents déjà payés : moins de 1 000 € si les agents font tout. Avec des freelances pour ce que les agents font mal, compter environ 38 000 €, entre 12 500 € et 78 500 € selon les tarifs et le temps réel. Pour situer : le même prototype fait par une équipe humaine classique coûterait, selon notre hypothèse, entre 90 000 € et 350 000 €. Ce repère n'est pas une source : c'est un calcul sur des salaires moyens du secteur.</p>
   </div></details>
-  <p class="sources">Sources : étude T-0077 § 3.1 (scénario A), § 3.2 (tarifs : Malt, grille Equity des jeux AAA… [S-41, S-45, S-46]), § 3.3 (H-19, salaires SNJV 2024), § 2.1, § 2.2 (jours et semaines, H-8, H-10, H-13, H-14 ; l'étude compte ≈ 14 semaines, le plan de la diapositive 13 ≈ 15,4), § 4.2 et [S-2, S-3] (redevance d'Unreal) ; 1 € = 1,1355 $ (BCE, 30/09/2026).</p>
+  <p class="sources">Chiffres et bases : étude T-0077 § 3.1 (scénario A), § 3.2 (tarifs des freelances : Malt, grille Equity des jeux AAA, etc. [S-41, S-45, S-46]), § 3.3 (repère H-19, salaires SNJV 2024), § 2.1 et § 2.2 (jours et semaines, H-8, H-10 ; l'étude compte 705 h et ≈ 14 semaines, le plan de la diapositive 13 ≈ 15,4 semaines), § 4.2 et [S-2, S-3] (redevance d'Unreal). Le scénario B est plus court parce que les freelances travaillent en parallèle (H-13, H-14).</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274), note sans changement des montants :</em> ce tableau suit l'étude T-0077 (705 h). Le plan compte maintenant ≈ 928 h (443 à 1 825) au lieu de 751 h ([PP] § 12.10) et ≈ 19,4 semaines (diapositive 13) : l'effet sur le coût et les durées n'est pas calculé ici (point 4 de la liste finale).</p>
 </article>
 
 <!-- 15 -->
@@ -705,22 +735,23 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     <div class="num"><span>Diapositive 16 / 17</span><span>Risques</span></div>
     <h2>Risques <em>et parades</em></h2>
     <div class="tableau"><table>
-      <thead><tr><th>Risque</th><th>Parade</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Le rythme des agents</strong> : leur quota hebdomadaire a déjà été atteint (30/09/2026)</td><td>Semaines planifiées, chemin critique d'abord ; freelances pour décharger les agents</td></tr>
-        <tr><td><strong>Des points de design encore ouverts</strong> (apparition de l'Ange, Oakhaven, voies B et C de la QP1…)</td><td>Dossier de 34 points avec options et recommandation, dont 4 déjà tranchés (la magie, D-182) ; séances de décision dans les 3 premières semaines</td></tr>
-        <tr><td><strong>Interface et dialogues jamais essayés</strong> dans le moteur</td><td>Premiers tickets de la production : un écran d'inventaire complet et le forgeron qui parle (partie Unreal de l'essai, D-181)</td></tr>
-        <tr><td><strong>Les pièges connus d'Unreal</strong> : fichiers binaires, plantages de l'éditeur sans interface, version empaquetée jamais faite, saccades sur PC</td><td>Scripts relançables sans risque, tests qui lisent le journal ; version empaquetée chaque nuit dès le premier ticket ; mesure sur une machine moyenne avant la démo</td></tr>
-        <tr><td><strong>Contenu généré par IA</strong> : droits, étiquetage, image auprès des joueurs</td><td>Licences commerciales, provenance notée par asset, déclaration Steam, freelances humains pour la direction artistique et les voix</td></tr>
-        <tr><td><strong>La voix qui dit votre nom</strong> n'a pas encore de solution</td><td>À l'oral, titres et surnoms en attendant ; le nom s'affiche à l'écrit (D-155, D-170)</td></tr>
-      </tbody>
-    </table></div>
+<thead><tr><th>Risque</th><th>Parade</th></tr></thead>
+<tbody>
+<tr><td><strong>Le reflet en jeu</strong> (visage et corps créés pendant le jeu) : « plus gros risque du jalon 1 » ; l'outil de création MetaHuman est un outil d'éditeur, jamais essayé en jeu dans le prototype</td><td>Un court essai de faisabilité <strong>tôt</strong> dans la file, avant la fiche entière (D-320 (12) (a), T-0269)</td></tr>
+<tr><td><strong>L'escalade de la falaise</strong> : aucune animation d'escalade libre de droits trouvée ; la falaise de sortie se monte encore à pied</td><td>Animations faites par le code dans Blender, comme la monte et les villageois (T-0268) ; en repli, une escalade simplifiée (D-320 (12) (b))</td></tr>
+<tr><td><strong>Voix et images du prologue jamais générées</strong> pour le prototype</td><td>Voix de base du domaine public, licence vérifiée (D-214 (2), D-320 (11)) ; voix et images générées signalées (tatouage, mention dans les crédits et les options, D-320 (11)) ; aucune information personnelle envoyée au service qui génère les images (règle du projet)</td></tr>
+<tr><td><strong>Le rythme des agents</strong> : un quota par semaine (déjà atteint le 30/09/2026) ; plan non recalculé depuis le 30/09</td><td>Budget de quota par jour, paliers à 70, 85 et 95 % (D-231) ; deux files en parallèle, carte graphique et processeur (D-317) ; recalcul du plan (P0-01) à lancer</td></tr>
+<tr><td><strong>Le périmètre qui grandit</strong> : ≈ +143 h depuis le 13/10 (hameau qui vit, expérience du personnage), ≈ 928 h en tout</td><td>Chaque ajout est chiffré dans le plan avant tout ticket dans le moteur (D-307 (10) ; [PP] § 12.8 à § 12.10)</td></tr>
+<tr><td><strong>Contenu généré par IA</strong> : droits, étiquetage, image auprès des joueurs</td><td>Licences commerciales, provenance notée par asset, déclaration Steam, voix générées tatouées (D-320 (11)), freelances humains pour la direction artistique et les voix</td></tr>
+<tr><td><strong>La voix qui dit votre nom</strong> n'a pas encore de solution</td><td>À l'oral, titres et surnoms en attendant ; le nom s'affiche à l'écrit (D-155, D-170) ; au reflet de la démo 1, une réplique neutre de l'entité (D-319 (7))</td></tr>
+</tbody></table></div>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p>Voici ce qui peut nous ralentir, et ce que nous faisons pour chaque point. Le premier risque n'est pas technique : c'est le temps d'agent disponible chaque semaine. Le deuxième, ce sont des décisions de design encore ouvertes : elles sont listées, avec des options, et se tranchent au début de la production. Les premiers tickets s'attaquent justement à ce que nous n'avons jamais fait : un personnage qui parle, un écran d'interface, une version empaquetée du jeu.</p>
-    <p class="muted">Pour les questions : risque juridique connu pour plus tard (mécanique du loup trahi, à faire valider par un conseil en brevets avant toute sortie aux États-Unis, D-145) ; dépendance à la connexion MetaHuman du compte Epic du directeur (autorisée pour les PNJ humains, D-162, D-179).</p>
+    <p>Voici ce qui peut nous ralentir, et ce que nous faisons pour chaque point. Les deux plus gros risques de la première démo sont connus : créer son visage pendant le jeu, que nous essayons tôt, et l'escalade de la falaise, dont les animations seront faites par le code, avec une solution de repli. Viennent ensuite les voix et les images générées, que nous signalons comme telles, le temps d'agent disponible chaque semaine, et un périmètre que nous avons choisi d'agrandir, chiffré à chaque ajout.</p>
+    <p><strong>Pour les questions</strong> (état au 17/10/2026, [ÉD] § 4) : les <strong>images par seconde</strong> ne valent que la carte graphique libre, et la démo 1 demande un parcours vert <strong>3 fois de suite</strong> (point 5 ; parcours à refaire carte libre, D-320 (5)) ; le <strong>paquet</strong> : cache des shaders précompilés (PSO) non livré, une pire image de 816 ms au dialogue sur une copie neuve le 15/10 ; paquet de nuit et parcours verts le 16/10 (point 6 ; T-0230) ; <strong>jamais essayés</strong> dans le prototype : vue et visée à la première personne, création du visage en jeu, Niagara, montage du prologue dans le moteur, parcours de la démo dans son ordre, réapparition au début de l'étape (D-319 (6), sans fiche au jalon 1) (point 7) ; <strong>points ouverts</strong> : heure du belvédère (PB-15), cinq questions sur la jauge de l'entité (T-0118), deux éléments (Feu et Glace) non chiffrés pour les effets, surnoms de l'entité (D-221) (point 8) ; <strong>défauts connus</strong>, acceptés ou en file (point 9) ; une <strong>vérification longue</strong> avant toute vidéo ou présentation (D-281 (3)). Risque juridique connu pour plus tard (mécanique du loup trahi, à faire valider par un conseil en brevets avant toute sortie aux États-Unis, D-145) ; dépendance à la connexion MetaHuman du compte Epic du directeur (autorisée pour les PNJ humains, D-162, D-179).</p>
   </div></details>
-  <p class="sources">Sources : étude T-0077 § 4.1, partie 7 ; points bloquants T-0085 (synthèse) ; plan T-0090 § 4, § 5, § 6 (P1-01 : paquet de nuit) ; D-145, D-155, D-162, D-170, D-176, D-179, D-181 ; [S-56, S-57].</p>
+  <p class="sources">Sources : étude T-0077 § 4.1, partie 7 ; points bloquants T-0085 (synthèse) ; plan de production T-0090 § 4, § 5, § 6 (P1-01 : paquet de nuit) ; D-145, D-155, D-162, D-170, D-176, D-179, D-181 ; [S-56, S-57]. Mise à jour : [ÉD] § 4, points 1 à 10, et § 5 ; [PP] P1-06, P1-08, § 12.10 (point 6 : ≈ +143 h depuis le 13/10) ; D-214 (2), D-231 (règles du quota, <code>.equipe/README.md</code>, section « Quota »), D-281 (3), D-307 (10), D-317, D-319 (6), (7), D-320 (5), (11), (12) ; tickets T-0268, T-0269 (dans la file, pas encore faits) ; règle de <code>CLAUDE.md</code> sur les informations personnelles (incident T-0089).</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : tableau refait d'après le § 4 d'<code>etat-demo-1.md</code> : nouvelles lignes (reflet, escalade, voix et images, périmètre) ; « rythme des agents » complété (D-231, D-317, plan non recalculé) ; lignes retirées parce que faites : « Interface et dialogues jamais essayés » (forgeron qui parle, inventaire, écran « Commandes » : T-0081, T-0094, T-0164) et « pièges connus d'Unreal » (version de nuit et parcours verts, T-0230 ; le reste passe « Pour les questions ») ; « points de design ouverts » passe « Pour les questions » (25 sur 34 tranchés dès le 01/10, [PP]) ; notes refaites.</em></p>
 </article>
 
 <!-- 17 -->
@@ -730,23 +761,23 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     <h2>Équipe <em>et prochaines étapes</em></h2>
     <div class="ecran deux">
       <div class="texte">
-        <h3>L'équipe — à compléter par le directeur</h3>
-        <div class="tableau"><table style="min-width:20rem">
-          <thead><tr><th>Rôle</th><th>Qui</th></tr></thead>
-          <tbody>
-            <tr><td>Direction du projet et du design</td><td class="attention"><em>à compléter par le directeur</em></td></tr>
-            <tr><td>Production : agents IA (chef, exécutants, vérificateur, gardien du lore)</td><td>Agents Claude, sous la direction du projet</td></tr>
-            <tr><td>Direction artistique, animation, doublage</td><td>Freelances à recruter (scénario B)</td></tr>
-            <tr><td>Parcours, jeux sortis, contacts</td><td class="attention"><em>à compléter par le directeur</em></td></tr>
-          </tbody>
-        </table></div>
-        <h3>Prochaines étapes</h3>
-        <ol class="liste">
-          <li><strong>Moteur choisi : Unreal Engine 5.8</strong> (D-181) ; premiers tickets : le forgeron qui parle, l'écran d'inventaire, la première version empaquetée.</li>
-          <li>Séances de décisions de design (semaines 1 à 3).</li>
-          <li><strong>Démo 1 « Le Réveil »</strong> vers S5 (début novembre 2026) ; <strong>démo 2 « La zone de départ »</strong> vers S10 (début décembre 2026) ; mois indicatifs (HP-5).</li>
-          <li><strong>Prototype complet</strong> vers S15 à S16 (mi-janvier 2027, HP-5) ; budget du jeu complet chiffré sur ses mesures.</li>
-        </ol>
+<h3>L'équipe — à compléter par le directeur</h3>
+<div class="tableau"><table>
+<thead><tr><th>Rôle</th><th>Qui</th></tr></thead>
+<tbody>
+<tr><td>Direction du projet et du design</td><td><em>à compléter par le directeur</em></td></tr>
+<tr><td>Production (agents IA : chef, exécutants, vérificateur, gardien du lore)</td><td>Agents Claude, sous la direction du projet</td></tr>
+<tr><td>Direction artistique, animation, doublage</td><td>Freelances à recruter (scénario B)</td></tr>
+<tr><td>Parcours, jeux sortis, contacts</td><td><em>à compléter par le directeur</em></td></tr>
+</tbody></table></div>
+<h3>Prochaines étapes</h3>
+<ol class="liste">
+<li><strong>Fait depuis le choix du moteur</strong> (Unreal Engine 5.8, D-181) : le forgeron qui parle, l'inventaire, la version installable de chaque nuit, et l'essentiel du combat, de la horde et de la patrouille de la démo 1 (diapositive 9) ; les décisions de design D-182 à D-320.</li>
+<li><strong>Démo 1 « Le Réveil »</strong>, dans l'ordre de travail de D-320 (12) (diapositive 13) : vers S5,8 (début novembre 2026, HP-5), date calculée à la main, plan non recalculé.</li>
+<li><strong>Avant toute vidéo ou présentation</strong> aux investisseurs : une vérification longue du prototype (D-281 (3)).</li>
+<li><strong>Démo 2 « La zone de départ »</strong> vers S13,1 (fin décembre 2026) ; <strong>prototype complet</strong> vers S19,4 (mi-février 2027) ; mois indicatifs (HP-5) ; budget du jeu complet chiffré sur ses mesures.</li>
+<li><em>Proposition :</em> recalculer le plan (P0-01, sans ticket au 17/10/2026) avant d'annoncer des dates fermes.</li>
+</ol>
       </div>
       <figure>
         <img src="images/s07-concept-13.jpg" alt="Image de concept : la zone de départ au lever du jour" loading="lazy">
@@ -755,27 +786,26 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
     </div>
   </div>
   <details class="notes" open><summary>Notes de l'orateur</summary><div class="oral">
-    <p class="attention">(À écrire par le directeur : qui il est, son parcours, pourquoi ce jeu.)</p>
-    <p>Les investisseurs regardent d'abord l'équipe : ils veulent savoir s'ils peuvent travailler avec nous pendant des années, et si quelqu'un a déjà sorti un jeu. Côté recrutement, le moment est favorable : beaucoup de profils expérimentés cherchent un poste en 2026.</p>
+    <p><em>(À écrire par le directeur : qui il est, son parcours, pourquoi ce jeu.)</em> Les investisseurs regardent d'abord l'équipe : ils veulent savoir s'ils peuvent travailler avec nous pendant des années, et si quelqu'un a déjà sorti un jeu. Côté recrutement, le moment est favorable : beaucoup de profils expérimentés cherchent un poste en 2026.</p>
   </div></details>
-  <p class="sources">Sources : étude T-0077 [S-48, S-49, S-50, S-53] ; plan T-0090 § 5 ; D-181 ; HP-5.</p>
+  <p class="sources">Sources : [étude T-0077, S-48, S-49, S-50, S-53] (équipe, marché de l'emploi) ; plan de production T-0090 § 5 ; D-181 ; HP-5. Mise à jour : [ÉD] « En bref », § 1, § 3.2, § 4 (point 10) ; [PP] § 3 (« Avant la démo 1 »), § 12.10 ; D-281 (3), D-320 (12) ; T-0081, T-0094, T-0230.</p>
+  <p class="maj"><em>Mise à jour du 17/10/2026 (T-0274) : « Prochaines étapes » refaites (le fait, la démo 1 et son ordre, la vérification longue avant une présentation, les dates du plan au 15/10, la proposition de recalcul) ; <strong>l'équipe n'est pas touchée : à compléter par le directeur</strong>.</em></p>
 </article>
 
 </div>
 
 <section>
   <h2>Hypothèses de la présentation</h2>
-  <div class="tableau"><table>
-    <thead><tr><th>Réf.</th><th>Hypothèse</th><th>Où</th></tr></thead>
-    <tbody>
-      <tr><td>HP-1</td><td>Les montants et durées du prototype sont ceux de l'étude T-0077 (argent) et du plan T-0090 (calendrier), hors TVA et hors abonnement des agents (déjà payé)</td><td>13 à 15</td></tr>
-      <tr><td>HP-2</td><td>La levée finance d'abord la fin du prototype ; le budget du jeu complet sera établi ensuite, sur les mesures du prototype (proposition)</td><td>15</td></tr>
-      <tr><td>HP-3</td><td>Les jeux comparables sont des succès exceptionnels, choisis pour leur genre et leur public : pas une prévision de ventes</td><td>11</td></tr>
-      <tr><td>HP-4</td><td>Une réserve pour imprévus est à prévoir ; son montant n'est pas fixé ici</td><td>15</td></tr>
-      <tr><td>HP-5</td><td>Mois indicatifs : production lancée le 01/10/2026 (lendemain de D-181), sans interruption, au débit probable de 50 h d'agent par semaine ; date = 01/10/2026 + semaines du plan × 7 jours, arrondie au demi-mois</td><td>13, 17</td></tr>
-    </tbody>
-  </table></div>
-  <p class="muted lecture" style="font-size:.88rem">Les hypothèses H-1 à H-23 et les sources S-1 à S-59 sont celles de l'étude T-0077 et de son volet B (<span class="chemins">.equipe/etudes/cout-proto/couts-moteurs.md</span>).</p>
+<div class="tableau"><table>
+<thead><tr><th>Réf.</th><th>Hypothèse</th><th>Où</th></tr></thead>
+<tbody>
+<tr><td>HP-1</td><td>Les montants et durées du prototype sont ceux de l'étude T-0077 (argent) et du plan T-0090 (calendrier ; mis à jour à la main du 13 au 15/10/2026, § 12.8 à § 12.10), hors TVA et hors abonnement des agents (déjà payé)</td><td>Diapositives 13 à 15</td></tr>
+<tr><td>HP-2</td><td>La levée finance d'abord la fin du prototype ; le budget du jeu complet sera établi ensuite, sur les mesures du prototype (proposition, à valider)</td><td>Diapositive 15</td></tr>
+<tr><td>HP-3</td><td>Les jeux comparables sont des succès exceptionnels choisis pour leur genre et leur public : ce n'est pas une prévision de ventes</td><td>Diapositive 11</td></tr>
+<tr><td>HP-4</td><td>Une réserve pour imprévus est à prévoir ; son montant n'est pas fixé ici</td><td>Diapositive 15</td></tr>
+<tr><td>HP-5</td><td>Mois indicatifs : production lancée le 01/10/2026 (lendemain de D-181), sans interruption, au débit probable de 50 h d'agent par semaine ; date = 01/10/2026 + semaines du plan × 7 jours, arrondie au demi-mois</td><td>Diapositives 13 et 17</td></tr>
+</tbody></table></div>
+<p class="muted lecture">Les hypothèses de l'étude T-0077 (H-8 à H-23) et de son volet B (H-1 à H-7) s'appliquent aux chiffres qui en viennent.</p>
 </section>
 
 <section>
@@ -798,16 +828,23 @@ details.notes .oral{font-size:.95rem;line-height:1.6;display:grid;gap:.6rem}
 
 <section>
   <h2>À valider par le directeur</h2>
-  <ol class="liste lecture">
-    <li><strong>Titre</strong> : affiché comme titre de travail provisoire (PB-25).</li>
-    <li><strong>« Coopération asynchrone »</strong> (Pitch) : formulation à revoir pour les investisseurs (diapositive 6).</li>
-    <li><strong>Images de concept</strong> : faites avec ChatGPT (métadonnées C2PA d'OpenAI) ; selon les conditions d'utilisation d'OpenAI pour l'Europe, § « Ownership of content », l'utilisateur possède les images produites. Les montrer comme images générées par IA (mention « Concept » sous chaque image).</li>
-    <li><strong>Deux jeux de durées pour Unreal</strong> (étude T-0077 : 705 h, ≈ 14 semaines ; plan T-0090 : 751 h, ≈ 15,4 semaines) : le calendrier suit le plan, l'argent suit l'étude ; le plan sera recalculé avec les mesures de l'essai (P0-01).</li>
-    <li><strong>Mise à jour après D-181</strong> (Unreal 5.8, 20:51) : seule la variante Unreal est gardée ; Unity n'apparaît plus que comme méthode du choix (diapositive 9). La capture du forgeron (essai T-0081, en cours) est à remplacer par le forgeron habillé qui parle.</li>
-    <li><strong>Montant et calendrier de la levée, équipe, contacts</strong> : à compléter (diapositives 15 et 17).</li>
-    <li><strong>Fiches générées par IA</strong> : les montrer comme telles (mention sous chaque image), ce que la présentation fait ; ne pas les présenter comme le travail d'un artiste.</li>
-    <li><strong>À ne pas promettre à l'oral</strong> : la voix qui prononce le nom (D-170, D-176), des ventes chiffrées (HP-3), la coopération dans le prototype (D-177), l'illusion du Stade 3 dans le prototype (Stade 3 réduit, ni illusion ni prise de contrôle : D-182 (4)).</li>
-  </ol>
+<ol class="liste lecture">
+<li><strong>Titre</strong> : « Le Crépuscule de l'Ombre » est affiché comme <strong>titre de travail provisoire</strong> (bilan Mission 5 ; PB-25).</li>
+<li><strong>« Coopération asynchrone »</strong> (<em>Pitch</em> § 1) : risque de malentendu devant un investisseur (voir diapositive 6) ; formulation proposée « coopération où chacun garde son histoire ».</li>
+<li><strong>Images de concept</strong> (<code>Documents/03_World_Design/02_Croquis_et_Concepts/</code>) : leur origine, « à confirmer » ici jusqu'au 09/10/2026, est retrouvée : <strong>générées avec ChatGPT</strong> (métadonnées C2PA d'OpenAI, relues le 09/10/2026 pour T-0163) ; droits d'usage : conditions d'OpenAI (tableau des licences de T-0163). Les images 17 et 18 (désert de dunes, contraire à D-134) ne sont pas utilisées.</li>
+<li><strong>Deux jeux de durées pour Unreal</strong> : l'étude T-0077 (705 h, ≈ 14 semaines) et le plan T-0090 (751 h, ≈ 15,4 semaines). La présentation prend le plan pour le calendrier (plus récent, simulé ticket par ticket) et l'étude pour l'argent ; les durées du tableau du budget (diapositive 14) viennent de l'étude. À harmoniser si le Chef préfère un seul jeu de chiffres ; le plan sera de toute façon recalculé avec les mesures de l'essai (P0-01). <strong>Mise à jour du 17/10/2026 (T-0274) :</strong> l'écart a grandi : le plan compte ≈ 928 h et ≈ 19,4 semaines ([PP] § 12.10), l'étude 705 h et ≈ 14 semaines. Options : (a) garder l'étude pour l'argent et le plan pour le calendrier, en le disant (ce que fait ce brouillon) ; (b) un ticket qui recalcule le budget sur les heures du plan ; (c) attendre le recalcul du plan (P0-01) avant de montrer un budget.</li>
+<li><strong>Mise à jour après D-181</strong> (Unreal 5.8, 20:51) : ce brouillon ne garde que la variante Unreal ; la comparaison avec Unity n'apparaît plus que comme la méthode du choix (diapositive 9). La capture du forgeron MetaHuman (essai T-0081, en cours) est encore sans cheveux, barbe ni tenue : à remplacer par une capture du forgeron habillé qui parle. <strong>17/10/2026 :</strong> T-0081 et T-0094 sont validés ; capture à choisir parmi celles de T-0094 (<code>captures\forgeron\</code>).</li>
+<li><strong>Montant de la levée, calendrier de la levée, équipe, contacts</strong> : à compléter par le directeur (diapositives 15 et 17).</li>
+<li><strong>Fiches générées par IA</strong> : les montrer comme telles (mention sous chaque image), ce que la présentation fait ; ne pas les présenter comme le travail d'un artiste.</li>
+<li><strong>Promesses à éviter à l'oral</strong> : la voix qui prononce le nom (objectif, pas acquis : D-170, D-176) ; des ventes chiffrées (HP-3) ; la coopération dans le prototype (D-177 : solo) ; l'illusion du Stade 3 dans le prototype (Stade 3 réduit, ni illusion ni prise de contrôle : D-182 (4)). Ajouts du 17/10/2026 : une date ferme pour la démo 1 (plan non recalculé) ; que le reflet, l'escalade de la falaise ou les voix de l'entité et du prologue marchent déjà ; que le hameau vive déjà dans le moteur (règle, répliques et simulation seulement).</li>
+<li><strong>Mise à jour du 17/10/2026 (T-0274) : points ouverts.</strong><ul>
+<li><strong>Animateurs freelances</strong> (diapositives 12, 14, 15) : les agents animent maintenant par le code la monte et les villageois, et les animations d'escalade suivent la même voie (D-320 (12) (b)). Options : (a) garder le poste « Animation » du scénario B tel quel ; (b) le revoir après l'essai de T-0268 ; (c) le garder seulement pour les visages, et pour l'escalade si T-0268 échoue. À trancher par le directeur.</li>
+<li><strong>Dates montrées</strong> (diapositives 13 et 17) : le plan n'est pas recalculé ([ÉD] § 4, point 10). Options : (a) montrer les semaines et les mois de HP-5, comme ici ; (b) montrer seulement les semaines et l'état du 17/10 ; (c) attendre le recalcul (P0-01).</li>
+<li><strong>Nombre de PNJ qui parlent</strong> (13, fiches T-0084 du 30/09/2026 ; diapositives 8 et 10) : à recompter (successeur prévu du chef, D-318 (8) ; pas d'autre agent du Cartel au prototype, D-319 (15) ; P2-21 recompté à 4 PNJ parlants, D-320 (9)).</li>
+<li><strong>Images</strong> : la page de relecture n'est pas refaite par T-0274 ; captures récentes du prototype et planches de la page « Modèles 3D » proposées (diapositives 9 et 10), avec une nature d'image nouvelle (« Modèle 3D généré, rendu hors du moteur ») à ajouter aux conventions si le directeur les retient.</li>
+<li><strong>Adresse du site du projet</strong> (diapositive 10) : non écrite ici, parce qu'elle contient un nom de compte ; à ajouter par le directeur s'il veut la montrer.</li>
+</ul></li>
+</ol>
 </section>
 </div>
 </body>
