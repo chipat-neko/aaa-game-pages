@@ -61,15 +61,13 @@ td.chiffre{font-family:var(--f-data);font-variant-numeric:tabular-nums;text-alig
 ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
 .chemins{font:400 .8rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
 </style>
-<style>body{margin:0}img,video{max-width:100%;height:auto}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
 </head>
 <body>
 <nav class="retour-accueil"><a href="../../index.html">← Pages du projet</a></nav>
-
-
 <div class="page">
 <header>
-  <div class="surtitre">Projet AAA · fiches des PNJ (T-0084) · 30/09/2026</div>
+  <div class="surtitre">Projet AAA · fiches des PNJ (T-0084) · 30/09/2026 · mis à jour le 17/10/2026 (T-0278, T-0283, T-0284)</div>
   <h1>Les visages <em>du prototype</em></h1>
   <p class="lecture">Les personnages qui parlent dans le prototype pour les investisseurs, et les figurants utiles :
   rôle tiré des documents, caractère, manière de parler pour les dialogues, et réglages de visage proposés pour
@@ -82,6 +80,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
   <div class="chiffres">
     <div class="chiffre-cle"><b>13</b><span>PNJ qui parlent ou peuvent parler</span></div>
     <div class="chiffre-cle"><b>16</b><span>planches générées cette nuit (ChatGPT via Codex)</span></div>
+    <div class="chiffre-cle"><b>4</b><span>successeurs des PNJ nommés (T-0278), planches à générer</span></div>
     <div class="chiffre-cle"><b>0</b><span>réglage de visage repris de celui du héros (Victor, Orlando)</span></div>
   </div>
   <p class="lecture muted">Chaque planche montre le même personnage deux fois : portrait de trois quarts et vue en
@@ -92,17 +91,17 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
 
 <section>
   <h2>Le Hameau de la Brume et ses abords</h2>
-  <p class="lecture muted">Hameau pauvre de 80 habitants, une seule conscience collective : méfiant au début, amical après une quête, hostile ou terrifié si un habitant voit un crime ou la magie (Topographie, IA Collective ; D-38).</p>
+  <p class="lecture muted">Hameau pauvre de 80 habitants, une seule conscience collective : méfiant au début ; la méfiance baisse peu à peu, en 4 étapes (une quête réussie en vaut 2, un service rendu 1 : D-236 (1), D-237 (4), D-306 (3)) ; amical quand elle tombe à 0 (D-238 (2)) ; hostile ou terrifié si un habitant voit un crime ou la magie (Topographie, IA Collective ; D-38).</p>
   <div class="galerie">
 <article class="fiche">
   <figure><img src="images/01-chef-hameau.jpg" width="1536" height="1024" loading="lazy" alt="Le chef du Hameau de la Brume : portrait de trois quarts et vue en pied, fond gris"></figure>
   <div class="corps">
     <span class="etat valide">Parle</span>
     <h3>Le chef du Hameau de la Brume</h3>
-    <p class="doc">Offre la prime du nid, hors de vue du hameau ; oriente le héros vers Oakhaven et lance la QP1 (moment à définir). Topographie POI A, § 4 ; D-35, D-150.</p>
+    <p class="doc">Offre la prime du nid, hors de vue du hameau ; oriente le héros vers Oakhaven et lance la QP1 (moment à définir). Topographie POI A, § 4 ; D-35, D-150. Successeur prévu s&#x27;il meurt : la doyenne (D-318 (8), D-319 (18), D-320 (17)).</p>
     <p><span class="cle">Qui</span> 65 ans, sec, un peu voûté. Prudent, méfiant envers les étrangers, pragmatique.</p>
     <p><span class="cle">Parler</span> Lent, économe, proverbes de la terre ; « étranger ». Voix grave, voilée.</p>
-    <p class="mh"><span class="cle">MetaHuman</span> Walter 55 % + Bruce 25 % + Lorenzo 20 % · 172 cm · muscles 0,30, graisse 0,30 · peau u 0,34 · cheveux gris attachés, barbe courte grise</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Walter 55 % + Mikel 25 % + Lorenzo 20 % (Mikel au lieu de Bruce, pris par le forgeron : D-202) · 172 cm · muscles 0,30, graisse 0,30 · peau u 0,34 · cheveux gris attachés, barbe courte grise</p>
     <p class="verdict">Image : bonne au 1er essai (visage, tenue, bâton conformes).</p>
   </div>
 </article>
@@ -147,8 +146,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
   <div class="corps">
     <span class="etat valide">Parle</span>
     <h3>L&#x27;agent du Cartel</h3>
-    <p class="doc">À l&#x27;auberge : propose d&#x27;empoisonner les déserteurs (Choix B), vend la nourriture frelatée ; ouvre le marché noir. Topographie POI A, § 5 ; D-39, D-41.</p>
-    <p><span class="cle">Qui</span> 35 ans, mince, posée. Femme : proposition (les documents disent « un agent »).</p>
+    <p class="doc">À l&#x27;auberge : propose d&#x27;empoisonner les déserteurs (Choix B), vend la nourriture frelatée ; ouvre le marché noir. Suit la conscience du hameau, mais rapporte ce qu&#x27;elle voit au Cartel. Topographie POI A, § 5 ; D-39, D-41, D-193, D-195.</p>
+    <p><span class="cle">Qui</span> 35 ans, mince, posée. Une femme (validé par le directeur, D-217 ; les documents disent « un agent »).</p>
     <p><span class="cle">Parler</span> Voix basse, soignée ; ne dit jamais « poison » ; tout est un marché. Voix alto, douce.</p>
     <p class="mh"><span class="cle">MetaHuman</span> Sunita 40 % + Celeste 35 % + Tuya 25 % · 168 cm · muscles 0,40, graisse 0,30 · peau u 0,52 olive · noirs tirés en queue basse</p>
     <p class="verdict">Image : bonne au 1er essai (accessoires en vignettes à droite ; cicatrice de la lèvre absente).</p>
@@ -181,17 +180,71 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
   </div>
 </section>
 <section>
+  <h2>Les successeurs des PNJ nommés (T-0278)</h2>
+  <p class="lecture muted">Quatre successeurs désignés reprennent le rôle d&#x27;un PNJ nommé s&#x27;il meurt (Besoins du hameau, P2-21 ; D-306 (5)) : la doyenne (successeur prévu du chef, D-318 (8)), l&#x27;apprenti du forgeron, l&#x27;aîné de l&#x27;éleveur (son fils) et la servante de l&#x27;auberge (D-320 (17)). Visibles près de leur PNJ, ils n&#x27;ont aucune réplique de successeur avant la reprise du rôle ; l&#x27;apprenti se tient à la forge sans parler. Sans nom : les rôles suffisent (D-319 (12)). Planches à générer (hors du ticket des fiches).</p>
+  <div class="galerie">
+<article class="fiche">
+  <figure><div class="sansimage">Planche à générer</div></figure>
+  <div class="corps">
+    <span class="etat encours">Parle après la reprise du rôle</span>
+    <h3>La doyenne, successeur prévu du chef</h3>
+    <p class="doc">Reprend aussitôt la prime du nid et l&#x27;orientation vers la QP1 si le chef meurt : la chaîne hameau → nid → pont → QP1 ne casse jamais ; seul ce successeur prévu reprend le rôle. Ne demande jamais d&#x27;aide. D-318 (8), D-319 (18), D-320 (17) ; D-35, D-150.</p>
+    <p><span class="cle">Qui</span> 68 ans (D-320 (17)), plus âgée que le chef ; sèche, droite malgré l&#x27;âge, 158 cm. Posée, écoutée, scrupuleuse sur la parole donnée. Habits aussi usés que ceux du chef (D-320 (17)).</p>
+    <p><span class="cle">Parler</span> Lente (débit du chef), phrases pesées, formules collectives ; vouvoie tant que le hameau n&#x27;est pas « Amical », tutoie ensuite. Voix alto lent, un peu chevrotant.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Tuya 45 % + Sook-ja 30 % + Ada 25 % · 158 cm · muscles 0,25, graisse 0,45 · peau u 0,40 claire mate · chignons gris argent sous le chaperon</p>
+    
+  </div>
+</article>
+<article class="fiche">
+  <figure><div class="sansimage">Planche à générer</div></figure>
+  <div class="corps">
+    <span class="etat encours">Parle après la reprise du rôle</span>
+    <h3>L&#x27;apprenti du forgeron</h3>
+    <p class="doc">Reprend la forge et la quête du forgeron (Mines de Fer Oubliées, Brutus) au lever suivant sa mort ; jamais appelé « Maître ». Se tient à la forge sans parler du vivant du forgeron (D-320 (17)). D-306 (5).</p>
+    <p><span class="cle">Qui</span> 19 ans, épaules et bras déjà forts, 178 cm. Appliqué, fier d&#x27;avoir été choisi, pas encore sûr de lui. Un homme (D-320 (17)).</p>
+    <p><span class="cle">Parler</span> Phrases courtes comme le forgeron, moins assurées ; tutoie d&#x27;emblée. Voix ténor jeune, un peu rauque.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Isaiah 45 % + Cameron 30 % + Bo 25 % · 178 cm · muscles 0,62, graisse 0,25 · peau u 0,55 brun clair · ras noirs, rasé</p>
+    
+  </div>
+</article>
+<article class="fiche">
+  <figure><div class="sansimage">Planche à générer</div></figure>
+  <div class="corps">
+    <span class="etat encours">Parle après la reprise du rôle</span>
+    <h3>L&#x27;aîné de l&#x27;éleveur</h3>
+    <p class="doc">Son fils (D-320 (17)) : reprend « L&#x27;Agneau et le Loup » au lever suivant la mort de l&#x27;éleveur, avec les mêmes étapes, fins et issues. D-306 (5) ; D-210 (2), D-213 (2), D-273 (4).</p>
+    <p><span class="cle">Qui</span> 17 ans (D-320 (17)), sec et nerveux comme son père, 174 cm. Inquiet et humble, s&#x27;excuse vite. Tenue trop grande, de l&#x27;éleveur ; un air de famille voulu avec lui (D-320 (17)).</p>
+    <p><span class="cle">Parler</span> Débit rapide comme l&#x27;éleveur, phrases qui hésitent, compte les bêtes ; vouvoie toujours. Voix ténor clair, jeune.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Trey 45 % + Lorenzo 30 % + Dominic 25 % · 174 cm · muscles 0,40, graisse 0,22 · peau u 0,25, taches de rousseur · roux cuivré mi-longs, sans barbe</p>
+    
+  </div>
+</article>
+<article class="fiche">
+  <figure><div class="sansimage">Planche à générer</div></figure>
+  <div class="corps">
+    <span class="etat encours">Parle après la reprise du rôle</span>
+    <h3>La servante de l&#x27;auberge</h3>
+    <p class="doc">Reprend l&#x27;auberge (premier lit de repos, payant), les rumeurs, l&#x27;annonce des naissances et le récit du retour du héros au lever suivant la mort de l&#x27;aubergiste. Topographie POI A ; Repos § 1 ; D-306 (5).</p>
+    <p><span class="cle">Qui</span> 24 ans, vive, 165 cm. Pratique, discrète, observatrice ; donne le prix avant tout. Une femme (D-320 (17)).</p>
+    <p><span class="cle">Parler</span> Débit 2,6, plus posé que la patronne ; phrases nettes ; parle à la salle, sans titre. Voix soprano, nette.</p>
+    <p class="mh"><span class="cle">MetaHuman</span> Ada 45 % + Asha 30 % + Celeste 25 % · 165 cm · muscles 0,42, graisse 0,35 · peau u 0,72 brune · noirs crépus sous le fichu</p>
+    
+  </div>
+</article>
+  </div>
+</section>
+<section>
   <h2>Le Pont des Déserteurs</h2>
   <p class="lecture muted">Seule sortie de la zone de départ : tuer les déserteurs (Choix A) ou les empoisonner (Choix B) ; sur le chef, l&#x27;insigne qui déclenche le premier souvenir (Topographie § 5 ; D-108).</p>
   <div class="galerie">
 <article class="fiche">
   <figure><img src="images/08-chef-deserteurs.jpg" width="1536" height="1024" loading="lazy" alt="Le chef des déserteurs : portrait de trois quarts et vue en pied, fond gris"></figure>
   <div class="corps">
-    <span class="etat encours">Parole à définir</span>
+    <span class="etat valide">Parle</span>
     <h3>Le chef des déserteurs</h3>
-    <p class="doc">Ancien soldat d&#x27;élite de l&#x27;Ordre, déserteur et blessé ; rackette le hameau et le Cartel ; porte l&#x27;insigne d&#x27;unité sans nom identique à celui du héros. Topographie POI D, § 5 ; D-24, D-108.</p>
+    <p class="doc">Ancien soldat d&#x27;élite de l&#x27;Ordre, déserteur et blessé ; rackette le hameau et le Cartel ; porte, caché sous le tabard, l&#x27;insigne d&#x27;unité sans nom identique à celui du héros (le hameau ne l&#x27;a jamais vu). Il voit celui du héros et n&#x27;en dit rien (un regard) ; la découverte reste sur son cadavre. Parle au pont (dialogues/j3-pont.md, T-0282). Topographie POI D, § 5 ; D-24, D-108, D-320 (21).</p>
     <p><span class="cle">Qui</span> 38 ans, grand, amaigri. Amer envers l&#x27;Ordre, désespéré, encore discipliné. Sceptre découpé du tabard : proposition.</p>
-    <p><span class="cle">Parler</span> Ton de commandement, phrases militaires, lucidité noire ; « soldat ». Voix baryton, usée.</p>
+    <p><span class="cle">Parler</span> Ton de commandement, phrases militaires, lucidité noire ; « Capitaine », titre d&#x27;usage pour tout inconnu armé (D-207 ; D-320 (21)). Voix baryton, usée.</p>
     <p class="mh"><span class="cle">MetaHuman</span> Mateo 45 % + Isaiah 30 % + Lorenzo 25 % · 184 cm · muscles 0,55, graisse 0,15 · peau u 0,45 pâle · mi-longs noirs, longue barbe négligée (corrigé : pas la pilosité du héros)</p>
     <p class="verdict">Image : bonne au 1er essai (sceptre découpé visible) ; l&#x27;insigne rond au sceptre ne reprend pas celui du héros (heros-reveil.png) : à corriger au modèle 3D. Pilosité 3D changée (correction 1) : l&#x27;image reste la référence de la tenue seulement.</p>
   </div>
@@ -297,7 +350,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
   <div class="corps">
     <span class="etat attente">Répliques courtes</span>
     <h3>Les villageois du hameau</h3>
-    <p class="doc">80 habitants, une seule conscience : méfiants, puis amicaux, ou hostiles et terrifiés. IA Collective § 1 ; Topographie POI A.</p>
+    <p class="doc">80 habitants, une seule conscience : méfiants au début ; leur méfiance baisse ensemble, en 4 étapes, et ils ne deviennent amicaux qu&#x27;à 0 (D-236 (1), D-237 (4), D-238 (2), D-306 (3)) ; hostiles ou terrifiés après un crime ou la magie vue. IA Collective § 1 ; Topographie POI A.</p>
     <p><span class="cle">Qui</span> Proposition : 8 têtes de base (femmes et hommes de 20 à 70 ans), laine écrue, lin, peau de mouton.</p>
     <p><span class="cle">Parler</span> Répliques courtes selon l&#x27;humeur du hameau.</p>
     <p class="mh"><span class="cle">MetaHuman</span> 8 mélanges différents de ceux des PNJ nommés (détail dans fiches-pnj.md, § 4.1)</p>
@@ -323,7 +376,11 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
   <h2>Des visages tous différents</h2>
   <p class="lecture muted">Un visage de départ différent domine chaque PNJ ; aucun n'utilise ceux du héros (Victor et
   Orlando), ni sa pilosité (cheveux courts en bataille et barbe de quelques jours) : le chef des déserteurs, de la
-  même unité que lui, a été corrigé dans ce sens. Âges de 22 à 65 ans, tailles de 160 à 192 cm, peaux du plus clair (u 0,22) au plus foncé (u 0,86).</p>
+  même unité que lui, a été corrigé dans ce sens. Âges de 17 à 68 ans (successeurs compris), tailles de 158 à
+  192 cm, peaux du plus clair (u 0,22) au plus foncé (u 0,86). Les quatre successeurs (T-0278) ont quatre visages
+  dominants différents, dont aucun ne domine déjà un PNJ nommé, le Général ou le héros ; l'aîné garde un air de famille
+  voulu avec l'éleveur, son père (D-320 (17)) : même peau, mêmes cheveux roux, mêmes yeux, mais un autre visage
+  dominant, 17 ans, sans barbe, une autre tenue.</p>
   <div class="tableau"><table>
 <thead><tr><th>PNJ</th><th>Visage dominant</th><th>Âge</th><th>Peau u</th><th>Taille</th><th>Cheveux, pilosité</th></tr></thead>
 <tbody>
@@ -342,23 +399,30 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
 <tr><td>Érudit banni</td><td>Aoi 45 %</td><td class="chiffre">60</td><td class="chiffre">0,66</td><td class="chiffre">174</td><td>dégarni, longue barbe blanche</td></tr>
 <tr><td>Garde corrompu</td><td>Bo 45 %</td><td class="chiffre">32</td><td class="chiffre">0,22</td><td class="chiffre">175</td><td>blonds fins, barbe clairsemée</td></tr>
 <tr><td>Le Général</td><td>Kelvin 40 %</td><td class="chiffre">55</td><td class="chiffre">0,28</td><td class="chiffre">188</td><td>argent en arrière, barbe grise nette</td></tr>
+<tr><td>Doyenne (successeur du chef)</td><td>Tuya 45 %</td><td class="chiffre">68</td><td class="chiffre">0,40</td><td class="chiffre">158</td><td>chignons gris argent sous le chaperon</td></tr>
+<tr><td>Apprenti du forgeron</td><td>Isaiah 45 %</td><td class="chiffre">19</td><td class="chiffre">0,55</td><td class="chiffre">178</td><td>ras noirs, rasé</td></tr>
+<tr><td>Aîné de l'éleveur (son fils)</td><td>Trey 45 %</td><td class="chiffre">17</td><td class="chiffre">0,25</td><td class="chiffre">174</td><td>roux cuivré mi-longs, sans barbe</td></tr>
+<tr><td>Servante de l'auberge</td><td>Ada 45 %</td><td class="chiffre">24</td><td class="chiffre">0,72</td><td class="chiffre">165</td><td>noirs crépus sous le fichu</td></tr>
 </tbody></table></div>
 </section>
 
 <section>
   <h2>À valider par le directeur</h2>
   <ul class="liste">
-<li>Genres proposés : l&#x27;agent du Cartel, l&#x27;aubergiste et la Veilleuse en femmes (les documents emploient le masculin générique ou ne disent rien).</li>
+<li>Genres proposés : l&#x27;agent du Cartel, l&#x27;aubergiste et la Veilleuse en femmes (les documents emploient le masculin générique ou ne disent rien) ; pour l&#x27;agente du Cartel, validé par le directeur (D-217, fiche 3.5).</li>
 <li>Peuples et teintes de peau du Royaume : rien dans les documents ; la variété proposée est à valider (bible artistique, T-0088).</li>
 <li>Tenues entre le soldat et l&#x27;officier (D-166) : cordon doré du sergent, cape courte du capitaine.</li>
 <li>Aspect des déserteurs : tabard au sceptre découpé, blessures.</li>
 <li>Couleurs et emblème des Veilleurs (bleu ardoise, demi-soleil levant).</li>
 <li>Rôles à fusionner ou non : agent du Cartel et marchand du Cartel qui apporte les nouvelles ; aubergiste et marchand de troc.</li>
-<li>Qui parle parmi l&#x27;aubergiste, la Veilleuse, le chef des déserteurs et le garde corrompu ; le chef des déserteurs remarque-t-il l&#x27;insigne du héros avant la fin ?</li>
+<li>Qui parle parmi l&#x27;aubergiste, la Veilleuse et le garde corrompu ; le chef des déserteurs parle au pont (dialogues/j3-pont.md, T-0282) ; il voit l&#x27;insigne du héros et n&#x27;en dit rien, un regard (tranché : D-320 (21)).</li>
 <li>Qui dit « Capitaine » au héros (D-172, point ouvert) : les fiches proposent d&#x27;autres titres.</li>
 <li>Brutus : de qui il était l&#x27;esclave.</li>
-<li>Forgeron : à réaligner sur les réglages et l&#x27;image de l&#x27;essai (T-0081, T-0079), en cours cette nuit.</li>
+<li>Forgeron : à réaligner sur les réglages et l&#x27;image réellement produits par l&#x27;essai (T-0081, T-0079).</li>
+<li>Trappeur de la Coalition : figurant du hameau ou absent du prototype (sa quête n&#x27;est pas retenue, D-177).</li>
 <li>Forme du sceptre doré : elle change d&#x27;une image à l&#x27;autre ; la référence reste soldat-ordre.png (D-166), à fixer dans la bible artistique (T-0088). L&#x27;insigne du chef des déserteurs doit reprendre celui du héros.</li>
+<li>Successeurs (T-0278) : genres, âge de la doyenne (68 ans), lien de l&#x27;aîné (son fils, 17 ans) et air de famille avec l&#x27;éleveur, tranchés (D-320 (17)) ; risque de confusion à l&#x27;enclos, si la planche ne suffit pas : un roux plus clair ou des cheveux plus courts pour le fils, ou garder tel quel ; à définir : les parentés de la doyenne, de l&#x27;apprenti et de la servante avec leur prédécesseur ; répliques avant la reprise de la doyenne, de l&#x27;aîné et de la servante : muets comme l&#x27;apprenti, ou les répliques courtes des villageois.</li>
+<li>Successeur de la doyenne (tranché : D-320 (17)) : si elle meurt aussi, une tête de villageois reprend le rôle, sans fiche.</li>
   </ul>
 </section>
 
@@ -367,10 +431,12 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem;max-width:46rem}
   <p class="chemins">Documents : Topographie de la Zone de Départ · Guide Complet des Métiers · Quête Principale 1 ·
   Structure - Quêtes Secondaires par Zone · IA Collective et Réactivité des PNJ · fiches de factions et GDD.
   Décisions : D-03, D-17, D-24, D-35, D-38 à D-41, D-63, D-108, D-130, D-139, D-150, D-155, D-163, D-166, D-167,
-  D-170 à D-173, D-177 à D-179. Inventaire du prototype : .equipe/etudes/cout-proto/inventaire.md (§ 4.2).
+  D-170 à D-173, D-177 à D-179, D-193, D-195, D-202, D-207, D-217, D-236 à D-238, D-306, D-318 à D-320.
+  Inventaire du prototype : .equipe/etudes/cout-proto/inventaire.md (§ 4.2). Successeurs : règle des Besoins
+  (.equipe/prototype/quetes-des-besoins.md), répliques (.equipe/prototype/dialogues/j2-hameau-besoins.md) ; pont :
+  .equipe/prototype/dialogues/j3-pont.md.
   Images : prompts et originaux PNG gardés dans le dossier du chantier (travail/prompts.md, originaux/), non publiés.</p>
 </section>
 </div>
-
 </body>
 </html>
