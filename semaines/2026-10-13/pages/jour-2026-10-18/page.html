@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · dimanche 18 octobre 2026 (depuis le 17/10 à 23:00) · semaine du 13 au 19 octobre</div>
   <h1>Jour <em>6</em></h1>
   <p class="lecture">Nuit et journée en totale autonomie (<span class="insec">D-322</span>) : depuis le 17/10 à 23:00, le Chef enchaîne seul les deux files, la carte graphique (<span class="insec">T-0318</span>, canalisation du grand sort, puis la suite de la démo 1) et le processeur (montage du prologue, documents), et tranche ce qui reste ouvert.</p>
-  <p class="ticket">Mise à jour : 18/10/2026 à 00:43</p>
+  <p class="ticket">Mise à jour : 18/10/2026 à 00:48</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">2 à faire</span><span class="etat e-en-cours">3 en cours</span><span class="etat e-valide">4 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">2 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">4 validés</span></div>
   <ul class="liste lecture">
     <li>Le directeur a laissé la nuit et la journée du 18/10 en totale autonomie (<span class="insec">D-322</span>) : une seule page, celle du 18/10, pas de page de nuit.</li>
     <li>File carte : <strong><span class="insec">T-0318</span></strong> (canalisation du grand sort et des sorts de zone, <span class="insec">P1-12</span>) lancé à 23:05, carte libre.</li>
@@ -119,9 +119,9 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="files">
 <div class="file">
   <h3>File carte graphique (Unreal)</h3>
-  <p class="muted">Carte libre depuis 23:00 ; un seul agent à la fois dans le projet Unreal, hors écran (<span class="insec">D-284</span>, <span class="insec">D-289</span>).</p>
+  <p class="muted">Carte libre ; <span class="insec">T-0318</span> livré, sa vérification tient la carte ; puis <span class="insec">T-0320</span>.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0318</span> · <span class="insec">P1-12</span> · <span class="insec">D-320</span> (12) · <span class="insec">D-322</span></span><h3>Le héros canalise le grand sort</h3><p class="muted">Animation de canalisation (entrer, tenir, lancer, sortir) au grand sort et aux sorts de zone, en vue à la troisième et à la première personne.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 23:05.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0318</span> · <span class="insec">P1-12</span> · <span class="insec">D-320</span> (12) · <span class="insec">D-322</span></span><h3>Le héros canalise le grand sort</h3><p class="muted">Animation de canalisation (entrer, tenir, lancer, sortir) au grand sort et aux sorts de zone, en vue à la troisième et à la première personne.</p><span class="etat e-verification">En vérification</span><p class="note">Livré vers 00:47 : le héros canalise (entrer, tenir tant que la touche est tenue, lancer au relâcher, sortir), en vue à la troisième et à la première personne, sans glisser ; règles sans échec (178 lignes) ; <strong>parcours VERT carte libre</strong> aux deux lancements (138 et 139 images/s). Choix du Chef (<span class="insec">D-322</span> (12)) : un coup interrompt le sort de zone, pas le grand sort. Vérification lancée à 00:48 (carte).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0320</span> · <span class="insec">P1-13</span> · <span class="insec">D-322</span></span><h3>Sang et impacts, déflagration du grand sort, veines noires</h3><p class="muted">Premiers effets Niagara du prototype : sang sombre et bref, onde d&#x27;or du grand sort, veines noires et yeux d&#x27;or du héros pendant la magie.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 23:11 ; part après <span class="insec">T-0318</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0321</span> · <span class="insec">P1-13</span> · <span class="insec">P1-15</span> · <span class="insec">D-322</span></span><h3>L&#x27;apparition de l&#x27;Ange, avec son et voix</h3><p class="muted">Fumée noire, cendres, dissolution en une demi-seconde, trois paires d&#x27;yeux dorés ; sons et voix de l&#x27;entité calés sur les sous-titres ; vidéo de la scène.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 23:11 ; part après <span class="insec">T-0320</span>.</p></div>
   </div>
@@ -152,6 +152,12 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="ticket"><span class="insec">T-0319</span> · <span class="insec">P1-20</span> · <span class="insec">D-322</span> (10)</p>
   <figure><img src="images/prologue-montage.jpg" alt="Image : Prologue de la démo 1, monté hors moteur (planche des plans)" width="1280" height="423" loading="lazy"><figcaption>Une image par plan du prologue de 64,5 s (images générées par IA, voix générée de l&#x27;entité).</figcaption></figure>
   <p class="chemins">Sur le PC : E:\aaa-proto\livrables\demo-1\prologue\ (prologue-en.mp4 : version des investisseurs)</p>
+</article>
+<article class="modele" id="mod-canalisation">
+  <div class="tete"><h3>Le héros canalise le grand sort (vues à la troisième et à la première personne)</h3><span class="etat e-verification">En vérification</span></div>
+  <p class="ticket"><span class="insec">T-0318</span> · <span class="insec">P1-12</span> · <span class="insec">D-322</span> (12)</p>
+  <figure><img src="images/canalisation.jpg" alt="Image : Le héros canalise le grand sort (vues à la troisième et à la première personne)" width="1280" height="778" loading="lazy"><figcaption>Entrer, tenir, lancer : de trois quarts et en vue à la première personne (animations libres de droits, reciblées).</figcaption></figure>
+  <p class="chemins">Sur le PC : E:\aaa-proto\unreal-v2\mesures\t0318\captures\</p>
 </article>
   </div>
 </section>
@@ -187,6 +193,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>00:36</time><p>Correction 1 de <span class="insec">T-0319</span> livrée ; vérification lancée. Quota : 67,0 %.</p></div>
     <div class="entree"><time>00:42</time><p><span class="insec">T-0319</span> validé : le prologue de la démo 1 est montrable.</p></div>
     <div class="entree"><time>00:43</time><p><span class="insec">T-0326</span> lancé (reports dans le script du prologue et petits alignements). Quota : 67,3 %.</p></div>
+    <div class="entree"><time>00:47</time><p><span class="insec">T-0318</span> livré : canalisation du grand sort ; parcours VERT carte libre (le premier depuis le 16/10).</p></div>
+    <div class="entree"><time>00:48</time><p>Choix du Chef <span class="insec">D-322</span> (12) ; vérification de <span class="insec">T-0318</span> lancée (carte graphique). Quota : 67,5 %.</p></div>
   </div>
 </section>
 
