@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>Jour 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Semaine du 13 au 19 octobre</a></nav>
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de jour-2026-10-17.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · samedi 17 octobre 2026 · semaine du 13 au 19 octobre</div>
+  <h1>Jour <em>5</em></h1>
+  <p class="lecture">Le directeur joue (carte et processeur repris) et laisse les décisions du jour au Chef (<span class="insec">D-320</span>) : la journée commence par le report de ses réponses (<span class="insec">D-319</span>) et la page des modèles 3D ; Blender et Unreal attendent qu&#x27;il rende la machine.</p>
+  <p class="ticket">Mise à jour : 17/10/2026 à 04:15</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">7 à faire</span><span class="etat e-en-cours">5 en cours</span><span class="etat e-verification">1 en vérification</span></div>
+  <ul class="liste lecture">
+    <li><strong><span class="insec">D-319</span></strong> : prologue (« Et puis toi. », Ange solide et assombri, réveil en FPS), entité de la démo 1 (« Lâche tout. Laisse-moi faire. », variantes de « Pas encore. », sous-titres d&#x27;au moins 1,5 s), hameau (voix des redites en direct, morts au hasard selon l&#x27;âge et la saison, marchand des Canyons, Choix A vouvoyé), villageois (tombe debout, retour de chasse, lanterne la nuit), laie au pas du mâle.</li>
+    <li><strong><span class="insec">D-320</span></strong> : carte et processeur repris par le directeur pour jouer ; le Chef décide seul aujourd&#x27;hui et enchaîne les tickets en autonomie.</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Les deux files de travail (<span class="insec">D-317</span>), en pause pour la carte et le gros du processeur tant que le directeur joue (<span class="insec">D-320</span> (2)) ; l&#x27;écriture continue.</p>
+  <div class="files">
+<div class="file">
+  <h3>File carte graphique (Unreal)</h3>
+  <p class="muted">En pause : le directeur joue.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0237</span> · <span class="insec">D-318</span> (1) · <span class="insec">D-320</span> (4)</span><h3>La semelle se pose sur la prise</h3><p class="muted">Livré le 16/10 à 12:53 : escalade VERTE aux 4 débits, 0 pied et 0 main dans la roche ; avant de la semelle sur le bord du dessus.</p><span class="etat e-verification">En vérification</span><p class="note">Vérification sur pièces lancée à 04:12 (critères revus, <span class="insec">D-320</span> (4)).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0254</span> · <span class="insec">D-320</span> (4), (5)</span><h3>Escalade : pied pendant le fondu, vue rasante, parcours</h3><p class="muted">Le dernier pied dans la roche (pendant le fondu de la prise), une vue rasante de la semelle, un parcours VERT carte libre.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0255</span> · <span class="insec">D-319</span> (5), (8), (9)</span><h3>Répliques de l&#x27;entité dans le jeu</h3><p class="muted">« Lâche tout. Laisse-moi faire. », trois variantes de « Pas encore. », sous-titres d&#x27;au moins 1,5 s.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte et <span class="insec">T-0248</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4)</span><h3>La meute de 6 loups pendant la Tempête de Neige</h3><p class="muted">Elle rôde près du hameau pendant la tempête.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+  </div>
+  <p class="suite">Quand la carte sera rendue : <span class="insec">T-0254</span> (suite de la semelle, parcours carte libre), <span class="insec">T-0255</span> (répliques de l&#x27;entité dans le jeu), puis <span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span>.</p>
+</div>
+<div class="file">
+  <h3>File processeur (écriture, Blender)</h3>
+  <p class="muted">Écriture seulement tant que le directeur joue ; Blender attend.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0248</span> · <span class="insec">D-319</span> (1) à (10)</span><h3>Report de <span class="insec">D-319</span> : prologue et entité</h3><p class="muted">« Et puis toi. », l&#x27;Ange à Gath, le réveil, HOR-10, HOR-15, REV-11, sous-titres, seuils.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 04:11.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0249</span> · <span class="insec">D-319</span> (11) à (21)</span><h3>Report de <span class="insec">D-319</span> : règle du hameau</h3><p class="muted">Morts au hasard, métier de B2, agente, récompenses, marchand des Canyons, Topographie.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 04:11.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0250</span> · <span class="insec">D-319</span> (20)</span><h3>Choix A au pont, vouvoyé</h3><p class="muted">Trois répliques vouvoyées pour un hameau encore méfiant ; deux conditions élargies.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 04:11.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0251</span> · <span class="insec">D-319</span> (22), (23)</span><h3>Faune et plan : laie, villageois</h3><p class="muted">Laies faites, toile et saut faits, pli du boulet, tâches des villageois.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 04:11.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0256</span> · <span class="insec">D-320</span> (3)</span><h3>Page « Modèles 3D » : laie, boiteries, villageois</h3><p class="muted">La laie en 3D, les boiteries du cheval, du sanglier et du loup, les villageois en vidéo (licence MetaHuman).</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé dès que cette page est publiée, en priorité basse.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0252</span> · <span class="insec">D-319</span> (22)</span><h3>Villageois : tombe debout, chasse, lanterne</h3><p class="muted">Trois tâches de plus dans Blender.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend le processeur.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0253</span> · <span class="insec">D-319</span> (23)</span><h3>Le pli du boulet du grand mâle</h3><p class="muted">Le remède de la laie, côté gauche.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend le processeur.</p></div>
+  </div>
+  <p class="suite">Quand le processeur sera rendu : <span class="insec">T-0252</span> (villageois : tombe, chasse, lanterne), <span class="insec">T-0253</span> (pli du boulet du sanglier).</p>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D du jour</h2>
+  <p class="lecture muted">Les modèles et animations validés hier, à voir aussi en 3D dans la page « Modèles 3D » (mise à jour par <span class="insec">T-0256</span>).</p>
+  <div class="galerie">
+<article class="modele" id="mod-laie">
+  <div class="tete"><h3>Laie</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0245</span> · <span class="insec">D-235</span> (4) · <span class="insec">D-319</span> (23)</p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-sanglier" title="Voir sa fiche dans « Modèles 3D »"><img src="images/laie.jpg" alt="La laie à côté du sanglier" width="1280" height="395" loading="lazy"></a><figcaption>La laie (0,75 m) à côté du grand mâle (0,92 m).</figcaption></figure>
+  <p>Tirée du sanglier : même squelette (46 os), mêmes 20 animations mises à l&#x27;échelle 0,8175, sans grandes défenses. En compagnie, elle va au pas du mâle (<span class="insec">D-319</span> (23)). Le pli du boulet gauche est repris ; il le sera aussi chez le mâle (<span class="insec">T-0253</span>).</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-sanglier">Sa fiche dans « Modèles 3D »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\gibier\laie\</p>
+</article>
+<article class="modele" id="mod-cheval-posterieurs">
+  <div class="tete"><h3>Cheval : boiterie des postérieurs</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0235</span> · <span class="insec">D-318</span> (12)</p>
+  <figure><a class="image" href="../../../../pages/modeles-3d/page.html#m-cheval" title="Voir sa fiche dans « Modèles 3D »"><img src="images/cheval-posterieurs.jpg" alt="Planche de la boiterie arrière du cheval" width="1280" height="224" loading="lazy"></a><figcaption>Au pas, la hanche du côté blessé monte de 6,5 cm (2,1 avant).</figcaption></figure>
+  <p>Au pas, la boiterie d&#x27;un postérieur se voit de profil et de derrière : la hanche du côté blessé monte de 6,5 cm, l&#x27;appui passe de 36 à 31 % du pas, la tête descend d&#x27;environ 3 cm. Le trot n&#x27;a pas changé.</p>
+  <div class="liens"><a href="../../../../pages/modeles-3d/page.html#m-cheval">Sa fiche dans « Modèles 3D »</a></div>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\cheval\</p>
+</article>
+<article class="modele" id="mod-villageois">
+  <div class="tete"><h3>Villageois : tâches</h3><span class="etat e-valide">Validé</span></div>
+  <p class="ticket"><span class="insec">T-0234</span> · <span class="insec">P2-25</span> · <span class="insec">D-319</span> (22)</p>
+  <figure><img src="images/villageois.jpg" alt="Planche des tâches des villageois" width="1280" height="541" loading="lazy"><figcaption>Couper du bois, porter un fagot, ronde, troupeau, houe, retour blessé, alité.</figcaption></figure>
+  <p>Sept tâches sur le squelette des MetaHumans, contacts de peau de 0,43 cm au plus. À venir : la tombe debout, le retour de chasse, la lanterne la nuit (<span class="insec">T-0252</span>). Images et vidéo seulement : la licence interdit de publier les fichiers MetaHuman hors d&#x27;Unreal.</p>
+  <p class="chemins">Sur le PC : E:\aaa-proto\essai\villageois\</p>
+</article>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>04:09</time><p>Réponses du questionnaire reçues (<span class="insec">D-319</span>) ; le directeur reprend la carte et le processeur pour jouer et laisse les décisions du jour au Chef (<span class="insec">D-320</span>).</p></div>
+    <div class="entree"><time>04:11</time><p><span class="insec">T-0248</span> à <span class="insec">T-0251</span> (reports de <span class="insec">D-319</span>) lancés, écriture seulement.</p></div>
+    <div class="entree"><time>04:12</time><p><span class="insec">T-0237</span> (semelle sur la prise) : critères revus (<span class="insec">D-320</span> (4)), vérification sur pièces lancée.</p></div>
+    <div class="entree"><time>04:13</time><p>« D&#x27;autres tickets une fois finis, en autonomie » (<span class="insec">D-320</span> (6)) : <span class="insec">T-0252</span> à <span class="insec">T-0256</span> créés.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Questions en attente du directeur.</p>
+  <p class="lecture muted">1 question attend sa réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question"><span class="ticket">Délégation</span><p>Aucune aujourd&#x27;hui : le Chef décide (<span class="insec">D-320</span>). Les choix faits sont notés dans le registre (<span class="insec">D-320</span>).</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:/aaa-proto/essai/gibier/laie : la laie (modèle, animations, vidéo) · E:/aaa-proto/essai/villageois/villageois-taches.mp4 : les tâches des villageois · E:/aaa-proto/assets/sons/prologue/ecoute.html : la musique et les sons du prologue</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
