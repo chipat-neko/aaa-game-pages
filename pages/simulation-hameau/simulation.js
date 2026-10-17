@@ -41,7 +41,21 @@
    - Minage et Forge n'existent dans la partie qu'une fois la quête du forgeron faite (D-209 (3)) ;
    - personne pour reprendre le rôle d'un PNJ nommé (toutes options) : l'arrivant vient 48 h après la mort, pas après
      la reprise manquée du lever suivant ; un seul arrivant attendu à la fois pour devenir successeur d'un rôle ;
-   - un même temps tiré deux fois de suite (pluie, neige, couvert, clair) est annoncé comme prolongé, avec sa fin. */
+   - un même temps tiré deux fois de suite (pluie, neige, couvert, clair) est annoncé comme prolongé, avec sa fin.
+   T-0258 (D-318 (5) à (10), D-319 (14), (16), D-320 (8)) :
+   - les trois choix de T-0202 ci-dessus sont devenus des règles (D-318 (10)) ; l'agente du Cartel est protégée par
+     défaut : jamais victime des Besoins (D-318 (7)) ni du hasard (D-320 (8)) ; l'option écartée « remplacée » reste
+     pour comparer ; le chef n'est repris que par son successeur prévu, quelle que soit l'option (D-318 (8), D-319 (18)) ;
+   - morts au hasard (D-318 (9), D-319 (14)) : chaque jour, à l'heure du tableau, un tirage par habitant (agente
+     exceptée) ; chance = taux × poids de l'âge × poids de la saison (glissement compris) ; un enfant ou un bébé ne meurt
+     que de maladie ; le tirage d'un habitant vient d'une suite propre à lui et au jour (graine, habitant, jour) : il ne
+     prend rien aux autres suites, et la même personne meurt le même jour quel que soit le héros, tant qu'elle vit ;
+   - âge des adultes : tiré une fois (même façon), dans les plages du tableau ; les adultes ne vieillissent pas pendant
+     la partie (15 journées : un an d'âge au plus) ; un enfant devenu adulte garde son âge ;
+   - métier de l'action faite (D-318 (5), D-319 (16), D-320 (8)) : B1 (gibier) et B2 (meute tuée) : Chasse & Traque ;
+     B2 en gardant l'enclos : rien au métier ; pour B2, le héros simulé tue la meute si le dernier tirage du coucher du
+     soleil (ou une meute forcée) en a fait rôder une, sinon il garde l'enclos (choix de la simulation, options pour
+     comparer) ; un compteur par métier (points, demandes, en urgence) et par raison de « rien au métier ». */
 (function (racine) {
   'use strict';
 
@@ -73,6 +87,11 @@
       anParJours: R.croissance.defaut, vieillir: R.vieillir.defaut, enfants: R.enfants.defaut,
       mortLiee: R.mort_liee.defaut, absentMefiance: R.absent_mefiance.defaut,
       metiersPartie: R.metiers_partie.defaut, metierB4: R.metier_concerne.defaut, xpDepart: R.experience_depart.defaut,
+      // T-0258 : morts au hasard (D-318 (9), D-319 (14)) et ce que fait le héros simulé pour B2
+      hasard: R.morts_possibles.hasard.defaut, tauxHasard: R.morts_possibles.hasard.taux_pct_j,
+      poidsBebe: R.morts_possibles.hasard.poids_age.bebe, poidsEnfant: R.morts_possibles.hasard.poids_age.enfant,
+      poidsAdulte: R.morts_possibles.hasard.poids_age.adulte, poidsAncien: R.morts_possibles.hasard.poids_age.ancien,
+      poidsHiver: Object.values(R.morts_possibles.hasard.poids_saison)[0], b2Heros: donnees.simulation.b2_heros.defaut,
     }, options || {});
     o.journees = Math.max(R.debut.journees_min, Math.min(R.debut.journees_max, Math.round(Number(o.journees) || UI.journees_defaut)));
     o.graine = Math.abs(Math.round(Number(o.graine))) || UI.graine_defaut;
@@ -84,7 +103,20 @@
     o.xpDepart = nombreOpt(o.xpDepart, R.experience_depart);
     if (!R.metiers_partie.options.includes(o.metiersPartie)) o.metiersPartie = R.metiers_partie.defaut;
     if (!R.metier_concerne.options.includes(o.metierB4)) o.metierB4 = R.metier_concerne.defaut;
+    // T-0258 : options des morts au hasard ; un nombre vide, négatif ou illisible reprend la valeur du tableau
+    const HZ = R.morts_possibles.hasard, SIM = donnees.simulation, HIVER = Object.keys(HZ.poids_saison)[0];
+    const nombreLibre = (v, d) => { const n = Number(v); return v !== '' && v !== null && Number.isFinite(n) && n >= 0 ? n : d; };
+    if (!HZ.options.includes(o.hasard)) o.hasard = HZ.defaut;
+    if (!SIM.b2_heros.options.includes(o.b2Heros)) o.b2Heros = SIM.b2_heros.defaut;
+    if (!R.agente_morte.options.includes(o.agente)) o.agente = R.agente_morte.defaut;
+    o.tauxHasard = nombreLibre(o.tauxHasard, HZ.taux_pct_j);
+    o.poidsBebe = nombreLibre(o.poidsBebe, HZ.poids_age.bebe); o.poidsEnfant = nombreLibre(o.poidsEnfant, HZ.poids_age.enfant);
+    o.poidsAdulte = nombreLibre(o.poidsAdulte, HZ.poids_age.adulte); o.poidsAncien = nombreLibre(o.poidsAncien, HZ.poids_age.ancien);
+    o.poidsHiver = nombreLibre(o.poidsHiver, HZ.poids_saison[HIVER]);
+    const POIDS_AGE = { bebe: o.poidsBebe, enfant: o.poidsEnfant, adulte: o.poidsAdulte, ancien: o.poidsAncien };
     const flux = (nom) => suite(fnv(o.graine + '/' + nom));
+    // suite propre à une clé (graine, habitant, jour…) : ne prend rien aux suites ci-dessous (T-0258)
+    const fluxDe = (...cles) => suite(fnv(o.graine + '/' + cles.join('/')));
     const rnd = { meteo: flux('meteo'), betes: flux('betes'), village: flux('village'), heros: flux('heros'), force: flux('force'), vie: flux('vie') };
     const entre = (f, a, b) => a + Math.floor(f() * (b - a + 1));
     const tirer = (xs, f) => (xs.length ? xs[Math.floor(f() * xs.length)] : null);
@@ -106,7 +138,11 @@
     const niveauDe = (xp) => { let L = 1; while (L < CA.niveau_max && TOT[L + 1] <= xp) L++; return L; };
     // métiers de la partie (D-177 (4), D-209 (3)) et métier concerné par chaque besoin
     const METIERS = R.metiers_partie[o.metiersPartie].filter((m) => !(R.metiers_partie.apres_quete_forgeron.includes(m) && o.forgeron === 'pas-faite'));
-    const metierDe = (b) => (b === R.metier_concerne.option_besoin ? o.metierB4 : R.metier_concerne.par_besoin[b]) || null;
+    // métier de l'action faite (D-318 (5)) : B2 seulement si la meute est tuée (D-319 (16)) ; d : la demande réglée
+    const metierDe = (b, d) => {
+      if (R.metier_concerne.seulement_si[b] === 'meute-tuee' && !(d && d.action === 'meute')) return null;
+      return (b === R.metier_concerne.option_besoin ? o.metierB4 : R.metier_concerne.par_besoin[b]) || null;
+    };
 
     // --- saisons, glissement, heures ------------------------------------------------------------------------------
     const ORDRE = R.saisons.ordre;
@@ -150,7 +186,8 @@
       loup: o.agneau === 'faite-2',
       meteo: null, apresTempete: 0,
       villageois: donnees.villageois.map((v) => Object.assign({ titre: false }, v, { roleDepart: v.role, etat: 'valide', gueritA: null,
-        remede: false, tache: null, lieu: 'maisons', activite: '', travaille: false, remplace: null, depuis: null })),
+        remede: false, tache: null, lieu: 'maisons', activite: '', travaille: false, remplace: null, depuis: null,
+        cle: v.id, age: entre(fluxDe('age', v.id), HZ.ages_adultes.suivis[0], HZ.ages_adultes.suivis[1]) })),
       autres: [], numHab: 0, numV: 0, nomsPris: new Set(),
       successeurs: {}, reprises: [], postes: [], arrivees: [], registre: [], apres: [], annonces: [],
       demandes: [], toutesDemandes: [], numDemande: 0, numTache: 0,
@@ -160,15 +197,19 @@
       etat: o.etat, etape: o.etat === 'amical' ? R.mefiance.etapes_pct.length - 1 : 0,
       services: 0, servicesApresAmical: 0, fautes: {}, mefianceAuRetour: [],
       heros: { mode: o.heros, present: o.presence !== 'parti', demande: null, reste: 0, compteur: { reglees: 0, urgence: 0 },
-        or: 0, objets: {}, absence: null, resume: null, xp: o.xpDepart, xpBesoins: 0, metiers: {}, rienAuMetier: 0 },
-      troupeau: R.troupeau.depart, sansBetes: false, silenceSoir: false, derniersRodeurs: null,
+        or: 0, objets: {}, absence: null, resume: null, xp: o.xpDepart, xpBesoins: 0, metiers: {}, rienAuMetier: 0,
+        // T-0258 : compteur par métier (demandes, dont en urgence) et raisons de « rien au métier »
+        metiersDemandes: {}, sansMetier: { absent: {}, garde: 0, aucun: {} } },
+      troupeau: R.troupeau.depart, sansBetes: false, silenceSoir: false, derniersRodeurs: null, meuteRode: null,
       journal: [], historique: [], finie: false,
       stats: { demandes: 0, regleesHeros: 0, personne: 0, acceptees: 0, echecsHeros: 0, taches: 0, reussites: 0, echecs: 0,
         blesses: 0, malades: 0, morts: 0, mortsSuivis: 0, mortsNommes: 0, mortsEnfants: 0, remplacements: 0, agents: 0,
         naissances: 0, arrivants: 0, plancher: 0, petits: 0, anniversaires: 0, devenusAdultes: 0, remontees: 0,
         departs: 0, retours: 0, heuresAbsent: 0, betesPerdues: 0, crises: 0, criseParBesoin: {}, max: {}, heuresUrgence: {},
         rumeurs: 0, tempetes: 0, meutes: 0, rodeurs: 0, humeurMin: R.humeur.depart, habitantsMin: 0, habitantsMax: 0,
-        niveauxGagnes: 0, prolongations: 0 },
+        niveauxGagnes: 0, prolongations: 0,
+        mortsHasard: 0, mortsHasardSuivis: 0, mortsHasardNommes: 0, mortsHasardEnfants: 0, mortsHasardAnciens: 0,
+        mortsHasardAccidents: 0, mortsHasardParSaison: {} },
     };
     for (const b of BES) { p.stats.max[b] = p.besoins[b]; p.stats.heuresUrgence[b] = 0; p.stats.criseParBesoin[b] = 0; }
 
@@ -248,9 +289,14 @@
     function nouvelHabitant(adulte, genre, age) {
       const u = { id: 'h' + (++p.numHab), adulte, genre, age: adulte ? null : age, prochainAnniv: null, etat: 'valide',
         gueritA: null, remede: false, malade: false, successeurDe: null, nom: null, ne: null };
+      u.cle = u.id;   // clé fixe (l'identifiant change si l'habitant devient suivi) : suites propres à l'habitant (T-0258)
       p.autres.push(u);
       return u;
     }
+    // âge d'un adulte (T-0258 ; plage du tableau, ligne « Morts possibles ») : tiré une fois, sur sa suite propre
+    const ageAdulte = (u, plage) => { u.age = entre(fluxDe('age', u.cle), plage[0], plage[1]); return u; };
+    // classe d'âge pour le poids des morts au hasard : bébé, enfant (jusqu'à l'âge adulte), adulte, ancien
+    const classeAge = (x) => (enfant(x) ? (x.age < BB ? 'bebe' : 'enfant') : x.age >= HZ.ancien_a ? 'ancien' : 'adulte');
     function fait(cat, texte) { if (p.heros.absence) p.heros.absence.faits.push({ cat, texte }); }
     function registre(type, texte) { p.registre.push({ t: p.t, quand: quandCourt(p.t), type, texte }); }
 
@@ -347,7 +393,7 @@
     const paysanLibre = () => p.villageois.filter((v) => v.role === 'paysan' && vivant(v) && !v.successeurDe).sort((a, z) => valide(z) - valide(a))[0] || null;
     function arrivantAdulte(sansNom) {   // un adulte arrive par la route (compté aussitôt parmi les habitants)
       const n = sansNom ? { nom: null, genre: rnd.village() < 0.5 ? 'f' : 'm' } : prochainNom(null);
-      const u = nouvelHabitant(true, n.genre, null);
+      const u = ageAdulte(nouvelHabitant(true, n.genre, null), HZ.ages_adultes.arrivants);
       u.nom = n.nom; u.arrivant = true;
       p.stats.arrivants++;
       fait('arrivant', u.nom || 'un arrivant');
@@ -402,7 +448,8 @@
       }
     }
     function reprendre(role, mort, depuis) {   // PNJ nommé : son successeur (ou, selon l'option, le plus apte ou un arrivant) prend le rôle ; depuis : heure de la mort
-      const opt = o.remplacementNomme;
+      // le chef : son successeur prévu seulement, quelle que soit l'option (D-318 (8), D-319 (18) ; T-0258)
+      const opt = role === 'chef' && R.remplacement_nomme.chef_successeur_seulement ? 'successeur' : o.remplacementNomme;
       let s = null;
       if (opt === 'successeur') {
         s = p.successeurs[role];
@@ -438,8 +485,18 @@
       if (suivi) p.stats.mortsSuivis++;
       if (suivi && ROLES[x.role].nomme) p.stats.mortsNommes++;
       if (enfant(x)) p.stats.mortsEnfants++;
+      if (cause && cause.hasard) {   // T-0258 : mort au hasard (D-318 (9), D-319 (14))
+        const S = p.stats, sa = calEffectif().saison;
+        S.mortsHasard++;
+        if (suivi) S.mortsHasardSuivis++;
+        if (suivi && ROLES[x.role].nomme) S.mortsHasardNommes++;
+        if (enfant(x)) S.mortsHasardEnfants++;
+        if (cause.classe === 'ancien') S.mortsHasardAnciens++;
+        if (cause.hasard === 'accident') S.mortsHasardAccidents++;
+        S.mortsHasardParSaison[sa] = (S.mortsHasardParSaison[sa] || 0) + 1;
+      }
       humeur(R.humeur_baisses.par_mort);
-      registre('mort', `${nom} meurt${cause && cause.besoin ? ` (${INFO[cause.besoin].nom.toLowerCase()})` : ''}`);
+      registre('mort', `${nom} meurt${cause && cause.besoin ? ` (${INFO[cause.besoin].nom.toLowerCase()})` : cause && cause.hasard ? ` (${cause.hasard === 'accident' ? 'accident' : 'maladie'}, au hasard)` : ''}`);
       fait('mort', nom);
       const mort = { nom: suivi ? qui(x) : nom, id: suivi ? x.id : null };
       if (x.successeurDe) {
@@ -685,7 +742,14 @@
       h.reste = R.heros_tout.duree_h[b]; h.demande = d.id;
       p.stats.acceptees++;
       if (o.mortLiee === 'des-acceptation') ouvrirFaute(d);
-      noter(`le héros accepte d'aider ${d.nomDemandeur} : ${d.quoi}. Il pense avoir fini vers le ${quandCourt(p.t + h.reste)} (il a ${R.delais.accomplir_h} h au plus).`, 'heros', true);
+      let quoi = d.quoi;
+      if (b === 'B2') {   // T-0258 : « tuer la meute ou garder l'enclos une nuit » (§ 3) ; choix de la simulation
+        d.action = o.b2Heros === 'meute' || (o.b2Heros === 'dernier-tirage' && p.meuteRode !== null) ? 'meute' : 'enclos';
+        quoi = d.action === 'meute'
+          ? `tuer la meute${o.b2Heros === 'dernier-tirage' ? ` (elle rôde depuis le ${quandCourt(p.meuteRode)})` : ' (option)'}`
+          : `garder l'enclos une nuit${o.b2Heros === 'dernier-tirage' ? ' (aucune meute au dernier tirage)' : ' (option)'}`;
+      }
+      noter(`le héros accepte d'aider ${d.nomDemandeur} : ${quoi}. Il pense avoir fini vers le ${quandCourt(p.t + h.reste)} (il a ${R.delais.accomplir_h} h au plus).`, 'heros', true);
     }
     function finirHeros() {
       const h = p.heros, d = p.demandes.find((y) => y.id === h.demande);
@@ -721,15 +785,21 @@
       const X = R.experience, urg = d.urgenteAcceptation, nivAvant = niveauDe(h.xp);
       const gain = urg ? X.personnage_urgence : X.personnage;
       h.xp += gain; h.xpBesoins += gain;
-      const m = metierDe(b);
+      // métier de l'action faite (D-318 (5), D-319 (16), D-320 (8)) ; compteur par métier et par raison (T-0258)
+      const m = metierDe(b, d), sm = h.sansMetier;
       let txtMetier = '';
       if (m && METIERS.includes(m)) {
         const gm = urg ? X.metier_urgence : X.metier;
         h.metiers[m] = (h.metiers[m] || 0) + gm;
+        const k = h.metiersDemandes[m] = h.metiersDemandes[m] || { demandes: 0, urgence: 0 };
+        k.demandes++; if (urg) k.urgence++;
         txtMetier = ` et ${donnees.metiers[m]} +${gm}`;
-      } else if (m) { h.rienAuMetier++; txtMetier = `, rien au métier (pas de ${donnees.metiers[m]} dans cette partie)`; }
+      } else if (m) { h.rienAuMetier++; sm.absent[m] = (sm.absent[m] || 0) + 1; txtMetier = `, rien au métier (pas de ${donnees.metiers[m]} dans cette partie)`; }
+      else if (d.action === 'enclos') { sm.garde++; txtMetier = ', rien au métier (garde de l\'enclos : l\'expérience du personnage seulement)'; }
+      else sm.aucun[b] = (sm.aucun[b] || 0) + 1;
       const niv = niveauDe(h.xp);
-      noter(`${INFO[b].heros_fait} : ${INFO[b].le} baisse de ${-R.demande_reglee.baisse} (${arr(av)} → ${arr(ap)}). Expérience${urg ? ' (demande acceptée en urgence)' : ''} : personnage +${gain} (${points(h.xp)}, niveau ${niv})${txtMetier}${objet ? ' ; ' + objet : ''}${R.or[b] ? ' et ' + pl(R.or[b], 'pièce') : ''} ; ${rep}.${soins.length ? ' Remède donné à ' + liste(soins) + '.' : ''}`, 'heros', true);
+      const fait = d.action ? INFO[b]['heros_fait_' + d.action] : INFO[b].heros_fait;
+      noter(`${fait} : ${INFO[b].le} baisse de ${-R.demande_reglee.baisse} (${arr(av)} → ${arr(ap)}). Expérience${urg ? ' (demande acceptée en urgence)' : ''} : personnage +${gain} (${points(h.xp)}, niveau ${niv})${txtMetier}${objet ? ' ; ' + objet : ''}${R.or[b] ? ' et ' + pl(R.or[b], 'pièce') : ''} ; ${rep}.${soins.length ? ' Remède donné à ' + liste(soins) + '.' : ''}`, 'heros', true);
       if (niv > nivAvant) {
         p.stats.niveauxGagnes += niv - nivAvant;
         noter(`le héros passe ${niv - nivAvant > 1 ? `du niveau ${nivAvant} au niveau ${niv}` : `au niveau ${niv}`} (${points(h.xp)})${niv < CA.niveau_max ? ` ; le niveau ${niv + 1} demande ${mil(TOT[niv + 1])} points` : ''}.`, 'heros', true);
@@ -835,12 +905,13 @@
     }
     function meute(f, quand) {
       const n = entre(f, R.meute.taille[0], R.meute.taille[1]);
-      p.stats.meutes++;
+      p.stats.meutes++; p.meuteRode = p.t;   // la meute du dernier tirage (ou forcée) : celle que le héros peut tuer (B2)
       const ef = [];
       for (const b in R.meute.hausse) { const r = changer(b, R.meute.hausse[b]); if (!p.fige[b]) ef.push(`${INFO[b].nom.toLowerCase()} +${R.meute.hausse[b]} (${arr(r[1])})`); }
       noter(`${quand}une meute de ${n} loups rôde autour du hameau (${ef.join(', ')}).`, 'betes', true);
     }
     function coucher() {
+      p.meuteRode = null;   // nouveau tirage : la meute de la veille est partie
       if (rnd.betes() < R.meute.chance_pct / 100) meute(rnd.betes, 'au coucher du soleil, ');
       if (rnd.betes() < R.rodeurs.chance_pct / 100) {
         const n = entre(rnd.betes, R.rodeurs.nombre[0], R.rodeurs.nombre[1]);
@@ -884,6 +955,34 @@
       for (const x of morts) tuer(x, { besoin: b });
       vider();
     }
+    // --- morts au hasard (D-318 (9), D-319 (14) ; agente exclue : D-320 (8) ; chiffres : T-0258) ----------------------------
+    const poidsSaison = (s) => (s === HIVER ? o.poidsHiver : 1);
+    // habitants tirés : tous les vivants comptés (l'agente n'est pas une habitante) ; enfants sauf l'option « jamais en danger »
+    const exposes = () => p.villageois.filter((v) => vivant(v) && v.role !== 'agente')
+      .concat(p.autres.filter((u) => vivant(u) && !(enfant(u) && o.enfants === 'jamais')));
+    function mortsAuHasard() {
+      if (o.morts !== 'oui' || o.hasard !== 'oui') return;
+      const ps = glisse(calEffectif(), poidsSaison), jour = jourDe(p.t), morts = [];
+      for (const u of exposes()) {
+        const f = fluxDe('hasard', u.cle, jour), r1 = f(), r2 = f(), cl = classeAge(u);
+        if (r1 >= o.tauxHasard / 100 * POIDS_AGE[cl] * ps) continue;
+        // un enfant ou un bébé ne meurt que de maladie (D-319 (14), D-307 (2)) ; option écartée « comme les adultes »
+        const cause = enfant(u) && o.enfants !== 'comme-adultes' ? 'maladie' : r2 < HZ.accident_part ? 'accident' : 'maladie';
+        morts.push({ u, cause, cl });
+      }
+      for (const { u, cause, cl } of morts) {
+        if (!vivant(u)) continue;
+        noter(`${nomDe(u)}${enfant(u) ? '' : `, ${u.age} ans,`} meurt ${cause === 'accident' ? 'd\'un accident' : 'de maladie'} : mort au hasard, sans lien avec un besoin (la méfiance ne change pas).`, 'mort', true);
+        tuer(u, { hasard: cause, classe: cl });
+        vider();
+      }
+    }
+    // morts au hasard attendues avec la population du moment (pour régler les chiffres dans la page)
+    function attenduHasard() {
+      const somme = exposes().reduce((a, u) => a + POIDS_AGE[classeAge(u)], 0), parJour = o.tauxHasard / 100 * somme;
+      return { sommePoids: somme, parSaison: parJour * R.saisons.jours, parSaisonHiver: parJour * R.saisons.jours * o.poidsHiver,
+        parJourMaintenant: parJour * glisse(calEffectif(), poidsSaison), actif: o.morts === 'oui' && o.hasard === 'oui' };
+    }
     function rumeur() {
       if (p.silenceSoir) { p.silenceSoir = false; noter('ce soir, l\'auberge se tait : le hameau pleure son mort.', 'rumeur', false); return; }
       if (p.annonces.length) { noter(`à l'auberge, on fête la naissance ${liste(p.annonces.splice(0).map((a) => (a === 'une fille' ? 'd\'une fille' : 'd\'un garçon')))}.`, 'rumeur', false); }
@@ -919,6 +1018,7 @@
       if (x.h === x.aube) lever();
       if (x.h === x.crep) coucher();
       if (x.h === x.hor.aubD) rumeur();
+      if (x.h === HZ.heure) mortsAuHasard();
       // paliers : urgence, prix, crises, humeur
       for (const b of BES) {
         if (p.fige[b]) continue;
@@ -1061,28 +1161,32 @@
     }
     function resumeFin() {
       const s = p.stats;
-      return `${pl(s.demandes, 'demande')} d'aide (${pl(s.regleesHeros, 'réglée')} par le héros, ${s.personne} sans réponse) ; ${pl(s.taches, 'tâche')} de la conscience (${pl(s.reussites, 'réussie')}, ${pl(s.echecs, 'échouée')}) ; ${pl(s.blesses, 'blessé')}, ${pl(s.malades, 'enfant malade', 'enfants malades')}, ${pl(s.morts, 'mort')} (${pl(s.mortsNommes, 'PNJ nommé', 'PNJ nommés')}), ${pl(s.remplacements, 'remplacement')} ; ${pl(s.naissances, 'naissance')}, ${pl(s.arrivants, 'arrivant')} ; ${pl(habitants(), 'habitant')} ; ${pl(s.betesPerdues, 'bête perdue', 'bêtes perdues')}, ${pl(s.petits, 'petit')} ; ${pl(s.crises, 'crise')} ; humeur ${arr(p.humeur)} ; méfiance ${mefianceTexte()}${s.remontees ? ` (remontée ${s.remontees} fois)` : ''} ; expérience du personnage ${points(p.heros.xp)}, niveau ${niveauDe(p.heros.xp)}${Object.keys(p.heros.metiers).length ? ` (${Object.entries(p.heros.metiers).map(([m, x]) => `${donnees.metiers[m]} +${x}`).join(', ')})` : ''}.`;
+      return `${pl(s.demandes, 'demande')} d'aide (${pl(s.regleesHeros, 'réglée')} par le héros, ${s.personne} sans réponse) ; ${pl(s.taches, 'tâche')} de la conscience (${pl(s.reussites, 'réussie')}, ${pl(s.echecs, 'échouée')}) ; ${pl(s.blesses, 'blessé')}, ${pl(s.malades, 'enfant malade', 'enfants malades')}, ${pl(s.morts, 'mort')} (${pl(s.mortsNommes, 'PNJ nommé', 'PNJ nommés')}${s.mortsHasard ? ` ; ${s.mortsHasard} au hasard` : ''}), ${pl(s.remplacements, 'remplacement')} ; ${pl(s.naissances, 'naissance')}, ${pl(s.arrivants, 'arrivant')} ; ${pl(habitants(), 'habitant')} ; ${pl(s.betesPerdues, 'bête perdue', 'bêtes perdues')}, ${pl(s.petits, 'petit')} ; ${pl(s.crises, 'crise')} ; humeur ${arr(p.humeur)} ; méfiance ${mefianceTexte()}${s.remontees ? ` (remontée ${s.remontees} fois)` : ''} ; expérience du personnage ${points(p.heros.xp)}, niveau ${niveauDe(p.heros.xp)}${Object.keys(p.heros.metiers).length ? ` (${Object.entries(p.heros.metiers).map(([m, x]) => `${donnees.metiers[m]} +${x}`).join(', ')})` : ''}.`;
     }
 
     // --- départ ------------------------------------------------------------------------------------------------------
     {
       const K = R.composition;
-      for (let i = 0; i < K.adultes_non_suivis; i++) nouvelHabitant(true, rnd.vie() < 0.5 ? 'f' : 'm', null);
+      for (let i = 0; i < K.adultes_non_suivis; i++) ageAdulte(nouvelHabitant(true, rnd.vie() < 0.5 ? 'f' : 'm', null), HZ.ages_adultes.non_suivis);
       for (let i = 0; i < K.enfants; i++) {
         const age = entre(rnd.vie, K.age_enfants[0], K.age_enfants[1]);
         const u = nouvelHabitant(false, rnd.vie() < 0.5 ? 'f' : 'm', age);
         u.prochainAnniv = premierAnniv(age);
       }
-      if (o.remplacementNomme === 'successeur') {   // les 4 successeurs désignés, parmi les adultes non suivis
-        for (const r of NOMMES) {
+      // les 4 successeurs désignés, parmi les adultes non suivis ; celui du chef, prévu, quelle que soit l'option (D-318 (8))
+      const avecSucc = (r) => o.remplacementNomme === 'successeur' || (r === 'chef' && R.remplacement_nomme.chef_successeur_seulement);
+      {
+        for (const r of NOMMES.filter(avecSucc)) {
           const u = adultesLibres().find((y) => y.genre === SUCC[r].genre) || adultesLibres()[0];
+          if (!u) { designer(r); continue; }   // aucun adulte libre (montage d'essai) : paysan, sinon arrivant (§ 6)
           u.successeurDe = r; u.nom = prochainNom(u.genre).nom; p.successeurs[r] = u;
         }
       }
       if (!p.heros.present) { p.heros.absence = photo(); p.stats.departs++; }
       const x = contexte();
       const fig = Object.keys(p.fige).filter((b) => p.fige[b]).map((b) => INFO[b].nom.toLowerCase());
-      const succ = o.remplacementNomme === 'successeur' ? ` Successeurs désignés : ${liste(NOMMES.map((r) => `${p.successeurs[r].nom} (${titreSucc(p.successeurs[r], r)})`))}.` : '';
+      const lesSucc = NOMMES.filter((r) => p.successeurs[r]);
+      const succ = lesSucc.length ? ` Successeur${lesSucc.length > 1 ? 's' : ''} désigné${lesSucc.length > 1 ? 's' : ''} : ${liste(lesSucc.map((r) => `${p.successeurs[r].nom} (${titreSucc(p.successeurs[r], r)})`))}.` : '';
       noter(`début de la partie au Hameau de la Brume (${calEffectif().saison}, jour ${calEffectif().jour}${o.modeSaison === 'figee' ? ', saison figée' : ''}) pour ${o.journees} journée${o.journees > 1 ? 's' : ''}. Graine ${o.graine}. Héros : ${MODES[p.heros.mode]}, ${p.heros.present ? 'au hameau' : 'parti'}. Hameau ${{ mefiant: 'méfiant', amical: '« Amical »', hostile: 'hostile', apeure: 'apeuré' }[p.etat]} ; ${habitants()} habitants (${p.villageois.filter((v) => v.role !== 'agente').length} suivis, ${p.autres.filter((u) => u.adulte).length} adultes non suivis, ${p.autres.filter((u) => !u.adulte).length} enfants ; l'agente du Cartel n'est pas comptée).${succ}${fig.length ? ' Figé (quête d\'apprentissage pas encore faite) : ' + fig.join(', ') + '.' : ''}${p.loup ? ' Le loup garde le troupeau (issue 2 de « L\'Agneau et le Loup »).' : ''} Expérience du personnage : ${points(p.heros.xp)} (niveau ${niveauDe(p.heros.xp)}) ; métiers de la partie : ${METIERS.length ? liste(METIERS.map((m) => donnees.metiers[m])) : 'aucun'}.`, 'info', true);
       tirerMeteo(x, false);
       if (p.meteo.type !== 'clair' && p.meteo.type !== 'tempete') noter(`${METEO[p.meteo.type]} pour ${p.meteo.reste} h.`, 'meteo', false);
@@ -1118,7 +1222,9 @@
         population: { habitants: habitants(), suivis: p.villageois.filter((v) => vivant(v) && v.role !== 'agente').length, adultes: ad.length,
           enfants: en.filter((u) => u.age >= BB).length, bebes: en.filter((u) => u.age < BB).length,
           blesses: p.autres.filter((u) => u.etat === 'blesse' && !u.malade).length, malades: p.autres.filter((u) => u.etat === 'blesse' && u.malade).length,
-          min: R.habitants.min, max: R.habitants.max, depart: R.habitants.depart, chef: (p.villageois.find((v) => v.role === 'chef' && vivant(v)) || {}).nom || null },
+          min: R.habitants.min, max: R.habitants.max, depart: R.habitants.depart, chef: (p.villageois.find((v) => v.role === 'chef' && vivant(v)) || {}).nom || null,
+          anciens: exposes().filter((u) => classeAge(u) === 'ancien').length },
+        hasard: attenduHasard(),
         registre: p.registre.slice(),
         heros: { mode: p.heros.mode, present: p.heros.present, occupe: p.heros.demande !== null, demande: p.heros.demande, reste: p.heros.reste,
           finTexte: p.heros.demande !== null ? (p.heros.present ? quandCourt(p.t + p.heros.reste) : 'à son retour') : null,
@@ -1129,7 +1235,8 @@
             return { xp, depart: o.xpDepart, besoins: p.heros.xpBesoins, niveau: niv, niveauMax: CA.niveau_max, debutNiveau: TOT[niv],
               suivant: max ? null : TOT[niv + 1], part: max ? CA.bloque_pct / 100 : (xp - TOT[niv]) / (TOT[niv + 1] - TOT[niv]),
               niveauxGagnes: p.stats.niveauxGagnes, metiers: Object.assign({}, p.heros.metiers), rienAuMetier: p.heros.rienAuMetier,
-              metiersPartie: METIERS.slice() };
+              metiersPartie: METIERS.slice(), metiersDemandes: JSON.parse(JSON.stringify(p.heros.metiersDemandes)),
+              sansMetier: JSON.parse(JSON.stringify(p.heros.sansMetier)) };
           })() },
         hameau: { etat: p.etat, mefiance: p.etat === 'mefiant' || p.etat === 'amical' ? EP[p.etape] : null, mefianceTexte: mefianceTexte(),
           etape: p.etape, etapes: EP.length - 1, amicalPrix: R.amical.prix_pct, services: p.services, servicesApresAmical: p.servicesApresAmical,

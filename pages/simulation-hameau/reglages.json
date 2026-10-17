@@ -1,9 +1,9 @@
 {
- "titre": "Réglages de la simulation du hameau (T-0202, T-0206, T-0227)",
- "source": ".equipe/prototype/quetes-des-besoins.md, § 8 (T-0201, mis à jour avec D-306 par T-0205, puis avec D-307 et l'expérience, D-312, D-315, par T-0227 ; valeurs « prop. » encore à valider, D-295)",
+ "titre": "Réglages de la simulation du hameau (T-0202, T-0206, T-0227, T-0258)",
+ "source": ".equipe/prototype/quetes-des-besoins.md, § 8 (T-0201, mis à jour avec D-306 par T-0205, puis avec D-307 et l'expérience, D-312, D-315, par T-0227, puis avec D-318, D-319 et D-320 (8) par T-0258 ; valeurs « prop. » encore à valider, D-295)",
  "note": "« prop. » : proposition du rédacteur de la règle, à valider ; les autres lignes citent un document ou une décision. Noms des villageois : provisoires (T-0202, T-0206), sauf les PNJ nommés désignés par leur titre.",
  "nb_reglages": 109,
- "nb_prop": 95,
+ "nb_prop": 93,
  "groupes": [
   {
    "nom": "Temps et saisons",
@@ -756,7 +756,7 @@
      "reglage": "Demandeur",
      "unite": "rôle",
      "texte": "B1 chasseur, B2 éleveur, B3 bûcheron, B4 forgeron, B5 guetteur, B6 villageois valide tiré au sort ; jamais le chef (ni son successeur), l'agente ni un enfant",
-     "source": "prop. (chef : D-150 ; agente : choix de T-0202, D-195)",
+     "source": "prop. (chef : D-150 ; agente : D-318 (10), choix de T-0202, D-195)",
      "id": "demandeur",
      "prop": true,
      "jeu": false,
@@ -989,7 +989,7 @@
      "reglage": "Quand elle agit",
      "unite": "—",
      "texte": "délai passé ; besoin à 100 ; besoin à 80 si aucune demande ne peut s'ouvrir (héros absent compris) ; tant que la demande acceptée court, elle laisse ce besoin au héros, même à 100 (pertes de crise quand même)",
-     "source": "prop. (« laisse au héros » : choix de T-0202 ; absent : D-306 (2))",
+     "source": "prop. (« laisse au héros » : D-318 (10), choix de T-0202 ; absent : D-306 (2))",
      "id": "conscience_quand",
      "prop": true,
      "jeu": false,
@@ -1067,7 +1067,7 @@
      "reglage": "Pas envoyés",
      "unite": "PNJ",
      "texte": "chef, aubergiste, agente du Cartel, enfants (défaut) ; options : aucun PNJ nommé envoyé (comme avant D-306) ; chef et aubergiste aussi envoyés, après les paysans",
-     "source": "prop. (agente : *IA Collective* § 1, D-195)",
+     "source": "prop. (agente : D-318 (7), *IA Collective* § 1, D-195)",
      "id": "pas_envoyes",
      "prop": true,
      "jeu": false,
@@ -1189,7 +1189,7 @@
     {
      "reglage": "Troupeau de départ ; bête perdue sur échec B2",
      "unite": "bêtes",
-     "texte": "12 ; 1 (à 0 bête, B2 ne monte plus ; simulation : B2 figé, ni crise, ni demande, ni garde, choix de T-0202)",
+     "texte": "12 ; 1 (à 0 bête, B2 ne monte plus ; B2 figé, ni crise, ni demande, ni garde : choix de T-0202, devenu règle, D-318 (10))",
      "source": "prop. (nombre de vaches à définir, D-278 (3))",
      "id": "troupeau",
      "prop": true,
@@ -1308,8 +1308,8 @@
     {
      "reglage": "Morts possibles",
      "unite": "—",
-     "texte": "oui, PNJ nommés compris, à tout moment (défaut) ; option : non (blessés seulement, pour comparer)",
-     "source": "D-306 (5) ; option prop.",
+     "texte": "oui, PNJ nommés compris, à tout moment (défaut) ; option : non (blessés seulement, pour comparer) ; aussi des morts au hasard (accidents, maladies), sans lien avec un besoin : les adultes, les enfants seulement de maladie ; un tirage rare chaque jour, plus fort selon l'âge et la saison (hiver, le Grand Gel) ; jamais l'agente du Cartel ; **chiffres de départ** proposés par la simulation du hameau (T-0258), puis réglés en jouant : chaque jour à 12 h, chaque habitant a **0,03 %** de chances de mourir, multipliées par le **poids de son âge** (bébé de moins de 2 ans 0,5 ; enfant de 2 à 15 ans 0,5 ; adulte de 16 à 54 ans 1 ; ancien de 55 ans et plus 5) et par le **poids de l'hiver** (2 au Grand Gel, glissement compris ; 1 sinon) ; cause : maladie pour un enfant ou un bébé, accident ou maladie (une chance sur deux) pour un adulte ; âge des adultes, tiré au départ : 16 à 65 ans (non suivis), 18 à 50 ans (suivis), 18 à 45 ans (arrivants) ; mesure sur 1 000 parties d'une année, hameau de 80 à 87 habitants : 4,8 morts au hasard par an (Dégel 1,0 ; Brûlure 1,0 ; Moisson 1,1 ; Grand Gel 1,8), dont 11 % d'enfants (0,5 par an) ; sur 1 000 parties de 15 journées : 0,8 par partie, aucune dans 48 % des parties ; option : pas de morts au hasard (pour comparer)",
+     "source": "D-306 (5) ; hasard : D-318 (9), D-319 (14) ; agente : D-320 (8) (choix du Chef) ; chiffres et option : prop. (T-0258 ; D-320 (8))",
      "id": "morts_possibles",
      "prop": true,
      "jeu": false,
@@ -1319,21 +1319,57 @@
        "non"
       ],
       "defaut": "oui",
-      "pnj_nommes_compris": true
+      "pnj_nommes_compris": true,
+      "hasard": {
+       "options": [
+        "oui",
+        "non"
+       ],
+       "defaut": "oui",
+       "heure": 12,
+       "taux_pct_j": 0.03,
+       "poids_age": {
+        "bebe": 0.5,
+        "enfant": 0.5,
+        "adulte": 1,
+        "ancien": 5
+       },
+       "ancien_a": 55,
+       "poids_saison": {
+        "Grand Gel": 2
+       },
+       "accident_part": 0.5,
+       "enfants": "maladie",
+       "agente": false,
+       "ages_adultes": {
+        "non_suivis": [
+         16,
+         65
+        ],
+        "suivis": [
+         18,
+         50
+        ],
+        "arrivants": [
+         18,
+         45
+        ]
+       }
+      }
      }
     },
     {
      "reglage": "Victime d'une perte de crise (B3, B5)",
      "unite": "—",
-     "texte": "tirée parmi les adultes présents non blessés, PNJ nommés et agente compris ; enfants : ligne « Enfants »",
-     "source": "D-306 (5) ; tirage prop.",
+     "texte": "tirée parmi les adultes présents non blessés, PNJ nommés compris, jamais l'agente du Cartel ; enfants : ligne « Enfants »",
+     "source": "D-306 (5) ; agente : D-318 (7) ; tirage prop.",
      "id": "victime_crise",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "adultes_presents_non_blesses": true,
       "pnj_nommes_compris": true,
-      "agente_comprise": true
+      "agente_comprise": false
      }
     },
     {
@@ -1377,8 +1413,8 @@
     {
      "reglage": "Remplacement, PNJ nommé (chef, forgeron, éleveur, aubergiste)",
      "unite": "h",
-     "texte": "successeur désigné au lever suivant (24 au plus) ; chef : aussitôt ; nouveau successeur : ligne suivante ; options : la conscience choisit le plus apte ; toujours un arrivant",
-     "source": "D-306 (5) ; détail prop.",
+     "texte": "successeur désigné au lever suivant (24 au plus) ; chef : aussitôt, par son successeur prévu (MetaHuman avec sa fiche) ; nouveau successeur : ligne suivante ; options : la conscience choisit le plus apte ; toujours un arrivant (plus pour le chef : son successeur prévu seulement)",
+     "source": "D-306 (5) ; chef : D-318 (8), D-319 (18) ; détail prop.",
      "id": "remplacement_nomme",
      "prop": true,
      "jeu": false,
@@ -1397,7 +1433,8 @@
        "plus-apte",
        "arrivant"
       ],
-      "defaut": "successeur"
+      "defaut": "successeur",
+      "chef_successeur_seulement": true
      }
     },
     {
@@ -1439,18 +1476,19 @@
     {
      "reglage": "Agente du Cartel morte",
      "unite": "h",
-     "texte": "un autre agent arrive en 48 et reprend son rôle (Choix B, nourriture frelatée, marché noir) ; option : elle n'est jamais victime",
-     "source": "prop. (D-195 ; *Topographie* POI A, § 5)",
+     "texte": "jamais victime des Besoins (défaut), ni du hasard (D-320 (8)) ; tuée par le héros : repoussé au jeu complet, rien dans le prototype, pas d'autre agent ; piste pour le jeu complet : un autre agent arrive en 48 et reprend son rôle (Choix B, nourriture frelatée, marché noir) ; option écartée par D-318 (7), gardée pour comparer : victime possible des Besoins, remplacée de même",
+     "source": "D-318 (7) ; hasard : D-320 (8) ; tuée par le héros : D-319 (15) ; remplacement : prop. (D-195 ; *Topographie* POI A, § 5)",
      "id": "agente_morte",
      "prop": true,
      "jeu": false,
      "valeurs": {
       "autre_agent_h": 48,
       "options": [
-       "remplacee",
-       "jamais-victime"
+       "jamais-victime",
+       "remplacee"
       ],
-      "defaut": "remplacee"
+      "defaut": "jamais-victime",
+      "hasard": false
      }
     }
    ]
@@ -1548,8 +1586,8 @@
     {
      "reglage": "Enfants",
      "unite": "—",
-     "texte": "ni travail, ni tâche, ni demande ; suivent un parent le jour, maison le soir et la nuit ; jamais tirés comme victimes d'une perte de crise (B3, B5) ni envoyés au combat ; **ne meurent que de maladie, après une crise du froid** : à la crise de B3, un enfant tombe malade (25 %), mort possible à la crise de B6 ; options écartées par D-307 (2), gardées pour comparer : jamais en danger ; comme les adultes",
-     "source": "D-307 (2) ; D-306 (5) (« tout le monde ») ; 25 % prop.",
+     "texte": "ni travail, ni tâche, ni demande ; suivent un parent le jour, maison le soir et la nuit ; jamais tirés comme victimes d'une perte de crise (B3, B5) ni envoyés au combat ; **ne meurent que de maladie** : après une crise du froid (à la crise de B3, un enfant tombe malade (25 %), mort possible à la crise de B6), ou au hasard (ligne « Morts possibles ») ; options écartées par D-307 (2), gardées pour comparer : jamais en danger ; comme les adultes",
+     "source": "D-307 (2), D-319 (14) ; D-306 (5) (« tout le monde ») ; 25 % prop.",
      "id": "enfants",
      "prop": true,
      "jeu": false,
@@ -1723,9 +1761,9 @@
      "reglage": "Expérience par demande réglée",
      "unite": "pts",
      "texte": "personnage : 50 ; 100 si acceptée en urgence (à 80 ou plus) ; plus le métier concerné (ligne suivante), s'il existe dans la partie : 40 ; 80 en urgence",
-     "source": "D-307 (4) ; personnage : D-312 (1), mêmes gains partout (D-313 (3)), `experience-personnage.md` § 7.4 ; métier : prop. (`experience-personnage.md` § 9.7, point 7 : une unité de travail, § 9.5)",
+     "source": "D-307 (4) ; personnage : D-312 (1), mêmes gains partout (D-313 (3)), `experience-personnage.md` § 7.4 ; métier : D-318 (6) (une unité de travail, 40 points par unité, D-318 (4))",
      "id": "experience",
-     "prop": true,
+     "prop": false,
      "jeu": false,
      "valeurs": {
       "personnage": 50,
@@ -1738,8 +1776,8 @@
     {
      "reglage": "Métier concerné par une demande",
      "unite": "—",
-     "texte": "B1 et B2 : Chasse & Traque ; B4 : Minage (défaut ; option : Forge) ; B3, B5, B6 : aucun",
-     "source": "prop. (T-0201 : Chasse pour B1 et B2, Minage pour B4 ; `experience-personnage.md` § 4, tension 4)",
+     "texte": "le métier de l'action faite : B4 : Minage (défaut ; option écartée par D-318 (5), gardée pour comparer : Forge) ; B2 : Chasse & Traque seulement si la meute est tuée, rien au métier pour la garde de l'enclos ; B1 : Chasse & Traque pour le gibier rapporté, rien pour la part « champs » ; B3 (travaux des champs) : aucun ; B5, B6 : aucun",
+     "source": "B4 : D-318 (5) ; B2, B3 : D-319 (16) (« agriculture » : simple exemple) ; B1 : D-320 (8) (choix du Chef) ; B5, B6 : prop.",
      "id": "metier_concerne",
      "prop": true,
      "jeu": false,
@@ -1752,6 +1790,10 @@
        "B5": null,
        "B6": null
       },
+      "seulement_si": {
+       "B2": "meute-tuee"
+      },
+      "B1_part_champs": null,
       "option_besoin": "B4",
       "options": [
        "minage",
@@ -1832,9 +1874,9 @@
      "reglage": "Objets en nature",
      "unite": "objet",
      "texte": "B1 viande séchée ; B2 laine ou fromage ; B3 nuit d'auberge ; B4 réparation ; B5 vieille pièce d'équipement ; B6 rien",
-     "source": "prop. (auberge payante : *Repos* § 1)",
+     "source": "D-319 (21) (auberge payante : *Repos* § 1)",
      "id": "objets_nature",
-     "prop": true,
+     "prop": false,
      "jeu": false,
      "valeurs": {
       "B1": "viande séchée",
@@ -2026,7 +2068,9 @@
    "accord": "e",
    "tache": "garder le troupeau",
    "tache_nom": "la garde du troupeau",
-   "heros_fait": "le héros a protégé le troupeau"
+   "heros_fait": "le héros a protégé le troupeau",
+   "heros_fait_meute": "le héros a tué la meute qui rôdait",
+   "heros_fait_enclos": "le héros a gardé l'enclos une nuit"
   },
   {
    "id": "B3",
@@ -2535,5 +2579,15 @@
   "vitesse_defaut": 6,
   "graine_defaut": 2026,
   "journees_defaut": 15
+ },
+ "simulation": {
+  "b2_heros": {
+   "options": [
+    "dernier-tirage",
+    "meute",
+    "enclos"
+   ],
+   "defaut": "dernier-tirage"
+  }
  }
 }
