@@ -94,8 +94,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 <header>
   <div class="surtitre">Projet AAA · suivi · vendredi 16 octobre 2026 · semaine du 13 au 19 octobre</div>
   <h1>Jour <em>4</em></h1>
-  <p class="lecture">Le paquet du jeu est VERT ; le directeur garde la carte graphique ce matin : la file processeur avance (répliques du hameau, prologue court, animations des villageois, boiterie du cheval, documents).</p>
-  <p class="ticket">Mise à jour : 16/10/2026 à 09:54</p>
+  <p class="lecture">Le paquet du jeu est VERT ; carte gardée par le directeur le matin, puis rendue à 11:03 : la file processeur a avancé tout le matin (répliques, prologue, sons, villageois, laie), puis la semelle sur la prise dans Unreal ; questionnaire groupé (<span class="insec">D-319</span>).</p>
+  <p class="ticket">Mise à jour : 17/10/2026 à 04:12</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,11 +104,12 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-valide">15 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">3 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">15 validés</span></div>
   <ul class="liste lecture">
-    <li><strong>Paquet du jeu</strong> `20261016-0036` : VERT (0 erreur, 144 images par seconde), validé sur pièces ; une relance de 2,5 min sera faite quand la carte sera rendue.</li>
-    <li><strong>Carte graphique</strong> : gardée par le directeur ce matin (<span class="insec">D-316</span>) ; seuls des travaux sans carte tournent.</li>
-    <li><strong><span class="insec">D-318</span></strong> : la semelle de la botte sur la prise (ticket) ; le « ++ » retiré hors des décrets ; Brutus dans les Mines jusqu&#x27;au niveau 29 de Minage, un PNJ des Canyons le dit ; l&#x27;expérience de métier suit l&#x27;action faite (40, 80 en urgence) ; l&#x27;agente du Cartel protégée ; un successeur prévu pour le chef ; des morts au hasard aussi ; la boiterie arrière du cheval plus visible.</li>
+    <li><strong>Paquet du jeu</strong> `20261016-0036` : VERT, relancé 2,5 min hors écran à 11:05 (0 erreur, 0 ensure ; images par seconde basses car Ollama occupait la carte).</li>
+    <li><strong>File processeur</strong> : 16 tickets validés (<span class="insec">T-0232</span> à <span class="insec">T-0236</span>, <span class="insec">T-0238</span> à <span class="insec">T-0247</span>) : répliques du hameau (155) et de l&#x27;entité (35), prologue court, musique et sons du prologue, animations des villageois, boiterie arrière du cheval, la laie.</li>
+    <li><strong>Carte graphique</strong> : rendue à 11:03 ; <span class="insec">T-0237</span> (semelle sur la prise) livré à 12:53, essai de l&#x27;escalade VERT aux 4 débits ; vérification le 17/10.</li>
+    <li><strong>Questionnaire groupé</strong> (<span class="insec">D-295</span>) posé à partir de 09:53 : réponses reçues le 17/10 avant 04:09 : <span class="insec">D-319</span> ; puis <span class="insec">D-320</span> (décisions du 17/10 déléguées au Chef).</li>
   </ul>
 </section>
 
@@ -118,14 +119,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="files">
 <div class="file">
   <h3>File carte graphique (Unreal)</h3>
-  <p class="muted">Un seul agent à la fois dans le projet ; en pause : le directeur garde la carte ce matin.</p>
+  <p class="muted">Un seul agent à la fois dans le projet ; carte gardée le matin, rendue à 11:03.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0237</span> · <span class="insec">D-318</span> (1)</span><h3>La semelle se pose sur la prise</h3><p class="muted">Avec la relance de 2,5 min du nouveau paquet.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0237</span> · <span class="insec">D-318</span> (1)</span><h3>La semelle se pose sur la prise</h3><p class="muted">Avec la relance de 2,5 min du nouveau paquet.</p><span class="etat e-verification">En vérification</span><p class="note">Lancé à 11:03, livré à 12:53 : essai de l&#x27;escalade VERT à 30, 45, 60 et 120 i/s, 0 pied et 0 main dans la roche ; avant de la semelle sur le bord du dessus dans 62 à 76 % des images ; parcours ROUGE (carte prise par Ollama) ; vérification le 17/10.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0199</span> · <span class="insec">D-301</span> (4)</span><h3>Yeux de jour des morts-vivants</h3><p class="muted">Un lavande un peu plus soutenu de jour.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0189</span> · <span class="insec">D-236</span> (4)</span><h3>La meute de 6 loups pendant la Tempête de Neige</h3><p class="muted">Elle rôde près du hameau pendant la tempête.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0191</span> · <span class="insec">D-283</span> (2)</span><h3>Les pieds des créatures sur les pentes</h3><p class="muted">Une IK des pieds propre aux créatures.</p><span class="etat e-a-faire">À faire</span><p class="note">Attend la carte.</p></div>
   </div>
-  <p class="suite">Quand la carte sera rendue : <span class="insec">T-0237</span> (semelle sur la prise et relance du paquet), puis <span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span>.</p>
+  <p class="suite">Le 17/10 : le directeur reprend la carte pour jouer (<span class="insec">D-320</span>) ; ensuite la suite de <span class="insec">T-0237</span>, puis <span class="insec">T-0199</span>, <span class="insec">T-0189</span>, <span class="insec">T-0191</span>.</p>
 </div>
 <div class="file">
   <h3>File processeur (écriture, Blender)</h3>
@@ -147,7 +148,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0246</span> · <span class="insec">T-0243</span> · <span class="insec">T-0177</span> · <span class="insec">T-0180</span></span><h3>Reports : sons du prologue, liste de la faune</h3><p class="muted">Les 14 sons du prologue dans la bibliothèque sonore, l&#x27;état du prologue mis à jour, la liste des modèles à venir de la faune corrigée.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 09:07.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0247</span> · <span class="insec">T-0243</span> · <span class="insec">T-0246</span></span><h3>Corbeau du prologue ; catalogue sonore protégé</h3><p class="muted">Le corbeau lointain posé au dernier plan du prologue ; le script du catalogue ne peut plus effacer les ajouts faits à la main.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 09:52 (après deux retouches) : corbeau lointain au dernier plan ; le script du catalogue refuse toute retouche qu&#x27;il effacerait.</p></div>
   </div>
-  <p class="suite">Tout est validé : questionnaire groupé (<span class="insec">D-295</span>), puis les suites selon les réponses.</p>
+  <p class="suite">Tout est validé ; les réponses du questionnaire (<span class="insec">D-319</span>) font les tickets du 17/10.</p>
 </div>
   </div>
 </section>
@@ -197,6 +198,10 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>09:51</time><p><span class="insec">T-0234</span> (animations des villageois) validé.</p></div>
     <div class="entree"><time>09:52</time><p><span class="insec">T-0247</span> (corbeau, catalogue sonore) validé.</p></div>
     <div class="entree"><time>09:53</time><p><span class="insec">T-0245</span> (la laie) validé : tous les tickets en cours sont validés ; questionnaire groupé (<span class="insec">D-295</span>).</p></div>
+    <div class="entree"><time>09:55</time><p>Questionnaire groupé (<span class="insec">D-295</span>) posé en séries.</p></div>
+    <div class="entree"><time>11:03</time><p>Le directeur rend la carte pour la journée : <span class="insec">T-0237</span> (semelle sur la prise, relance du paquet) lancé.</p></div>
+    <div class="entree"><time>11:05</time><p>Paquet 20261016-0036 relancé 2,5 min hors écran : 0 erreur, 0 ensure.</p></div>
+    <div class="entree"><time>12:53</time><p><span class="insec">T-0237</span> livré (commits 06c0bf2, df4d6b4, sans push) ; escalade VERTE aux 4 débits ; parcours à refaire carte libre.</p></div>
   </div>
 </section>
 
@@ -205,7 +210,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="lecture muted">Questions en attente du directeur.</p>
   <p class="lecture muted">1 question attend sa réponse. Personne ne les tranche à la place du directeur.</p>
   <div class="questions">
-    <div class="question"><span class="ticket">Échanges</span><p>Installer giscus ; supprimer les deux anciennes pages claude.ai ; surnoms de l&#x27;entité.</p></div>
+    <div class="question"><span class="ticket">Questionnaire</span><p>Posé le 16/10 ; réponses reçues le 17/10 avant 04:09 : <span class="insec">D-319</span>.</p></div>
   </div>
 </section>
 
