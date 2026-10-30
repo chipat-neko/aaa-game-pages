@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>Jour 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Page de suivi (nuit ou jour) : résumé, files de travail en cartes d'état, modèles 3D avec image et vidéo, journal,
+   questions. Identité sombre du projet par défaut, thème clair au bouton (comme « Modèles 3D »). */
+:root{
+  --nuit:#15181c; --brume:#1d2127; --roche:#2a2f36; --pierre:#8b929b; --lin:#e4e1d9;
+  --aube:#d4a857; --mousse:#86a37a; --braise:#c7715c; --acier:#7f9bb5;
+  --f-titre:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --f-texte:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+:root[data-theme="clair"]{--nuit:#f4f1ea;--brume:#ebe6dc;--roche:#d3ccbf;--pierre:#5a6068;--lin:#1b1f24;--aube:#98600f;--mousse:#3f6d33;--braise:#a8452f;--acier:#3f6a8f;color-scheme:light}
+:root[data-theme="clair"] .retour-accueil a{color:var(--aube)}
+*{box-sizing:border-box}
+img,video,canvas,svg{max-width:100%;height:auto}
+body{background:var(--nuit);color:var(--lin);font:16px/1.6 var(--f-texte)}
+.page{max-width:64rem;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(28px,6vw,64px)}
+.lecture{max-width:42rem}
+header{display:grid;gap:.75rem;margin-bottom:2.2rem}
+.surtitre{font:500 .75rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--pierre)}
+h1{font:400 clamp(2.4rem,7vw,3.8rem)/1.05 var(--f-titre);margin:0;text-wrap:balance}
+h1 em{color:var(--aube)}
+h2{font:400 clamp(1.5rem,4.5vw,2.1rem)/1.15 var(--f-titre);margin:0;text-wrap:balance}
+h3{font:600 1rem/1.3 var(--f-texte);margin:0}
+p{margin:0}
+a{color:var(--aube)}
+strong{font-weight:600}
+.muted{color:var(--pierre)}
+.insec{white-space:nowrap}
+section{display:grid;gap:1.1rem;padding-block:2rem;border-top:1px solid var(--roche);min-width:0}
+nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.sommaire a{font:500 .78rem/1 var(--f-data);color:var(--lin);text-decoration:none;border:1px solid var(--roche);border-radius:3px;padding:.45rem .6rem}
+nav.sommaire a:hover,nav.sommaire a:focus-visible{border-color:var(--aube);color:var(--aube)}
+.outils{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.bouton{font:500 .78rem/1 var(--f-data);color:var(--lin);background:var(--nuit);border:1px solid var(--roche);border-radius:3px;padding:.55rem .75rem;cursor:pointer}
+.bouton:hover,.bouton:focus-visible{border-color:var(--aube);color:var(--aube)}
+ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
+.compteurs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.etat{justify-self:start;align-self:start;font:500 .7rem/1 var(--f-data);letter-spacing:.05em;text-transform:uppercase;padding:.32rem .5rem;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.e-a-faire{color:var(--pierre)}.e-en-cours{color:var(--acier)}.e-verification{color:var(--aube)}
+.e-valide{color:var(--mousse)}.e-a-corriger{color:var(--braise)}.e-abandonne{color:var(--pierre);text-decoration:line-through}
+.files{display:grid;gap:2rem}
+.file{display:grid;gap:.8rem;min-width:0}
+.file > p{max-width:42rem}
+.pistes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.piste{display:grid;gap:.5rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.ticket{font:500 .72rem/1.3 var(--f-data);letter-spacing:.04em;color:var(--pierre)}
+.piste .note{font-size:.92rem}
+.suite{font-size:.92rem;color:var(--pierre);max-width:42rem}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,26rem),1fr));gap:1.2rem;align-items:start}
+.modele{display:grid;gap:.7rem;align-content:start;background:var(--brume);border:1px solid var(--roche);border-radius:6px;padding:1rem;min-width:0}
+.modele.a-venir{border-style:dashed;background:transparent}
+.tete{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:baseline;justify-content:space-between}
+.modele figure{margin:0;display:grid;gap:.35rem;min-width:0}
+.modele figure img,.modele video{display:block;width:100%;height:auto;border-radius:4px;background:#0d0f12}
+.modele figcaption{font:400 .75rem/1.4 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.modele a.image{display:block;border-radius:4px}
+.modele a.image:focus-visible{outline:2px solid var(--aube);outline-offset:2px}
+.moments{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;font:500 .75rem/1 var(--f-data);color:var(--pierre)}
+.moments .bouton{padding:.45rem .6rem}
+.etat-video:empty{display:none}
+.etat-video{color:var(--braise);font-size:.9rem}
+.liens{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font:500 .8rem/1.5 var(--f-data)}
+.chemins{font:400 .78rem/1.7 var(--f-data);color:var(--pierre);overflow-wrap:anywhere}
+.journal{display:grid;gap:.6rem;max-width:46rem}
+.entree{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.8rem;align-items:baseline}
+.entree time{font:500 .8rem var(--f-data);color:var(--aube)}
+.questions{display:grid;gap:.8rem;max-width:46rem}
+.question{display:grid;gap:.35rem;background:var(--brume);border:1px solid var(--roche);border-left:3px solid var(--aube);border-radius:6px;padding:.85rem 1rem;min-width:0}
+.question.repondue{border-left-color:var(--mousse)}
+.question .reponse{color:var(--mousse);font-size:.95rem}
+.vide{border:1px dashed var(--roche);border-radius:6px;padding:1.2rem;color:var(--pierre);max-width:42rem}
+@media (max-width:30rem){.entree{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+</style>
+<style>body{margin:0}img,video{max-width:100%;height:auto}[hidden]{display:none!important}.retour-accueil{max-width:72rem;margin:0 auto;padding:14px clamp(16px,4vw,40px) 0;font:500 .8rem/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}.retour-accueil a{color:#d4a857;text-decoration:none}.retour-accueil a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<nav class="retour-accueil"><a href="../../index.html">← Semaine du 27 octobre au 2 novembre</a></nav>
+<!-- Page écrite par E:\aaa-proto\livrables\suivi\construire_page.py à partir de jour-2026-10-31.json :
+     ne pas la modifier à la main ; modifier le JSON, puis relancer le script (voir LISEZMOI.md). -->
+
+<div class="page">
+<header>
+  <div class="surtitre">Projet AAA · suivi · samedi 31 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
+  <h1>Jour <em>5</em></h1>
+  <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Sur la carte : stabiliser la caméra et les cheveux pendant le sort, puis les effets et la scène de l&#x27;Ange. Sur le processeur : préparer la démo 2 (voix, fiches).</p>
+  <p class="ticket">Mise à jour : 31/10/2026 à 00:03</p>
+  <nav class="sommaire" aria-label="Sommaire">
+    <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
+  </nav>
+  <div class="outils"><button class="bouton" id="suivi-theme" type="button" aria-pressed="false">Passer en thème clair</button></div>
+</header>
+
+<section id="resume">
+  <h2>Résumé</h2>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">2 en vérification</span></div>
+  <ul class="liste lecture">
+    <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
+    <li>File carte : <strong><span class="insec">T-0338</span></strong> en cours (caméra qui tremble, cheveux décollés pendant la canalisation).</li>
+    <li>File processeur : <strong><span class="insec">T-0341</span></strong> (voix de départ du hameau) et <strong><span class="insec">T-0342</span></strong> (fiches du nid, du pont, du campement et de la route) en vérification.</li>
+  </ul>
+</section>
+
+<section id="files">
+  <h2>Les files de travail</h2>
+  <p class="lecture muted">Les deux files de travail (<span class="insec">D-317</span>), en continu (<span class="insec">D-323</span>).</p>
+  <div class="files">
+<div class="file">
+  <h3>File carte graphique (Unreal)</h3>
+  <p class="muted">Carte libre depuis 18:43 ; <span class="insec">T-0320</span> validé ; <span class="insec">T-0338</span> en cours.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0321</span> · <span class="insec">P1-13</span> · <span class="insec">P1-15</span> · <span class="insec">D-322</span></span><h3>L&#x27;apparition de l&#x27;Ange, avec son et voix</h3><p class="muted">Fumée noire, cendres, dissolution en une demi-seconde, trois paires d&#x27;yeux dorés ; sons et voix de l&#x27;entité ; vidéo de la scène.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0320</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0328</span> · <span class="insec">P1-17</span> · <span class="insec">D-322</span></span><h3>La voix de l&#x27;entité dans le jeu, réplique par réplique</h3><p class="muted">Les répliques du parcours branchées sur leurs moments, avec la vraie voix et le sous-titre calé.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0321</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0331</span> · <span class="insec">P1-18</span> · <span class="insec">D-323</span></span><h3>L&#x27;affichage du didacticiel</h3><p class="muted">Jauges, verrouillage, visée à la première personne et aides à l&#x27;écran au style des maquettes ; le HUD provisoire s&#x27;en va.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0328</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0332</span> · <span class="insec">P2-31</span> · <span class="insec">D-314</span> (3) · <span class="insec">D-323</span></span><h3>La première montée de niveau</h3><p class="muted">Niveaux et expérience ; à la fin de la horde, le héros passe au niveau 2 : barre, signal, réplique de l&#x27;entité.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0331</span>.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0338</span> · <span class="insec">P1-12</span> · <span class="insec">D-323</span> (6)</span><h3>Canalisation : la caméra qui tremble, les cheveux qui se décollent</h3><p class="muted">Le vérificateur a vu la caméra du jeu trembler pendant la tenue du sort et les cheveux se décoller à l&#x27;entrée : trouver la cause et corriger.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 22:24 sur la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0339</span> · <span class="insec">P1-13</span> · <span class="insec">D-323</span> (6)</span><h3>Le rendu du sang, des veines et du repère de visée</h3><p class="muted">Du sang en gouttes et non en boules, un vrai réseau de veines, un repère de visée posé au sol et non un trait orange par-dessus l&#x27;image.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 21:57 ; part après <span class="insec">T-0338</span>.</p></div>
+  </div>
+  <p class="suite">Après <span class="insec">T-0338</span> : <span class="insec">T-0339</span> (rendu du sang, des veines, du repère de visée), <span class="insec">T-0321</span> (scène de l&#x27;Ange), <span class="insec">T-0328</span> (voix), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau).</p>
+</div>
+<div class="file">
+  <h3>File processeur (écriture, calcul)</h3>
+  <p class="muted">Sans la carte graphique.</p>
+  <div class="pistes">
+    <div class="piste"><span class="ticket"><span class="insec">T-0336</span> · <span class="insec">P2-02</span> · <span class="insec">D-160</span> · <span class="insec">D-323</span></span><h3>Trois premières images du hameau</h3><p class="muted">Une maison, l&#x27;auberge, la forge, générées avec Codex, pour juger l&#x27;aspect avant le lot entier.</p><span class="etat e-a-faire">À faire</span><p class="note">Arrêté à 21:01 au premier appel : la limite de Codex (ChatGPT Plus) est atteinte jusqu&#x27;au 04/11/2026 à 8:04. 0 image. À relancer après cette date ; autres options posées au directeur.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0341</span> · <span class="insec">P2-13</span> · <span class="insec">D-214</span> (2) · <span class="insec">D-323</span></span><h3>Les voix de départ du hameau</h3><p class="muted">Lecteurs français du domaine public (LibriVox), licences vérifiées, extraits transcrits, tableau de propositions et page d&#x27;écoute : la génération des voix pourra démarrer dès que la carte sera libre. Rien publié.</p><span class="etat e-verification">En vérification</span><p class="note">Livré à 23:42 : 89 lecteurs du domaine public, un extrait transcrit pour chacun, tableau de 25 rôles (voix proposée et suivante), page d&#x27;écoute sur le PC. Rien n&#x27;est tranché ; en vérification.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0342</span> · <span class="insec">P3-01</span>, <span class="insec">P3-05</span>, <span class="insec">P3-06</span>, <span class="insec">P3-15</span> · <span class="insec">D-323</span></span><h3>Fiches du nid, du pont, du campement et de la route</h3><p class="muted">Inventaire et une fiche par modèle à générer, avec son invite d&#x27;image, comme pour le hameau : écriture seule, aucune image générée.</p><span class="etat e-verification">En vérification</span><p class="note">Livré à 00:03 : 24 fiches, 27 invites, 21 modèles au socle, 7 réutilisés du hameau ; rien généré, points ouverts listés. En vérification et relecture du lore.</p></div>
+  </div>
+  <p class="suite">Après le recalcul : la présentation aux investisseurs remise à jour, puis d&#x27;autres tickets sans carte.</p>
+</div>
+  </div>
+</section>
+
+<section id="modeles">
+  <h2>Modèles 3D du jour</h2>
+  <p class="lecture muted">Les images, modèles 3D et animations du jour (sans vidéo copiée dans la page).</p>
+  <p class="vide">Aucun modèle 3D du jour pour l'instant.</p>
+</section>
+
+<section id="journal">
+  <h2>Journal</h2>
+  <div class="journal">
+    <div class="entree"><time>00:03</time><p><span class="insec">T-0342</span> livré, en vérification (fiches du nid, du pont, du campement et de la route). Quota : 14,6 %.</p></div>
+  </div>
+</section>
+
+<section id="questions">
+  <h2>Questions pour le directeur</h2>
+  <p class="lecture muted">Questions en attente du directeur (un seul questionnaire groupé quand tout sera validé, <span class="insec">D-295</span>).</p>
+  <p class="lecture muted">10 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <div class="questions">
+    <div class="question"><span class="ticket">Présentation</span><p>Restes du point 9 de la présentation, que le Chef ne tranche pas (ils engagent l&#x27;équipe et votre présentation) : animateurs freelances, nombre de PNJ qui parlent, images, l&#x27;équipe.</p></div>
+    <div class="question"><span class="ticket">Mixamo (<span class="insec">D-322</span> (8))</span><p>Pas une question, une demande quand vous voulez : télécharger les animations de la liste (au moins les priorités 1 et 2, ≈ 15 à 20 min) dans E:/aaa-proto/assets/mixamo/, avec les réglages notés. Le Chef lance le reciblage dès qu&#x27;elles sont là.</p></div>
+    <div class="question"><span class="ticket">Prologue (<span class="insec">T-0319</span>)</span><p>À écouter au casque : E:/aaa-proto/livrables/demo-1/prologue/prologue-en.mp4. Le fond est très baissé sous trois répliques : garder ou remonter ? Et le publier ou non sur le site (la voix de l&#x27;entité imite un lecteur réel de LibriVox, ce genre de voix n&#x27;a pas été publié jusqu&#x27;ici) : (a) le montrer seulement aux investisseurs ; (b) le publier avec la mention « voix générée » ; (c) publier une version sans voix.</p></div>
+    <div class="question"><span class="ticket">Dates (<span class="insec">T-0329</span>, <span class="insec">T-0333</span>)</span><p>La présentation montre le débit probable avec ses fourchettes (démo 1 vers le 13/11/2026). Risque chiffré aux notes de l&#x27;orateur : si le processeur prend toujours un tiers du quota hors plan, S7,4, S18,1 et S28,2. Garder le probable, montrer le prudent, ou les deux ? Et la voix du nom (<span class="insec">P2-18</span>, ≈ 45 h), à reporter au plan ou non ?</p></div>
+    <div class="question"><span class="ticket">Adresse du site</span><p><span class="insec">D-321</span> (3) dit de la montrer, mais elle n&#x27;est écrite nulle part dans la page, parce qu&#x27;elle porte le nom du compte GitHub : l&#x27;écrire telle quelle, ou la donner à part ?</p></div>
+    <div class="question"><span class="ticket">Page du plan</span><p>La présentation en ligne cite le plan du 30/10, alors que la page du plan en ligne reste au 17/10 : la page refaite montre le risque chiffré. La publier telle quelle, sans le risque, ou la garder au 17/10 ?</p></div>
+    <div class="question"><span class="ticket">Réveil et reflet (<span class="insec">T-0330</span>)</span><p>Quand rendre le contrôle au joueur au réveil : à la fin du lever (5,9 s) ou à la fin du plan 18 (1,5 s) ? Où est l&#x27;épée pendant le reflet : cachée, à la ceinture (il faut un fourreau) ou main fermée à refaire ?</p></div>
+    <div class="question"><span class="ticket">Le hameau (<span class="insec">T-0334</span>)</span><p>Palissade, « médiéval fortifié », signe sur les tombes, bête portée au retour de chasse, toits, abri des bêtes, puits, poulailler, moulin : le détail et les options sont dans les fiches du hameau (§ 8, § 9).</p></div>
+    <div class="question"><span class="ticket">Images du hameau (<span class="insec">T-0336</span>)</span><p>La limite de Codex est atteinte jusqu&#x27;au 04/11 à 8:04. Attendre, faire ces images avec FLUX.2 klein en local (autre outil que le prologue), ou acheter des crédits (votre décision seul, <span class="insec">D-160</span>) ?</p></div>
+    <div class="question"><span class="ticket">Vue sur la paroi (<span class="insec">D-323</span> (7))</span><p><span class="insec">P1-06</span> forcera la vue à la troisième personne sur la paroi, comme le dit le document. Mais avant le reflet, cette vue est bloquée (<span class="insec">D-319</span> (3)) : si le joueur s&#x27;accroche à une roche avant le reflet, que faire ?</p></div>
+  </div>
+</section>
+
+<section id="chemins">
+  <h2>Sur le PC</h2>
+  <p class="chemins">E:/aaa-proto/essai/gibier/laie : la laie (modèle, animations, vidéo) · E:/aaa-proto/essai/villageois/villageois-taches.mp4 : les tâches des villageois · E:/aaa-proto/assets/sons/prologue/ecoute.html : la musique et les sons du prologue · D:/aaa-game/.equipe/prototype/etat-demo-1.md : l&#x27;état de la démo 1 et les prochains tickets · D:/aaa-game/.equipe/prototype/plan-sonore-demo-1.md : le plan sonore de la démo 1 · https://chipat-neko.github.io/aaa-game-pages/pages/simulation-hameau/page.html : la simulation du hameau à jour · D:/aaa-game/.equipe/prototype/etat-demo-2.md : l&#x27;état de la démo 2 et l&#x27;ordre proposé · https://chipat-neko.github.io/aaa-game-pages/pages/presentation/page.html : la présentation pour les investisseurs (à jour au 17/10) · https://chipat-neko.github.io/aaa-game-pages/pages/plan/page.html : le plan de production recalculé · E:/aaa-proto/assets/sons/demo1/ecoute.html : les sons ajoutés à la démo 1 · E:/aaa-proto/voix/prototype/j1/ecoute.html : les 37 voix de l&#x27;entité (démo 1) · E:/aaa-proto/livrables/demo-1/video-courte/demo1-video-courte.mp4 : la vidéo courte de la démo 1 (pleine résolution)</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  var racine = document.documentElement, b = document.getElementById('suivi-theme'), clair = false;
+  function appliquer() {
+    if (clair) { racine.setAttribute('data-theme', 'clair'); } else { racine.removeAttribute('data-theme'); }
+    b.textContent = clair ? 'Revenir au thème sombre' : 'Passer en thème clair';
+    b.setAttribute('aria-pressed', clair ? 'true' : 'false');
+  }
+  b.addEventListener('click', function () { clair = !clair; appliquer(); });
+  appliquer();
+  document.querySelectorAll('.modele').forEach(function (carte) {
+    var v = carte.querySelector('video'), etat = carte.querySelector('.etat-video');
+    if (!v) return;
+    v.addEventListener('error', function () {
+      etat.textContent = 'La vidéo n\'a pas pu se charger ici. Elle est aussi sur le PC (chemin ci-dessous).';
+    });
+    carte.querySelectorAll('.moments [data-t]').forEach(function (m) {
+      m.addEventListener('click', function () {
+        v.currentTime = parseFloat(m.dataset.t);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
