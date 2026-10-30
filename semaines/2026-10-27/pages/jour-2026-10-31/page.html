@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · samedi 31 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>5</em></h1>
   <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Sur la carte : stabiliser la caméra et les cheveux pendant le sort, puis les effets et la scène de l&#x27;Ange. Sur le processeur : préparer la démo 2 (voix, fiches).</p>
-  <p class="ticket">Mise à jour : 31/10/2026 à 00:08</p>
+  <p class="ticket">Mise à jour : 31/10/2026 à 00:10</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-a-corriger">1 à corriger</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">2 en vérification</span><span class="etat e-a-corriger">1 à corriger</span></div>
   <ul class="liste lecture">
     <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
     <li>File carte : <strong><span class="insec">T-0338</span></strong> en cours (caméra qui tremble, cheveux décollés pendant la canalisation).</li>
@@ -124,7 +124,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0328</span> · <span class="insec">P1-17</span> · <span class="insec">D-322</span></span><h3>La voix de l&#x27;entité dans le jeu, réplique par réplique</h3><p class="muted">Les répliques du parcours branchées sur leurs moments, avec la vraie voix et le sous-titre calé.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0321</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0331</span> · <span class="insec">P1-18</span> · <span class="insec">D-323</span></span><h3>L&#x27;affichage du didacticiel</h3><p class="muted">Jauges, verrouillage, visée à la première personne et aides à l&#x27;écran au style des maquettes ; le HUD provisoire s&#x27;en va.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0328</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0332</span> · <span class="insec">P2-31</span> · <span class="insec">D-314</span> (3) · <span class="insec">D-323</span></span><h3>La première montée de niveau</h3><p class="muted">Niveaux et expérience ; à la fin de la horde, le héros passe au niveau 2 : barre, signal, réplique de l&#x27;entité.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0331</span>.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0338</span> · <span class="insec">P1-12</span> · <span class="insec">D-323</span> (6)</span><h3>Canalisation : la caméra qui tremble, les cheveux qui se décollent</h3><p class="muted">Le vérificateur a vu la caméra du jeu trembler pendant la tenue du sort et les cheveux se décoller à l&#x27;entrée : trouver la cause et corriger.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 22:24 sur la carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0338</span> · <span class="insec">P1-12</span> · <span class="insec">D-323</span> (6)</span><h3>Canalisation : la caméra qui tremble, les cheveux qui se décollent</h3><p class="muted">Le vérificateur a vu la caméra du jeu trembler pendant la tenue du sort et les cheveux se décoller à l&#x27;entrée : trouver la cause et corriger.</p><span class="etat e-verification">En vérification</span><p class="note">Livré à 00:10 (commit local d233fad) : le héros pivotait trop tard dans l&#x27;image ; caméra stable, cheveux tenus, mesures à zéro. En vérification.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0339</span> · <span class="insec">P1-13</span> · <span class="insec">D-323</span> (6)</span><h3>Le rendu du sang, des veines et du repère de visée</h3><p class="muted">Du sang en gouttes et non en boules, un vrai réseau de veines, un repère de visée posé au sol et non un trait orange par-dessus l&#x27;image.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 21:57 ; part après <span class="insec">T-0338</span>.</p></div>
   </div>
   <p class="suite">Après <span class="insec">T-0338</span> : <span class="insec">T-0339</span> (rendu du sang, des veines, du repère de visée), <span class="insec">T-0321</span> (scène de l&#x27;Ange), <span class="insec">T-0328</span> (voix), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau).</p>
@@ -155,6 +155,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>00:03</time><p><span class="insec">T-0342</span> livré, en vérification (fiches du nid, du pont, du campement et de la route). Quota : 14,6 %.</p></div>
     <div class="entree"><time>00:04</time><p><span class="insec">T-0343</span> lancé sur le processeur : sous-titres anglais du pont.</p></div>
     <div class="entree"><time>00:08</time><p><span class="insec">T-0341</span> à corriger (page d&#x27;écoute, transcriptions déduites, chiffres du forgeron) : reprise sans réseau par un agent neuf.</p></div>
+    <div class="entree"><time>00:10</time><p><span class="insec">T-0338</span> livré : une seule cause pour la caméra qui tremble et les cheveux décollés ; en vérification sur la carte.</p></div>
   </div>
 </section>
 
