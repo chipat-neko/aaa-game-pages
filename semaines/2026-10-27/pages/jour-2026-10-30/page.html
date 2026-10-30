@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · vendredi 30 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>4</em></h1>
   <p class="lecture">Le directeur rend le PC en continu, carte graphique et processeur (<span class="insec">D-323</span>) : les deux files repartent après 12 jours sans travail sur le jeu. Priorité : finir les effets de la démo 1 et remettre à jour les dates du plan.</p>
-  <p class="ticket">Mise à jour : 30/10/2026 à 20:47</p>
+  <p class="ticket">Mise à jour : 30/10/2026 à 20:51</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-verification">3 en vérification</span><span class="etat e-valide">1 validé</span><span class="etat e-a-corriger">1 à corriger</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">2 en vérification</span><span class="etat e-valide">2 validés</span><span class="etat e-a-corriger">1 à corriger</span></div>
   <ul class="liste lecture">
     <li>Le poste est rendu en continu (<span class="insec">D-323</span>) à 18:43 ; aucun jeu ni calcul d&#x27;Ollama à la reprise.</li>
     <li>File carte : reprise de la correction de <strong><span class="insec">T-0320</span></strong> (les pieds tenus déformaient les bras du héros ; le code est déjà corrigé, reste à le prouver).</li>
@@ -135,9 +135,10 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="muted">Sans la carte graphique.</p>
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0329</span> · <span class="insec">P0-01</span> · <span class="insec">D-321</span> (3) · <span class="insec">D-323</span></span><h3>Recalcul du plan au 30/10</h3><p class="muted">Les dates des démos 1 et 2 et de la version finale, refaites par le script du plan à partir d&#x27;aujourd&#x27;hui.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 19:55 : démo 1 vers le 13/11/2026 (06/11 à 28/11), démo 2 vers le 03/01/2027 (29/11 à 07/03), version finale vers le 19/02/2027 (23/12 à 09/06) ; 802 h restent. Liste complète des changements de la présentation prête.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0330</span> · <span class="insec">P1-09</span> · <span class="insec">P1-22</span> · <span class="insec">D-320</span> (32) (4)</span><h3>Animations du réveil, de l&#x27;épée rouillée et du reflet</h3><p class="muted">Faites par le code dans Blender : se relever du sol, ramasser l&#x27;épée, s&#x27;agenouiller au bord de l&#x27;eau, tenir, se relever.</p><span class="etat e-verification">En vérification</span><p class="note">Animations jugées bonnes par le vérificateur (mouvement humain, seuils tenus) ; 5 retouches de la note d&#x27;import faites, vérification de la correction en cours.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0330</span> · <span class="insec">P1-09</span> · <span class="insec">P1-22</span> · <span class="insec">D-320</span> (32) (4)</span><h3>Animations du réveil, de l&#x27;épée rouillée et du reflet</h3><p class="muted">Faites par le code dans Blender : se relever du sol, ramasser l&#x27;épée, s&#x27;agenouiller au bord de l&#x27;eau, tenir, se relever.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 20:50 : mouvement humain, seuils tenus, caméra lisible ; note d&#x27;import corrigée. Reste à les faire jouer dans Unreal (<span class="insec">P1-09</span>, <span class="insec">P1-22</span>). Deux questions gardées pour le directeur (moment où le contrôle revient, épée pendant le reflet).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0333</span> · <span class="insec">D-321</span> (3) · <span class="insec">T-0329</span></span><h3>Présentation : les dates du plan au 30/10</h3><p class="muted">Les dates et les heures montrées aux investisseurs reportées (89 valeurs), la frise refaite pour rester lisible, les états des démos alignés. Page prête, publiée après validation.</p><span class="etat e-verification">En vérification</span><p class="note">Correction 1 livrée vers 20:45 : contrôle honnête (84 fautes attrapées sur 86), risque chiffré retiré de la page publiée tant que le directeur n&#x27;a pas répondu (<span class="insec">D-323</span> (4)). Vérification en cours. La page du plan refaite n&#x27;est pas publiée, pour la même raison (<span class="insec">D-323</span> (5)).</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0334</span> · <span class="insec">P2-02</span> · <span class="insec">D-323</span></span><h3>Les fiches du hameau, maisons et accessoires</h3><p class="muted">L&#x27;inventaire de ce que le Hameau de la Brume doit montrer, une fiche et une invite d&#x27;image par modèle : la première part de la génération 3D du hameau (démo 2).</p><span class="etat e-a-corriger">À corriger</span><p class="note">Livré vers 20:35 : 30 fiches, 34 invites, environ 42 images et 34 modèles 3D à générer. Vérificateur (7 points) et gardien du lore (11 points, dont 3 invites à reprendre avant toute génération) : correction 1 lancée à 20:46. Questions du hameau gardées pour le questionnaire.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0335</span> · <span class="insec">P1-06</span> · <span class="insec">D-320</span> (33)</span><h3>Escalade : le déplacement de côté sur la paroi</h3><p class="muted">Animation à droite et à gauche, dans la suite des 7 de l&#x27;escalade : le héros longe la paroi jusqu&#x27;à un point de sortie.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 20:52 (Blender, processeur).</p></div>
   </div>
   <p class="suite">Après le recalcul : la présentation aux investisseurs remise à jour, puis d&#x27;autres tickets sans carte.</p>
 </div>
@@ -149,7 +150,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="lecture muted">Les images, modèles 3D et animations du jour (sans vidéo copiée dans la page).</p>
   <div class="galerie">
 <article class="modele" id="mod-heros-reveil">
-  <div class="tete"><h3>Le héros : se relever, ramasser l&#x27;épée, s&#x27;agenouiller au bord de l&#x27;eau (Blender, avant Unreal)</h3><span class="etat e-verification">En vérification</span></div>
+  <div class="tete"><h3>Le héros : se relever, ramasser l&#x27;épée, s&#x27;agenouiller au bord de l&#x27;eau (Blender, avant Unreal)</h3><span class="etat e-valide">Validé</span></div>
   <p class="ticket"><span class="insec">T-0330</span> · <span class="insec">P1-09</span> · <span class="insec">P1-22</span></p>
   <figure><img src="images/heros-reveil.jpg" alt="Image : Le héros : se relever, ramasser l&#x27;épée, s&#x27;agenouiller au bord de l&#x27;eau (Blender, avant Unreal)" width="1280" height="794" loading="lazy"><figcaption>Les animations faites par le code, sur le corps du héros, en contrôle dans Blender.</figcaption></figure>
   <p class="chemins">Sur le PC : E:\aaa-proto\essai\heros-reveil\</p>
@@ -175,6 +176,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>20:17</time><p><span class="insec">T-0334</span> lancé (fiches du hameau, première part de la génération 3D de la démo 2).</p></div>
     <div class="entree"><time>20:27</time><p>Choix provisoire <span class="insec">D-323</span> (4) : le risque chiffré des dates reste hors de la page publiée tant que le directeur n&#x27;a pas répondu.</p></div>
     <div class="entree"><time>20:46</time><p><span class="insec">T-0334</span> : relectures reçues, correction 1 lancée. Choix provisoire <span class="insec">D-323</span> (5) : la page du plan refaite attend la réponse du directeur. Quota : 9,8 %.</p></div>
+    <div class="entree"><time>20:50</time><p><span class="insec">T-0330</span> validé (animations du réveil, de l&#x27;épée et du reflet).</p></div>
+    <div class="entree"><time>20:52</time><p><span class="insec">T-0335</span> lancé (déplacement de côté sur la paroi, Blender). Quota : 10,1 %.</p></div>
   </div>
 </section>
 
