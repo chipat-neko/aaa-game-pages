@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · vendredi 30 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>4</em></h1>
   <p class="lecture">Le directeur rend le PC en continu, carte graphique et processeur (<span class="insec">D-323</span>) : les deux files repartent après 12 jours sans travail sur le jeu. Priorité : finir les effets de la démo 1 et remettre à jour les dates du plan.</p>
-  <p class="ticket">Mise à jour : 30/10/2026 à 19:16</p>
+  <p class="ticket">Mise à jour : 30/10/2026 à 19:48</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-verification">1 en vérification</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">4 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">2 en vérification</span></div>
   <ul class="liste lecture">
     <li>Le poste est rendu en continu (<span class="insec">D-323</span>) à 18:43 ; aucun jeu ni calcul d&#x27;Ollama à la reprise.</li>
     <li>File carte : reprise de la correction de <strong><span class="insec">T-0320</span></strong> (les pieds tenus déformaient les bras du héros ; le code est déjà corrigé, reste à le prouver).</li>
@@ -122,7 +122,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>File carte graphique (Unreal)</h3>
   <p class="muted">Carte libre depuis 18:43 ; un seul agent à la fois dans le projet Unreal, hors écran (<span class="insec">D-284</span>, <span class="insec">D-289</span>).</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0320</span> · <span class="insec">P1-13</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></span><h3>Sang et impacts, déflagration du grand sort, veines noires</h3><p class="muted">Premiers effets Niagara du prototype, et pieds du héros tenus pendant le sort sans déformer les bras.</p><span class="etat e-en-cours">En cours</span><p class="note">Reprise de la correction 1 à 18:46 (agent neuf).</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0320</span> · <span class="insec">P1-13</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></span><h3>Sang et impacts, déflagration du grand sort, veines noires</h3><p class="muted">Premiers effets Niagara du prototype, et pieds du héros tenus pendant le sort sans déformer les bras.</p><span class="etat e-verification">En vérification</span><p class="note">Correction 1 livrée vers 19:47 (commit 372b795) : plus aucune image déformée sur le film, parcours VERT poste libre (150 et 146 images/s), règles sans échec (191 lignes). Vérification lancée à 19:48 (carte). Le Chef a demandé au vérificateur de juger aussi le rendu : le sang en boules rondes, les veines qui ressemblent à des cheveux, une ligne orange pendant la canalisation.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0321</span> · <span class="insec">P1-13</span> · <span class="insec">P1-15</span> · <span class="insec">D-322</span></span><h3>L&#x27;apparition de l&#x27;Ange, avec son et voix</h3><p class="muted">Fumée noire, cendres, dissolution en une demi-seconde, trois paires d&#x27;yeux dorés ; sons et voix de l&#x27;entité ; vidéo de la scène.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0320</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0328</span> · <span class="insec">P1-17</span> · <span class="insec">D-322</span></span><h3>La voix de l&#x27;entité dans le jeu, réplique par réplique</h3><p class="muted">Les répliques du parcours branchées sur leurs moments, avec la vraie voix et le sous-titre calé.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0321</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0331</span> · <span class="insec">P1-18</span> · <span class="insec">D-323</span></span><h3>L&#x27;affichage du didacticiel</h3><p class="muted">Jauges, verrouillage, visée à la première personne et aides à l&#x27;écran au style des maquettes ; le HUD provisoire s&#x27;en va.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0328</span>.</p></div>
@@ -134,7 +134,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <h3>File processeur (écriture, calcul)</h3>
   <p class="muted">Sans la carte graphique.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0329</span> · <span class="insec">P0-01</span> · <span class="insec">D-321</span> (3) · <span class="insec">D-323</span></span><h3>Recalcul du plan au 30/10</h3><p class="muted">Les dates des démos 1 et 2 et de la version finale, refaites par le script du plan à partir d&#x27;aujourd&#x27;hui.</p><span class="etat e-verification">En vérification</span><p class="note">Livré vers 19:15 : au débit probable, démo 1 vers le 13/11/2026 (06/11 à 28/11), démo 2 vers le 03/01/2027 (29/11 à 07/03), version finale vers le 19/02/2027 (23/12 à 09/06) ; 802 h restent. Les 13 jours sans travail coûtent ≈ 2 semaines, le travail fait en rend ≈ 1. Vérification lancée à 19:16.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0329</span> · <span class="insec">P0-01</span> · <span class="insec">D-321</span> (3) · <span class="insec">D-323</span></span><h3>Recalcul du plan au 30/10</h3><p class="muted">Les dates des démos 1 et 2 et de la version finale, refaites par le script du plan à partir d&#x27;aujourd&#x27;hui.</p><span class="etat e-verification">En vérification</span><p class="note">Livré vers 19:15 : au débit probable, démo 1 vers le 13/11/2026 (06/11 à 28/11), démo 2 vers le 03/01/2027 (29/11 à 07/03), version finale vers le 19/02/2027 (23/12 à 09/06) ; 802 h restent. Correction de texte faite (aucun chiffre ne change), vérification en cours.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0330</span> · <span class="insec">P1-09</span> · <span class="insec">P1-22</span> · <span class="insec">D-320</span> (32) (4)</span><h3>Animations du réveil, de l&#x27;épée rouillée et du reflet</h3><p class="muted">Faites par le code dans Blender : se relever du sol, ramasser l&#x27;épée, s&#x27;agenouiller au bord de l&#x27;eau, tenir, se relever.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 18:58 (Blender, processeur).</p></div>
   </div>
   <p class="suite">Après le recalcul : la présentation aux investisseurs remise à jour, puis d&#x27;autres tickets sans carte.</p>
@@ -157,6 +157,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>18:58</time><p><span class="insec">T-0330</span> lancé (animations du réveil, de l&#x27;épée et du reflet, Blender, processeur).</p></div>
     <div class="entree"><time>19:03</time><p><span class="insec">T-0331</span> (affichage du didacticiel) et <span class="insec">T-0332</span> (première montée de niveau) écrits pour la file carte. Bilan de la nuit du 17 au 18/10 et note de reprise mis à jour. Quota : 6,5 % (compteur non recalé depuis le 09/10).</p></div>
     <div class="entree"><time>19:16</time><p><span class="insec">T-0329</span> livré (plan recalculé au 30/10) ; vérification lancée. Le site est de nouveau en ligne à jour (GitHub a rattrapé sa file). Quota : 6,9 %.</p></div>
+    <div class="entree"><time>19:31</time><p><span class="insec">T-0329</span> : trois retouches de texte demandées, aucun chiffre ne change ; correction lancée.</p></div>
+    <div class="entree"><time>19:48</time><p><span class="insec">T-0320</span> livré, vérification lancée. Le Chef a regardé la planche : points de rendu transmis au vérificateur. Le nom du compte Windows, resté dans 5 scripts du prototype (dépôt local, rien de parti), sera retiré avec <span class="insec">T-0321</span>. Quota : 7,7 %.</p></div>
   </div>
 </section>
 
