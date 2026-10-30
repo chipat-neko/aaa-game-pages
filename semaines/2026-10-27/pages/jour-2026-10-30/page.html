@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · vendredi 30 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>4</em></h1>
   <p class="lecture">Le directeur rend le PC en continu, carte graphique et processeur (<span class="insec">D-323</span>) : les deux files repartent après 12 jours sans travail sur le jeu. Priorité : finir les effets de la démo 1 et remettre à jour les dates du plan.</p>
-  <p class="ticket">Mise à jour : 30/10/2026 à 22:14</p>
+  <p class="ticket">Mise à jour : 30/10/2026 à 22:25</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">7 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">6 validés</span><span class="etat e-a-corriger">1 à corriger</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">7 validés</span></div>
   <ul class="liste lecture">
     <li>Le poste est rendu en continu (<span class="insec">D-323</span>) à 18:43 ; aucun jeu ni calcul d&#x27;Ollama à la reprise.</li>
     <li>File carte : reprise de la correction de <strong><span class="insec">T-0320</span></strong> (les pieds tenus déformaient les bras du héros ; le code est déjà corrigé, reste à le prouver).</li>
@@ -113,6 +113,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <li>File processeur aussi : <strong><span class="insec">T-0330</span></strong>, les animations du héros pour le réveil, l&#x27;épée rouillée et le reflet, dans Blender.</li>
     <li><strong>La présentation aux investisseurs est à jour</strong> (<span class="insec">T-0329</span>, <span class="insec">T-0333</span>, validés et publiés) : démo 1 vers le 13/11/2026, démo 2 vers le 03/01/2027, version finale vers le 19/02/2027.</li>
     <li>Regard du Chef sur les premiers effets : le sang en boules, les veines qui ressemblent à des cheveux et le repère de visée ne tiennent pas face à des investisseurs : <strong><span class="insec">T-0339</span></strong>. La caméra qui tremble pendant le sort : <strong><span class="insec">T-0338</span></strong>. Ils passent avant la scène de l&#x27;Ange.</li>
+    <li><strong>Premiers effets Niagara validés</strong> (<span class="insec">T-0320</span>) : sang, impacts, déflagration d&#x27;or, veines noires ; le héros garde les pieds au sol pendant le sort.</li>
   </ul>
 </section>
 
@@ -122,17 +123,17 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="files">
 <div class="file">
   <h3>File carte graphique (Unreal)</h3>
-  <p class="muted">Carte libre depuis 18:43 ; un seul agent à la fois dans le projet Unreal, hors écran (<span class="insec">D-284</span>, <span class="insec">D-289</span>).</p>
+  <p class="muted">Carte libre depuis 18:43 ; <span class="insec">T-0320</span> validé ; <span class="insec">T-0338</span> en cours.</p>
   <div class="pistes">
-    <div class="piste"><span class="ticket"><span class="insec">T-0320</span> · <span class="insec">P1-13</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></span><h3>Sang et impacts, déflagration du grand sort, veines noires</h3><p class="muted">Premiers effets Niagara du prototype, et pieds du héros tenus pendant le sort sans déformer les bras.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Vérification vers 21:55 : plus aucune déformation, règles et essais bons. Un petit bogue trouvé (les coups touchent encore une créature détruite, d&#x27;où un nuage en vue à la première personne) : correction 2 lancée à 21:57. La planche attend cette correction.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0320</span> · <span class="insec">P1-13</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></span><h3>Sang et impacts, déflagration du grand sort, veines noires</h3><p class="muted">Premiers effets Niagara du prototype, et pieds du héros tenus pendant le sort sans déformer les bras.</p><span class="etat e-valide">Validé</span><p class="note">Validé après 2 corrections : premiers effets Niagara, pieds du héros tenus pendant le sort sans déformation (commit deb24ac) ; coût 1,2 à 1,8 % d&#x27;images/s. Son rendu est repris par <span class="insec">T-0339</span> : sa planche attend ce ticket.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0321</span> · <span class="insec">P1-13</span> · <span class="insec">P1-15</span> · <span class="insec">D-322</span></span><h3>L&#x27;apparition de l&#x27;Ange, avec son et voix</h3><p class="muted">Fumée noire, cendres, dissolution en une demi-seconde, trois paires d&#x27;yeux dorés ; sons et voix de l&#x27;entité ; vidéo de la scène.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0320</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0328</span> · <span class="insec">P1-17</span> · <span class="insec">D-322</span></span><h3>La voix de l&#x27;entité dans le jeu, réplique par réplique</h3><p class="muted">Les répliques du parcours branchées sur leurs moments, avec la vraie voix et le sous-titre calé.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0321</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0331</span> · <span class="insec">P1-18</span> · <span class="insec">D-323</span></span><h3>L&#x27;affichage du didacticiel</h3><p class="muted">Jauges, verrouillage, visée à la première personne et aides à l&#x27;écran au style des maquettes ; le HUD provisoire s&#x27;en va.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0328</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0332</span> · <span class="insec">P2-31</span> · <span class="insec">D-314</span> (3) · <span class="insec">D-323</span></span><h3>La première montée de niveau</h3><p class="muted">Niveaux et expérience ; à la fin de la horde, le héros passe au niveau 2 : barre, signal, réplique de l&#x27;entité.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0331</span>.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0338</span> · <span class="insec">P1-12</span> · <span class="insec">D-323</span> (6)</span><h3>Canalisation : la caméra qui tremble, les cheveux qui se décollent</h3><p class="muted">Le vérificateur a vu la caméra du jeu trembler pendant la tenue du sort et les cheveux se décoller à l&#x27;entrée : trouver la cause et corriger.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 21:57 ; part après <span class="insec">T-0320</span>, avant la scène de l&#x27;Ange.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0338</span> · <span class="insec">P1-12</span> · <span class="insec">D-323</span> (6)</span><h3>Canalisation : la caméra qui tremble, les cheveux qui se décollent</h3><p class="muted">Le vérificateur a vu la caméra du jeu trembler pendant la tenue du sort et les cheveux se décoller à l&#x27;entrée : trouver la cause et corriger.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 22:24 sur la carte.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0339</span> · <span class="insec">P1-13</span> · <span class="insec">D-323</span> (6)</span><h3>Le rendu du sang, des veines et du repère de visée</h3><p class="muted">Du sang en gouttes et non en boules, un vrai réseau de veines, un repère de visée posé au sol et non un trait orange par-dessus l&#x27;image.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 21:57 ; part après <span class="insec">T-0338</span>.</p></div>
   </div>
-  <p class="suite">Après <span class="insec">T-0320</span> : <span class="insec">T-0321</span> (apparition de l&#x27;Ange, avec son et voix), <span class="insec">T-0328</span> (voix de l&#x27;entité dans le jeu), puis <span class="insec">P1-18</span> (affichage), <span class="insec">P2-31</span> (montée de niveau), <span class="insec">P1-21</span> (sons).</p>
+  <p class="suite">Après <span class="insec">T-0338</span> : <span class="insec">T-0339</span> (rendu du sang, des veines, du repère de visée), <span class="insec">T-0321</span> (scène de l&#x27;Ange), <span class="insec">T-0328</span> (voix), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau).</p>
 </div>
 <div class="file">
   <h3>File processeur (écriture, calcul)</h3>
@@ -194,6 +195,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>22:00</time><p><span class="insec">T-0337</span> validé (anglais du hameau). <span class="insec">T-0340</span> lancé (petits reports). Quota : 12,4 %.</p></div>
     <div class="entree"><time>22:13</time><p><span class="insec">T-0340</span> validé.</p></div>
     <div class="entree"><time>22:14</time><p><span class="insec">T-0341</span> lancé (voix de départ du hameau, sans la carte). Les bandes molletières restent à la file carte : <span class="insec">D-164</span> veut des vêtements dessinés par IA, et Codex est à sa limite jusqu&#x27;au 04/11. Quota : 12,8 %.</p></div>
+    <div class="entree"><time>22:24</time><p><span class="insec">T-0320</span> validé. <span class="insec">T-0338</span> lancé sur la carte (caméra qui tremble, cheveux). Quota : 13,2 %.</p></div>
   </div>
 </section>
 
