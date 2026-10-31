@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · samedi 31 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>5</em></h1>
   <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Sur la carte : stabiliser la caméra et les cheveux pendant le sort, puis les effets et la scène de l&#x27;Ange. Sur le processeur : préparer la démo 2 (voix, fiches).</p>
-  <p class="ticket">Mise à jour : 31/10/2026 à 04:09</p>
+  <p class="ticket">Mise à jour : 31/10/2026 à 04:25</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">8 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-valide">8 validés</span><span class="etat e-a-corriger">1 à corriger</span></div>
   <ul class="liste lecture">
     <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
     <li>File carte : <strong><span class="insec">T-0338</span></strong> en cours (caméra qui tremble, cheveux décollés pendant la canalisation).</li>
@@ -125,7 +125,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0331</span> · <span class="insec">P1-18</span> · <span class="insec">D-323</span></span><h3>L&#x27;affichage du didacticiel</h3><p class="muted">Jauges, verrouillage, visée à la première personne et aides à l&#x27;écran au style des maquettes ; le HUD provisoire s&#x27;en va.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0328</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0332</span> · <span class="insec">P2-31</span> · <span class="insec">D-314</span> (3) · <span class="insec">D-323</span></span><h3>La première montée de niveau</h3><p class="muted">Niveaux et expérience ; à la fin de la horde, le héros passe au niveau 2 : barre, signal, réplique de l&#x27;entité.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0331</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0338</span> · <span class="insec">P1-12</span> · <span class="insec">D-323</span> (6)</span><h3>Canalisation : la caméra qui tremble, les cheveux qui se décollent</h3><p class="muted">Le vérificateur a vu la caméra du jeu trembler pendant la tenue du sort et les cheveux se décoller à l&#x27;entrée : trouver la cause et corriger.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 00:37 : essai VERT, ROUGE sans compiler quand on remet l&#x27;ancien ordre, mesures recoupées, images regardées à pleine taille. Le héros pivote maintenant à la vitesse réglée, plus vif qu&#x27;avant : à confirmer en main.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0339</span> · <span class="insec">P1-13</span> · <span class="insec">D-323</span> (6)</span><h3>Le rendu du sang, des veines et du repère de visée</h3><p class="muted">Du sang en gouttes et non en boules, un vrai réseau de veines, un repère de visée posé au sol et non un trait orange par-dessus l&#x27;image.</p><span class="etat e-verification">En vérification</span><p class="note">Livré à 02:31 (commit local 14842c4) : veines en vrai réseau, repère posé au sol, sang sans boules mais pas fini de près. Le parcours a échoué une fois : il est refait à la vérification.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0339</span> · <span class="insec">P1-13</span> · <span class="insec">D-323</span> (6)</span><h3>Le rendu du sang, des veines et du repère de visée</h3><p class="muted">Du sang en gouttes et non en boules, un vrai réseau de veines, un repère de visée posé au sol et non un trait orange par-dessus l&#x27;image.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Vérifié à 04:23 : parcours VERT, coût ≈ 1 %, veines montrables de près. À corriger : le sang de près (éclats de charbon, pas du liquide), une image blanche à la première montée du repère, le repère presque invisible en S5. Reprise par un agent neuf à 04:24.</p></div>
   </div>
   <p class="suite">Après <span class="insec">T-0338</span> : <span class="insec">T-0339</span> (rendu du sang, des veines, du repère de visée), <span class="insec">T-0321</span> (scène de l&#x27;Ange), <span class="insec">T-0328</span> (voix), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau).</p>
 </div>
@@ -203,13 +203,14 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>03:39</time><p><span class="insec">T-0348</span> livré, en vérification (plan du nid, du pont, du campement et de la fourche).</p></div>
     <div class="entree"><time>04:08</time><p><span class="insec">T-0348</span> validé (plan du nid, du pont, du campement et de la fourche).</p></div>
     <div class="entree"><time>04:09</time><p><span class="insec">T-0349</span> lancé sur le processeur : la table des répliques de la démo 2.</p></div>
+    <div class="entree"><time>04:24</time><p><span class="insec">T-0339</span> à corriger : sang de près, image blanche, repère de la horde. Reprise par un agent neuf sur la carte.</p></div>
   </div>
 </section>
 
 <section id="questions">
   <h2>Questions pour le directeur</h2>
   <p class="lecture muted">Questions en attente du directeur (un seul questionnaire groupé quand tout sera validé, <span class="insec">D-295</span>).</p>
-  <p class="lecture muted">17 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
+  <p class="lecture muted">18 questions attendent leur réponse. Personne ne les tranche à la place du directeur.</p>
   <div class="questions">
     <div class="question"><span class="ticket">Présentation</span><p>Restes du point 9 de la présentation, que le Chef ne tranche pas (ils engagent l&#x27;équipe et votre présentation) : animateurs freelances, nombre de PNJ qui parlent, images, l&#x27;équipe.</p></div>
     <div class="question"><span class="ticket">Mixamo (<span class="insec">D-322</span> (8))</span><p>Pas une question, une demande quand vous voulez : télécharger les animations de la liste (au moins les priorités 1 et 2, ≈ 15 à 20 min) dans E:/aaa-proto/assets/mixamo/, avec les réglages notés. Le Chef lance le reciblage dès qu&#x27;elles sont là.</p></div>
@@ -228,6 +229,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="question"><span class="ticket">Voix du pont (<span class="insec">T-0344</span>)</span><p>Répliques communes au hameau et au pont, Choix A ou B, manque d&#x27;hommes libres (7 pour 10 places) : à regrouper avec les voix du hameau.</p></div>
     <div class="question"><span class="ticket">Plan du hameau (<span class="insec">T-0347</span>)</span><p>La forme d&#x27;ensemble vous convient-elle ? Auberge et bergerie : placées ailleurs que dans le plan de la zone, pour ne pas couper les chemins. Hameau → nid : 379 m au lieu de ≈ 311 m. Nombre de maisons : 15, 20 ou 25.</p></div>
     <div class="question"><span class="ticket">Plan du nid et du pont (<span class="insec">T-0348</span>)</span><p>Qu&#x27;est-ce qui ferme le pont avant que le nid soit vidé ? Le barrage ne couvre que 12,4 m d&#x27;un goulot de 30,7 m : laisser ainsi ? Au plan 8.4, le camp est dans le dos de la caméra : comment le montrer ?</p></div>
+    <div class="question"><span class="ticket">Grand sort et veines (<span class="insec">T-0339</span>)</span><p>Dans la scène de la horde, le repère du sort : le cercle de 6 m au regard (choix provisoire), le vrai disque de 20 m qu&#x27;on ne voit presque pas, ou rien ? Les veines : de près et en vue FPS seulement, cela vous va-t-il ?</p></div>
   </div>
 </section>
 
