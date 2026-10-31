@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · samedi 31 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>5</em></h1>
   <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Sur la carte : stabiliser la caméra et les cheveux pendant le sort, puis les effets et la scène de l&#x27;Ange. Sur le processeur : préparer la démo 2 (voix, fiches).</p>
-  <p class="ticket">Mise à jour : 31/10/2026 à 07:03</p>
+  <p class="ticket">Mise à jour : 31/10/2026 à 07:09</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-verification">2 en vérification</span><span class="etat e-valide">11 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">11 validés</span><span class="etat e-a-corriger">1 à corriger</span></div>
   <ul class="liste lecture">
     <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
     <li>File carte : <strong><span class="insec">T-0338</span></strong> en cours (caméra qui tremble, cheveux décollés pendant la canalisation).</li>
@@ -144,7 +144,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0349</span> · <span class="insec">P2-07</span>, <span class="insec">P2-14</span>, <span class="insec">P3-13</span> · <span class="insec">D-323</span></span><h3>La table des répliques de la démo 2</h3><p class="muted">Un script relit les dialogues et produit une table unique pour le moteur, la liste des conditions et les écarts entre documents : rien n&#x27;est recopié à la main.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 05:25 : 305 lignes, textes justes au caractère près, CRLF sans perte. L&#x27;import dans Unreal reste à faire au ticket <span class="insec">P2-07</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0350</span> · <span class="insec">P2-14</span>, <span class="insec">P3-13</span> · <span class="insec">D-323</span></span><h3>Les cartons français trop longs et les 4 anglais qui manquent</h3><p class="muted">Une coupe écrite pour les 55 sous-titres de plus de 84 signes, sans changer un mot, et l&#x27;anglais des 4 répliques restantes.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 05:55 : cartons recollés au caractère près par le vérificateur, 15 coupes lues, 4 anglais justes. Les répliques trop rapides restent à vous.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0351</span> · <span class="insec">D-152</span> · <span class="insec">D-323</span></span><h3>Petits reports après les plans</h3><p class="muted">Plan de la zone réaligné par renvois, chiffres des plans, vidéo, états des démos : rien d&#x27;autre n&#x27;est réécrit.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 06:19, après une ligne que j&#x27;avais écrite de travers dans le JSON, relevée par le vérificateur et corrigée.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0352</span> · <span class="insec">P2-04</span> · <span class="insec">D-323</span></span><h3>Les intérieurs de l&#x27;auberge et de la forge</h3><p class="muted">Plan de chaque pièce en mètres, lieu des PNJ, caméras de la vidéo, et une fiche par modèle à générer : écriture seule.</p><span class="etat e-verification">En vérification</span><p class="note">Livré à 06:47 : 15 fiches, 13 modèles, 10 réutilisés, plan de chaque pièce ; 24 points ouverts, dont la coque (cinq options). En vérification et relecture du lore.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0352</span> · <span class="insec">P2-04</span> · <span class="insec">D-323</span></span><h3>Les intérieurs de l&#x27;auberge et de la forge</h3><p class="muted">Plan de chaque pièce en mètres, lieu des PNJ, caméras de la vidéo, et une fiche par modèle à générer : écriture seule.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Vérifié à 07:08 : plan, fiches et comptes justes ; à corriger : 4 chiffres ou passages de plan, et 8 points du lore avant les images, dont le four de la forge. La maison générée s&#x27;avère creuse, à double peau, et non pleine. Reprise par un agent neuf à 07:09.</p></div>
   </div>
   <p class="suite">Après le recalcul : la présentation aux investisseurs remise à jour, puis d&#x27;autres tickets sans carte.</p>
 </div>
@@ -218,6 +218,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>06:20</time><p><span class="insec">T-0352</span> lancé sur le processeur : les intérieurs de l&#x27;auberge et de la forge.</p></div>
     <div class="entree"><time>06:47</time><p><span class="insec">T-0352</span> livré, en vérification (intérieurs de l&#x27;auberge et de la forge).</p></div>
     <div class="entree"><time>07:02</time><p><span class="insec">T-0339</span> : correction livrée, en vérification sur la carte.</p></div>
+    <div class="entree"><time>07:09</time><p><span class="insec">T-0352</span> à corriger (vérificateur et gardien du lore) : reprise par un agent neuf.</p></div>
   </div>
 </section>
 
