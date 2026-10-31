@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · samedi 31 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>5</em></h1>
   <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Sur la carte : stabiliser la caméra et les cheveux pendant le sort, puis les effets et la scène de l&#x27;Ange. Sur le processeur : préparer la démo 2 (voix, fiches).</p>
-  <p class="ticket">Mise à jour : 31/10/2026 à 04:32</p>
+  <p class="ticket">Mise à jour : 31/10/2026 à 04:53</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">8 validés</span><span class="etat e-a-corriger">1 à corriger</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-valide">8 validés</span><span class="etat e-a-corriger">2 à corriger</span></div>
   <ul class="liste lecture">
     <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
     <li>File carte : <strong><span class="insec">T-0338</span></strong> en cours (caméra qui tremble, cheveux décollés pendant la canalisation).</li>
@@ -141,7 +141,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0346</span> · <span class="insec">D-152</span> · <span class="insec">D-323</span></span><h3>Petits reports du 31/10</h3><p class="muted">Remarques des vérificateurs sur les fiches du pont et l&#x27;anglais, glossaire, prologue, états des démos : rien d&#x27;autre n&#x27;est réécrit.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 01:14 : reports contrôlés, aucune réplique ni aucun ordre ne change.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0347</span> · <span class="insec">P2-03</span> · <span class="insec">D-323</span></span><h3>Le plan du hameau, maison par maison</h3><p class="muted">Position, orientation et type de chaque bâtiment, rues et lieux des PNJ, avec un dessin et des contrôles par script : prépare l&#x27;assemblage du hameau, sans la carte.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 02:45 : chiffres recalculés par le vérificateur, aucune maison déplacée par la correction. Une proposition, à vous de la valider : auberge, bergerie, nombre de maisons au questionnaire groupé.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0348</span> · <span class="insec">P3-01</span>, <span class="insec">P3-05</span>, <span class="insec">P3-06</span>, <span class="insec">P3-15</span> · <span class="insec">D-323</span></span><h3>Le plan du nid, du pont, du campement et de la fourche</h3><p class="muted">Même méthode que pour le hameau : position de chaque élément, contrôles par script, dont le pont contre le relief réel du ravin, et les plans de la vidéo.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 04:07 : pont contre relief, fermeture et plans de la vidéo refaits par le vérificateur, aucune décision contredite. Une proposition : ce qui ferme le pont avant le nid, et le barrage, au questionnaire groupé.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0349</span> · <span class="insec">P2-07</span>, <span class="insec">P2-14</span>, <span class="insec">P3-13</span> · <span class="insec">D-323</span></span><h3>La table des répliques de la démo 2</h3><p class="muted">Un script relit les dialogues et produit une table unique pour le moteur, la liste des conditions et les écarts entre documents : rien n&#x27;est recopié à la main.</p><span class="etat e-verification">En vérification</span><p class="note">Livré à 04:32 : 305 lignes, décomptes justes contre les feuilles ; 95 écarts listés, dont 55 cartons français trop longs ; 76 variables d&#x27;état proposées. Pas d&#x27;import dans Unreal. En vérification.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0349</span> · <span class="insec">P2-07</span>, <span class="insec">P2-14</span>, <span class="insec">P3-13</span> · <span class="insec">D-323</span></span><h3>La table des répliques de la démo 2</h3><p class="muted">Un script relit les dialogues et produit une table unique pour le moteur, la liste des conditions et les écarts entre documents : rien n&#x27;est recopié à la main.</p><span class="etat e-a-corriger">À corriger</span><p class="note">Vérifié à 04:52 : les textes sont justes au caractère près, décompte exact ; à corriger : 5 clés de conditions fausses, une copie en CRLF perd une ligne en silence. Reprise par un agent neuf à 04:53.</p></div>
   </div>
   <p class="suite">Après le recalcul : la présentation aux investisseurs remise à jour, puis d&#x27;autres tickets sans carte.</p>
 </div>
@@ -205,6 +205,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>04:09</time><p><span class="insec">T-0349</span> lancé sur le processeur : la table des répliques de la démo 2.</p></div>
     <div class="entree"><time>04:24</time><p><span class="insec">T-0339</span> à corriger : sang de près, image blanche, repère de la horde. Reprise par un agent neuf sur la carte.</p></div>
     <div class="entree"><time>04:32</time><p><span class="insec">T-0349</span> livré, en vérification (table des répliques de la démo 2).</p></div>
+    <div class="entree"><time>04:53</time><p><span class="insec">T-0349</span> à corriger (5 clés de conditions) : reprise par un agent neuf.</p></div>
   </div>
 </section>
 
