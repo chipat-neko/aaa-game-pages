@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · samedi 31 octobre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>5</em></h1>
   <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Sur la carte : stabiliser la caméra et les cheveux pendant le sort, puis les effets et la scène de l&#x27;Ange. Sur le processeur : préparer la démo 2 (voix, fiches).</p>
-  <p class="ticket">Mise à jour : 31/10/2026 à 08:40</p>
+  <p class="ticket">Mise à jour : 31/10/2026 à 08:41</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">5 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">14 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">6 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">14 validés</span></div>
   <ul class="liste lecture">
     <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
     <li>File carte : <strong><span class="insec">T-0338</span></strong> en cours (caméra qui tremble, cheveux décollés pendant la canalisation).</li>
@@ -126,8 +126,9 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0332</span> · <span class="insec">P2-31</span> · <span class="insec">D-314</span> (3) · <span class="insec">D-323</span></span><h3>La première montée de niveau</h3><p class="muted">Niveaux et expérience ; à la fin de la horde, le héros passe au niveau 2 : barre, signal, réplique de l&#x27;entité.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0331</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0338</span> · <span class="insec">P1-12</span> · <span class="insec">D-323</span> (6)</span><h3>Canalisation : la caméra qui tremble, les cheveux qui se décollent</h3><p class="muted">Le vérificateur a vu la caméra du jeu trembler pendant la tenue du sort et les cheveux se décoller à l&#x27;entrée : trouver la cause et corriger.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 00:37 : essai VERT, ROUGE sans compiler quand on remet l&#x27;ancien ordre, mesures recoupées, images regardées à pleine taille. Le héros pivote maintenant à la vitesse réglée, plus vif qu&#x27;avant : à confirmer en main.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0339</span> · <span class="insec">P1-13</span> · <span class="insec">D-323</span> (6)</span><h3>Le rendu du sang, des veines et du repère de visée</h3><p class="muted">Du sang en gouttes et non en boules, un vrai réseau de veines, un repère de visée posé au sol et non un trait orange par-dessus l&#x27;image.</p><span class="etat e-verification">En vérification</span><p class="note">Correction 1 livrée à 07:02 (commit local ee99c5f) : gouttes à tête ronde et filets à la place des éclats, plus d&#x27;image blanche, repère de la horde visible au regard. Reste discret à la caméra du jeu sur fond sombre. En vérification.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0355</span> · <span class="insec">P1-06</span>, <span class="insec">P1-09</span>, <span class="insec">P1-22</span> · <span class="insec">D-323</span></span><h3>Essai : le héros joue-t-il les animations faites dans Blender ?</h3><p class="muted">Quatorze animations attendent, et personne n&#x27;a encore essayé de les jouer dans Unreal : un essai court pour lever ce risque.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0321</span>.</p></div>
   </div>
-  <p class="suite">Après <span class="insec">T-0338</span> : <span class="insec">T-0339</span> (rendu du sang, des veines, du repère de visée), <span class="insec">T-0321</span> (scène de l&#x27;Ange), <span class="insec">T-0328</span> (voix), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau).</p>
+  <p class="suite">Après <span class="insec">T-0339</span> : <span class="insec">T-0321</span> (l&#x27;Ange), <span class="insec">T-0355</span> (animations de Blender dans Unreal), <span class="insec">T-0328</span> (voix de l&#x27;entité), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau), <span class="insec">T-0345</span> (regard à la manette), <span class="insec">P1-21</span> (sons).</p>
 </div>
 <div class="file">
   <h3>File processeur (écriture, calcul)</h3>
@@ -228,6 +229,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>08:32</time><p><span class="insec">T-0353</span> validé (Ferme des Veilleurs et nature).</p></div>
     <div class="entree"><time>08:32</time><p><span class="insec">T-0354</span> lancé (petits reports, avant la relance des images du 04/11).</p></div>
     <div class="entree"><time>08:40</time><p><span class="insec">T-0354</span> validé (petits reports).</p></div>
+    <div class="entree"><time>08:41</time><p><span class="insec">T-0355</span> écrit : un essai court pour jouer dans Unreal les animations faites dans Blender (risque commun à l&#x27;escalade et au reflet).</p></div>
   </div>
 </section>
 
