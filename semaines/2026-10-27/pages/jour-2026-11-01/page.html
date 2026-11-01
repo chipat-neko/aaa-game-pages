@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · dimanche 1er novembre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>6</em></h1>
   <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Hier soir, le héros a joué pour la première fois les animations faites dans Blender. Aujourd&#x27;hui : vérifier ce résultat, puis les rochers, les déclencheurs de voix et le didacticiel sur la carte, et brancher au jeu le réveil, l&#x27;épée et le reflet.</p>
-  <p class="ticket">Mise à jour : 01/11/2026 à 00:43</p>
+  <p class="ticket">Mise à jour : 01/11/2026 à 01:01</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,11 +104,15 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">8 à faire</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">1 validé</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">8 à faire</span><span class="etat e-en-cours">2 en cours</span><span class="etat e-valide">2 validés</span></div>
   <ul class="liste lecture">
     <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
     <li>File carte : <strong><span class="insec">T-0355</span></strong> en vérification (le héros joue les animations de Blender, à deux réglages près).</li>
     <li>File processeur : <strong><span class="insec">T-0368</span></strong> livré, en vérification (bandes au sol au genou posé).</li>
+    <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
+    <li><strong><span class="insec">T-0355</span> validé</strong> : le héros joue les animations de Blender ; l&#x27;escalade dépasse le plan d&#x27;environ 4,5 h.</li>
+    <li><strong>Défaut trouvé dans le jeu d&#x27;aujourd&#x27;hui</strong> : un lambeau sombre sur la main pendant le sort, plan 5.5 : <strong><span class="insec">T-0369</span></strong>, sur la carte.</li>
+    <li><strong><span class="insec">T-0368</span> validé</strong> : genou posé au sol. <strong><span class="insec">T-0370</span></strong> sur le processeur : manches et trou du flanc du gambison.</li>
   </ul>
 </section>
 
@@ -123,11 +127,12 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0328</span> · <span class="insec">P1-17</span> · <span class="insec">D-322</span></span><h3>La voix de l&#x27;entité dans le jeu, réplique par réplique</h3><p class="muted">Les répliques du parcours branchées sur leurs moments, avec la vraie voix et le sous-titre calé.</p><span class="etat e-a-faire">À faire</span><p class="note">Part après <span class="insec">T-0321</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0331</span> · <span class="insec">P1-18</span> · <span class="insec">D-323</span></span><h3>L&#x27;affichage du didacticiel</h3><p class="muted">Jauges, verrouillage, visée à la première personne et aides à l&#x27;écran au style des maquettes ; le HUD provisoire s&#x27;en va.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0328</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0332</span> · <span class="insec">P2-31</span> · <span class="insec">D-314</span> (3) · <span class="insec">D-323</span></span><h3>La première montée de niveau</h3><p class="muted">Niveaux et expérience ; à la fin de la horde, le héros passe au niveau 2 : barre, signal, réplique de l&#x27;entité.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit à 19:03 ; part après <span class="insec">T-0331</span>.</p></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0355</span> · <span class="insec">P1-06</span>, <span class="insec">P1-09</span>, <span class="insec">P1-22</span> · <span class="insec">D-323</span></span><h3>Essai : le héros joue-t-il les animations faites dans Blender ?</h3><p class="muted">Quatorze animations attendent, et personne n&#x27;a encore essayé de les jouer dans Unreal : un essai court pour lever ce risque.</p><span class="etat e-verification">En vérification</span><p class="note">Revenu à 23:34, vérificateur lancé vers 23:37. Réponse de l&#x27;exécutant : le héros joue se relever, ramasser et monter (paroi de référence), à deux réglages près : la source de reciblage, et un corps complet caché qui mène la tenue. IK et vraie paroi non essayées. Le vérificateur regarde d&#x27;abord si le lambeau noir existe aussi dans la canalisation du sort, dans le jeu d&#x27;aujourd&#x27;hui.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0355</span> · <span class="insec">P1-06</span>, <span class="insec">P1-09</span>, <span class="insec">P1-22</span> · <span class="insec">D-323</span></span><h3>Essai : le héros joue-t-il les animations faites dans Blender ?</h3><p class="muted">Quatorze animations attendent, et personne n&#x27;a encore essayé de les jouer dans Unreal : un essai court pour lever ce risque.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 01:01. Le héros joue se relever, ramasser et monter, à deux réglages près. Reflet et vraie paroi non essayés. L&#x27;escalade dépasse le plan d&#x27;environ 4,5 h. Le vérificateur a trouvé la cause du lambeau, et qu&#x27;il est dans le jeu d&#x27;aujourd&#x27;hui.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0359</span> · <span class="insec">P1-21</span> · <span class="insec">D-304</span> · <span class="insec">D-323</span></span><h3>Sons de la démo 1 dans le moteur</h3><p class="muted">Brancher ambiances, combat, magie, pas, créatures et musique, moment par moment, d&#x27;après le plan sonore ; prouver par le journal et la forme d&#x27;onde qu&#x27;aucun silence anormal ne reste.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit ; dix choix provisoires du plan sonore dedans. Après <span class="insec">T-0345</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0364</span> · <span class="insec">P1-22</span> · <span class="insec">D-323</span></span><h3>Le défaut intermittent de l&#x27;arc de la patrouille</h3><p class="muted">Un parcours a été rouge une fois sur quatre, sans lien avec le ticket en cours : trouver la cause.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit ; après <span class="insec">T-0359</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0366</span> · <span class="insec">P1-22</span> · <span class="insec">D-323</span></span><h3>Les rochers noirs qui semblent flotter dans le ciel</h3><p class="muted">Vus par le Chef sur les images de <span class="insec">T-0363</span> : savoir ce que c&#x27;est, les recenser par script, corriger ceux que le joueur voit.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit ; après <span class="insec">T-0355</span>, avant de refilmer S4 et S5.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0345</span> · <span class="insec">D-323</span></span><h3>Regard à la manette</h3><p class="muted">Réglage du regard à la manette.</p><span class="etat e-a-faire">À faire</span></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-304</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></span><h3>Le lambeau de la canalisation : le corriger dans le jeu</h3><p class="muted">Pendant le sort en vue TPS, un lambeau sombre part de la main vers le sol (plan 5.5). Essai de deux remèdes sur la vraie scène ; sinon, le repli de <span class="insec">D-322</span> (17). Un contrôle qui voit enfin le défaut.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 01:01 : première de la file carte.</p></div>
   </div>
   <p class="suite">Après <span class="insec">T-0339</span> : <span class="insec">T-0321</span> (l&#x27;Ange), <span class="insec">T-0355</span> (animations de Blender dans Unreal), <span class="insec">T-0328</span> (voix de l&#x27;entité), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau), <span class="insec">T-0345</span> (regard à la manette), <span class="insec">P1-21</span> (sons).</p>
 </div>
@@ -137,6 +142,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="pistes">
     <div class="piste"><span class="ticket"><span class="insec">T-0336</span> · <span class="insec">P2-02</span> · <span class="insec">D-160</span> · <span class="insec">D-323</span></span><h3>Trois premières images du hameau</h3><p class="muted">Une maison, l&#x27;auberge, la forge, générées avec Codex, pour juger l&#x27;aspect avant le lot entier.</p><span class="etat e-a-faire">À faire</span><p class="note">Arrêté à 21:01 au premier appel : la limite de Codex (ChatGPT Plus) est atteinte jusqu&#x27;au 04/11/2026 à 8:04. 0 image. À relancer après cette date ; autres options posées au directeur.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0368</span> · <span class="insec">D-304</span> · <span class="insec">D-323</span> · <span class="insec">T-0330</span> · <span class="insec">T-0355</span></span><h3>Refaire les 5 FBX du réveil et du reflet, genou posé abaissé</h3><p class="muted">Les bandes de la tenue neuve flottent de 3 à 5 cm au genou posé : essai des trois soustractions de <span class="insec">T-0355</span>, sur le processeur, dans un dossier à part.</p><span class="etat e-valide">Validé</span><p class="note">Validé à 00:43. Bandes au sol à chaque genou posé (+0,29 à +0,48 cm), recalculées à part par le vérificateur. Le mouvement ne claque pas. Deux réserves acceptées, provisoires : 2 sommets de peau sous le pantalon ; bout de botte dans sa tige, invisible en vue FPS. Reste à importer dans Unreal.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0370</span> · <span class="insec">D-304</span> · <span class="insec">D-323</span> · <span class="insec">P1-07</span></span><h3>Reprendre le gambison : manches et trou du flanc</h3><p class="muted">La manche avale la main en escalade et en vue FPS ; un vrai trou de 15 cm sous l&#x27;aisselle ; une trame adoucie à essayer. Dans Blender, dossier à part.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 01:01 sur le processeur.</p></div>
   </div>
   <p class="suite">Après le recalcul : la présentation aux investisseurs remise à jour, puis d&#x27;autres tickets sans carte.</p>
 </div>
@@ -153,6 +159,18 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <figure><img src="images/t0368-genou.jpg" alt="Image : Genou posé : avant et après" width="1280" height="907" loading="lazy"><figcaption>Bandes de la tenue neuve au genou posé, avant et après, dans Blender : de 3 à 5 cm au-dessus du sol avant, moins d&#x27;un demi-centimètre après.</figcaption></figure>
   <p class="chemins">Sur le PC : E:\aaa-proto\essai\heros-reveil\controles-t0368\planche_genou.jpg</p>
 </article>
+<article class="modele" id="mod-t0369-lambeau">
+  <div class="tete"><h3>Le lambeau dans le jeu d&#x27;aujourd&#x27;hui (plan 5.5)</h3><span class="etat e-en-cours">En cours</span></div>
+  <p class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-322</span> (17)</p>
+  <figure><img src="images/t0369-lambeau.jpg" alt="Image : Le lambeau dans le jeu d&#x27;aujourd&#x27;hui (plan 5.5)" width="1280" height="720" loading="lazy"><figcaption>Vraie scène, caméra du jeu : la bande sombre qui part de la main droite vers le sol. C&#x27;est un défaut, à corriger avant tout nouveau film.</figcaption></figure>
+  <p class="chemins">Sur le PC : E:\aaa-proto\verif-tmp\t0355-verif\scene-eclair\f_01925.png</p>
+</article>
+<article class="modele" id="mod-t0369-remede">
+  <div class="tete"><h3>Le même film, avec et sans le premier remède</h3><span class="etat e-en-cours">En cours</span></div>
+  <p class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-322</span> (17)</p>
+  <figure><img src="images/t0369-remede.jpg" alt="Image : Le même film, avec et sans le premier remède" width="1280" height="472" loading="lazy"><figcaption>En haut, le jeu d&#x27;aujourd&#x27;hui ; en bas, avec a.UseSafeMeshPoseIndices. Film d&#x27;essai : la vraie scène reste à essayer.</figcaption></figure>
+  <p class="chemins">Sur le PC : E:\aaa-proto\verif-tmp\t0355-verif\comparaison_safe.jpg</p>
+</article>
   </div>
 </section>
 
@@ -162,6 +180,8 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>00:07</time><p>Nouvelle page du jour. <span class="insec">T-0368</span> livré : bandes au sol à chaque genou posé (+0,29 à +0,48 cm) ; une réserve, 2 sommets de peau dans le buste.</p></div>
     <div class="entree"><time>00:07</time><p>Vérificateur de <span class="insec">T-0368</span> lancé sur le processeur. Le vérificateur de <span class="insec">T-0355</span> est toujours sur la carte.</p></div>
     <div class="entree"><time>00:43</time><p><span class="insec">T-0368</span> validé : le genou posé est au sol. La file processeur attend le résultat de <span class="insec">T-0355</span>.</p></div>
+    <div class="entree"><time>00:57</time><p>Avis du vérificateur de <span class="insec">T-0355</span> : validé, mais le lambeau est dans le jeu, plan 5.5, et il était dans le film de preuve de <span class="insec">T-0320</span>.</p></div>
+    <div class="entree"><time>01:01</time><p><span class="insec">T-0355</span> validé. <span class="insec">T-0369</span> lancé sur la carte (le lambeau) ; <span class="insec">T-0370</span> lancé sur le processeur (manches et trou du flanc du gambison).</p></div>
   </div>
 </section>
 
