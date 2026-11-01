@@ -95,7 +95,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <div class="surtitre">Projet AAA · suivi · dimanche 1er novembre 2026 · semaine du 27 octobre au 2 novembre</div>
   <h1>Jour <em>6</em></h1>
   <p class="lecture">Le PC reste en continu, carte graphique et processeur (<span class="insec">D-323</span>). Hier soir, le héros a joué pour la première fois les animations faites dans Blender. Aujourd&#x27;hui : vérifier ce résultat, puis les rochers, les déclencheurs de voix et le didacticiel sur la carte, et brancher au jeu le réveil, l&#x27;épée et le reflet.</p>
-  <p class="ticket">Mise à jour : 01/11/2026 à 03:14</p>
+  <p class="ticket">Mise à jour : 01/11/2026 à 03:46</p>
   <nav class="sommaire" aria-label="Sommaire">
     <a href="#resume">Résumé</a><a href="#files">Files de travail</a><a href="#modeles">Modèles 3D</a><a href="#journal">Journal</a><a href="#questions">Questions</a>
   </nav>
@@ -104,7 +104,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
 
 <section id="resume">
   <h2>Résumé</h2>
-  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">8 à faire</span><span class="etat e-en-cours">1 en cours</span><span class="etat e-verification">1 en vérification</span><span class="etat e-valide">2 validés</span></div>
+  <div class="compteurs" aria-label="Tickets par état"><span class="etat e-a-faire">8 à faire</span><span class="etat e-verification">2 en vérification</span><span class="etat e-valide">2 validés</span></div>
   <ul class="liste lecture">
     <li>Le poste reste rendu en continu (<span class="insec">D-323</span>) ; suite de la page d&#x27;hier.</li>
     <li>File carte : <strong><span class="insec">T-0355</span></strong> en vérification (le héros joue les animations de Blender, à deux réglages près).</li>
@@ -132,7 +132,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="piste"><span class="ticket"><span class="insec">T-0364</span> · <span class="insec">P1-22</span> · <span class="insec">D-323</span></span><h3>Le défaut intermittent de l&#x27;arc de la patrouille</h3><p class="muted">Un parcours a été rouge une fois sur quatre, sans lien avec le ticket en cours : trouver la cause.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit ; après <span class="insec">T-0359</span>.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0366</span> · <span class="insec">P1-22</span> · <span class="insec">D-323</span></span><h3>Les rochers noirs qui semblent flotter dans le ciel</h3><p class="muted">Vus par le Chef sur les images de <span class="insec">T-0363</span> : savoir ce que c&#x27;est, les recenser par script, corriger ceux que le joueur voit.</p><span class="etat e-a-faire">À faire</span><p class="note">Écrit ; après <span class="insec">T-0355</span>, avant de refilmer S4 et S5.</p></div>
     <div class="piste"><span class="ticket"><span class="insec">T-0345</span> · <span class="insec">D-323</span></span><h3>Regard à la manette</h3><p class="muted">Réglage du regard à la manette.</p><span class="etat e-a-faire">À faire</span></div>
-    <div class="piste"><span class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-304</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></span><h3>Le lambeau de la canalisation : le corriger dans le jeu</h3><p class="muted">Pendant le sort en vue TPS, un lambeau sombre part de la main vers le sol (plan 5.5). Essai de deux remèdes sur la vraie scène ; sinon, le repli de <span class="insec">D-322</span> (17). Un contrôle qui voit enfin le défaut.</p><span class="etat e-en-cours">En cours</span><p class="note">Lancé à 01:01 : première de la file carte.</p></div>
+    <div class="piste"><span class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-304</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></span><h3>Le lambeau de la canalisation : le corriger dans le jeu</h3><p class="muted">Pendant le sort en vue TPS, un lambeau sombre part de la main vers le sol (plan 5.5). Essai de deux remèdes sur la vraie scène ; sinon, le repli de <span class="insec">D-322</span> (17). Un contrôle qui voit enfin le défaut.</p><span class="etat e-verification">En vérification</span><p class="note">Livré vers 03:45 : le lambeau est parti, les pieds restent tenus : une ligne de réglage (a.UseSafeMeshPoseIndices=1), provisoire, sans coût mesurable. Le même réglage corrige un défaut nouveau : bras et armure des archers arrachés. Paquet non essayé. Vérificateur lancé à 03:46, sur la carte.</p></div>
   </div>
   <p class="suite">Après <span class="insec">T-0339</span> : <span class="insec">T-0321</span> (l&#x27;Ange), <span class="insec">T-0355</span> (animations de Blender dans Unreal), <span class="insec">T-0328</span> (voix de l&#x27;entité), <span class="insec">T-0331</span> (affichage), <span class="insec">T-0332</span> (montée de niveau), <span class="insec">T-0345</span> (regard à la manette), <span class="insec">P1-21</span> (sons).</p>
 </div>
@@ -160,16 +160,16 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
   <p class="chemins">Sur le PC : E:\aaa-proto\essai\heros-reveil\controles-t0368\planche_genou.jpg</p>
 </article>
 <article class="modele" id="mod-t0369-lambeau">
-  <div class="tete"><h3>Le lambeau dans le jeu d&#x27;aujourd&#x27;hui (plan 5.5)</h3><span class="etat e-en-cours">En cours</span></div>
-  <p class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-322</span> (17)</p>
-  <figure><img src="images/t0369-lambeau.jpg" alt="Image : Le lambeau dans le jeu d&#x27;aujourd&#x27;hui (plan 5.5)" width="1280" height="720" loading="lazy"><figcaption>Vraie scène, caméra du jeu : la bande sombre qui part de la main droite vers le sol. C&#x27;est un défaut, à corriger avant tout nouveau film.</figcaption></figure>
-  <p class="chemins">Sur le PC : E:\aaa-proto\verif-tmp\t0355-verif\scene-eclair\f_01925.png</p>
+  <div class="tete"><h3>Le lambeau du plan 5.5, avant et après</h3><span class="etat e-verification">En vérification</span></div>
+  <p class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-322</span> (17) · <span class="insec">D-323</span></p>
+  <figure><img src="images/t0369-lambeau.jpg" alt="Image : Le lambeau du plan 5.5, avant et après" width="1280" height="738" loading="lazy"><figcaption>Plan 5.5, vraie scène, mêmes images. En haut, avant : la bande sombre qui part de la main, images 1924 à 1928. En bas, après le réglage : plus rien.</figcaption></figure>
+  <p class="chemins">Sur le PC : E:\aaa-proto\unreal-v2\mesures\t0369\planche_avant_apres.jpg</p>
 </article>
 <article class="modele" id="mod-t0369-remede">
-  <div class="tete"><h3>Le même film, avec et sans le premier remède</h3><span class="etat e-en-cours">En cours</span></div>
-  <p class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-322</span> (17)</p>
-  <figure><img src="images/t0369-remede.jpg" alt="Image : Le même film, avec et sans le premier remède" width="1280" height="472" loading="lazy"><figcaption>En haut, le jeu d&#x27;aujourd&#x27;hui ; en bas, avec a.UseSafeMeshPoseIndices. Film d&#x27;essai : la vraie scène reste à essayer.</figcaption></figure>
-  <p class="chemins">Sur le PC : E:\aaa-proto\verif-tmp\t0355-verif\comparaison_safe.jpg</p>
+  <div class="tete"><h3>Les archers de la patrouille, avant et après</h3><span class="etat e-verification">En vérification</span></div>
+  <p class="ticket"><span class="insec">T-0369</span> · <span class="insec">D-323</span></p>
+  <figure><img src="images/t0369-remede.jpg" alt="Image : Les archers de la patrouille, avant et après" width="1280" height="940" loading="lazy"><figcaption>À gauche, avant : bras et armure arrachés sur les archers qui tirent, un défaut que personne n&#x27;avait vu. À droite, après le même réglage.</figcaption></figure>
+  <p class="chemins">Sur le PC : E:\aaa-proto\unreal-v2\mesures\t0369\patrouille_rouge_final.jpg</p>
 </article>
 <article class="modele" id="mod-t0370-gambison">
   <div class="tete"><h3>Gambison : manches et flanc, avant et après</h3><span class="etat e-verification">En vérification</span></div>
@@ -195,6 +195,7 @@ ul.liste{margin:0;padding-left:1.1rem;display:grid;gap:.4rem}
     <div class="entree"><time>00:57</time><p>Avis du vérificateur de <span class="insec">T-0355</span> : validé, mais le lambeau est dans le jeu, plan 5.5, et il était dans le film de preuve de <span class="insec">T-0320</span>.</p></div>
     <div class="entree"><time>01:01</time><p><span class="insec">T-0355</span> validé. <span class="insec">T-0369</span> lancé sur la carte (le lambeau) ; <span class="insec">T-0370</span> lancé sur le processeur (manches et trou du flanc du gambison).</p></div>
     <div class="entree"><time>03:14</time><p><span class="insec">T-0370</span> livré : la main sort de la manche, le trou du flanc est fermé dans Blender. Vérificateur lancé sur le processeur. <span class="insec">T-0369</span> est toujours sur la carte.</p></div>
+    <div class="entree"><time>03:46</time><p><span class="insec">T-0369</span> livré : lambeau parti d&#x27;une ligne de réglage, qui corrige aussi les archers. Vérificateur lancé sur la carte.</p></div>
   </div>
 </section>
 
